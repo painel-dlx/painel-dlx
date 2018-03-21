@@ -32,13 +32,13 @@
 
 namespace Comum\Modelos;
 
-use Comum\Dao\LogEmail as LogEmailDAO;
+use Comum\Dao\LogEmail as LogEmailDTO;
 use DLX\Ajudantes\Visao as AjdVisao;
 use Geral\Modelos\BaseModeloRegistro;
 use Geral\Modelos\RegistroEdicao;
 
 class LogEmail extends BaseModeloRegistro {
-    use RegistroEdicao, LogEmailDAO;
+    use RegistroEdicao, LogEmailDTO;
 
     /**
      * LogEmail constructor.

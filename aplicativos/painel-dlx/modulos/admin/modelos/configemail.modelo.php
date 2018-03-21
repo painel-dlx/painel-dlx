@@ -31,14 +31,14 @@
 
 namespace PainelDLX\Admin\Modelos;
 
-use Comum\DAO\ConfigEmail as ConfigEmailDAO;
+use Comum\DTO\ConfigEmail as ConfigEmailDTO;
 use DLX\Ajudantes\Visao as AjdVisao;
 use DLX\Excecao\DLX as DLXExcecao;
 use Geral\Modelos\BaseModeloRegistro;
 use Geral\Modelos\RegistroEdicao;
 
 class ConfigEmail extends BaseModeloRegistro {
-    use RegistroEdicao, ConfigEmailDAO;
+    use RegistroEdicao, ConfigEmailDTO;
 
     public function __construct() {
         parent::__construct('dlx_paineldlx_configuracoes', 'config_email_');

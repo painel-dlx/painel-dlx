@@ -31,14 +31,14 @@
 
 namespace PainelDLX\Desenvolvedor\Modelos;
 
-use Comum\DAO\ServidorDominio as ServidorDominioDAO;
+use Comum\DTO\ServidorDominio as ServidorDominioDTO;
 use DLX\Ajudantes\Visao as AjdVisao;
 use Geral\Modelos\BaseModeloRegistro;
 use Geral\Modelos\RegistroConsulta;
 use Geral\Modelos\RegistroEdicao;
 
 class ServidorDominio extends BaseModeloRegistro {
-    use RegistroConsulta, RegistroEdicao, ServidorDominioDAO;
+    use RegistroConsulta, RegistroEdicao, ServidorDominioDTO;
 
     public function __construct($pk = null) {
         parent::__construct('dlx_paineldlx_servidores_dominio', 'servidor_');

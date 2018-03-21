@@ -31,7 +31,7 @@
 
 namespace PainelDLX\Desenvolvedor\Modelos;
 
-use Comum\DAO\Idioma as IdiomaDAO;
+use Comum\DTO\Idioma as IdiomaDTO;
 use DLX\Ajudantes\Visao as AjdVisao;
 use DLX\Excecao\DLX as DLXExcecao;
 use Geral\Modelos\BaseModeloRegistro;
@@ -39,7 +39,7 @@ use Geral\Modelos\RegistroConsulta;
 use Geral\Modelos\RegistroEdicao;
 
 class Idioma extends BaseModeloRegistro {
-    use RegistroConsulta, RegistroEdicao, IdiomaDAO;
+    use RegistroConsulta, RegistroEdicao, IdiomaDTO;
 
     public function __construct($pk = null) {
         parent::__construct('dlx_paineldlx_idiomas', 'idioma_');

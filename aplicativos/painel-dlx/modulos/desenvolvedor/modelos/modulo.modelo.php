@@ -31,7 +31,7 @@
 
 namespace PainelDLX\Desenvolvedor\Modelos;
 
-use Comum\DAO\Modulo as ModuloDAO;
+use Comum\DTO\Modulo as ModuloDTO;
 use DLX\Ajudantes\Sessao;
 use DLX\Ajudantes\Strings;
 use DLX\Ajudantes\Vetores;
@@ -42,7 +42,7 @@ use Geral\Modelos\RegistroConsulta;
 use Geral\Modelos\RegistroEdicao;
 
 class Modulo extends BaseModeloRegistro {
-    use RegistroConsulta, RegistroEdicao, ModuloDAO;
+    use RegistroConsulta, RegistroEdicao, ModuloDTO;
 
     public function __construct($pk = null) {
         parent::__construct('dlx_paineldlx_modulos', 'modulo_');

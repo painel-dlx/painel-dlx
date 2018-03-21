@@ -29,41 +29,26 @@
  * SOFTWARE.
  */
 
-namespace Comum\DAO;
+namespace Comum\DTO;
 
-trait Tema {
+trait Idioma {
     /**
-     * Identificador do registro
-     * @var string
-     */
-    protected $id;
-
-    /**
-     * Nome do tema
+     * Nome do idioma
      * @var string
      */
     protected $nome;
 
     /**
-     * Nome da página mestra principal a ser carregada para aplicar o tema
+     * Sigla representativa do idioma
      * @var string
      */
-    protected $pagina_mestra = 'padrao';
+    protected $sigla;
 
     /**
-     * Diretório onde está instalado o tema. Esse diretório deve estar dentro
-     * do diretório de temas do Framework DLXs
-     * @var string
+     * Define se esse é o idioma padrão do sistema, para inclusão de novos usuários
+     * @var boolean
      */
-    protected $diretorio;
-
-    public function getID() {
-        return $this->id;
-    }
-
-    public function setID($id) {
-        $this->id = filter_var(strtolower($id), FILTER_SANITIZE_STRING, FILTER_FLAG_EMPTY_STRING_NULL);
-    }
+    protected $padrao = false;
 
     public function getNome() {
         return $this->nome;
@@ -73,22 +58,22 @@ trait Tema {
         $this->nome = filter_var($nome, FILTER_SANITIZE_STRING, FILTER_FLAG_EMPTY_STRING_NULL);
     }
 
-    public function getPaginaMestra() {
-        return $this->pagina_mestra;
+    public function getSigla() {
+        return $this->sigla;
     }
 
-    public function setPaginaMestra($pagina_mestra) {
-        $this->pagina_mestra = filter_var($pagina_mestra, FILTER_SANITIZE_STRING, FILTER_FLAG_EMPTY_STRING_NULL);
-    }
-
-    public function getDiretorio() {
-        return $this->diretorio;
-    }
-
-    public function setDiretorio($diretorio) {
-        $this->diretorio = filter_var($diretorio, FILTER_VALIDATE_REGEXP, [
-            'options' => ['regexp' => '~([\w\-]+/?)+~'],
+    public function setSigla($sigla) {
+        $this->sigla = filter_var($sigla, FILTER_VALIDATE_REGEXP, [
+            'options' => ['regexp' => '~^[a-z]{2}_[A-Z]{2}$~'],
             'flags'   => FILTER_NULL_ON_FAILURE
         ]);
+    }
+
+    public function isPadrao() {
+        return (bool)$this->padrao;
+    }
+
+    public function setPadrao($padrao) {
+        $this->padrao = filter_var($padrao, FILTER_VALIDATE_BOOLEAN);
     }
 }

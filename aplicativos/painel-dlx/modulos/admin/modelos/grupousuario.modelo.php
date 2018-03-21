@@ -31,7 +31,7 @@
 
 namespace PainelDLX\Admin\Modelos;
 
-use Comum\DAO\GrupoUsuario as GrupoUsuarioDAO;
+use Comum\DTO\GrupoUsuario as GrupoUsuarioDTO;
 use DLX\Ajudantes\Visao as AjdVisao;
 use DLX\Excecao\DLX as DLXExcecao;
 use Geral\Modelos\BaseModeloRegistro;
@@ -39,7 +39,7 @@ use Geral\Modelos\RegistroConsulta;
 use Geral\Modelos\RegistroEdicao;
 
 class GrupoUsuario extends BaseModeloRegistro {
-    use RegistroConsulta, RegistroEdicao, GrupoUsuarioDAO;
+    use RegistroConsulta, RegistroEdicao, GrupoUsuarioDTO;
 
     public function __construct($pk = null) {
         parent::__construct('dlx_paineldlx_grupos_usuarios', 'grupo_usuario_');

@@ -29,49 +29,65 @@
  * SOFTWARE.
  */
 
-namespace Comum\DAO;
+namespace Comum\DTO;
 
-trait GrupoUsuario {
+trait ServidorDominio {
     /**
-     * Nome do idioma
+     * Nome do domínio. Ex: dominio.local
      * @var string
      */
-    protected $nome;
+    protected $dominio;
 
     /**
-     * Define se esse é o grupo que os usuário são incluídos como padrão
-     * @var boolean
+     * IP ou hostname do servidor
+     * @var string
      */
-    protected $padrao = false;
+    protected $host;
 
     /**
-     * Define se esse grupo de usuário receberá permissão automaticamente ao
-     * criar um novo permissionamento
+     * Porta de conexão ao servidor pelo protocolo LDAP
+     * @var int
+     */
+    protected $porta = 389;
+
+    /**
+     * Define se esse servidor está ativo ou não. Servidores inativos não serão
+     * permitidos para login
      * @var boolean
      */
-    protected $autoperm = false;
+    protected $ativo = true;
 
-    public function getNome() {
-        return $this->nome;
+    public function getDominio() {
+        return $this->dominio;
     }
 
-    public function setNome($nome) {
-        $this->nome = filter_var($nome, FILTER_SANITIZE_STRING, FILTER_FLAG_EMPTY_STRING_NULL);
+    public function setDominio($dominio) {
+        $this->dominio = filter_var($dominio, FILTER_SANITIZE_STRING, FILTER_FLAG_EMPTY_STRING_NULL);
     }
 
-    public function isPadrao() {
-        return (bool)$this->padrao;
+    public function getHost() {
+        return $this->host;
     }
 
-    public function setPadrao($padrao) {
-        $this->padrao = filter_var($padrao, FILTER_VALIDATE_BOOLEAN);
+    public function setHost($host) {
+        $this->host = filter_var($host, FILTER_SANITIZE_STRING, FILTER_FLAG_EMPTY_STRING_NULL);
     }
 
-    public function isAutoperm() {
-        return (bool)$this->autoperm;
+    public function getPorta() {
+        return $this->porta;
     }
 
-    public function setAutoperm($autoperm) {
-        $this->autoperm = filter_var($autoperm, FILTER_VALIDATE_BOOLEAN);
+    public function setPorta($porta) {
+        $this->porta = filter_var($porta, FILTER_VALIDATE_INT, [
+            'options' => ['min_range' => 0, 'max_range' => 65535, 'default' => 389]
+        ]);
+    }
+
+    public function isAtivo() {
+        return (bool)$this->ativo;
+    }
+
+    public function setAtivo($ativo) {
+        $this->ativo = filter_var($ativo, FILTER_VALIDATE_BOOLEAN);
     }
 }

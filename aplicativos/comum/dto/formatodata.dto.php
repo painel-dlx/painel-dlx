@@ -29,50 +29,45 @@
  * SOFTWARE.
  */
 
-namespace Comum\DAO;
+namespace Comum\DTO;
 
-trait ModuloAcao {
+trait FormatoData {
     /**
-     * ID do módulo do qual essa ação faz parte
-     * @var int
-     */
-    protected $modulo;
-
-    /**
-     * Descrição da ação que pode ser executada
+     * Descrição do formato de data
      * @var string
      */
     protected $descr;
 
     /**
-     * Nome do controle que possui as ações
+     * Formato completo para exibição de data e hora.
+     * Obs: O formato deve ser compatível com a função date() do PHP:
+     * http://php.net/manual/pt_BR/function.date.php
      * @var string
      */
-    protected $classe;
+    protected $completo;
 
     /**
-     * Nomes dos método necessários para realizar essa ação
+     * Formato para exibição apenas da data
+     * Obs: O formato deve ser compatível com a função date() do PHP:
+     * http://php.net/manual/pt_BR/function.date.php
      * @var string
      */
-    protected $metodos;
+    protected $data;
 
     /**
-     * Vetor com os IDs dos grupos que tem permissão para executar essa ação
-     * @var array
+     * Formato para exibição apenas da hora
+     * Obs: O formato deve ser compatível com a função date() do PHP:
+     * http://php.net/manual/pt_BR/function.date.php
+     * @var string
      */
-    protected $grupos = [];
+    protected $hora;
 
+    /**
+     * Define se esse é o idioma padrão do sistema, para inclusão de novos usuários
+     * @var boolean
+     */
+    protected $padrao = false;
 
-    public function getModulo() {
-        return $this->modulo;
-    }
-
-    public function setModulo($modulo) {
-        $this->modulo = filter_var($modulo, FILTER_VALIDATE_INT, [
-            'options' => ['min_range' => 1],
-            'falgs'   => FILTER_NULL_ON_FAILURE
-        ]);
-    }
 
     public function getDescr() {
         return $this->descr;
@@ -82,30 +77,35 @@ trait ModuloAcao {
         $this->descr = filter_var($descr, FILTER_SANITIZE_STRING, FILTER_FLAG_EMPTY_STRING_NULL);
     }
 
-    public function getClasse() {
-        return $this->classe;
+    public function getCompleto() {
+        return $this->completo;
     }
 
-    public function setClasse($classe) {
-        $this->classe = filter_var($classe, FILTER_VALIDATE_REGEXP, [
-            'options' => ['regexp' => '~([\w]+\\[\w]+)?~'],
-            'flags'   => FILTER_NULL_ON_FAILURE
-        ]);
+    public function setCompleto($completo) {
+        $this->completo = filter_var($completo, FILTER_SANITIZE_STRING, FILTER_FLAG_EMPTY_STRING_NULL);
     }
 
-    public function getMetodos() {
-        return $this->metodos;
+    public function getData() {
+        return $this->data;
     }
 
-    public function setMetodos($metodos) {
-        $this->metodos = filter_var($metodos, FILTER_SANITIZE_STRING, FILTER_FLAG_EMPTY_STRING_NULL);
+    public function setData($data) {
+        $this->data = filter_var($data, FILTER_SANITIZE_STRING, FILTER_FLAG_EMPTY_STRING_NULL);
     }
 
-    public function getGrupos() {
-        return $this->grupos;
+    public function getHora() {
+        return $this->hora;
     }
 
-    public function setGrupos($grupos) {
-        $this->grupos = filter_var($grupos, FILTER_VALIDATE_INT, FILTER_REQUIRE_ARRAY);
+    public function setHora($hora) {
+        $this->hora = filter_var($hora, FILTER_SANITIZE_STRING, FILTER_FLAG_EMPTY_STRING_NULL);
+    }
+
+    public function isPadrao() {
+        return (bool)$this->padrao;
+    }
+
+    public function setPadrao($padrao) {
+        $this->padrao = filter_var($padrao, FILTER_VALIDATE_BOOLEAN);
     }
 }

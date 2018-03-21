@@ -31,7 +31,7 @@
 
 namespace PainelDLX\Desenvolvedor\Modelos;
 
-use Comum\DAO\Tema as TemaDAO;
+use Comum\DTO\Tema as TemaDTO;
 use DLX\Ajudantes\Arquivos;
 use DLX\Ajudantes\Visao as AjdVisao;
 use DLX\Ajudantes\Vetores;
@@ -40,7 +40,7 @@ use Geral\Modelos\BaseModelo;
 // use Geral\Modelos\RegistroEdicao;
 
 class Tema extends BaseModelo {
-    use TemaDAO;
+    use TemaDTO;
 
     public function __construct ($pk = null) {
         $this->set__NomeModelo(AjdVisao::traduzirTexto('tema', 'painel-dlx'));

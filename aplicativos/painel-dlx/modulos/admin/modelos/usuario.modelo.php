@@ -31,7 +31,7 @@
 
 namespace PainelDLX\Admin\Modelos;
 
-use Comum\DAO\Usuario as UsuarioDAO;
+use Comum\DTO\Usuario as UsuarioDTO;
 use DLX\Ajudantes\Sessao;
 use DLX\Ajudantes\Visao as AjdVisao;
 use DLX\Excecao\DLX as DLXExcecao;
@@ -46,7 +46,7 @@ use PainelDLX\Desenvolvedor\Modelos\ServidorDominio;
 
 
 class Usuario extends BaseModeloRegistro {
-    use RegistroConsulta, RegistroEdicao, UsuarioDAO;
+    use RegistroConsulta, RegistroEdicao, UsuarioDTO;
 
     const EXPREG_USUARIO_DOMINIO = '~^([a-zA-Z]+(\.[a-zA-z]+)?)\\\{1}(.+)$~';
 

@@ -29,65 +29,66 @@
  * SOFTWARE.
  */
 
-namespace Comum\DAO;
+namespace Comum\DTO;
 
-trait ServidorDominio {
+trait Tema {
     /**
-     * Nome do domínio. Ex: dominio.local
+     * Identificador do registro
      * @var string
      */
-    protected $dominio;
+    protected $id;
 
     /**
-     * IP ou hostname do servidor
+     * Nome do tema
      * @var string
      */
-    protected $host;
+    protected $nome;
 
     /**
-     * Porta de conexão ao servidor pelo protocolo LDAP
-     * @var int
+     * Nome da página mestra principal a ser carregada para aplicar o tema
+     * @var string
      */
-    protected $porta = 389;
+    protected $pagina_mestra = 'padrao';
 
     /**
-     * Define se esse servidor está ativo ou não. Servidores inativos não serão
-     * permitidos para login
-     * @var boolean
+     * Diretório onde está instalado o tema. Esse diretório deve estar dentro
+     * do diretório de temas do Framework DLXs
+     * @var string
      */
-    protected $ativo = true;
+    protected $diretorio;
 
-    public function getDominio() {
-        return $this->dominio;
+    public function getID() {
+        return $this->id;
     }
 
-    public function setDominio($dominio) {
-        $this->dominio = filter_var($dominio, FILTER_SANITIZE_STRING, FILTER_FLAG_EMPTY_STRING_NULL);
+    public function setID($id) {
+        $this->id = filter_var(strtolower($id), FILTER_SANITIZE_STRING, FILTER_FLAG_EMPTY_STRING_NULL);
     }
 
-    public function getHost() {
-        return $this->host;
+    public function getNome() {
+        return $this->nome;
     }
 
-    public function setHost($host) {
-        $this->host = filter_var($host, FILTER_SANITIZE_STRING, FILTER_FLAG_EMPTY_STRING_NULL);
+    public function setNome($nome) {
+        $this->nome = filter_var($nome, FILTER_SANITIZE_STRING, FILTER_FLAG_EMPTY_STRING_NULL);
     }
 
-    public function getPorta() {
-        return $this->porta;
+    public function getPaginaMestra() {
+        return $this->pagina_mestra;
     }
 
-    public function setPorta($porta) {
-        $this->porta = filter_var($porta, FILTER_VALIDATE_INT, [
-            'options' => ['min_range' => 0, 'max_range' => 65535, 'default' => 389]
+    public function setPaginaMestra($pagina_mestra) {
+        $this->pagina_mestra = filter_var($pagina_mestra, FILTER_SANITIZE_STRING, FILTER_FLAG_EMPTY_STRING_NULL);
+    }
+
+    public function getDiretorio() {
+        return $this->diretorio;
+    }
+
+    public function setDiretorio($diretorio) {
+        $this->diretorio = filter_var($diretorio, FILTER_VALIDATE_REGEXP, [
+            'options' => ['regexp' => '~([\w\-]+/?)+~'],
+            'flags'   => FILTER_NULL_ON_FAILURE
         ]);
-    }
-
-    public function isAtivo() {
-        return (bool)$this->ativo;
-    }
-
-    public function setAtivo($ativo) {
-        $this->ativo = filter_var($ativo, FILTER_VALIDATE_BOOLEAN);
     }
 }

@@ -31,14 +31,14 @@
 
 namespace PainelDLX\Desenvolvedor\Modelos;
 
-use Comum\DAO\FormatoData as FormatoDataDAO;
+use Comum\DTO\FormatoData as FormatoDataDTO;
 use DLX\Ajudantes\Visao as AjdVisao;
 use Geral\Modelos\BaseModeloRegistro;
 use Geral\Modelos\RegistroConsulta;
 use Geral\Modelos\RegistroEdicao;
 
 class FormatoData extends BaseModeloRegistro {
-    use RegistroConsulta, RegistroEdicao, FormatoDataDAO;
+    use RegistroConsulta, RegistroEdicao, FormatoDataDTO;
 
     public function __construct($pk = null) {
         parent::__construct('dlx_paineldlx_formatos_datas', 'formato_data_');

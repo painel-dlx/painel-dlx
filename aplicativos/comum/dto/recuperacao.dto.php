@@ -6,7 +6,7 @@
  * Time: 17:40
  */
 
-namespace Comum\DAO;
+namespace Comum\DTO;
 
 
 trait Recuperacao {

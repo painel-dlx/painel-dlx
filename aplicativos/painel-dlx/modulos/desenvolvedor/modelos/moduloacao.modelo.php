@@ -31,7 +31,7 @@
 
 namespace PainelDLX\Desenvolvedor\Modelos;
 
-use Comum\DAO\ModuloAcao as ModuloAcaoDAO;
+use Comum\DTO\ModuloAcao as ModuloAcaoDTO;
 use DLX\Ajudantes\Visao as AjdVisao;
 use DLX\Ajudantes\Sessao;
 use Geral\Modelos\BaseModeloRegistro;
@@ -39,7 +39,7 @@ use Geral\Modelos\RegistroConsulta;
 use Geral\Modelos\RegistroEdicao;
 
 class ModuloAcao extends BaseModeloRegistro {
-    use RegistroConsulta, RegistroEdicao, ModuloAcaoDAO;
+    use RegistroConsulta, RegistroEdicao, ModuloAcaoDTO;
 
     public function __construct($pk = null) {
         parent::__construct('dlx_paineldlx_modulos_acoes', 'acao_');

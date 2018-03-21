@@ -29,7 +29,7 @@
  * SOFTWARE.
  */
 
-namespace Comum\DAO;
+namespace Comum\DTO;
 
 trait LogEmail {
     /**

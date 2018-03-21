@@ -29,9 +29,9 @@
  * SOFTWARE.
  */
 
-namespace Comum\DAO;
+namespace Comum\DTO;
 
-trait Idioma {
+trait GrupoUsuario {
     /**
      * Nome do idioma
      * @var string
@@ -39,16 +39,17 @@ trait Idioma {
     protected $nome;
 
     /**
-     * Sigla representativa do idioma
-     * @var string
-     */
-    protected $sigla;
-
-    /**
-     * Define se esse é o idioma padrão do sistema, para inclusão de novos usuários
+     * Define se esse é o grupo que os usuário são incluídos como padrão
      * @var boolean
      */
     protected $padrao = false;
+
+    /**
+     * Define se esse grupo de usuário receberá permissão automaticamente ao
+     * criar um novo permissionamento
+     * @var boolean
+     */
+    protected $autoperm = false;
 
     public function getNome() {
         return $this->nome;
@@ -58,22 +59,19 @@ trait Idioma {
         $this->nome = filter_var($nome, FILTER_SANITIZE_STRING, FILTER_FLAG_EMPTY_STRING_NULL);
     }
 
-    public function getSigla() {
-        return $this->sigla;
-    }
-
-    public function setSigla($sigla) {
-        $this->sigla = filter_var($sigla, FILTER_VALIDATE_REGEXP, [
-            'options' => ['regexp' => '~^[a-z]{2}_[A-Z]{2}$~'],
-            'flags'   => FILTER_NULL_ON_FAILURE
-        ]);
-    }
-
     public function isPadrao() {
         return (bool)$this->padrao;
     }
 
     public function setPadrao($padrao) {
         $this->padrao = filter_var($padrao, FILTER_VALIDATE_BOOLEAN);
+    }
+
+    public function isAutoperm() {
+        return (bool)$this->autoperm;
+    }
+
+    public function setAutoperm($autoperm) {
+        $this->autoperm = filter_var($autoperm, FILTER_VALIDATE_BOOLEAN);
     }
 }

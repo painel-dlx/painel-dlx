@@ -9,12 +9,12 @@
 
 namespace PainelDLX\Login\Modelos;
 
-use Comum\DAO\Recuperacao as RecuperacaoDAO;
+use Comum\DTO\Recuperacao as RecuperacaoDTO;
 use Geral\Modelos\BaseModeloRegistro;
 use Geral\Modelos\RegistroEdicao;
 
 class Recuperacao extends BaseModeloRegistro {
-    use RegistroEdicao, RecuperacaoDAO;
+    use RegistroEdicao, RecuperacaoDTO;
 
     /**
      * Recuperacao constructor.
