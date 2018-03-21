@@ -1,0 +1,20 @@
+// Configurações ---------------------------------------------------------------------------------------------------- //
+$seletor: '.mostrar-cor';
+
+
+// Componente ------------------------------------------------------------------------------------------------------- //
+#{$seletor} {
+    // Visual
+    display: inline-block;
+    border-radius: 50%;
+
+    // Tamanho
+    width: 10px;
+    height: 10px;
+
+    // Alinhamento
+    vertical-align: baseline;
+
+    // Margens
+    margin: 0 3px;
+}

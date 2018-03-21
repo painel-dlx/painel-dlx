@@ -1,0 +1,51 @@
+// Configurações ------------------------------------------------------------ //
+$seletor: '.form-filtro';
+
+// Componentes -------------------------------------------------------------- //
+#{$seletor} {
+    // Flex
+    @include flexBox;
+
+    // Tamanho
+    width: 367.5px /* 350px campo + 17.5 botão */;
+    max-width: 100%;
+
+    // Margens
+    margin: 0 auto;
+
+    > .form-paragr {
+        // Margens
+        margin: 0;
+    }
+
+    > .form-botoes {
+        // Margens
+        margin: 0;
+        padding-top: 0;
+
+        // Visual
+        border-top: none;
+
+        // Tamanho
+        height: 35px;
+
+        // Transformar
+        transform: translateX(-2px);
+
+        > .botao {
+            @extend .com-icone;
+            @extend .-so-icone;
+            @extend .-filtro;
+            @extend .-botao;
+
+            // Margens
+            padding: 0;
+
+            // Texto
+            font-size: 17.5px;
+
+            // Visual
+            background: lightseagreen;
+        }
+    }
+}

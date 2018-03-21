@@ -1,0 +1,82 @@
+// Configurações ------------------------------------------------------------ //
+$seletor: '.form-controle.-chk-sim-nao';
+
+// Componentes -------------------------------------------------------------- //
+#{$seletor} {
+    // Posicionamento
+    position: fixed;
+    top: -9999px;
+    left: -9999px;
+
+    // Visual
+    visibility: hidden;
+
+    & + label {
+        // Visual
+        display: inline-block;
+        // border: 2px solid #E8E8E8;
+        background: #EFEFEF;
+        border-radius: 7px;
+
+        // Tamanho
+        width: 24px;
+        height: 7px;
+
+        // Posicionamento
+        position: relative;
+
+        &:hover {
+            // Visual
+            cursor: pointer;
+        }
+
+        &::before {
+            $tm: 12px;
+
+            // Conteúdo
+            content: '';
+
+            // Visual
+            display: block;
+            background: #FFF;
+            border-radius: 50%;
+            border: 1px solid #EEE;
+
+            // Tamanho
+            width: $tm;
+            height: $tm;
+
+            // Texto
+            color: #666;
+            text-align: center;
+            line-height: $tm;
+
+            // Posicionamento
+            position: absolute;
+            top: 50%;
+            left: 0;
+
+            // Transformar
+            transform: translate(0, -50%);
+
+            // Transições
+            transition: all .5s;
+        }
+    }
+
+    /* CHECK SELECIONADO */
+    &:checked {
+        & + label {
+            // Visual
+            background: lightgreen;
+
+            &::before {
+                // Posicionamento
+                left: 100%;
+
+                // Transformar
+                transform: translate(-100%, -50%);
+            }
+        }
+    }
+}

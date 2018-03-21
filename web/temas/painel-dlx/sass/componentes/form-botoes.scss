@@ -1,0 +1,63 @@
+// Configurações ------------------------------------------------------------ //
+$seletor: '.form-botoes';
+
+// Componentes -------------------------------------------------------------- //
+#{$seletor} {
+    // Margens
+    margin-top: 10px;
+    padding-top: 10px;
+
+    // Visual
+    border-top: 1px solid #EFEFEF;
+
+    // Texto
+    text-align: center;
+
+    > .botao {
+        // Texto
+        font-size: 13px;
+
+        &:hover {
+            // Visual
+            cursor: pointer;
+        }
+
+        &[type="submit"],
+        &[type="button"] {
+            // Visual
+            display: inline-block;
+            border: none;
+            box-shadow: 1px 1px 3px rgba(black, .3);
+
+            // Margens
+            padding: 8px 20px;
+        }
+
+        &[type="submit"] {
+            // Visual
+            background: seagreen;
+
+            // Texto
+            color: #FFF;
+        }
+
+        &[type="reset"] {
+            // Texto
+            color: #888;
+
+            // Visual
+            border: none;
+            background: none;
+
+            &:hover {
+                // Texto
+                color: #900;
+            }
+        }
+
+        &:not(:first-child) {
+            // Margens
+            margin-left: 10px;
+        }
+    }
+}

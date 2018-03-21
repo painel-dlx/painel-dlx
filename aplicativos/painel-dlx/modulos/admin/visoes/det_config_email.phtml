@@ -1,0 +1,90 @@
+<?php
+/**
+ * painel-dlx
+ * @version: v1.17.08
+ * @author: Diego Lepera
+ *
+ * Created by Diego Lepera on 2017-07-28. Please report any bug at
+ * https://github.com/dlepera88-php/framework-dlx/issues
+ *
+ * The MIT License (MIT)
+ * Copyright (c) 2017 Diego Lepera http://diegolepera.xyz/
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is furnished
+ * to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+use DLX\Ajudantes\Strings;
+
+if (!isset($params)) {
+    $params = $this->obterParams();
+} // Fim if
+
+$config_email = $params['modelo'];
+?>
+
+[DLX-CONTEUDO]
+<details class="mostrar-detalhes" open>
+    <summary class="det-titulo"><?php echo $this->traduzir('Geral', 'painel-dlx'); ?></summary>
+
+    <p class="det-paragr">
+        <span class="det-rotulo"><?php echo $this->traduzir('Servidor SMTP', 'painel-dlx') ?></span>
+        <?php echo $config_email->getServidor(), ':', $config_email->getPorta() ?>
+    </p>
+
+    <p class="det-paragr">
+        <span class="det-rotulo"><?php echo $this->traduzir('Criptografia', 'painel-dlx') ?></span>
+        <?php echo $config_email->getCripto() ?>
+    </p>
+</details>
+
+<details class="mostrar-detalhes" open>
+    <summary class="det-titulo"><?php echo $this->traduzir('Autenticação', 'painel-dlx') ?></summary>
+
+    <p class="det-paragr">
+        <span class="det-rotulo"><?php echo $this->traduzir('Requer autenticação?', 'painel-dlx') ?></span>
+        <?php echo Strings::bool2humano($config_email->isAutent()); ?>
+    </p>
+
+    <?php if ($config_email->isAutent()) : ?>
+        <p class="det-paragr">
+            <span class="det-rotulo"><?php echo $this->traduzir('Conta', 'painel-dlx') ?></span>
+            <?php echo $config_email->getConta() ?>
+        </p>
+    <?php endif ?>
+</details>
+
+<details class="mostrar-detalhes" open>
+    <summary class="det-titulo"><?php echo $this->traduzir('Configurações', 'painel-dlx') ?></summary>
+
+    <p class="det-paragr">
+        <span class="det-rotulo"><?php echo $this->traduzir('De (nome)', 'painel-dlx') ?></span>
+        <?php echo $config_email->getDeNome() ?>
+    </p>
+
+    <p class="det-paragr">
+        <span class="det-rotulo"><?php echo $this->traduzir('Responder para', 'painel-dlx') ?></span>
+        <?php echo $config_email->getResponderPara() ?>
+    </p>
+
+    <p class="det-paragr">
+        <span class="det-rotulo"><?php echo $this->traduzir('Corpo em HTML?', 'painel-dlx') ?></span>
+        <?php echo Strings::bool2humano($config_email->isHTML()) ?>
+    </p>
+</details>
+[/DLX-CONTEUDO]

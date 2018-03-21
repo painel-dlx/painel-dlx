@@ -1,0 +1,68 @@
+// Configurações ------------------------------------------------------------ //
+$seletor: '.upload-arquivos';
+$altura: 200px;
+$cor-texto: #888;
+$mg-topo: 30px;
+
+// Componentes -------------------------------------------------------------- //
+#{$seletor} {
+    // Tamanho
+    width: 100%;
+    height: $altura;
+
+    // Posicionamento
+    position: relative;
+
+    &::before {
+        // Conteúdo
+        content: '\e9c3';
+
+        // Texto
+        font: 100px 'icomoon';
+        color: $cor-texto;
+
+        // Posicionamento
+        position: absolute;
+        top: $mg-topo;
+        left: 50%;
+        z-index: 1;
+
+        // Transformar
+        transform: translateX(-50%);
+    }
+
+    &::after {
+        // Conteúdo
+        content: attr(data-texto-upload);
+
+        // Visual
+        display: block;
+        border: 2px dashed $cor-texto;
+        background: #EEE;
+
+        // Tamanho
+        width: 100%;
+        height: 100%;
+
+        // Texto
+        font: 15px 'Avenir Next';
+        text-align: center;
+        color: $cor-texto;
+        line-height: $altura + ($mg-topo * 2);
+
+        // Posicionamento
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    &:focus {
+        // Visual
+        outline: none;
+    }
+
+    &:hover {
+        // Visual
+        cursor: pointer;
+    }
+}

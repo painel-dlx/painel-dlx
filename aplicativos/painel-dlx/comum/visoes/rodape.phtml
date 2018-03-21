@@ -1,0 +1,22 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: dlepera
+ * Date: 11/02/16
+ * Time: 17:53
+ */
+
+if (!isset($params)) {
+    $params = $this->obterParams();
+} // Fim if
+?>
+
+[DLX-RODAPE]
+<p class="texto-copyright">
+    <?php echo "{$params['config-aplicativo']['nome']} &copy; ", date('Y'), " {$params['config-aplicativo']['versao']}"; ?>
+    &nbsp;&nbsp;|&nbsp;&nbsp;
+    <a href="sobre-o-sistema">
+        <?php echo $this->traduzir('Sobre o sistema', 'painel-dlx'); ?>
+    </a>
+</p>
+[/DLX-RODAPE]

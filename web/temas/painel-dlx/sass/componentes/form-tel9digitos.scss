@@ -1,0 +1,11 @@
+// Configurações ------------------------------------------------------------ //
+$seletor: '.form-tel9digitos';
+
+// Componentes -------------------------------------------------------------- //
+#{$seletor} {
+    // Visual
+    display: block;
+
+    // Margens
+    margin-top: 3px;
+}

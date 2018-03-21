@@ -1,0 +1,32 @@
+<?php
+
+use \DLX\Ajudantes\HTMLForm;
+
+if (!isset($params)) {
+    $params = $this->obterParams();
+} // Fim if
+?>
+
+[DLX-CONTEUDO]
+<div class="__caixa">
+    <form id="form-filtro" class="form-filtro">
+        <?php
+        // Adicionar inputs escondidos para manter a query-string desejada
+        if (array_key_exists('lista:_get', $params)) {
+            foreach ($params['lista:_get'] as $campo => $valor) {
+                printf('<input type="hidden" name="%s" value="%s"/>', $campo, $valor);
+            } // Fim foreach
+        } // Fim if ?>
+
+        <p class="form-paragr">
+            <?php echo HTMLForm::campoGeral('busca', 'termo', 'termo', filter_input(INPUT_GET, 'termo'), null, null, [
+                'placeholder' => $this->traduzir('Procurar por...', 'painel-dlx')
+            ]) ?>
+        </p>
+
+        <p class="form-botoes">
+            <?php echo HTMLForm::botao('filtrar', $this->traduzir('Filtrar', 'painel-dlx')) ?>
+        </p>
+    </form>
+</div>
+[/DLX-CONTEUDO]

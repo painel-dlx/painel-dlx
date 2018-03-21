@@ -1,0 +1,31 @@
+// Configurações ------------------------------------------------------------------------------- //
+$seletor: '#wg-info-quartos';
+
+// Componentes --------------------------------------------------------------------------------- //
+#{$seletor} {
+    // Posicionamento
+    position: relative;
+
+    > .conteudo {
+        > .wg-troca-data {
+            // Posicionamento
+            position: absolute;
+            top: 5px;
+            right: 5px;
+
+            // Texto
+            font-size: 15px;
+            text-align: right;
+            font-weight: bold;
+
+            // Visual
+            border: none;
+            border-bottom: 1px solid #EFEFEF;
+
+            &:focus {
+                // Visual
+                outline: none;
+            }
+        }
+    }
+}

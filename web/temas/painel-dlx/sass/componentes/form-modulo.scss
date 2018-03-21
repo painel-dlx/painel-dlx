@@ -1,0 +1,29 @@
+// Configurações ------------------------------------------------------------ //
+$seletor: '#form-modulo';
+
+// Componentes -------------------------------------------------------------- //
+#{$seletor} {
+    // Flex
+    @include flexBox;
+    @include flexFlow(row wrap);
+
+    > .form-botoes {
+        @include flex(100%);
+    }
+}
+
+
+// Computadores e desktops
+@include media-query((laptop, desktop)) {
+    #{$seletor} {
+        > .form-grupo {
+            // Flex
+            @include flex(32.66%);
+
+            &:not(:first-of-type) {
+                // Margens
+                margin-left: 1%;
+            }
+        }
+    }
+}

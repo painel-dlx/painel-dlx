@@ -1,0 +1,111 @@
+// Configurações ------------------------------------------------------------ //
+$seletor: '.com-icone';
+$icones:
+    detalhes '\e922' darkcyan,
+    inserir '\ea0a' mediumaquamarine,
+    editar '\e905' orange,
+    excluir '\e9ac' #900,
+    voltar '\e94d' lightslategrey,
+    usuario '\e971' #CCC,
+    minha-conta '\e971' cornflowerblue,
+    senha '\e98d' lightseagreen,
+    logout '\ea14' #900,
+    filtro '\e986' lightseagreen,
+    lista '\e9bb' #900,
+    upload '\e9c3' cornflowerblue,
+    configuracoes '\e995' lightseagreen;
+
+// Componente --------------------------------------------------------------- //
+#{$seletor} {
+    // Visual
+    display: inline-block;
+
+    // Texto
+    text-decoration: none;
+    text-align: left;
+
+    &::before {
+        // Texto
+        font: 1.2em 'icomoon';
+
+        // Visual
+        display: inline-block;
+
+        // Alinhamento
+        vertical-align: middle;
+
+        // Margens
+        margin-right: 4px;
+    }
+
+    // Montar os ícones
+    @each $nome, $icone, $cor in $icones {
+        &.-#{$nome} {
+            // Texto
+            color: $cor;
+
+            &::before {
+                // Conteúdo
+                content: $icone;
+            }
+        }
+    }
+
+    // Links com ícones no estilo de botões
+    &.-botao {
+        // Margens
+        padding: 8px 16px;
+
+        // Texto
+        color: #FFF;
+
+        // Visual
+        border-radius: 2px;
+        box-shadow: 1px 1px 3px rgba(black, .3);
+
+        // Incluir as cores
+        @each $nome, $icone, $cor in $icones {
+            &.-#{$nome} {
+                // Visual
+                background: $cor;
+            }
+        }
+    }
+
+    // Mostrar apenas os ícones
+    &.-so-icone {
+        // Texto
+        // color: transparent;
+        text-indent: -9999px;
+
+        // Tamanho
+        width: 2em;
+        height: 2em;
+        box-sizing: border-box;
+
+        // Margens
+        padding: 0;
+
+        // Posicionamento
+        position: relative;
+
+        &::before {
+            // Visual
+            display: block;
+
+            // Texto
+            text-indent: 0;
+
+            // Margens
+            margin: 0;
+
+            // Posicionamento
+            position: absolute;
+            top: 50%;
+            left: 50%;
+
+            // Transformar
+            transform: translate(-50%, -50%);
+        }
+    }
+}

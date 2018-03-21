@@ -1,0 +1,44 @@
+// Configurações ---------------------------------------------------------------------------------------------------- //
+$seletor: '.mostrar-msg';
+$tipos-msg: sucesso green '\ea10',
+    erro red '\ea0f',
+    aviso orange '\ea07',
+    info #069 '\ea0c';
+
+
+// Componente ------------------------------------------------------------------------------------------------------- //
+#{$seletor} {
+    @extend .com-icone;
+
+    // Margens
+    margin: 10px 0;
+    padding: 5px;
+
+    // Texto
+    text-align: center;
+
+    // Visual
+    display: block;
+
+    &::before {
+        // Texto
+        font-size: 1.5em !important;
+    }
+
+    @each $tipo, $cor, $icone in $tipos-msg {
+        &.-#{$tipo} {
+            // Texto
+            color: $cor;
+
+            // Visual
+            background: change_color($cor, $alpha: .08);
+            border: 1px solid $cor;
+            border-radius: 3px;
+
+            &::before {
+                // Conteúdo
+                content: $icone;
+            }
+        }
+    }
+}

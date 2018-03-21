@@ -1,0 +1,198 @@
+<?php
+/**
+ * aplicativo
+ * @version: versão
+ * @author: Diego Lepera
+ *
+ * Created by Diego Lepera on 2017-07-28. Please report any bug at
+ * https://github.com/dlepera88-php/framework-dlx/issues
+ *
+ * The MIT License (MIT)
+ * Copyright (c) 2017 Diego Lepera http://diegolepera.xyz/
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is furnished
+ * to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+use DLX\Ajudantes\HTMLForm;
+use DLX\Ajudantes\Strings;
+
+if(!isset($params)) {
+    $params = $this->obterParams();
+} // Fim if
+
+$usuario = $params['modelo'];
+?>
+
+[DLX-CONTEUDO]
+<form id="form-<?php echo $params['html:form-id'] ?>" method="post" action="<?php echo $params['html:form-acao'] ?>" data-url-lista="<?php echo $params['conf:form-url-lista'] ?>" data-url-novo="<?php echo $params['conf:form-url-novo'] ?>" data-url-editar="<?php echo $params['conf:form-url-editar'] ?>">
+    <?php echo HTMLForm::array2Input($params['lista:pk-tabela']) ?>
+
+    <fieldset class="form-grupo">
+        <legend class="form-legenda"><?php echo $this->traduzir('Dados pessoais', 'painel-dlx'); ?></legend>
+
+        <p class="form-paragr">
+            <?php echo HTMLForm::campoGeral('texto', 'nome', 'nome', $usuario->getNome(), $this->traduzir('Nome', 'painel-dlx'), null, [
+                'maxlength' => 255,
+                'required'  => 'required'
+            ]) ?>
+        </p>
+
+        <p class="form-paragr">
+            <?php echo HTMLForm::campoGeral('email', 'email', 'email', $usuario->getEmail(), $this->traduzir('E-mail', 'painel-dlx'), null, [
+                'maxlength' => 255,
+                'required'  => 'required'
+            ]) ?>
+        </p>
+    </fieldset>
+
+    <fieldset class="form-grupo">
+        <legend class="form-legenda"><?php echo $this->traduzir('Preferências', 'painel-dlx'); ?></legend>
+
+        <p class="form-paragr">
+            <?php echo HTMLForm::comboSelect('idioma', 'idioma', $usuario->getIdioma(), $this->traduzir('Idioma', 'painel-dlx'), null, [
+                'required' => 'required'
+            ], $params['lista:idiomas']) ?>
+        </p>
+
+        <p class="form-paragr">
+            <?php echo HTMLForm::comboSelect('tema', 'tema', $usuario->getTema(), $this->traduzir('Tema', 'painel-dlx'), null, [
+                'required' => 'required'
+            ], $params['lista:temas']) ?>
+        </p>
+
+        <p class="form-paragr">
+            <?php echo HTMLForm::comboSelect('formato_data', 'formato-data', $usuario->getFormatoData(), $this->traduzir('Formato de data', 'painel-dlx'), $this->traduzir('Como deseja que as datas sejam exibidas para você?', 'painel-dlx'), [
+                'required' => 'required'
+            ], $params['lista:formatos-data']) ?>
+        </p>
+    </fieldset>
+
+
+    <fieldset class="form-grupo">
+        <legend class="form-legenda"><?php echo $this->traduzir('Acesso ao sistema', 'painel-dlx'); ?></legend>
+
+
+        <?php if ($params['conf:editar-acesso?']) : ?>
+            <p class="form-paragr">
+                <?php echo HTMLForm::campoGeral('texto', 'login', 'login', null, $this->traduzir('Login', 'painel-dlx'), null, [
+                    'maxlength' => 255,
+                    'required'  => 'required'
+                ]) ?>
+            </p>
+
+            <p class="form-paragr">
+                <?php echo HTMLForm::campoGeral('senha', 'senha', 'senha', null, $this->traduzir('Digite sua senha', 'painel-dlx'), null, [
+                    'required' => 'required'
+                ]) ?>
+            </p>
+
+            <p class="form-paragr">
+                <?php echo HTMLForm::campoGeral('senha', 'conf_senha', 'conf-senha', null, $this->traduzir('Confirme sua senha', 'painel-dlx'), null, [
+                    'required' => 'required'
+                ]) ?>
+            </p>
+        <?php else : ?>
+            <p class="form-paragr">
+                <span class="form-rotulo"><?php echo $this->traduzir('Login', 'painel-dlx'); ?>:</span>
+                <?php echo $usuario->getLogin() ?>
+            </p>
+        <?php endif;
+
+        if ($params['conf:alterar-senha?']) : ?>
+            <a href="admin/usuarios/alterar-minha-senha" class="com-icone -botao -editar">
+                <?php echo $this->traduzir('Alterar minha senha', 'painel-dlx') ?>
+            </a>
+        <?php endif ?>
+    </fieldset>
+
+
+    <fieldset class="form-grupo">
+        <legend class="form-legenda"><?php echo $this->traduzir('Configurações', 'painel-dlx'); ?></legend>
+
+        <p class="form-paragr">
+            <?php if ($params['conf:editar-grupo?']) :
+                echo HTMLForm::comboSelect('grupo', 'grupo', $usuario->getGrupo(), $this->traduzir('Grupo', 'painel-dlx'), null, [
+                    'required' => 'required'
+                ], $params['lista:grupos-usuarios']);
+            else : ?>
+                <span class="form-rotulo"><?php echo $this->traduzir('Grupo', 'painel-dlx') ?>:</span>
+                <?php echo $params['info:nome-grupo'] ?>
+            <?php endif ?>
+        </p>
+
+        <p class="form-paragr">
+            <?php echo HTMLForm::chkSimNao('bloqueado', 'bloqueado', $usuario->isBloqueado(), $this->traduzir('Bloquear acesso?', 'painel-dlx'), $this->traduzir('Bloqueia o acesso desse usuário no sistema até que essa configuração seja alterada novamente.', 'painel-dlx')) ?>
+        </p>
+
+        <?php if (!$params['conf:usuario-dominio?']) : ?>
+            <p class="form-paragr">
+                <?php echo HTMLForm::chkSimNao('reset_senha', 'reset-senha', $usuario->isResetSenha(), $this->traduzir('Resetar senha?', 'painel-dlx'), $this->traduzir('Força esse usuário a resetar a sua senha no próximo login.', 'painel-dlx')) ?>
+            </p>
+        <?php endif ?>
+    </fieldset>
+
+    <div class="form-botoes">
+        <?php echo HTMLForm::botao('salvar', $this->traduzir('Salvar', 'painel-dlx')),
+            HTMLForm::botao('cancelar', $this->traduzir('Cancelar', 'painel-dlx')) ?>
+    </div>
+</form>
+[/DLX-CONTEUDO]
+
+<?php if ($params['conf:editar-acesso?']) : ?>
+    [DLX-SCRIPTS]
+    <script>
+        //<![CDATA[
+        $('#mail-email').on('change.__script', function () {
+            $('#txt-login').val(this.value);
+        });
+
+        $('#txt-login').on('change.__script', function () {
+            var login = this.value;
+            var $senhas = $('#sen-senha, #sen-conf-senha').parents('.form-paragr');
+            var $confs = $('#chk-reset-senha');
+
+            /*
+             * Uso o maior que um, pois preciso que seja informado o domínio antes
+             * do usuário, caso contrário não será considerado usuário de domínio
+             */
+            if (login.indexOf('\\') > 1) {
+                $senhas.fadeOut('fast');
+                $confs.prop('checked', false).parents('.form-paragr').fadeOut('fast');
+            } else {
+                $senhas.fadeIn('fast');
+                $confs.prop('checked', true).parents('.form-paragr').fadeIn('fast');
+            } // Fim if ... else
+        })
+
+        // Executar essa verificação para excluir as senha caso seja necessário
+        .trigger('change.__script');
+
+        $('#sen-senha, #sen-conf-senha').on('change.__script', function () {
+            var $senha = $('#sen-senha'), $conf = $('#sen-conf-senha');
+
+            $conf.get(0).setCustomValidity(
+                $senha.val() !== $conf.val()
+                    ? '<?php echo $this->traduzir('As senhas informadas não coincidem.', 'painel-dlx') ?>'
+                    : ''
+            );
+        });
+        //]]>
+    </script>
+    [/DLX-SCRIPTS]
+<?php endif ?>

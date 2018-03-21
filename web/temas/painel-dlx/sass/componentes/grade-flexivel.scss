@@ -1,0 +1,25 @@
+// Configurações ---------------------------------------------------------------------------------------------------- //
+$seletor: '.grade-flexivel';
+
+
+// Componente ------------------------------------------------------------------------------------------------------- //
+#{$seletor} {
+    // Flex
+    @include flexBox();
+    @include flexFlow(row wrap);
+}
+
+
+// Responsivo ------------------------------------------------------------------------------------------------------- //
+@each $tela, $conf in $conf-telas {
+    #{$seletor} {
+        @include media-query($tela) {
+            $margem: if(map_has_key($conf, margem-grid), map_get($conf, margem-grid), 0);
+
+            @if map_has_key($conf, colunas) {
+                $total-colunas: map_get($conf, colunas);
+                @include gerarClassesColunas($total-colunas, $margem, $total-colunas, '[n-extenso]-col');
+            }
+        }
+    }
+}

@@ -1,0 +1,67 @@
+// Configurações ------------------------------------------------------------ //
+$seletor: '.dlx-topo';
+
+
+// Componente --------------------------------------------------------------- //
+#{$seletor} {
+    $pd-vert: 7px;
+
+    // Flex
+    @include flexBox;
+
+    // Posicionamento
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 2;
+
+    // Visual
+    // background: #FFF;
+    background: #33909F;
+    box-shadow: 0 0 5px rgba(black, .5);
+    box-sizing: border-box;
+
+    // Margens
+    padding-top: $pd-vert;
+    padding-bottom: $pd-vert;
+
+    // Tamanho
+    width: 100%;
+    height: $dlx-topo-altura;
+
+    > .logo-site {
+        // Margens
+        margin-left: 10px;
+    }
+
+    > .menu-topo {
+        // Posicionamento
+        position: absolute;
+        right: 15px;
+        top: 50%;
+
+        // Transformar
+        transform: translateY(-50%);
+    }
+}
+ 
+
+/* @include media-query(mobile) {
+    #{$seletor} {
+        $pd-horiz: 3%;
+
+        // Margens
+        padding-left: $pd-horiz;
+        padding-right: $pd-horiz;
+    }
+}
+
+@include media-query((tablet, laptop, desktop)) {
+    #{$seletor} {
+        $pd-horiz: 5%;
+
+        // Margens
+        padding-left: $pd-horiz;
+        padding-right: $pd-horiz;
+    }
+} */

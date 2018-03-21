@@ -1,0 +1,49 @@
+// Configurações ------------------------------------------------------------ //
+$seletor: '#dlx-grid';
+
+// Componente --------------------------------------------------------------- //
+#{$seletor} {
+    $pd-vert: 40px;
+
+    // Margens
+    padding-top: $dlx-topo-altura + $pd-vert;
+    padding-bottom: $pd-vert;
+
+    // Mostrar e / ou ocultar o menu
+    &.-mostrar-menu {
+        .menu-principal {
+            // Transformar
+            transform: translateX(0);
+        }
+    }
+}
+
+@include media-query(mobile) {
+    #{$seletor} {
+        $pd-horiz: 2%;
+
+        // Margens
+        padding-left: $pd-horiz;
+        padding-right: $pd-horiz;
+    }
+}
+
+@include media-query(tablet) {
+    #{$seletor} {
+        $pd-horiz: 3%;
+
+        // Margens
+        padding-left: $pd-horiz;
+        padding-right: $pd-horiz;
+    }
+}
+
+@include media-query((laptop, desktop)) {
+    #{$seletor} {
+        $pd-horiz: 5%;
+
+        // Margens
+        padding-left: $pd-horiz;
+        padding-right: $pd-horiz;
+    }
+}

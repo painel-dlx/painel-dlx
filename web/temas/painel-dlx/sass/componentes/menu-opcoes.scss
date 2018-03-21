@@ -1,0 +1,20 @@
+// Configurações ------------------------------------------------------------ //
+$seletor: '.menu-opcoes';
+
+// Componente --------------------------------------------------------------- //
+#{$seletor} {
+    // Margens
+    margin-bottom: 15px;
+
+    > .link-person {
+        @extend .com-icone.-botao;
+
+        // Texto
+        font-size: 13px;
+
+        &:not(:first-child) {
+            // Margens
+            margin-left: 10px;
+        }
+    }
+}

@@ -1,0 +1,14 @@
+// Configurações ------------------------------------------------------------ //
+$seletor: '.__caixa';
+
+// Componentes -------------------------------------------------------------- //
+#{$seletor} {
+    // Visual
+    background: #FFF;
+    border-radius: 2px;
+    box-shadow: 0 0 2px rgba(black, .25);
+
+    // Margens
+    padding: 5px;
+    margin: 10px 0;
+}

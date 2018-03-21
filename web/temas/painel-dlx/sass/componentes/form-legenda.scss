@@ -1,0 +1,22 @@
+// Configurações ------------------------------------------------------------ //
+$seletor: '.form-legenda';
+
+// Componentes -------------------------------------------------------------- //
+#{$seletor} {
+    // Texto
+    font: 1.1rem 'Avenir Next', sans-serif;
+    color: orange;
+
+    // Visual
+    display: block;
+    border-bottom: 1px solid #EFEFEF;
+
+    // Tamanho
+    width: 100%;
+
+    // Margens
+    padding: 3px 0 5px 0;
+
+    // Posicionamento
+    float: left;
+}

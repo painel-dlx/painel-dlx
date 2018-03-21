@@ -1,0 +1,139 @@
+<?php
+/**
+ * aplicativo
+ * @version: versão
+ * @author: Diego Lepera
+ *
+ * Created by Diego Lepera on 2017-07-28. Please report any bug at
+ * https://github.com/dlepera88-php/framework-dlx/issues
+ *
+ * The MIT License (MIT)
+ * Copyright (c) 2017 Diego Lepera http://diegolepera.xyz/
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is furnished
+ * to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+use DLX\Ajudantes\HTMLForm;
+use DLX\Ajudantes\Strings;
+use DLX\Ajudantes\Vetores;
+
+if(!isset($params)) {
+    $params = $this->obterParams();
+} // Fim if
+
+define('HTML_FORM_CHECK_GRUPO', '<input type="checkbox" name="grupos[]" id="%s" value="%s"%s/><label for="%s">%s</label>');
+
+$modulo_acao = $params['modelo'];
+$modulo = $params['modelo:modulo'];
+?>
+
+[DLX-CONTEUDO]
+<form id="form-<?php echo $params['html:form-id'] ?>" method="post" action="<?php echo $params['html:form-acao'] ?>" data-url-lista="<?php echo $params['conf:form-url-lista'] ?>" data-url-novo="<?php echo $params['conf:form-url-novo'] ?>" data-url-editar="<?php echo $params['conf:form-url-editar'] ?>" data-url-lista="<?php echo $params['conf:form-url-lista'] ?>" data-url-novo="<?php echo $params['conf:form-url-novo'] ?>" data-url-editar="<?php echo $params['conf:form-url-editar'] ?>">
+    <?php echo HTMLForm::array2Input($params['lista:pk-tabela']) ?>
+
+    <fieldset class="form-grupo">
+        <legend class="form-legenda"><?php echo $this->traduzir('Geral', 'painel-dlx') ?></legend>
+        
+        <p class="form-paragr">
+            <label for="sel-modulo" class="form-rotulo"><?php echo $this->traduzir('Módulo', 'painel-dlx') ?>:</label>
+            <?php if ($modulo->reg_vazio) : ?>
+                <select name="modulo" id="sel-modulo" class="form-controle -select" required>
+                    <option value=""><?php echo $this->traduzir('Selecione um módulo', 'painel-dlx') ?></option>
+                    <?php foreach ($params['lista:sub-modulos'] as $modulo => $submodulos) : ?>
+                    <optgroup label="<?php echo $modulo ?>">
+                        <?php $html_option = '<option value="%d"%s>%s</option>';
+                        if (Vetores::arrayMulti($submodulos)) {
+                            foreach ($submodulos as $sub) {
+                                printf($html_option, $sub['ID'], $modulo_acao->getModulo() == $sub['ID'] ? ' SELECTED' : '', $sub['SUB']);
+                            } // Fim foreach
+                        } else {
+                            printf($html_option, $submodulos['ID'], $modulo_acao->getModulo() == $sub['ID'] ? ' SELECTED' : '', $submodulos['SUB']);
+                        } // Fim if ... else ?>
+                    </optgroup>
+                    <?php endforeach ?>
+                </select>
+            <?php else : ?>
+                <input type="hidden" name="modulo" value="<?php echo $modulo->getID() ?>"/>
+                <?php echo $modulo->getNome() ?>
+            <?php endif ?>
+        </p>
+
+        <p class="form-paragr">
+            <?php echo HTMLForm::campoGeral('texto', 'descr', 'descr', $modulo_acao->getDescr(), $this->traduzir('Descrição', 'painel-dlx'), null, [
+                'maxlength' => 100,
+                'required'  => 'required'
+            ]) ?>
+        </p>
+
+        <p class="form-paragr">
+            <?php echo HTMLForm::campoGeral('texto', 'classe', 'classe', $params['conf:inserindo-registro?'] ? $params['info:provavel-controle'] : $modulo_acao->getClasse(), $this->traduzir('Classe', 'painel-dlx'), null, [
+                'list'      => 'lista-controles',
+                'maxlength' => 100,
+                'required'  => 'required'
+            ]) ?>
+        </p>
+
+        <p class="form-paragr">
+            <?php echo HTMLForm::campoGeral('texto', 'metodos', 'metodos', $modulo_acao->getMetodos(), $this->traduzir('Métodos', 'painel-dlx'), $this->traduzir('Informe os métodos envolvidos nessa ação.', 'painel-dlx'), [
+                'maxlength' => 255,
+                'required'  => 'required'
+            ]) ?>
+        </p>
+    </fieldset>
+
+    <fieldset class="form-grupo">
+        <legend class="form-legenda"><?php echo $this->traduzir('Permissões', 'painel-dlx') ?></legend>
+
+        <?php if (count($params['lista:grupos-usuarios']) < 1) :
+            printf('<span class="mostrar-msg -atencao">%s</span>', $this->traduzir('Nenhum <b>grupo de usuário</b> encontrado.', 'painel-dlx'));
+        else :
+            foreach ($params['lista:grupos-usuarios'] as $grupo_usuario) :
+                $id_grupo = "chk-grupo-{$grupo_usuario['grupo_usuario_id']}" ?>
+                <p class="form-paragr">
+                    <?php printf(
+                        HTML_FORM_CHECK_GRUPO,
+                        $id_grupo,
+                        $grupo_usuario['grupo_usuario_id'],
+                        in_array($grupo_usuario['grupo_usuario_id'], $modulo_acao->getGrupos()) ? ' CHECKED' : '',
+                        $id_grupo,
+                        $grupo_usuario['grupo_usuario_nome']
+                    ) ?>
+                </p>
+            <?php endforeach;
+        endif ?>
+    </fieldset>
+
+    <div class="form-botoes">
+        <?php echo HTMLForm::botao('salvar', $this->traduzir('Salvar', 'painel-dlx')),
+            HTMLForm::botao('cancelar', $this->traduzir('Cancelar', 'painel-dlx')); ?>
+    </div>
+</form>
+
+<datalist id="lista-controles">
+    <option><?php echo $params['info:provavel-controle']; ?></option>
+</datalist>
+[/DLX-CONTEUDO]
+
+[DLX-SCRIPTS]
+<script>
+    //<![CDATA[
+    $('#txt-metodos').campoTags();
+    //]]>
+</script>
+[/DLX-SCRIPTS]

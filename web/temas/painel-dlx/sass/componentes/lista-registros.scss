@@ -1,0 +1,237 @@
+/**
+ * .subtitulo = <caption>
+ * .registro = linha <tr>
+ * .dado = célula <th> ou <td>
+ */
+
+// Configurações ---------------------------------------------------------------------------------------------------- //
+$seletor: '.lista-registros';
+
+
+// Conteúdo --------------------------------------------------------------------------------------------------------- //
+#{$seletor} {
+    @extend .__caixa;
+    
+    // Tamanho
+    width: 100%;
+
+    // Visual
+    border-spacing: 0;
+    // border-collapse: collapse;
+
+    > .subtitulo {
+        // Texto
+        color: #777;
+        text-align: center;
+
+        // Margens
+        margin-bottom: 10px;
+    }
+
+    > .bloco-titulos {
+        // Visual
+        border-bottom: 1px solid #EEE;
+
+        > .registro {
+            // Texto
+            color: #888;
+            text-align: left;
+        }
+    }
+
+    /* > .bloco-registros {
+
+    } */
+
+    > .bloco-rodape {
+        // Visual
+        border-top: 1px solid #EEE;
+    }
+
+    .registro {
+        // Tamanho
+        height: 35px;
+
+        > .dado {
+            // Margens
+            padding: 5px 3px;
+
+            // Variantes
+            &.-chk, &.-id {
+                // Texto
+                text-align: center;
+            }
+
+            &.-chk {
+                // Tamanho
+                width: 30px;
+            }
+
+            &.-id {
+                // Visual
+                border-right: 1px solid #EEE;
+
+                & + * {
+                    // Margens
+                    padding-left: 7.5px;
+                }
+            }
+
+            &.-infos {
+                // Texto
+                color: #888;
+
+                &:first-line {
+                    // Texto
+                    color: #000;
+                }
+            }
+
+            &.-opcoes {
+                // Texto
+                text-align: right;
+
+                > .link-person {
+                    &:not(:first-child) {
+                        // Margens
+                        margin-left: 8px;
+                    }
+                }
+            }
+        }
+
+        &:nth-of-type(odd) {
+            // Visual
+            background: #FFF;
+        }
+
+        &:nth-of-type(even) {
+            // Visual
+            background: #EFEFEF;
+        }
+
+        // Variantes
+        &.-acoes {
+            > .dado {
+                @extend .menu-opcoes;
+
+                // Margens
+                padding-left: calc(30px + 5px);
+
+                // Visual
+                background: url('imgs/icone-acoes.png') no-repeat;
+            }
+        }
+    }
+}
+
+
+// Tablet ----------------------------------------------------------------------------------------------------------- //
+@include media-query(tablet) {
+    #{$seletor} {
+        > .bloco-registros {
+            > .registro {
+                > .dado {
+                    // Tamanho
+                    max-width: 40%;
+                }
+            }
+        }
+    }
+}
+
+
+// Smartphones ------------------------------------------------------------------------------------------------------ //
+@include media-query(mobile) {
+    #{$seletor} {
+        > .bloco-titulos {
+            // Visual
+            visibility: hidden;
+
+            // Posicionamento
+            position: fixed;
+            top: -100%;
+            left: -100%;
+        }
+
+        > .bloco-registros {
+            > .registro {
+                // Visual
+                display: block;
+
+                // Tamanho
+                height: auto;
+
+                // Margens
+                padding-top: 5px;
+                padding-bottom: 5px;
+
+                // Posicionamento
+                position: relative;
+
+                > .dado {
+                    $tm-dado: 70%;
+                    $tm-th: ((100% - $tm-dado) / $tm-dado) * 100%;
+
+                    // Visual
+                    display: block;
+
+                    // Tamanho
+                    width: $tm-dado;
+
+                    // Margens
+                    padding-top: 7.5px;
+                    padding-bottom: 7.5px;
+
+                    // Posicionamento
+                    position: relative;
+                    left: 100% - $tm-dado;
+
+                    &::before {
+                        // Conteúdo
+                        content: attr(data-th);
+
+                        // Texto
+                        color: #888;
+
+                        // Visual
+                        display: inline-block;
+
+                        // Tamanho
+                        width: $tm-th;
+
+                        // Posicionamento
+                        position: absolute;
+                        left: 0;
+
+                        // Transformar
+                        @include transformacao(translateX(-100%));
+
+                        // Margens
+                        padding-left: 3px;
+                    }
+                }
+            }
+        }
+
+        .registro {
+            > .dado {
+                // Variantes
+                &.-chk, &.-id {
+                    // Texto
+                    text-align: left;
+                }
+
+                &.-id {
+                    // Visual
+                    border-right: none;
+
+                    & + * {
+                        // Margens
+                        padding-left: 3px;
+                    }
+                }
+            }
+        }
+    }
+}

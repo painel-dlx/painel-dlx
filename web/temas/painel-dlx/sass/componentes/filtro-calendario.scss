@@ -1,0 +1,12 @@
+// Configurações ------------------------------------------------------------------------------- //
+$seletor: '.filtro-calendario';
+
+// Componentes --------------------------------------------------------------------------------- //
+#{$seletor} {
+    @extend .__caixa, .form-filtro;
+
+    .form-controle {
+        // Visual
+        border: none !important;
+    }
+}

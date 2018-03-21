@@ -1,0 +1,52 @@
+// Configurações ------------------------------------------------------------ //
+$seletor: '.form-controle';
+$tm-altura-elemento: 35px;
+
+// Componentes -------------------------------------------------------------- //
+#{$seletor} {
+    @include camposAlfaNum {
+        // Texto
+        font-size: 14px;
+        color: #555;
+
+        // Margens
+        padding: 5px;
+
+        // Visual
+        background: #FFF;
+        border-radius: 2px;
+        border: 1px solid #DDD;
+        // box-shadow: inset 0 0 2.5px rgba(darkgray, .5);
+
+        // Tamanho
+        height: $tm-altura-elemento;
+        max-width: 100%;
+        box-sizing: border-box;
+
+        &:focus {
+            // Visual
+            outline: 2px solid orange;
+        }
+    }
+
+    @include camposAlfa {
+        // Tamanho
+        width: 350px;
+    }
+
+    &.-textarea {
+        // Tamanho
+        height: 150px;
+    }
+
+    &.-cor {
+        $tm: 40px;
+
+        // Visual
+        border-radius: 50%;
+
+        // Tamanho
+        width: $tm;
+        height: $tm;
+    }
+}
