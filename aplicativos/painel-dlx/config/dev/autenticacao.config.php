@@ -31,7 +31,7 @@
 
 $config['autenticacao'] = [
     'nome'          => 'painel-dlx',
-    'url-login'     => 'login',
+    'url-login'     => '%home%login',
     # Função para criptografar as senhas
     'cripto-senha'  => function ($senha) {
         return md5(md5($senha));
