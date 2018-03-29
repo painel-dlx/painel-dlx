@@ -1,0 +1,106 @@
+// Configurações ------------------------------------------------------------------------------- //
+$seletor: '.previs-imagem';
+
+// Componentes --------------------------------------------------------------------------------- //
+#{$seletor} {
+    $tm-min: 100px;
+
+    // Posicionamento
+    position: relative;
+    z-index: 1;
+
+    // Visual
+    background: #CCC;
+    display: inline-block;
+
+    // Tamanho
+    width: $tm-min;
+    height: $tm-min;
+
+    &::before {
+        // Conteúdo
+        content: '\e9c3';
+        
+        // Posicionamento
+        position: absolute;
+        top: 50%;
+        left: 50%;
+
+        // Transformar
+        transform: translate(-50%, -50%);
+
+        // Texto
+        color: #888;
+        text-align: center;
+        font: 32px icomoon;
+    }
+
+    > img {
+        // Posicionamento
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        z-index: 1;
+
+        // Transformar
+        transform: translate(-50%, -50%);
+    }
+
+    .form-rotulo, label {
+        // Posicionamento
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 2; 
+
+        // Visual
+        background: rgba(black, .35);
+        opacity: 0;
+
+        // Tamanho
+        width: 100%;
+        height: 100%;
+
+        // Transições
+        transition: opacity .5s;
+
+        // Texto
+        color: transparent;
+
+        &::after {
+            // Conteúdo
+            content: 'ESCOLHER UMA IMAGEM';
+            
+            // Posicionamento
+            position: absolute;
+            top: 50%;
+            left: 50%;
+
+            // Transformar
+            transform: translate(-50%, -50%);
+
+            // Texto
+            color: #FFF;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        &:hover {
+            // Visual
+            cursor: pointer;
+
+            // Visual
+            opacity: 1;
+        }
+    }
+
+    .form-controle, input[type="file"] {
+        // Visual
+        visibility: hidden;
+
+        // Posicionamento
+        position: fixed;
+        top: -100%;
+        left: -100%;
+    }
+}
