@@ -45,19 +45,21 @@ $ckeditor = (array)$params['conf:ckeditor-id'];
     ]);
     CKEDITOR.config.extraPlugins = 'uploadfile,uploadimage,uploadwidget,filetools,lineutils,notification,notificationaggregator,widget,widgetselection,filebrowser,popup';
     CKEDITOR.config.uploadUrl = '../ap-global/ckeditor/upload-arquivos/copia-e-cola';
+    // Turn off automatic editor creation first.
+    CKEDITOR.disableAutoInline = true;
 
     <?php if (count($ckeditor) > 0) :
         $form = array_key_exists('html:form-id', $params) ? "#form-{$params['html:form-id']}" : 'form';
-        $upload = "{$params['config-aplicativo']['raiz']}ap-global/ckeditor/upload-arquivos/navegador";
+        // $upload = "{$params['config-aplicativo']['raiz']}ap-global/ckeditor/upload-arquivos/navegador";
 
         foreach ($ckeditor as $ck) : ?>
             CKEDITOR.replace('<?php echo $ck ?>', {
-                filebrowserUploadUrl: '<?php echo $upload ?>',
-                filebrowserImageUploadUrl: '<?php echo $upload ?>'
+                // filebrowserUploadUrl: '<?php echo $upload ?>',
+                // filebrowserImageUploadUrl: '<?php echo $upload ?>'
             });
         <?php endforeach ?>
 
-        $('<?php echo $form ?>').on('submit', function () {
+        $('<?php echo $form ?>').on('submit.__ckeditor', function () {
             <?php foreach ($ckeditor as $ck) : ?>
                 $('#<?php echo $ck ?>').val(
                     $('#cke_<?php echo $ck ?>').find('iframe')

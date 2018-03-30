@@ -55,9 +55,9 @@ abstract class PainelDLX extends BaseControleRegistro {
         $this->visao->adicionarTemplate('comum/visoes/rodape');
 
         # Adicionar o suporte ao jQuery a esse aplicativo
-        $this->visao->adicionarJS('web/js/jquery-3.2.1.min.js', -1);
-        $this->visao->adicionarJS('web/js/framework-dlx-min.js', 0);
-        $this->visao->adicionarJS('web/js/painel-dlx-min.js', 0);
+        $this->visao->adicionarJS('web/js/jquery-3.2.1.min.js', 0);
+        $this->visao->adicionarJS('web/js/framework-dlx-min.js', 1);
+        $this->visao->adicionarJS('web/js/painel-dlx-min.js', 2);
 
         # Parâmetros comuns para todas as visões
         $this->visao->adicionarParam('html:itens-menu', $modulo->itensMenu());
