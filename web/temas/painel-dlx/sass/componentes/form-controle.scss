@@ -22,7 +22,7 @@ $tm-altura-elemento: 35px;
         height: $tm-altura-elemento;
         max-width: 100%;
         box-sizing: border-box;
-
+        
         &:focus {
             // Visual
             outline: 2px solid orange;
@@ -30,8 +30,10 @@ $tm-altura-elemento: 35px;
     }
 
     @include camposAlfa {
-        // Tamanho
-        width: 350px;
+        &:not([size]) {
+            // Tamanho
+            width: 350px;
+        }
     }
 
     &.-textarea {

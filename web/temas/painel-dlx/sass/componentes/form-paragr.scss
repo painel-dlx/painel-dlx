@@ -3,5 +3,59 @@ $seletor: '.form-paragr';
 
 // Componentes -------------------------------------------------------------- //
 #{$seletor} {
-    
+    &[data-prefixo] {
+        // Flex
+        display: flex;
+        flex-flow: wrap row;
+        align-items: center;
+
+        > .form-rotulo, > .form-dica {
+            // Flex
+            flex: 100%;
+        }
+
+        input {
+            $br: 0;
+            $ch: attr(maxlength);
+            
+            // Flex
+            order: 3;
+
+            // Visual
+            border-top-left-radius: $br;
+            border-bottom-left-radius: $br;
+        }
+
+        &::before {
+            $br: 2px;
+            $cb: #DDD;
+            $cf: rgba(black, .03);
+            $ct: #999;
+            $tm: 35px;
+
+            // Conteúdo
+            content: attr(data-prefixo);
+
+            // Visual
+            display: inline-block;
+            background: $cf;
+            border-top-left-radius: $br;
+            border-bottom-left-radius: $br;
+            border:  1px solid $cb;
+            border-right: none;
+
+            // Texto
+            color: $ct;
+            line-height: $tm;
+
+            // Tamanho
+            height: $tm;
+
+            // Margens
+            padding: 0 5px;
+
+            // Flex
+            order: 3;
+        }
+    }
 }

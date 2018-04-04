@@ -31,7 +31,9 @@ if (typeof CKEDITOR !== 'undefined') {
         CKEDITOR.replace(id, $this.data());
         
         $this.parents('form').on('submit.__ckeditor', function () {
-            $('#cke_' + id).find('iframe').contents().find('[contenteditable]').html();
+            $this.val(
+                $('#cke_' + id).find('iframe').contents().find('[contenteditable]').html()
+            );
         });
     });
 } // Fim if
