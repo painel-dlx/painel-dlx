@@ -116,8 +116,15 @@ $tem_id = array_key_exists($this->traduzir('ID'), $params['lista'][0]);
                 $id_registro = $registro[$this->traduzir('ID')];
                 
                 echo HTMLLista::celulaComum($this->traduzir('Opções'),
-                    HTMLLinks::linkArray($opcoes_registro, function ($html) use ($id_registro) {
-                        return str_replace([':id', ':pk'], $id_registro, $html);
+                    HTMLLinks::linkArray($opcoes_registro, function ($html) use ($id_registro, $params) {
+                        return str_replace(
+                            array_merge(
+                                array_map(function ($v) { return ":{$v}"; }, $params['conf:campos-pk']),
+                                [':pk', ':id']
+                            ),
+                            $id_registro,
+                            $html
+                        );
                     }),
                     ['class' => 'dado -opcoes']
                 );
