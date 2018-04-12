@@ -49,7 +49,7 @@ class Usuario extends PainelDLX {
 
         $this->adicionarEvento('depois', 'mostrarDetalhes', function () {
             $grupo_usuario = new GrupoUsuario($this->modelo->getGrupo());
-            $idioma = new Idioma($this->modelo->getIdioma());
+            $idioma = new Idioma($this->modelo->getPrefIdioma());
             $tema = new Tema($this->modelo->getTema());
             $formato_data = new FormatoData($this->modelo->getFormatoData());
 
@@ -137,7 +137,7 @@ class Usuario extends PainelDLX {
             $grupo_usuario->carregarSelect((object)['where' => 'grupo_usuario_publicar = 1'], false, 'id', 'nome')
         );
         $this->visao->adicionarParam('lista:idiomas',
-            $idioma->carregarSelect((object)['where' => 'idioma_publicar = 1'], false, 'id', 'nome')
+            $idioma->carregarSelect((object)['where' => 'idioma_publicar = 1'], false, 'sigla', 'nome')
         );
         $this->visao->adicionarParam('lista:temas', $tema->carregarSelect(false));
         $this->visao->adicionarParam('lista:formatos-data',

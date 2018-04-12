@@ -81,7 +81,7 @@ class Usuario extends BaseModeloRegistro {
         $this->selecionarPK($pk);
 
         $this->bd_lista->join('dlx_paineldlx_grupos_usuarios', 'G', "(G.grupo_usuario_id = {$this->getBdPrefixo()}grupo)", 'INNER')
-            ->join('dlx_paineldlx_idiomas', 'I', "(I.idioma_id = {$this->getBdPrefixo()}idioma)", 'INNER')
+            ->join('dlx_paineldlx_idiomas', 'I', "(I.idioma_sigla = {$this->getBdPrefixo()}pref_idioma)", 'INNER')
             ->join('dlx_paineldlx_formatos_datas', 'D', "(D.formato_data_id = {$this->getBdPrefixo()}formato_data)", 'INNER');
 
         # Carregar preferências padrão
@@ -135,7 +135,7 @@ class Usuario extends BaseModeloRegistro {
             // Selecionar o idioma padrão e vincular esse registro a ele por padrão
             $idioma = new Idioma();
             if ($idioma->selecionarPadrao()) {
-                $this->setIdioma($idioma->getID());
+                $this->setPrefIdioma($idioma->getSigla());
             } // Fim if
 
             // Selecionar o formato de data padrão e vincular esse registro a ele por padrão

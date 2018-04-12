@@ -69,10 +69,12 @@ trait Usuario {
     protected $conf_senha;
 
     /**
-     * ID do idioma preferencial do usuário
+     * ID do idioma preferencial do usuário.
+     * Obs: O nome da propriedade NÃO pode ser apenas $idioma, pois já tem essa propriedade criada no
+     * BaseModeloRegistro.
      * @var int
      */
-    protected $idioma;
+    protected $pref_idioma;
 
     /**
      * Nome do tema (diretório do tema)
@@ -177,14 +179,13 @@ trait Usuario {
             ? $this->criptografarSenha($conf_senha) : filter_var($conf_senha);
     }
 
-    public function getIdioma() {
-        return $this->idioma;
+    public function getPrefIdioma() {
+        return $this->pref_idioma;
     }
 
-    public function setIdioma($idioma) {
-        $this->idioma = filter_var($idioma, FILTER_VALIDATE_INT, [
-            'options' => ['min_range' => 1],
-            'flags'   => FILTER_NULL_ON_FAILURE
+    public function setPrefIdioma($pref_idioma) {
+        $this->pref_idioma = filter_var($pref_idioma, FILTER_VALIDATE_REGEXP, [
+            'options' => ['regexp' => EXPREG_IDIOMA, 'default' => 'br']
         ]);
     }
 

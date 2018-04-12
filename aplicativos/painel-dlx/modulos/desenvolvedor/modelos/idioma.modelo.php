@@ -44,19 +44,10 @@ class Idioma extends BaseModeloRegistro {
     public function __construct($pk = null) {
         parent::__construct('dlx_paineldlx_idiomas', 'idioma_');
         $this->set__NomeModelo(AjdVisao::traduzirTexto('idioma', 'painel-dlx'));
+        $this->insert_pk = true;
         $this->selecionarPK($pk);
         
         $this->adicionarEvento('antes', 'salvar', function () {
-            $where_sigla = ['where' => ["{$this->getBdPrefixo()}sigla = '{$this->getSigla()}'"]];
-
-            if (!$this->reg_vazio) {
-                $where_sigla['where'][] = "{$this->getBdPrefixo()}id <> {$this->getID()}";
-            } // Fim if
-
-            if ($this->qtdeRegistros((object)$where_sigla) > 0) {
-                throw new DLXExcecao(sprintf(AjdVisao::traduzirTexto('Um idioma com a sigla <b>%s</b> já está instalado.', 'painel-dlx'), $this->getSigla()), 403, '-info');
-            } // Fim if
-
             // Apenas um idioma pode ser definido como padrão
             if ($this->isPadrao()) {
                 \DLX::$dlx->bd->query("UPDATE {$this->getBdTabela()} SET {$this->getBdPrefixo()}padrao = 0 WHERE {$this->getBdPrefixo()}padrao = 1");

@@ -46,21 +46,27 @@ $idioma = $params['modelo'];
     <fieldset class="form-grupo">
         <legend class="form-legenda"><?php echo $this->traduzir('Geral', 'painel-dlx') ?></legend>
 
+        <?php if ($params['conf:inserindo-registro?']) : ?>
+            <p class="form-paragr">
+                <?php echo HTMLForm::campoGeral('texto', 'sigla', 'sigla', $idioma->getSigla(), $this->traduzir('Sigla', 'painel-dlx'), $this->traduzir('Sigla do idioma no padrão pt_BR ou br para português do Brasil, por exemplo.', 'dominio'), [
+                    'maxlength'     => 5,
+                    'placeholder'   => 'pt_BR / br',
+                    'pattern'       => EXPREG_IDIOMA,
+                    'style'         => 'width:auto',
+                    'required'      => 'required'
+                ]) ?>
+            </p>
+        <?php else : ?>
+            <p class="form-paragr">
+                <span class="form-rotulo"><?php echo $this->traduzir('Sigla', 'painel-dlx') ?>:</span>
+                <?php echo $idioma->getSigla() ?>
+            </p>
+        <?php endif ?>
+
         <p class="form-paragr">
             <?php echo HTMLForm::campoGeral('texto', 'nome', 'nome', $idioma->getNome(), $this->traduzir('Nome', 'painel-dlx'), null, [
                 'maxlength' => 50,
                 'required'  => 'required'
-            ]) ?>
-        </p>
-
-        <p class="form-paragr">
-            <?php echo HTMLForm::campoGeral('texto', 'sigla', 'sigla', $idioma->getSigla(), $this->traduzir('Sigla', 'painel-dlx'), null, [
-                'maxlength'     => 5,
-                'placeholder'   => 'pt_BR',
-                'data-mask'     => 'aa_AA',
-                'pattern'       => '^[a-z]{2}_[A-Z]{2}$',
-                'style'         => 'width:auto',
-                'required'      => 'required'
             ]) ?>
         </p>
     </fieldset>

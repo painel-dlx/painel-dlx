@@ -40,26 +40,26 @@ $idioma = $params['modelo'];
 
 [DLX-CONTEUDO]
 <details class="mostrar-detalhes" open>
-    <summary class="det-titulo"><?php echo $this->traduzir('Configurações', 'painel-dlx'); ?></summary>
+    <summary class="det-titulo"><?php echo $this->traduzir('Configurações', 'painel-dlx') ?></summary>
 
     <p class="det-paragr">
-        <span class="det-rotulo"><?php echo $this->traduzir('Nome', 'painel-dlx'); ?></span>
-        <?php echo $idioma->getNome(); ?>
+        <span class="det-rotulo"><?php echo $this->traduzir('Sigla', 'painel-dlx') ?></span>
+        <?php echo $idioma->getSigla() ?>
     </p>
 
     <p class="det-paragr">
-        <span class="det-rotulo"><?php echo $this->traduzir('Sigla', 'painel-dlx'); ?></span>
-        <?php echo $idioma->getSigla(); ?>
+        <span class="det-rotulo"><?php echo $this->traduzir('Nome', 'painel-dlx') ?></span>
+        <?php echo $idioma->getNome() ?>
     </p>
 
     <p class="det-paragr">
-        <span class="det-rotulo"><?php echo $this->traduzir('Padrão?', 'painel-dlx'); ?></span>
-        <?php echo Strings::bool2humano($idioma->isPadrao()); ?>
+        <span class="det-rotulo"><?php echo $this->traduzir('Padrão?', 'painel-dlx') ?></span>
+        <?php echo Strings::bool2humano($idioma->isPadrao()) ?>
     </p>
 
     <p class="det-paragr">
-        <span class="det-rotulo"><?php echo $this->traduzir('Está ativo?', 'painel-dlx'); ?></span>
-        <?php echo Strings::bool2humano($idioma->isPublicar()); ?>
+        <span class="det-rotulo"><?php echo $this->traduzir('Está ativo?', 'painel-dlx') ?></span>
+        <?php echo Strings::bool2humano($idioma->isPublicar()) ?>
     </p>
 </details>
 [/DLX-CONTEUDO]

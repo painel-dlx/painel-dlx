@@ -65,7 +65,7 @@ $__MODULO = 'Desenvolvedor';
     'acao'       => 'mostrarLista'
 ]);
 
-\DLX::$dlx->adicionarRota('^%home%desenvolvedor/idiomas/mostrar-detalhes/\d+$', [
+\DLX::$dlx->adicionarRota('^%home%desenvolvedor/idiomas/mostrar-detalhes/[a-z]{2}([\-][A-Za-z]{2})?$', [
     'aplicativo' => $__APLICATIVO,
     'modulo'     => $__MODULO,
     'controle'   => 'Idioma',
@@ -80,7 +80,7 @@ $__MODULO = 'Desenvolvedor';
     'acao'       => 'mostrarForm'
 ]);
 
-\DLX::$dlx->adicionarRota('^%home%desenvolvedor/idiomas/editar/\d+$', [
+\DLX::$dlx->adicionarRota('^%home%desenvolvedor/idiomas/editar/[a-z]{2}([\-][A-Za-z]{2})?$', [
     'aplicativo' => $__APLICATIVO,
     'modulo'     => $__MODULO,
     'controle'   => 'Idioma',

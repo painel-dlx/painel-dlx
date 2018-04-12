@@ -51,7 +51,7 @@ class Login extends PainelDLX {
     const SESSAO_TEMP = 'tmp-painel-dlx';
 
     public function __construct() {
-        parent::__construct(dirname(__DIR__ . '..'));
+        parent::__construct(dirname(__DIR__));
     }// Fim do método __construct
 
 
@@ -59,11 +59,8 @@ class Login extends PainelDLX {
      * Mostrar formulário de login
      */
     public function mostrarForm() {
-        # Tema padrão
-        $tema = new Tema();
-        $tema->selecionarPK('padrao');
-
-        $this->visao->setPaginaMestra('login');
+        # Carregar o tema
+        $this->carregarTemaLogin();
 
         # Visão
         $this->visao->adicionarTemplate('form_login');
@@ -75,7 +72,6 @@ class Login extends PainelDLX {
 
         # Parâmetros
         $this->visao->tituloPagina($this->visao->traduzir('Acessar o sistema', 'painel-dlx'));
-        $this->visao->adicionarParam('conf:tema-padrao', $tema->getDiretorio());
 
         $this->visao->mostrarConteudo();
     } // Fim do método mostrarForm
@@ -145,10 +141,8 @@ class Login extends PainelDLX {
 
 // Recuperar senha ---------------------------------------------------------------------------------------------- //
     public function formEsqueciMinhaSenha() {
-        # Tema padrão
-        $tema = new Tema();
-        $tema->selecionarPK('padrao');
-        $this->visao->setPaginaMestra('login');
+        # Carregar o tema
+        $this->carregarTemaLogin();
 
         # Visão
         $this->visao->adicionarTemplate('form_esqueci_senha');
@@ -160,7 +154,6 @@ class Login extends PainelDLX {
 
         # Parâmetros
         $this->visao->tituloPagina($this->visao->traduzir('Esqueci minha senha', 'painel-dlx'));
-        $this->visao->adicionarParam('conf:tema-padrao', $tema->getDiretorio());
 
         $this->visao->mostrarConteudo();
     } // Fim do método formEsqueciMinhaSenha
@@ -213,13 +206,11 @@ class Login extends PainelDLX {
      * @param string $hash Hash de identificação da solicitação
      */
     public function formResetarSenha($hash) {
-        $tema = new Tema();
+        # Carregar o tema
+        $this->carregarTemaLogin();
+
         $recuperacao = new Recuperacao();
         $usuario = new Usuario();
-
-        // Selecionar o tema padrão para exibir a página
-        $tema->selecionarPK('padrao');
-        $this->visao->setPaginaMestra('login');
 
         // Selecionar as informações da solcitação de recuperação e do usuário
         // que solicitou
@@ -245,7 +236,6 @@ class Login extends PainelDLX {
 
         # Parâmetros
         $this->visao->tituloPagina($this->visao->traduzir('Resetar senha', 'painel-dlx'));
-        $this->visao->adicionarParam('conf:tema-padrao', $tema->getDiretorio());
 
         $this->visao->mostrarConteudo();
     } // Fim do método formResetarSenha
@@ -278,4 +268,15 @@ class Login extends PainelDLX {
             $this->mostrarMensagemUsuario($this->visao->traduzir('Usuário não identificado!', 'painel-dlx'), '-erro');
         } // Fim if
     } // Fim do método resetSenha
+
+// Visual -------------------------------------------------------------------------------------- //
+    /**
+     * Carregar o tema para exibir os formulário vinculados ao módulo de login.
+     *
+     * @return void
+     */
+    private function carregarTemaLogin() {
+        $this->visao->setTema('painel-dlx');
+        $this->visao->setPaginaMestra('login');
+    } // Fim do método carregarTemaLogin
 }

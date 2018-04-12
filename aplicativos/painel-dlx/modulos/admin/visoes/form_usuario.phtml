@@ -65,7 +65,7 @@ $usuario = $params['modelo'];
         <legend class="form-legenda"><?php echo $this->traduzir('Preferências', 'painel-dlx'); ?></legend>
 
         <p class="form-paragr">
-            <?php echo HTMLForm::comboSelect('idioma', 'idioma', $usuario->getIdioma(), $this->traduzir('Idioma', 'painel-dlx'), null, [
+            <?php echo HTMLForm::comboSelect('pref_idioma', 'pref-idioma', $usuario->getPrefIdioma(), $this->traduzir('Idioma', 'painel-dlx'), null, [
                 'required' => 'required'
             ], $params['lista:idiomas']) ?>
         </p>

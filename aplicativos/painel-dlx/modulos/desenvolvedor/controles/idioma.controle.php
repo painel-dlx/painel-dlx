@@ -64,8 +64,8 @@ class Idioma extends PainelDLX {
      */
     protected function mostrarLista() {
         $this->gerarLista(
-            sprintf(AjdConstrutorSQL::SQL_CAMPO_COM_ALIAS, 'idioma_id', $this->visao->traduzir('ID', 'painel-dlx')) . ',' .
-            sprintf(AjdConstrutorSQL::SQL_CAMPO_COM_ALIAS, "CONCAT(idioma_nome, '<br/>', idioma_sigla)", $this->visao->traduzir('Idioma', 'painel-dlx')) . ',' .
+            sprintf(AjdConstrutorSQL::SQL_CAMPO_COM_ALIAS, 'idioma_sigla', $this->visao->traduzir('ID', 'painel-dlx')) . ',' .
+            sprintf(AjdConstrutorSQL::SQL_CAMPO_COM_ALIAS, 'idioma_nome', $this->visao->traduzir('Idioma', 'painel-dlx')) . ',' .
             sprintf(AjdConstrutorSQL::SQL_CASE_SIM_NAO, 'idioma_padrao', $this->visao->traduzir('Padrão?', 'painel-dlx')) . ',' .
             sprintf(AjdConstrutorSQL::SQL_CASE_SIM_NAO, 'idioma_publicar', $this->visao->traduzir('Ativo?', 'painel-dlx')),
             ['order_by' => 'idioma_nome']
@@ -104,7 +104,7 @@ class Idioma extends PainelDLX {
         # JS
         $this->visao->adicionarJS('web/js/jquery-form-ajax/jquery.formajax.plugin-min.js');
         $this->visao->adicionarJS('web/js/jquery-mostrar-msg/jquery.mostrarmsg.plugin.js');
-        $this->visao->adicionarJS('web/js/jquery-mascara/jquery.mascara.plugin.js');
+        // $this->visao->adicionarJS('web/js/jquery-mascara/jquery.mascara.plugin.js');
 
         $this->visao->mostrarConteudo();
     } // Fim do método mostrarForm

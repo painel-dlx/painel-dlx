@@ -26,9 +26,8 @@ CREATE TABLE dlx_paineldlx_emails_logs (
 
 -- CRIAR ESTRUTURA DE IDIOMAS
 CREATE TABLE dlx_paineldlx_idiomas (
-    idioma_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    idioma_sigla VARCHAR(5) NOT NULL PRIMARY KEY,
     idioma_nome VARCHAR(50) NOT NULL,
-    idioma_sigla VARCHAR(5) NOT NULL,
     idioma_padrao BOOL NOT NULL DEFAULT 0,
     idioma_publicar BOOL NOT NULL DEFAULT 1,
     idioma_delete BOOL NOT NULL DEFAULT 0,
@@ -79,7 +78,7 @@ CREATE TABLE dlx_paineldlx_usuarios (
     usuario_email VARCHAR(255) NOT NULL,
     usuario_login VARCHAR(255) NOT NULL,
     usuario_senha VARCHAR(32),
-    usuario_idioma INT NOT NULL,
+    usuario_pref_idioma VARCHAR(5) NOT NULL DEFAULT 'br',
     usuario_tema VARCHAR(50) NOT NULL DEFAULT 'padrao',
     usuario_formato_data INT NOT NULL,
     usuario_bloqueado BOOL NOT NULL DEFAULT 0,

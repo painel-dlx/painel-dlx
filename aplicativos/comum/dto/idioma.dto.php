@@ -64,7 +64,7 @@ trait Idioma {
 
     public function setSigla($sigla) {
         $this->sigla = filter_var($sigla, FILTER_VALIDATE_REGEXP, [
-            'options' => ['regexp' => '~^[a-z]{2}_[A-Z]{2}$~'],
+            'options' => ['regexp' => EXPREG_IDIOMA],
             'flags'   => FILTER_NULL_ON_FAILURE
         ]);
     }
