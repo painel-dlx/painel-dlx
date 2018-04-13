@@ -30,8 +30,7 @@ CREATE TABLE dlx_paineldlx_idiomas (
     idioma_nome VARCHAR(50) NOT NULL,
     idioma_padrao BOOL NOT NULL DEFAULT 0,
     idioma_publicar BOOL NOT NULL DEFAULT 1,
-    idioma_delete BOOL NOT NULL DEFAULT 0,
-    UNIQUE KEY(idioma_sigla)
+    idioma_delete BOOL NOT NULL DEFAULT 0
 ) ENGINE = INNODB;
 
 
