@@ -16,6 +16,8 @@ if (typeof CKEDITOR !== 'undefined') {
         { name: 'Título 2', element: 'h2', attributes: { 'class': 'titulo-h2' } }
     ]);
 
+    CKEDITOR.config.coreStyles_bold = { element: 'b' };
+
     // Carregar plugins extras
     // TODO: Depois que a função PHP citada abaixo para upload de arquivos for feita, deve-se ativar
     // os seguintes plugins extras: uploadfile,uploadimage,uploadwidget,filebrowser,filetools
