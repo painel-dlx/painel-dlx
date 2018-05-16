@@ -13,7 +13,12 @@ if (typeof CKEDITOR !== 'undefined') {
     // a aplicação do tema.
     CKEDITOR.stylesSet.add('default', [
         { name: 'Título 1', element: 'h1', attributes: { 'class': 'titulo-h1' } },
-        { name: 'Título 2', element: 'h2', attributes: { 'class': 'titulo-h2' } }
+        { name: 'Título 2', element: 'h2', attributes: { 'class': 'titulo-h2' } },
+        { name: 'Título 3', element: 'h3', attributes: { 'class': 'titulo-h3' } },
+        { name: 'Título 4', element: 'h4', attributes: { 'class': 'titulo-h4' } },
+        { name: 'Título 5', element: 'h5', attributes: { 'class': 'titulo-h5' } },
+        { name: 'Título 6', element: 'h6', attributes: { 'class': 'titulo-h6' } },
+        { name: 'Palavra Forte', 'element': 'strong' }
     ]);
 
     CKEDITOR.config.coreStyles_bold = { element: 'b' };
