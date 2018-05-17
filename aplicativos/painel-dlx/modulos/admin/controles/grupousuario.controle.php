@@ -95,7 +95,7 @@ class GrupoUsuario extends PainelDLX {
      */
     protected function mostrarForm($pk = null) {
         $this->gerarForm('grupo', 'admin/grupos-de-usuarios/inserir', 'admin/grupos-de-usuarios/salvar', $pk);
-
+        
         # Visão
         $this->visao->adicionarTemplate('comum/visoes/log_registro');
         $this->visao->adicionarTemplate('form_grupo_usuario');

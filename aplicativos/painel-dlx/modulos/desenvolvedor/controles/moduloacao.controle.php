@@ -89,7 +89,6 @@ class ModuloAcao extends PainelDLX {
         # Validar o sub-módulo
         $this->validarSubmodulo($modulo);
 
-        // $this->url_lista = "desenvolvedor/modulos/acoes/{$modulo->getID()}/";
         $this->gerarLista(
             sprintf(AjdConstrutorSQL::SQL_CAMPO_COM_ALIAS, 'acao_id', $this->visao->traduzir('ID', 'painel-dlx')) . ', ' .
             sprintf(AjdConstrutorSQL::SQL_CAMPO_COM_ALIAS, 'acao_descr', $this->visao->traduzir('Descrição', 'painel-dlx')) . ', ' .
