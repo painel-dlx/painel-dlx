@@ -75,3 +75,44 @@ var formRegistro = {
         history.back();
     }
 };
+
+var formSenha = {
+    senhaAlterada: function (retorno) {
+        if (typeof retorno === 'object') {
+            var botoes = [];
+
+            switch (retorno.tipo) {
+                case '-sucesso':
+                    botoes.push({
+                        texto: 'Ok',
+                        funcao: function () { window.location = ''; }
+                    });
+                break;
+
+                default:
+                case '-erro':
+                    botoes.push({
+                        texto: 'Tentar novamente',
+                        funcao: function () { this.reset(); }
+                    });
+
+                    botoes.push({
+                        texto: 'Deixa pra lá',
+                        funcao: function () { history.back(); }
+                    });
+                break;
+            } // Fim if
+
+            mostrarAlerta(retorno.mensagem, {
+                tipo: retorno.tipo,
+                tema: 'painel-dlx',
+                botoes: botoes
+            });
+        } else {
+            mostrarAlerta(retorno, {
+                tipo: '-info',
+                tema: 'painel-dlx'
+            });
+        }
+    }
+};

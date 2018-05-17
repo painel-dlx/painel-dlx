@@ -185,6 +185,7 @@ class Usuario extends PainelDLX {
         # Parâmetros
         $this->visao->tituloPagina($this->visao->traduzir('Alterar senha', 'painel-dlx'));
         $this->visao->adicionarParam('html:form-id', 'senha');
+        $this->visao->adicionarParam('conf:func-depois', 'formSenha.senhaAlterada');
 
         $this->visao->mostrarConteudo();
     } // Fim do método formAlterarSenha
