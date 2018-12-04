@@ -30,11 +30,23 @@ return [
 
     'app' => [
         'nome' => 'painel-dlx',
-        'nome-amigavel' => 'Painel DLX'
+        'nome-amigavel' => 'Painel DLX',
+        'rotas' => 'src/PainelDLX/Presentation/rotas.php'
     ],
 
     'bd' => [
         'orm' => 'doctrine',
-        'servidor' => 'localhost'
+        'mapping' => 'yaml',
+        'dir' => [
+            'src/PainelDLX/Infra/ORM/Doctrine/Mappings/',
+            'src/PainelDLX/Infra/ORM/Doctrine/Repositories/'
+        ],
+        'conexao' => [
+            'dbname' => 'dlx_dev',
+            'user' => 'root',
+            'password' => '',
+            'host' => 'localhost',
+            'driver' => 'mysql',
+        ]
     ]
 ];

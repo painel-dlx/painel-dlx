@@ -32,11 +32,12 @@ use Zend\Diactoros\ServerRequestFactory;
 try {
     $server_request = ServerRequestFactory::fromGlobals();
     $params = $server_request->getQueryParams();
+    
     $configure = new Configure($params['ambiente']);
-    $configure->carregarConfiguracao("config/config-{$params['ambiente']}.php");
+    $configure->carregarConfiguracao("config/{$params['ambiente']}.php");
 
     $router = new RautereX();
-    include_once './src/PainelDLX/Presentation/rotas.php';
+    include_once $configure->get('app', 'rotas');
 
     $response = $router->executarRota(
         $params['task'] === '/index.php' ? '/painel-dlx/usuarios' : $params['task'],

@@ -41,7 +41,7 @@ class CadastroUsuarioController extends SiteController
     public function __construct()
     {
         parent::__construct();
-        $this->view->setPaginaMestra('src/PainelDLX/Presentation/Site/Views/pagina_mestra_painel-dlx.phtml');
+        $this->view->setPaginaMestra('src/PainelDLX/Presentation/Site/Views/painel-dlx-master.phtml');
         $this->view->setViewRoot('src/PainelDLX/Presentation/Site/Views');
     }
 

@@ -10,7 +10,12 @@
   },
   "autoload": {
     "psr-4": {
-        "PainelDLX\\": "./src/PainelDLX"
+        "PainelDLX\\": "src/PainelDLX"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "PainelDLX\\Testes\\": "tests/"
     }
   }
 }

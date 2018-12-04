@@ -28,12 +28,13 @@ use Vilex\VileX;
 /**
  * @var VileX $this
  */
+global $configure;
 ?>
 
 <html>
 <head>
     <meta name="Content-type" content="text-html">
-    [TITULO-PAGINA/]
+    <title><?php echo $configure->get('app')['nome-amigavel'] ?></title>
 
     [ARQUIVOS-CSS/]
     [HTML-HEAD/]
