@@ -1,0 +1,33 @@
+PainelDLX\Domain\CadastroUsuarios\Entities\GrupoUsuario:
+    type: entity
+    table: dlx_grupos_usuarios
+    repositoryClass: PainelDLX\Infra\Repositories\GrupoUsuarioRepository
+    id:
+        grupo_usuario_id:
+            type: integer
+            id: true
+            nullable: false
+            generator:
+                strategy: auto
+    fields:
+        alias:
+            type: string
+            length: 50
+            nullable: false
+        nome:
+            type: string
+            length: 100
+            nullable: false
+        deletado:
+            type: integer
+    manyToMany:
+        usuarios:
+            targetEntity: Usuario
+            joinTable:
+                name: dlx_grupos_x_usuarios
+                joinColumns:
+                    grupo_usuario_id:
+                        referencedColumnName: grupo_usuario_id
+                inverseJoinColumns:
+                    usuario_id:
+                        referencedColumnName: usuario_id

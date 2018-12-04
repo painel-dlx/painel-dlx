@@ -1,0 +1,16 @@
+{
+  "name": "dlepera88-php/painel-dlx",
+  "version": "2.0.0-dev",
+  "minimum-stability": "dev",
+  "license": "MIT",
+  "require": {
+    "dlepera88-php/dlx": "dev-master",
+    "dlepera88-php/vilex": "1.1.0.x-dev",
+    "dlepera88-php/rauterex": "dev-master"
+  },
+  "autoload": {
+    "psr-4": {
+        "PainelDLX\\": "./src/PainelDLX"
+    }
+  }
+}
