@@ -23,11 +23,4 @@ PainelDLX\Domain\CadastroUsuarios\Entities\GrupoUsuario:
     manyToMany:
         usuarios:
             targetEntity: Usuario
-            joinTable:
-                name: dlx_grupos_x_usuarios
-                joinColumns:
-                    grupo_usuario_id:
-                        referencedColumnName: grupo_usuario_id
-                inverseJoinColumns:
-                    usuario_id:
-                        referencedColumnName: usuario_id
+            mappedBy: grupos

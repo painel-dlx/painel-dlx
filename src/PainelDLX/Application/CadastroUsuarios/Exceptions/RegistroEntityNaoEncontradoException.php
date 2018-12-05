@@ -26,7 +26,9 @@
 namespace PainelDLX\Application\CadastroUsuarios\Exceptions;
 
 
-class RegistroEntityNaoEncontradoException extends \Exception
+use DLX\Core\Exceptions\UserException;
+
+class RegistroEntityNaoEncontradoException extends UserException
 {
     /**
      * RegistroEntityNaoEncontradoException constructor.

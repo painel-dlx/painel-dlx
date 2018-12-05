@@ -73,7 +73,8 @@ class SalvarUsuarioExistenteHandler implements HandlerInterface
                 throw new RegistroEntityNaoEncontradoException('Usuário');
             }
 
-            $usuario->setNome($command->getNome())
+            $usuario
+                ->setNome($command->getNome())
                 ->setEmail($command->getEmail());
 
             /** @var GrupoUsuario $grupo_usuario */

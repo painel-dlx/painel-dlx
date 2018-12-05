@@ -23,6 +23,7 @@ PainelDLX\Domain\CadastroUsuarios\Entities\Usuario:
     manyToMany:
         grupos:
             targetEntity: GrupoUsuario
+            inversedBy: usuarios
             joinTable:
                 name: dlx_grupos_x_usuarios
                 joinColumns:

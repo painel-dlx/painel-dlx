@@ -26,7 +26,9 @@
 namespace PainelDLX\Domain\CadastroUsuarios\Exceptions;
 
 
-class UsuarioJaPossuiGrupoException extends \Exception
+use DLX\Core\Exceptions\UserException;
+
+class UsuarioJaPossuiGrupoException extends UserException
 {
     public function __construct(string $nome_grupo)
     {

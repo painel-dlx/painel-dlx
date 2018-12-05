@@ -26,9 +26,10 @@
 namespace PainelDLX\Domain\CadastroUsuarios\Exceptions;
 
 
+use DLX\Core\Exceptions\UserException;
 use Throwable;
 
-class EmailUtilizadoPorOutroUsuarioException extends \Exception
+class EmailUtilizadoPorOutroUsuarioException extends UserException
 {
     public function __construct(string $email)
     {

@@ -33,6 +33,8 @@ use PainelDLX\Domain\CadastroUsuarios\Entities\Usuario;
 use PainelDLX\Domain\CadastroUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
 use PainelDLX\Domain\CadastroUsuarios\Repositories\UsuarioRepositoryInterface;
 use PainelDLX\Domain\CadastroUsuarios\Services\VerificaEmailJaCadastrado;
+use PainelDLX\Domain\CadastroUsuarios\Services\VerificaSenhasIguais;
+use PainelDLX\Domain\CadastroUsuarios\ValueObjects\SenhaUsuario;
 
 class CadastrarNovoUsuarioHandler implements HandlerInterface
 {
@@ -69,6 +71,7 @@ class CadastrarNovoUsuarioHandler implements HandlerInterface
 
             // Verificar se o email está cadastrado para outro usuário
             (new VerificaEmailJaCadastrado($this->usuario_repository, $usuario))->executar();
+            (new VerificaSenhasIguais($usuario, new SenhaUsuario($command->getSenha(), $command->getSenhaConfirm())))->executar();
             $this->usuario_repository->create($usuario);
 
             return $usuario;

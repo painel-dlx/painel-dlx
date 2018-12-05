@@ -26,7 +26,6 @@
 include __DIR__ . '/vendor/autoload.php';
 
 use DLX\Core\Configure;
-use DLX\Infra\EntityManagerFactory;
 use RautereX\RautereX;
 use Zend\Diactoros\ServerRequestFactory;
 
@@ -40,12 +39,6 @@ try {
 
     $router = new RautereX();
     include_once Configure::get('app', 'rotas');
-
-    $em = EntityManagerFactory::create(
-        Configure::get('bd', 'orm'),
-        Configure::get('bd', 'conexao'),
-        Configure::get('bd')
-    );
 
     $response = $router->executarRota(
         $params['task'] === '/index.php' ? '/painel-dlx/usuarios' : $params['task'],
