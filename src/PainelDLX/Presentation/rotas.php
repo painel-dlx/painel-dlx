@@ -39,14 +39,25 @@ $router->get(
     [CadastroUsuarioController::class, 'formAlterarUsuario']
 );
 $router->post(
-    '/painel-dlx/usuarios/criar-novo-usuario',
+    '/painel-dlx/usuarios/cadastrar-novo-usuario',
     [CadastroUsuarioController::class, 'cadastrarNovoUsuario']
 );
-$router->put(
+
+$router->post(
     '/painel-dlx/usuarios/salvar-usuario-existente',
     [CadastroUsuarioController::class, 'atualizarUsuarioExistente']
 );
-$router->delete(
+
+$router->post(
     '/painel-dlx/usuarios/excluir-usuario',
     [CadastroUsuarioController::class, 'excluir']
 );
+
+// $router->put(
+//     '/painel-dlx/usuarios/salvar-usuario-existente',
+//     [CadastroUsuarioController::class, 'atualizarUsuarioExistente']
+// );
+// $router->delete(
+//     '/painel-dlx/usuarios/excluir-usuario',
+//     [CadastroUsuarioController::class, 'excluir']
+// );

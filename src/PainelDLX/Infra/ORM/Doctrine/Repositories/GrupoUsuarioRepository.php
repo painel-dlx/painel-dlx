@@ -47,10 +47,10 @@ class GrupoUsuarioRepository extends EntityRepository implements GrupoUsuarioRep
      * @param int ...$grupo_usuario_id
      * @return array
      */
-    public function getListaGruposByIds(int ...$grupo_usuario_id): array
+    public function getListaGruposByIds(...$grupo_usuario_id): array
     {
         return $this->findBy([
-            'id' => $grupo_usuario_id,
+            'grupo_usuario_id' => $grupo_usuario_id,
             'deletado' => false
         ]);
     }

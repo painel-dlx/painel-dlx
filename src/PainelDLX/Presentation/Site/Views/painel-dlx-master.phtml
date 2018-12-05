@@ -23,18 +23,18 @@
  * SOFTWARE.
  */
 
+use DLX\Core\Configure;
 use Vilex\VileX;
 
 /**
  * @var VileX $this
  */
-global $configure;
 ?>
 
 <html>
 <head>
     <meta name="Content-type" content="text-html">
-    <title><?php echo $configure->get('app')['nome-amigavel'] ?></title>
+    <title><?php echo Configure::get('app', 'nome-amigavel') ?></title>
 
     [ARQUIVOS-CSS/]
     [HTML-HEAD/]

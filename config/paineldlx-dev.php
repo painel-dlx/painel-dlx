@@ -38,15 +38,15 @@ return [
         'orm' => 'doctrine',
         'mapping' => 'yaml',
         'dir' => [
-            'src/PainelDLX/Infra/ORM/Doctrine/Mappings/',
-            'src/PainelDLX/Infra/ORM/Doctrine/Repositories/'
+            BASE_DIR . '/src/PainelDLX/Infra/ORM/Doctrine/Mappings/',
+            BASE_DIR . '/src/PainelDLX/Infra/ORM/Doctrine/Repositories/'
         ],
         'conexao' => [
             'dbname' => 'dlx_dev',
             'user' => 'root',
-            'password' => '',
+            'password' => '$d5Ro0t',
             'host' => 'localhost',
-            'driver' => 'mysql',
+            'driver' => 'pdo_mysql',
         ]
     ]
 ];

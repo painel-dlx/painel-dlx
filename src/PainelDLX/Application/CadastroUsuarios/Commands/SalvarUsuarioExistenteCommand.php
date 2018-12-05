@@ -35,6 +35,8 @@ class SalvarUsuarioExistenteCommand implements CommandInterface
     private $nome;
     /** @var string */
     private $email;
+    /** @var int[] */
+    private $grupos = [];
 
     /**
      * @return int
@@ -87,6 +89,24 @@ class SalvarUsuarioExistenteCommand implements CommandInterface
     public function setEmail(string $email): SalvarUsuarioExistenteCommand
     {
         $this->email = $email;
+        return $this;
+    }
+
+    /**
+     * @return int[]
+     */
+    public function getGrupos(): array
+    {
+        return $this->grupos;
+    }
+
+    /**
+     * @param int[] $grupos
+     * @return SalvarUsuarioExistenteCommand
+     */
+    public function setGrupos(int ...$grupos): SalvarUsuarioExistenteCommand
+    {
+        $this->grupos = $grupos;
         return $this;
     }
 

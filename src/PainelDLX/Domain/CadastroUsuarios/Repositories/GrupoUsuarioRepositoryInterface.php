@@ -41,5 +41,5 @@ interface GrupoUsuarioRepositoryInterface extends EntityRepositoryInterface
      * @param int ...$grupo_usuario_id
      * @return array
      */
-    public function getListaGruposByIds(int ...$grupo_usuario_id): array;
+    public function getListaGruposByIds(...$grupo_usuario_id): array;
 }

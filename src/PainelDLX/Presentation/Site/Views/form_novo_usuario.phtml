@@ -41,7 +41,7 @@ $lista_grupos = $this->getAtributo('lista_grupos')
 [/TOPO]
 
 [CORPO]
-<form id="form-usuario" method="post" action="?task=usuarios/cadastrar-novo-usuario">
+<form id="form-usuario" method="post" action="/painel-dlx/usuarios/cadastrar-novo-usuario">
     <fieldset class="form-grupo">
         <legend class="form-titulo">Dados Pessoais</legend>
 
@@ -66,8 +66,8 @@ $lista_grupos = $this->getAtributo('lista_grupos')
         </p>
 
         <p class="form-paragr">
-            <label for="txt-senha-conf" class="form-rotulo">Confirme a senha:</label>
-            <input type="password" name="senha_conf" id="txt-senha-conf" class="form-controle form-controle-senha" required>
+            <label for="txt-senha-confirm" class="form-rotulo">Confirme a senha:</label>
+            <input type="password" name="senha_confirm" id="txt-senha-confirm" class="form-controle form-controle-senha" required>
         </p>
     </fieldset>
 
@@ -80,7 +80,7 @@ $lista_grupos = $this->getAtributo('lista_grupos')
                 /** @var GrupoUsuario $grupo_usuario */
                 foreach($lista_grupos as $grupo_usuario) : ?>
                     <p class="form-paragr">
-                        <input type="checkbox" name="grupo_usuario[]" id="chk-grupo-usuario-<?php echo $grupo_usuario->getGrupoUsuarioId() ?>" class="form-controle form-controle-checkbox">
+                        <input type="checkbox" name="grupos[]" id="chk-grupo-usuario-<?php echo $grupo_usuario->getGrupoUsuarioId() ?>" value="<?php echo $grupo_usuario->getGrupoUsuarioId() ?>" class="form-controle form-controle-checkbox">
                         <label for="chk-grupo-usuario-<?php echo $grupo_usuario->getGrupoUsuarioId() ?>"><?php echo $grupo_usuario->getNome() ?></label>
                     </p>
                 <?php endforeach ?>

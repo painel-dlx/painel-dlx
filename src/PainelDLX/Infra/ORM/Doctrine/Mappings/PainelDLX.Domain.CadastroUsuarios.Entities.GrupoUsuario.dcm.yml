@@ -1,7 +1,7 @@
 PainelDLX\Domain\CadastroUsuarios\Entities\GrupoUsuario:
     type: entity
     table: dlx_grupos_usuarios
-    repositoryClass: PainelDLX\Infra\Repositories\GrupoUsuarioRepository
+    repositoryClass: PainelDLX\Infra\ORM\Doctrine\Repositories\GrupoUsuarioRepository
     id:
         grupo_usuario_id:
             type: integer

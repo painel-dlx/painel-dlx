@@ -37,7 +37,7 @@ $usuario = $this->getAtributo('usuario');
 $lista_grupos = $this->getAtributo('lista_grupos');
 ?>
 [CORPO]
-<form id="form-usuario" method="post" action="?task=usuarios/salvar">
+<form id="form-usuario" method="post" action="/painel-dlx/usuarios/salvar-usuario-existente">
     <input type="hidden" name="usuario_id" value="<?php echo $usuario->getUsuarioId() ?>">
 
     <fieldset class="form-grupo">
@@ -58,19 +58,7 @@ $lista_grupos = $this->getAtributo('lista_grupos');
     <fieldset class="form-grupo">
         <legend class="form-titulo">Acesso ao Sistema</legend>
 
-        <?php if (!$usuario->getUsuarioId()) : ?>
-            <p class="form-paragr">
-                <label for="txt-senha" class="form-rotulo">Senha:</label>
-                <input type="password" name="senha" id="txt-senha" class="form-controle form-controle-senha" required>
-            </p>
-
-            <p class="form-paragr">
-                <label for="txt-senha-conf" class="form-rotulo">Confirme a senha:</label>
-                <input type="password" name="senha_conf" id="txt-senha-conf" class="form-controle form-controle-senha" required>
-            </p>
-        <?php else : ?>
-            <a href="javascript:" class="btn btn-alterar-senha">Alterar senha</a>
-        <?php endif ?>
+        <a href="javascript:" class="btn btn-alterar-senha">Alterar senha</a>
     </fieldset>
 
     <fieldset class="form-grupo">

@@ -38,6 +38,8 @@ class CadastrarNovoUsuarioCommand implements CommandInterface
     private $senha;
     /** @var string */
     private $senha_confirm;
+    /** @var int[] */
+    private $grupos;
 
     /**
      * @return string
@@ -112,6 +114,24 @@ class CadastrarNovoUsuarioCommand implements CommandInterface
     }
 
     /**
+     * @return int[]
+     */
+    public function getGrupos(): array
+    {
+        return $this->grupos;
+    }
+
+    /**
+     * @param int[] $grupos
+     * @return CadastrarNovoUsuarioCommand
+     */
+    public function setGrupos(int ...$grupos): CadastrarNovoUsuarioCommand
+    {
+        $this->grupos = $grupos;
+        return $this;
+    }
+
+    /**
      * Request completa do comando
      * @return array Retorna um array associativo. A chave é o nome da propriedade e o valor seu respectivo valor
      */
@@ -121,7 +141,8 @@ class CadastrarNovoUsuarioCommand implements CommandInterface
             'nome' => $this->getNome(),
             'email' => $this->getEmail(),
             'senha' => $this->getSenha(),
-            'senha_confirm' => $this->getSenhaConfirm()
+            'senha_confirm' => $this->getSenhaConfirm(),
+            'grupos' => $this->getGrupos()
         ];
     }
 }

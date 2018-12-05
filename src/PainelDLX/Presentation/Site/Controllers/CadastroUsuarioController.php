@@ -26,23 +26,38 @@
 namespace PainelDLX\Presentation\Site\Controllers;
 
 use DLX\Core\Exceptions\UserException;
+use DLX\Infra\EntityManagerX;
 use PainelDLX\Application\CadastroUsuarios\Commands\CadastrarNovoUsuarioCommand;
 use PainelDLX\Application\CadastroUsuarios\Commands\SalvarUsuarioExistenteCommand;
 use PainelDLX\Application\CadastroUsuarios\Handlers\CadastrarNovoUsuarioHandler;
 use PainelDLX\Application\CadastroUsuarios\Handlers\SalvarUsuarioExistenteHandler;
+use PainelDLX\Domain\CadastroUsuarios\Entities\GrupoUsuario;
 use PainelDLX\Domain\CadastroUsuarios\Entities\Usuario;
+use PainelDLX\Infra\ORM\Doctrine\Repositories\GrupoUsuarioRepository;
 use PainelDLX\Infra\ORM\Doctrine\Repositories\UsuarioRepository;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Diactoros\Response\JsonResponse;
 
+/**
+ * Class CadastroUsuarioController
+ * @package PainelDLX\Presentation\Site\Controllers
+ * @property UsuarioRepository $repository
+ */
 class CadastroUsuarioController extends SiteController
 {
+    /**
+     * CadastroUsuarioController constructor.
+     * @throws \Doctrine\ORM\ORMException
+     */
     public function __construct()
     {
         parent::__construct();
+
         $this->view->setPaginaMestra('src/PainelDLX/Presentation/Site/Views/painel-dlx-master.phtml');
         $this->view->setViewRoot('src/PainelDLX/Presentation/Site/Views');
+
+        $this->repository = EntityManagerX::getRepository(Usuario::class);
     }
 
     /**
@@ -55,8 +70,11 @@ class CadastroUsuarioController extends SiteController
     public function listaUsuarios(ServerRequestInterface $request): ResponseInterface
     {
         try {
+            $lista_usuarios = $this->repository->findBy($request->getParsedBody());
+
             // Atributos
             $this->view->setAtributo('titulo-pagina', 'Adicionar novo usuário');
+            $this->view->setAtributo('lista_usuarios', $lista_usuarios);
 
             // Views
             $this->view->addTemplate('lista_usuarios');
@@ -78,8 +96,13 @@ class CadastroUsuarioController extends SiteController
     public function formNovoUsuario(): ResponseInterface
     {
         try {
+            /** @var GrupoUsuarioRepository $grupo_usuario_repository */
+            $grupo_usuario_repository = EntityManagerX::getRepository(GrupoUsuario::class);
+            $lista_grupos = $grupo_usuario_repository->findAtivos();
+
             // Atributos
             $this->view->setAtributo('titulo-pagina', 'Adicionar novo usuário');
+            $this->view->setAtributo('lista_grupos', $lista_grupos);
 
             // Views
             $this->view->addTemplate('form_novo_usuario');
@@ -109,10 +132,15 @@ class CadastroUsuarioController extends SiteController
                 ->setNome($dados_usuario['nome'])
                 ->setEmail($dados_usuario['email'])
                 ->setSenha($dados_usuario['senha'])
-                ->setSenhaConfirm($dados_usuario['senha_confirm']);
+                ->setSenhaConfirm($dados_usuario['senha_confirm'])
+                ->setGrupos(...$dados_usuario['grupos']);
+
+            /** @var GrupoUsuarioRepository $grupo_usuario_repository */
+            $grupo_usuario_repository = EntityManagerX::getRepository(GrupoUsuario::class);
 
             /** @var Usuario $usuario */
-            $usuario = (new CadastrarNovoUsuarioHandler())->handle($command);
+            $usuario = (new CadastrarNovoUsuarioHandler($this->repository, $grupo_usuario_repository))
+                ->handle($command);
 
             $msg['retorno'] = 'sucesso';
             $msg['mensagem'] = 'Usuário cadastrado com sucesso!';
@@ -134,20 +162,20 @@ class CadastroUsuarioController extends SiteController
      */
     public function formAlterarUsuario(ServerRequestInterface $request): ResponseInterface
     {
-        $usuario_id = $request->getAttribute('usuario_id');
+        $usuario_id = $request->getQueryParams()['usuario_id'];
 
         try {
-            /**
-             * TODO: identificar o entity manager e obter o repository do usuário
-             * @var UsuarioRepository $usuario_repository
-             */
-
             /** @var Usuario $usuario */
-            $usuario = $usuario_repository->findBy($usuario_id);
+            $usuario = $this->repository->find($usuario_id);
+
+            /** @var GrupoUsuarioRepository $grupo_usuario_repository */
+            $grupo_usuario_repository = EntityManagerX::getRepository(GrupoUsuario::class);
+            $lista_grupos = $grupo_usuario_repository->findAtivos();
 
             // Atributos
             $this->view->setAtributo('titulo-pagina', 'Atualizar informações do usuário');
             $this->view->setAtributo('usuario', $usuario);
+            $this->view->setAtributo('lista_grupos', $lista_grupos);
 
             // Views
             $this->view->addTemplate('form_alterar_usuario');
@@ -177,7 +205,11 @@ class CadastroUsuarioController extends SiteController
                 ->setNome($dados_usuario['nome'])
                 ->setEmail($dados_usuario['email']);
 
-            $usuario_atualizado = (new SalvarUsuarioExistenteHandler())->handle($command);
+            /** @var GrupoUsuarioRepository $grupo_usuario_repository */
+            $grupo_usuario_repository = EntityManagerX::getRepository(GrupoUsuario::class);
+
+            $usuario_atualizado = (new SalvarUsuarioExistenteHandler($this->repository, $grupo_usuario_repository))
+                ->handle($command);
 
             $msg['retorno'] = 'sucesso';
             $msg['mensagem'] = 'Usuário atualizado com sucesso!';

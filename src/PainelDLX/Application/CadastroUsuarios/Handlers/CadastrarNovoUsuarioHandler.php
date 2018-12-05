@@ -27,32 +27,49 @@ namespace PainelDLX\Application\CadastroUsuarios\Handlers;
 
 
 use DLX\Contracts\CommandInterface;
-use DLX\Contracts\Handlers\HandlerInterface;
-use PainelDLX\Domain\CadastroUsuarios\Entities\GrupoUsuario;
+use DLX\Contracts\HandlerInterface;
+use PainelDLX\Application\CadastroUsuarios\Commands\CadastrarNovoUsuarioCommand;
 use PainelDLX\Domain\CadastroUsuarios\Entities\Usuario;
+use PainelDLX\Domain\CadastroUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
+use PainelDLX\Domain\CadastroUsuarios\Repositories\UsuarioRepositoryInterface;
 use PainelDLX\Domain\CadastroUsuarios\Services\VerificaEmailJaCadastrado;
-use PainelDLX\Infra\ORM\Doctrine\Repositories\UsuarioRepository;
 
 class CadastrarNovoUsuarioHandler implements HandlerInterface
 {
+    /** @var UsuarioRepositoryInterface */
+    private $usuario_repository;
+    /** @var GrupoUsuarioRepositoryInterface */
+    private $grupo_usuario_repository;
+
+    /**
+     * CadastrarNovoUsuarioHandler constructor.
+     * @param UsuarioRepositoryInterface $usuario_repository
+     * @param GrupoUsuarioRepositoryInterface $grupo_usuario_repository
+     */
+    public function __construct(
+        UsuarioRepositoryInterface $usuario_repository,
+        GrupoUsuarioRepositoryInterface $grupo_usuario_repository
+    ) {
+        $this->usuario_repository = $usuario_repository;
+        $this->grupo_usuario_repository = $grupo_usuario_repository;
+    }
+
     /**
      * @param CommandInterface $command
      * @throws \Exception
      */
     public function handle(CommandInterface $command)
     {
-        try {
-            /**
-             * TODO: identificar o entity manager e obter o repository do usuário
-             * @var UsuarioRepository $usuario_repository
-             */
+        /** @var CadastrarNovoUsuarioCommand $command */
 
-            $request = $command->getRequest();
-            $usuario = Usuario::create($request['nome'], $request['email'], new GrupoUsuario());
+        try {
+            $lista_grupos = $this->grupo_usuario_repository->getListaGruposByIds($command->getGrupos());
+            $usuario = Usuario::create($command->getNome(), $command->getEmail(), ...$lista_grupos);
+            $usuario->setSenha($command->getSenha());
 
             // Verificar se o email está cadastrado para outro usuário
-            (new VerificaEmailJaCadastrado($usuario_repository, $usuario))->executar();
-            $usuario_repository->create($usuario);
+            (new VerificaEmailJaCadastrado($this->usuario_repository, $usuario))->executar();
+            $this->usuario_repository->create($usuario);
 
             return $usuario;
         } catch (\Exception $e) {

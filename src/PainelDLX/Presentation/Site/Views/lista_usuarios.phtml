@@ -69,7 +69,7 @@ $lista_usuarios = $this->getAtributo('lista_usuarios');
             <td headers="nome"><?php echo $usuario->getNome() ?></td>
             <td headers="email"><?php echo $usuario->getEmail() ?></td>
             <td headers="opcoes">
-                <a href="?task=usuarios/editar&usuario_id=<?php echo $usuario->getUsuarioId() ?>" class="link-editar">
+                <a href="/painel-dlx/usuarios/editar?usuario_id=<?php echo $usuario->getUsuarioId() ?>" class="link-editar">
                     Editar
                 </a>
             </td>

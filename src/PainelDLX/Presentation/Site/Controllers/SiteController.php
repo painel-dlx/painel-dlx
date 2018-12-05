@@ -26,12 +26,15 @@
 namespace PainelDLX\Presentation\Site\Controllers;
 
 
+use DLX\Domain\Repositories\EntityRepositoryInterface;
 use Vilex\VileX;
 
 abstract class SiteController
 {
     /** @var VileX */
     protected $view;
+    /** @var EntityRepositoryInterface */
+    protected $repository;
 
     public function __construct()
     {

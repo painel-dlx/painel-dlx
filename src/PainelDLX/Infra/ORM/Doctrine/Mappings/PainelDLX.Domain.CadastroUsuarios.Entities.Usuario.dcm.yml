@@ -1,7 +1,7 @@
 PainelDLX\Domain\CadastroUsuarios\Entities\Usuario:
     type: entity
     table: dlx_usuarios
-    repositoryClass: PainelDLX\Infra\Repositories\UsuarioRepository
+    repositoryClass: PainelDLX\Infra\ORM\Doctrine\Repositories\UsuarioRepository
     id:
         usuario_id:
             type: integer
