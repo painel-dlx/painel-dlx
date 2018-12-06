@@ -27,7 +27,6 @@ PainelDLX\Domain\CadastroUsuarios\Entities\Usuario:
             cascade:
                 - persist
                 - merge
-                - remove
             joinTable:
                 name: dlx_grupos_x_usuarios
                 joinColumns:
