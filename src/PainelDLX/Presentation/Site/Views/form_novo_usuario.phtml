@@ -41,7 +41,7 @@ $lista_grupos = $this->getAtributo('lista_grupos')
 [/TOPO]
 
 [CORPO]
-<form id="form-usuario" method="post" action="/painel-dlx/usuarios/cadastrar-novo-usuario">
+<form id="form-usuario" method="post" action="/painel-dlx/usuarios/cadastrar-novo-usuario" onsubmit="cadastrarNovoUsuario(this)">
     <fieldset class="form-grupo">
         <legend class="form-titulo">Dados Pessoais</legend>
 
@@ -96,3 +96,27 @@ $lista_grupos = $this->getAtributo('lista_grupos')
     </p>
 </form>
 [/CORPO]
+
+[SCRIPTS]
+<script>
+    function cadastrarNovoUsuario(form) {
+        var $form = $(form);
+
+        $.ajax({
+            url: $form.attr('action'),
+            type: $form.attr('method'),
+            data: $form.serialize(),
+            dataType: 'json',
+            success: function(retorno) {
+                alert(retorno.mensagem);
+
+                if (retorno.retorno === 'sucesso') {
+                    window.location = '/painel-dlx/usuarios'
+                }
+            }
+        });
+
+        return false;
+    }
+</script>
+[/SCRIPTS]
