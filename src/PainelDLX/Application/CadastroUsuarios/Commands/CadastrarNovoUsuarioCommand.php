@@ -50,31 +50,11 @@ class CadastrarNovoUsuarioCommand implements CommandInterface
     }
 
     /**
-     * @param string $nome
-     * @return CadastrarNovoUsuarioCommand
-     */
-    public function setNome(string $nome): CadastrarNovoUsuarioCommand
-    {
-        $this->nome = $nome;
-        return $this;
-    }
-
-    /**
      * @return string
      */
     public function getEmail(): string
     {
         return $this->email;
-    }
-
-    /**
-     * @param string $email
-     * @return CadastrarNovoUsuarioCommand
-     */
-    public function setEmail(string $email): CadastrarNovoUsuarioCommand
-    {
-        $this->email = $email;
-        return $this;
     }
 
     /**
@@ -86,31 +66,11 @@ class CadastrarNovoUsuarioCommand implements CommandInterface
     }
 
     /**
-     * @param string $senha
-     * @return CadastrarNovoUsuarioCommand
-     */
-    public function setSenha(string $senha): CadastrarNovoUsuarioCommand
-    {
-        $this->senha = $senha;
-        return $this;
-    }
-
-    /**
      * @return string
      */
     public function getSenhaConfirm(): string
     {
         return $this->senha_confirm;
-    }
-
-    /**
-     * @param string $senha_confirm
-     * @return CadastrarNovoUsuarioCommand
-     */
-    public function setSenhaConfirm(string $senha_confirm): CadastrarNovoUsuarioCommand
-    {
-        $this->senha_confirm = $senha_confirm;
-        return $this;
     }
 
     /**
@@ -122,13 +82,20 @@ class CadastrarNovoUsuarioCommand implements CommandInterface
     }
 
     /**
-     * @param int[] $grupos
-     * @return CadastrarNovoUsuarioCommand
+     * CadastrarNovoUsuarioCommand constructor.
+     * @param string $nome
+     * @param string $email
+     * @param string $senha
+     * @param string $senha_confirm
+     * @param array $grupos
      */
-    public function setGrupos(int ...$grupos): CadastrarNovoUsuarioCommand
+    public function __construct(string $nome, string $email, string $senha, string $senha_confirm, array $grupos)
     {
+        $this->nome = $nome;
+        $this->email = $email;
+        $this->senha = $senha;
+        $this->senha_confirm = $senha_confirm;
         $this->grupos = $grupos;
-        return $this;
     }
 
     /**

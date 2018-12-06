@@ -47,31 +47,11 @@ class SalvarUsuarioExistenteCommand implements CommandInterface
     }
 
     /**
-     * @param int $usuario_id
-     * @return SalvarUsuarioExistenteCommand
-     */
-    public function setUsuarioId(int $usuario_id): SalvarUsuarioExistenteCommand
-    {
-        $this->usuario_id = $usuario_id;
-        return $this;
-    }
-
-    /**
      * @return string
      */
     public function getNome(): string
     {
         return $this->nome;
-    }
-
-    /**
-     * @param string $nome
-     * @return SalvarUsuarioExistenteCommand
-     */
-    public function setNome(string $nome): SalvarUsuarioExistenteCommand
-    {
-        $this->nome = $nome;
-        return $this;
     }
 
     /**
@@ -83,16 +63,6 @@ class SalvarUsuarioExistenteCommand implements CommandInterface
     }
 
     /**
-     * @param string $email
-     * @return SalvarUsuarioExistenteCommand
-     */
-    public function setEmail(string $email): SalvarUsuarioExistenteCommand
-    {
-        $this->email = $email;
-        return $this;
-    }
-
-    /**
      * @return int[]
      */
     public function getGrupos(): array
@@ -101,13 +71,18 @@ class SalvarUsuarioExistenteCommand implements CommandInterface
     }
 
     /**
-     * @param int[] $grupos
-     * @return SalvarUsuarioExistenteCommand
+     * SalvarUsuarioExistenteCommand constructor.
+     * @param int $usuario_id
+     * @param string $nome
+     * @param string $email
+     * @param array $grupos
      */
-    public function setGrupos(int ...$grupos): SalvarUsuarioExistenteCommand
+    public function __construct(int $usuario_id, string $nome, string $email, array $grupos)
     {
+        $this->usuario_id = $usuario_id;
+        $this->nome = $nome;
+        $this->email = $email;
         $this->grupos = $grupos;
-        return $this;
     }
 
     /**
@@ -119,7 +94,8 @@ class SalvarUsuarioExistenteCommand implements CommandInterface
         return [
             'usuario_id' => $this->getUsuarioId(),
             'nome' => $this->getNome(),
-            'email' => $this->getEmail()
+            'email' => $this->getEmail(),
+            'grupos' => $this->getGrupos()
         ];
     }
 }

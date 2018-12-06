@@ -26,6 +26,7 @@
 namespace PainelDLX\Presentation\Site\Controllers;
 
 use DLX\Core\Exceptions\UserException;
+use DLX\Core\Services\CriarCommandByArray;
 use DLX\Infra\EntityManagerX;
 use Grpc\Server;
 use PainelDLX\Application\CadastroUsuarios\Commands\CadastrarNovoUsuarioCommand;
@@ -128,15 +129,17 @@ class CadastroUsuarioController extends SiteController
      */
     public function cadastrarNovoUsuario(ServerRequestInterface $request): ResponseInterface
     {
-        $dados_usuario = $request->getParsedBody();
+        /**
+         * @var string $nome
+         * @var string $email
+         * @var string $senha
+         * @var string $senha_confirm,
+         * @var array $grupos
+         */
+        extract($request->getParsedBody());
 
         try {
-            $command = (new CadastrarNovoUsuarioCommand())
-                ->setNome($dados_usuario['nome'])
-                ->setEmail($dados_usuario['email'])
-                ->setSenha($dados_usuario['senha'])
-                ->setSenhaConfirm($dados_usuario['senha_confirm'])
-                ->setGrupos(...$dados_usuario['grupos']);
+            $command = (new CadastrarNovoUsuarioCommand($nome, $email, $senha_confirm, $senha_confirm, $grupos));
 
             /** @var GrupoUsuarioRepository $grupo_usuario_repository */
             $grupo_usuario_repository = EntityManagerX::getRepository(GrupoUsuario::class);
@@ -200,14 +203,16 @@ class CadastroUsuarioController extends SiteController
      */
     public function atualizarUsuarioExistente(ServerRequestInterface $request): ResponseInterface
     {
-        $dados_usuario = $request->getParsedBody();
+        /**
+         * @var int $usuario_id
+         * @var string $nome
+         * @var string $email
+         * @var array $grupos
+         */
+        extract($request->getParsedBody());
 
         try {
-            $command = (new SalvarUsuarioExistenteCommand())
-                ->setUsuarioId($dados_usuario['usuario_id'])
-                ->setNome($dados_usuario['nome'])
-                ->setEmail($dados_usuario['email'])
-                ->setGrupos(...$dados_usuario['grupos']);
+            $command = (new SalvarUsuarioExistenteCommand($usuario_id, $nome, $email, $grupos));
 
             /** @var GrupoUsuarioRepository $grupo_usuario_repository */
             $grupo_usuario_repository = EntityManagerX::getRepository(GrupoUsuario::class);
@@ -228,12 +233,13 @@ class CadastroUsuarioController extends SiteController
 
     public function excluirUsuario(ServerRequestInterface $request): ResponseInterface
     {
-        $usuario_id = $request->getParsedBody()['usuario_id'];
+        /**
+         * @var int $usuario_id
+         */
+        extract($request->getParsedBody());
 
         try {
-            /** @var Usuario $usuario */
-            $usuario = $this->repository->find($usuario_id);
-            $command = (new ExcluirUsuarioCommand($usuario));
+            $command = (new ExcluirUsuarioCommand($usuario_id));
 
             (new ExcluirUsuarioHandler($this->repository))->handle($command);
 

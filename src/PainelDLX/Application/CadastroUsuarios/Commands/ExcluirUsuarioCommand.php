@@ -32,19 +32,19 @@ use PainelDLX\Domain\CadastroUsuarios\Entities\Usuario;
 class ExcluirUsuarioCommand implements CommandInterface
 {
     /** @var Usuario */
-    private $usuario;
+    private $usuario_id;
 
     /**
      * @return Usuario
      */
-    public function getUsuario(): Usuario
+    public function getUsuarioId(): int
     {
-        return $this->usuario;
+        return $this->usuario_id;
     }
 
-    public function __construct(Usuario $usuario)
+    public function __construct(int $usuario_id)
     {
-        $this->usuario = $usuario;
+        $this->usuario_id = $usuario_id;
     }
 
     /**
@@ -54,7 +54,7 @@ class ExcluirUsuarioCommand implements CommandInterface
     public function getRequest(): array
     {
         return [
-            'usuario' => $this->getUsuario()
+            'usuario_id' => $this->getUsuarioId()
         ];
     }
 }

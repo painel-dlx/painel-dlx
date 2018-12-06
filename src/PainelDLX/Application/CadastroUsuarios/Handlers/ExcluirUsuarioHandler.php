@@ -28,6 +28,7 @@ namespace PainelDLX\Application\CadastroUsuarios\Handlers;
 use DLX\Contracts\CommandInterface;
 use DLX\Contracts\HandlerInterface;
 use PainelDLX\Application\CadastroUsuarios\Commands\ExcluirUsuarioCommand;
+use PainelDLX\Domain\CadastroUsuarios\Entities\Usuario;
 use PainelDLX\Domain\CadastroUsuarios\Repositories\UsuarioRepositoryInterface;
 
 class ExcluirUsuarioHandler implements HandlerInterface
@@ -49,7 +50,8 @@ class ExcluirUsuarioHandler implements HandlerInterface
         /** @var ExcluirUsuarioCommand $command */
 
         try {
-            $usuario = $command->getUsuario();
+            /** @var Usuario $usuario */
+            $usuario = $this->usuario_repository->find($command->getUsuarioId());
             $this->usuario_repository->delete($usuario);
         } catch (\Exception $e) {
             throw $e;
