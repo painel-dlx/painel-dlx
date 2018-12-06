@@ -24,6 +24,10 @@ PainelDLX\Domain\CadastroUsuarios\Entities\Usuario:
         grupos:
             targetEntity: GrupoUsuario
             inversedBy: usuarios
+            cascade:
+                - persist
+                - merge
+                - remove
             joinTable:
                 name: dlx_grupos_x_usuarios
                 joinColumns:

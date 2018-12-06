@@ -27,9 +27,12 @@ namespace PainelDLX\Presentation\Site\Controllers;
 
 use DLX\Core\Exceptions\UserException;
 use DLX\Infra\EntityManagerX;
+use Grpc\Server;
 use PainelDLX\Application\CadastroUsuarios\Commands\CadastrarNovoUsuarioCommand;
+use PainelDLX\Application\CadastroUsuarios\Commands\ExcluirUsuarioCommand;
 use PainelDLX\Application\CadastroUsuarios\Commands\SalvarUsuarioExistenteCommand;
 use PainelDLX\Application\CadastroUsuarios\Handlers\CadastrarNovoUsuarioHandler;
+use PainelDLX\Application\CadastroUsuarios\Handlers\ExcluirUsuarioHandler;
 use PainelDLX\Application\CadastroUsuarios\Handlers\SalvarUsuarioExistenteHandler;
 use PainelDLX\Domain\CadastroUsuarios\Entities\GrupoUsuario;
 use PainelDLX\Domain\CadastroUsuarios\Entities\Usuario;
@@ -203,7 +206,8 @@ class CadastroUsuarioController extends SiteController
             $command = (new SalvarUsuarioExistenteCommand())
                 ->setUsuarioId($dados_usuario['usuario_id'])
                 ->setNome($dados_usuario['nome'])
-                ->setEmail($dados_usuario['email']);
+                ->setEmail($dados_usuario['email'])
+                ->setGrupos(...$dados_usuario['grupos']);
 
             /** @var GrupoUsuarioRepository $grupo_usuario_repository */
             $grupo_usuario_repository = EntityManagerX::getRepository(GrupoUsuario::class);
@@ -214,6 +218,27 @@ class CadastroUsuarioController extends SiteController
             $msg['retorno'] = 'sucesso';
             $msg['mensagem'] = 'Usuário atualizado com sucesso!';
             $msg['usuario'] = $usuario_atualizado;
+        } catch (\Exception $e) {
+            $msg['retorno'] = 'erro';
+            $msg['mensagem'] = $e->getMessage();
+        }
+
+        return new JsonResponse($msg);
+    }
+
+    public function excluirUsuario(ServerRequestInterface $request): ResponseInterface
+    {
+        $usuario_id = $request->getParsedBody()['usuario_id'];
+
+        try {
+            /** @var Usuario $usuario */
+            $usuario = $this->repository->find($usuario_id);
+            $command = (new ExcluirUsuarioCommand($usuario));
+
+            (new ExcluirUsuarioHandler($this->repository))->handle($command);
+
+            $msg['retorno'] = 'sucesso';
+            $msg['mensagem'] = 'Usuário excluído com sucesso!';
         } catch (\Exception $e) {
             $msg['retorno'] = 'erro';
             $msg['mensagem'] = $e->getMessage();

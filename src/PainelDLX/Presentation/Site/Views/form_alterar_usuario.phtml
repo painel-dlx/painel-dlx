@@ -73,7 +73,7 @@ $lista_grupos = $this->getAtributo('lista_grupos');
                         return $grupo_usuario_x->getGrupoUsuarioId() === $grupo_usuario->getGrupoUsuarioId();
                     }) ?>
                     <p class="form-paragr">
-                        <input type="checkbox" name="grupo_usuario[]" id="chk-grupo-usuario-<?php echo $grupo_usuario->getGrupoUsuarioId() ?>"<?php echo $is_check ? ' CHECKED' : '' ?> class="form-controle form-controle-checkbox">
+                        <input type="checkbox" name="grupos[]" id="chk-grupo-usuario-<?php echo $grupo_usuario->getGrupoUsuarioId() ?>" value="<?php echo $grupo_usuario->getGrupoUsuarioId() ?>"<?php echo $is_check ? ' CHECKED' : '' ?> class="form-controle form-controle-checkbox">
                         <label for="chk-grupo-usuario-<?php echo $grupo_usuario->getGrupoUsuarioId() ?>"><?php echo $grupo_usuario->getNome() ?></label>
                     </p>
                 <?php endforeach; ?>

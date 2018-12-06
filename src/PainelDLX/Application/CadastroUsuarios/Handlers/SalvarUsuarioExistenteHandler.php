@@ -65,7 +65,7 @@ class SalvarUsuarioExistenteHandler implements HandlerInterface
         /** @var SalvarUsuarioExistenteCommand $command */
 
         try {
-            $lista_grupos = $this->grupo_usuario_repository->getListaGruposByIds($command->getGrupos());
+            $lista_grupos = $this->grupo_usuario_repository->getListaGruposByIds(...$command->getGrupos());
             /** @var Usuario $usuario */
             $usuario = $this->usuario_repository->find($command->getUsuarioId());
 
@@ -79,7 +79,9 @@ class SalvarUsuarioExistenteHandler implements HandlerInterface
 
             /** @var GrupoUsuario $grupo_usuario */
             foreach ($lista_grupos as $grupo_usuario) {
-                $usuario->addGrupo($grupo_usuario);
+                if (!$usuario->hasGrupoUsuario($grupo_usuario)) {
+                    $usuario->addGrupo($grupo_usuario);
+                }
             }
 
             // Verifica se o email desse usuário não está sendo usado por outro usuário

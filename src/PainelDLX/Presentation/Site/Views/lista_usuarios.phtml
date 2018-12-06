@@ -72,9 +72,34 @@ $lista_usuarios = $this->getAtributo('lista_usuarios');
                 <a href="/painel-dlx/usuarios/editar?usuario_id=<?php echo $usuario->getUsuarioId() ?>" class="link-editar">
                     Editar
                 </a>
+
+                <a href="javascript:" class="link-excluir" onclick="excluirUsuario(<?php echo $usuario->getUsuarioId() ?>)">
+                    Excluir
+                </a>
             </td>
         </tr>
     <?php endforeach; ?>
     </tbody>
 </table>
 [/CORPO]
+
+[SCRIPTS]
+<script>
+    function excluirUsuario(usuario_id) {
+        if (confirm('Deseja realmente excluir esse usuário?')) {
+            $.ajax({
+                url: '/painel-dlx/usuarios/excluir-usuario',
+                type: 'post', //delete
+                data: 'usuario_id=' + usuario_id,
+                dataType: 'json',
+                success: function (retorno) {
+                    alert(retorno.mensagem);
+                    window.location.reload();
+                }
+            })
+        }
+
+        return false;
+    }
+</script>
+[/SCRIPTS]

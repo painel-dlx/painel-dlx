@@ -65,7 +65,7 @@ class CadastrarNovoUsuarioHandler implements HandlerInterface
         /** @var CadastrarNovoUsuarioCommand $command */
 
         try {
-            $lista_grupos = $this->grupo_usuario_repository->getListaGruposByIds($command->getGrupos());
+            $lista_grupos = $this->grupo_usuario_repository->getListaGruposByIds(...$command->getGrupos());
             $usuario = Usuario::create($command->getNome(), $command->getEmail(), ...$lista_grupos);
             $usuario->setSenha($command->getSenha());
 

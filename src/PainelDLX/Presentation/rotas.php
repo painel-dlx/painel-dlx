@@ -50,7 +50,7 @@ $router->post(
 
 $router->post(
     '/painel-dlx/usuarios/excluir-usuario',
-    [CadastroUsuarioController::class, 'excluir']
+    [CadastroUsuarioController::class, 'excluirUsuario']
 );
 
 // $router->put(

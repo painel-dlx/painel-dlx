@@ -23,32 +23,38 @@
  * SOFTWARE.
  */
 
-use DLX\Core\Configure;
-use Doctrine\DBAL\Logging\EchoSQLLogger;
+namespace PainelDLX\Application\CadastroUsuarios\Commands;
 
-return [
-    'tipo-ambiente' => Configure::DEV,
 
-    'app' => [
-        'nome' => 'painel-dlx',
-        'nome-amigavel' => 'Painel DLX',
-        'rotas' => 'src/PainelDLX/Presentation/rotas.php'
-    ],
+use DLX\Contracts\CommandInterface;
+use PainelDLX\Domain\CadastroUsuarios\Entities\Usuario;
 
-    'bd' => [
-        'orm' => 'doctrine',
-        'mapping' => 'yaml',
-        // 'debug' => EchoSQLLogger::class,
-        'dir' => [
-            BASE_DIR . '/src/PainelDLX/Infra/ORM/Doctrine/Mappings/',
-            BASE_DIR . '/src/PainelDLX/Infra/ORM/Doctrine/Repositories/'
-        ],
-        'conexao' => [
-            'dbname' => 'dlx_dev',
-            'user' => 'root',
-            'password' => '$d5Ro0t',
-            'host' => 'localhost',
-            'driver' => 'pdo_mysql',
-        ]
-    ]
-];
+class ExcluirUsuarioCommand implements CommandInterface
+{
+    /** @var Usuario */
+    private $usuario;
+
+    /**
+     * @return Usuario
+     */
+    public function getUsuario(): Usuario
+    {
+        return $this->usuario;
+    }
+
+    public function __construct(Usuario $usuario)
+    {
+        $this->usuario = $usuario;
+    }
+
+    /**
+     * Request completa do comando
+     * @return array Retorna um array associativo. A chave é o nome da propriedade e o valor seu respectivo valor
+     */
+    public function getRequest(): array
+    {
+        return [
+            'usuario' => $this->getUsuario()
+        ];
+    }
+}
