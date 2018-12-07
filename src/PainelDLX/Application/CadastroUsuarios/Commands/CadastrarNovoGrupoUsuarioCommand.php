@@ -23,31 +23,41 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Domain\CadastroUsuarios\Repositories;
+namespace PainelDLX\Application\CadastroUsuarios\Commands;
 
 
-use DLX\Domain\Repositories\EntityRepositoryInterface;
-use PainelDLX\Domain\CadastroUsuarios\Entities\GrupoUsuario;
+use DLX\Contracts\CommandInterface;
 
-interface GrupoUsuarioRepositoryInterface extends EntityRepositoryInterface
+class CadastrarNovoGrupoUsuarioCommand implements CommandInterface
 {
-    /**
-     * Selecionar todos os grupos de usuários ativos.
-     * @return array
-     */
-    public function findAtivos(array $criteria = [], array $order_by = []): array;
+    /** @var string */
+    private $nome;
 
     /**
-     * Obter a lista de grupos de usuários por um array de IDs passados.
-     * @param int ...$grupo_usuario_id
-     * @return array
+     * @return string
      */
-    public function getListaGruposByIds(int ...$grupo_usuario_id): array;
+    public function getNome(): string
+    {
+        return $this->nome;
+    }
 
     /**
-     * Verificar se existe outro grupo com o mesmo alias
-     * @param GrupoUsuario $grupo_usuarios
-     * @return bool
+     * CadastrarNovoUsuarioCommand constructor.
+     * @param string $nome
      */
-    public function existsOutroGrupoComMesmoAlias(GrupoUsuario $grupo_usuarios): bool;
+    public function __construct(string $nome)
+    {
+        $this->nome = $nome;
+    }
+
+    /**
+     * Request completa do comando
+     * @return array Retorna um array associativo. A chave é o nome da propriedade e o valor seu respectivo valor
+     */
+    public function getRequest(): array
+    {
+        return [
+            'nome' => $this->getNome()
+        ];
+    }
 }

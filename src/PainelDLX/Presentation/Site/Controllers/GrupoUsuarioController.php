@@ -25,33 +25,31 @@
 
 namespace PainelDLX\Presentation\Site\Controllers;
 
+
 use DLX\Core\Exceptions\UserException;
-use DLX\Core\Services\CriarCommandByArray;
 use DLX\Infra\EntityManagerX;
-use Grpc\Server;
+use PainelDLX\Application\CadastroUsuarios\Commands\CadastrarNovoGrupoUsuarioCommand;
 use PainelDLX\Application\CadastroUsuarios\Commands\CadastrarNovoUsuarioCommand;
-use PainelDLX\Application\CadastroUsuarios\Commands\ExcluirUsuarioCommand;
-use PainelDLX\Application\CadastroUsuarios\Commands\SalvarUsuarioExistenteCommand;
-use PainelDLX\Application\CadastroUsuarios\Handlers\CadastrarNovoUsuarioHandler;
-use PainelDLX\Application\CadastroUsuarios\Handlers\ExcluirUsuarioHandler;
-use PainelDLX\Application\CadastroUsuarios\Handlers\SalvarUsuarioExistenteHandler;
+use PainelDLX\Application\CadastroUsuarios\Commands\ExcluirGrupoUsuarioCommand;
+use PainelDLX\Application\CadastroUsuarios\Commands\SalvarGrupoUsuarioExistenteCommand;
+use PainelDLX\Application\CadastroUsuarios\Handlers\CadastrarNovoGrupoUsuarioHandler;
+use PainelDLX\Application\CadastroUsuarios\Handlers\ExcluirGrupoUsuarioHandler;
+use PainelDLX\Application\CadastroUsuarios\Handlers\SalvarGrupoUsuarioExistenteHandler;
 use PainelDLX\Domain\CadastroUsuarios\Entities\GrupoUsuario;
-use PainelDLX\Domain\CadastroUsuarios\Entities\Usuario;
 use PainelDLX\Infra\ORM\Doctrine\Repositories\GrupoUsuarioRepository;
-use PainelDLX\Infra\ORM\Doctrine\Repositories\UsuarioRepository;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Diactoros\Response\JsonResponse;
 
 /**
- * Class CadastroUsuarioController
+ * Class GrupoUsuarioController
  * @package PainelDLX\Presentation\Site\Controllers
- * @property UsuarioRepository $repository
+ * @property GrupoUsuarioRepository $repository
  */
-class CadastroUsuarioController extends SiteController
+class GrupoUsuarioController extends SiteController
 {
     /**
-     * CadastroUsuarioController constructor.
+     * GrupoUsuarioController constructor.
      * @throws \Doctrine\ORM\ORMException
      */
     public function __construct()
@@ -61,27 +59,27 @@ class CadastroUsuarioController extends SiteController
         $this->view->setPaginaMestra('src/PainelDLX/Presentation/Site/Views/painel-dlx-master.phtml');
         $this->view->setViewRoot('src/PainelDLX/Presentation/Site/Views');
 
-        $this->repository = EntityManagerX::getRepository(Usuario::class);
+        $this->repository = EntityManagerX::getRepository(GrupoUsuario::class);
     }
 
     /**
-     * Listar os usuários existentes no banco de dados
+     * Mostrar a lista com os usuários
      * @param ServerRequestInterface $request
      * @return ResponseInterface
      * @throws \Vilex\Exceptions\PaginaMestraNaoEncontradaException
      * @throws \Exception
      */
-    public function listaUsuarios(ServerRequestInterface $request): ResponseInterface
+    public function listaGruposUsuarios(ServerRequestInterface $request): ResponseInterface
     {
         try {
-            $lista_usuarios = $this->repository->findBy($request->getParsedBody());
+            $lista_grupos_usuarios = $this->repository->findAtivos($request->getParsedBody());
 
             // Atributos
-            $this->view->setAtributo('titulo-pagina', 'Usuários');
-            $this->view->setAtributo('lista_usuarios', $lista_usuarios);
+            $this->view->setAtributo('titulo-pagina', 'Grupos de Usuários');
+            $this->view->setAtributo('lista_grupos_usuarios', $lista_grupos_usuarios);
 
             // Views
-            $this->view->addTemplate('lista_usuarios');
+            $this->view->addTemplate('lista_grupos_usuarios');
         } catch (UserException $e) {
             $this->view->addTemplate('mensagem_usuario');
             $this->view->setAtributo('mensagem', [
@@ -97,19 +95,14 @@ class CadastroUsuarioController extends SiteController
      * @return ResponseInterface
      * @throws \Exception
      */
-    public function formNovoUsuario(): ResponseInterface
+    public function formNovoGrupoUsuario(): ResponseInterface
     {
         try {
-            /** @var GrupoUsuarioRepository $grupo_usuario_repository */
-            $grupo_usuario_repository = EntityManagerX::getRepository(GrupoUsuario::class);
-            $lista_grupos = $grupo_usuario_repository->findAtivos();
-
             // Atributos
-            $this->view->setAtributo('titulo-pagina', 'Adicionar novo usuário');
-            $this->view->setAtributo('lista_grupos', $lista_grupos);
+            $this->view->setAtributo('titulo-pagina', 'Adicionar novo grupo de usuário');
 
             // Views
-            $this->view->addTemplate('form_novo_usuario');
+            $this->view->addTemplate('form_novo_grupo_usuario');
         } catch (UserException $e) {
             $this->view->addTemplate('mensagem_usuario');
             $this->view->setAtributo('mensagem', [
@@ -127,30 +120,21 @@ class CadastroUsuarioController extends SiteController
      * @return ResponseInterface
      * @throws \Vilex\Exceptions\PaginaMestraNaoEncontradaException
      */
-    public function cadastrarNovoUsuario(ServerRequestInterface $request): ResponseInterface
+    public function cadastrarNovoGrupoUsuario(ServerRequestInterface $request): ResponseInterface
     {
         /**
          * @var string $nome
-         * @var string $email
-         * @var string $senha
-         * @var string $senha_confirm,
-         * @var array $grupos
          */
         extract($request->getParsedBody());
 
         try {
-            $command = (new CadastrarNovoUsuarioCommand($nome, $email, $senha_confirm, $senha_confirm, $grupos));
+            $command = (new CadastrarNovoGrupoUsuarioCommand($nome));
 
-            /** @var GrupoUsuarioRepository $grupo_usuario_repository */
-            $grupo_usuario_repository = EntityManagerX::getRepository(GrupoUsuario::class);
-
-            /** @var Usuario $usuario */
-            $usuario = (new CadastrarNovoUsuarioHandler($this->repository, $grupo_usuario_repository))
-                ->handle($command);
+            $grupo_usuario = (new CadastrarNovoGrupoUsuarioHandler($this->repository))->handle($command);
 
             $msg['retorno'] = 'sucesso';
-            $msg['mensagem'] = 'Usuário cadastrado com sucesso!';
-            $msg['usuario'] = $usuario;
+            $msg['mensagem'] = 'Grupo de usuário cadastrado com sucesso!';
+            $msg['grupo_usuario'] = $grupo_usuario;
         } catch (\Exception $e) {
             $msg['retorno'] = 'erro';
             $msg['mensagem'] = $e->getMessage();
@@ -160,31 +144,29 @@ class CadastroUsuarioController extends SiteController
     }
 
     /**
-     * Mostrar formulário para alterar informações do usuário.
+     * Mostrar o formulário para alterar as informações de um grupo de usuário
      * @param ServerRequestInterface $request
      * @return ResponseInterface
      * @throws \Vilex\Exceptions\PaginaMestraNaoEncontradaException
      * @throws \Exception
      */
-    public function formAlterarUsuario(ServerRequestInterface $request): ResponseInterface
+    public function formAlterarGrupoUsuario(ServerRequestInterface $request): ResponseInterface
     {
-        $usuario_id = $request->getQueryParams()['usuario_id'];
+        /**
+         * @var int $grupo_usuario_id
+         */
+        extract($request->getQueryParams());
 
         try {
-            /** @var Usuario $usuario */
-            $usuario = $this->repository->find($usuario_id);
-
-            /** @var GrupoUsuarioRepository $grupo_usuario_repository */
-            $grupo_usuario_repository = EntityManagerX::getRepository(GrupoUsuario::class);
-            $lista_grupos = $grupo_usuario_repository->findAtivos();
+            /** @var GrupoUsuario $grupo_usuario */
+            $grupo_usuario = $this->repository->find($grupo_usuario_id);
 
             // Atributos
-            $this->view->setAtributo('titulo-pagina', 'Atualizar informações do usuário');
-            $this->view->setAtributo('usuario', $usuario);
-            $this->view->setAtributo('lista_grupos', $lista_grupos);
+            $this->view->setAtributo('titulo-pagina', 'Atualizar informações do grupo de usuário');
+            $this->view->setAtributo('grupo_usuario', $grupo_usuario);
 
             // Views
-            $this->view->addTemplate('form_alterar_usuario');
+            $this->view->addTemplate('form_alterar_grupo_usuario');
         } catch (UserException $e) {
             $this->view->addTemplate('mensagem_usuario');
             $this->view->setAtributo('mensagem', [
@@ -197,32 +179,27 @@ class CadastroUsuarioController extends SiteController
     }
 
     /**
-     * Atualizar as informações de um usuário existente.
+     * Alterar as informações de um grupo de usuário
      * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
-    public function atualizarUsuarioExistente(ServerRequestInterface $request): ResponseInterface
+    public function atualizarGrupoUsuarioExistente(ServerRequestInterface $request): ResponseInterface
     {
         /**
-         * @var int $usuario_id
+         * @var int $grupo_usuario_id
          * @var string $nome
-         * @var string $email
-         * @var array $grupos
          */
         extract($request->getParsedBody());
 
         try {
-            $command = (new SalvarUsuarioExistenteCommand($usuario_id, $nome, $email, $grupos));
+            $command = (new SalvarGrupoUsuarioExistenteCommand($grupo_usuario_id, $nome));
 
-            /** @var GrupoUsuarioRepository $grupo_usuario_repository */
-            $grupo_usuario_repository = EntityManagerX::getRepository(GrupoUsuario::class);
-
-            $usuario_atualizado = (new SalvarUsuarioExistenteHandler($this->repository, $grupo_usuario_repository))
+            $grupo_usuario_atualizado = (new SalvarGrupoUsuarioExistenteHandler($this->repository, $grupo_usuario_repository))
                 ->handle($command);
 
             $msg['retorno'] = 'sucesso';
-            $msg['mensagem'] = 'Usuário atualizado com sucesso!';
-            $msg['usuario'] = $usuario_atualizado;
+            $msg['mensagem'] = 'Grupo de usuário atualizado com sucesso!';
+            $msg['grupo_usuario'] = $grupo_usuario_atualizado;
         } catch (\Exception $e) {
             $msg['retorno'] = 'erro';
             $msg['mensagem'] = $e->getMessage();
@@ -231,20 +208,25 @@ class CadastroUsuarioController extends SiteController
         return new JsonResponse($msg);
     }
 
-    public function excluirUsuario(ServerRequestInterface $request): ResponseInterface
+    /**
+     * Excluir um determinado grupo de usuário.
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
+     */
+    public function excluirGrupoUsuario(ServerRequestInterface $request): ResponseInterface
     {
         /**
-         * @var int $usuario_id
+         * @var int $grupo_usuario_id
          */
         extract($request->getParsedBody());
 
         try {
-            $command = (new ExcluirUsuarioCommand($usuario_id));
+            $command = (new ExcluirGrupoUsuarioCommand($grupo_usuario_id));
 
-            (new ExcluirUsuarioHandler($this->repository))->handle($command);
+            (new ExcluirGrupoUsuarioHandler($this->repository))->handle($command);
 
             $msg['retorno'] = 'sucesso';
-            $msg['mensagem'] = 'Usuário excluído com sucesso!';
+            $msg['mensagem'] = 'Grupo de usuário excluído com sucesso!';
         } catch (\Exception $e) {
             $msg['retorno'] = 'erro';
             $msg['mensagem'] = $e->getMessage();

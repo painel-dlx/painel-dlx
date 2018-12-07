@@ -23,31 +23,38 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Domain\CadastroUsuarios\Repositories;
+namespace PainelDLX\Application\CadastroUsuarios\Commands;
 
 
-use DLX\Domain\Repositories\EntityRepositoryInterface;
-use PainelDLX\Domain\CadastroUsuarios\Entities\GrupoUsuario;
+use DLX\Contracts\CommandInterface;
+use PainelDLX\Domain\CadastroUsuarios\Entities\Usuario;
 
-interface GrupoUsuarioRepositoryInterface extends EntityRepositoryInterface
+class ExcluirGrupoUsuarioCommand implements CommandInterface
 {
-    /**
-     * Selecionar todos os grupos de usuários ativos.
-     * @return array
-     */
-    public function findAtivos(array $criteria = [], array $order_by = []): array;
+    /** @var int */
+    private $grupo_usuario_id;
 
     /**
-     * Obter a lista de grupos de usuários por um array de IDs passados.
-     * @param int ...$grupo_usuario_id
-     * @return array
+     * @return int
      */
-    public function getListaGruposByIds(int ...$grupo_usuario_id): array;
+    public function getGrupoUsuarioId(): int
+    {
+        return $this->grupo_usuario_id;
+    }
+
+    public function __construct(int $grupo_usuario_id)
+    {
+        $this->grupo_usuario_id = $grupo_usuario_id;
+    }
 
     /**
-     * Verificar se existe outro grupo com o mesmo alias
-     * @param GrupoUsuario $grupo_usuarios
-     * @return bool
+     * Request completa do comando
+     * @return array Retorna um array associativo. A chave é o nome da propriedade e o valor seu respectivo valor
      */
-    public function existsOutroGrupoComMesmoAlias(GrupoUsuario $grupo_usuarios): bool;
+    public function getRequest(): array
+    {
+        return [
+            'grupo_usuario_id' => $this->getGrupoUsuarioId()
+        ];
+    }
 }

@@ -24,8 +24,11 @@
  */
 
 use PainelDLX\Presentation\Site\Controllers\CadastroUsuarioController;
+use PainelDLX\Presentation\Site\Controllers\GrupoUsuarioController;
 
 /** @var \RautereX\RautereX $router */
+
+// Cadastro de Usuários --------------------------------------------------------------------------------------------- //
 $router->get(
     '/painel-dlx/usuarios',
     [CadastroUsuarioController::class, 'listaUsuarios']
@@ -53,11 +56,33 @@ $router->post(
     [CadastroUsuarioController::class, 'excluirUsuario']
 );
 
-// $router->put(
-//     '/painel-dlx/usuarios/salvar-usuario-existente',
-//     [CadastroUsuarioController::class, 'atualizarUsuarioExistente']
-// );
-// $router->delete(
-//     '/painel-dlx/usuarios/excluir-usuario',
-//     [CadastroUsuarioController::class, 'excluir']
-// );
+// Grupos de Usuários ----------------------------------------------------------------------------------------------- //
+$router->get(
+    '/painel-dlx/grupos-de-usuarios',
+    [GrupoUsuarioController::class, 'listaGruposUsuarios']
+);
+
+$router->get(
+    '/painel-dlx/grupos-de-usuarios/novo',
+    [GrupoUsuarioController::class, 'formNovoGrupoUsuario']
+);
+
+$router->get(
+    '/painel-dlx/grupos-de-usuarios/editar',
+    [GrupoUsuarioController::class, 'formAlterarGrupoUsuario']
+);
+
+$router->post(
+    '/painel-dlx/grupos-de-usuarios/cadastrar',
+    [GrupoUsuarioController::class, 'cadastrarNovoGrupoUsuario']
+);
+
+$router->post(
+    '/painel-dlx/grupos-de-usuarios/salvar',
+    [GrupoUsuarioController::class, 'atualizarGrupoUsuarioExistente']
+);
+
+$router->post(
+    '/painel-dlx/grupos-de-usuarios/excluir',
+    [GrupoUsuarioController::class, 'excluirGrupoUsuario']
+);

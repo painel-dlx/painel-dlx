@@ -27,6 +27,8 @@ namespace PainelDLX\Infra\ORM\Doctrine\Repositories;
 
 
 use DLX\Infra\ORM\Doctrine\Repositories\EntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use PainelDLX\Domain\CadastroUsuarios\Entities\GrupoUsuario;
 use PainelDLX\Domain\CadastroUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
 
 class GrupoUsuarioRepository extends EntityRepository implements GrupoUsuarioRepositoryInterface
@@ -35,11 +37,13 @@ class GrupoUsuarioRepository extends EntityRepository implements GrupoUsuarioRep
      * Selecionar todos os grupos de usuários ativos.
      * @return array
      */
-    public function findAtivos(): array
+    public function findAtivos(array $criteria = [], array $order_by = []): array
     {
-        return $this->findBy([
+        $criteria = array_merge($criteria, [
             'deletado' => false
         ]);
+
+        return $this->findBy($criteria, $order_by);
     }
 
     /**
@@ -53,5 +57,21 @@ class GrupoUsuarioRepository extends EntityRepository implements GrupoUsuarioRep
             'grupo_usuario_id' => $grupo_usuario_id,
             'deletado' => false
         ]);
+    }
+
+    /**
+     * Verificar se existe outro grupo com o mesmo alias
+     * @param GrupoUsuario $grupo_usuario
+     * @return bool
+     */
+    public function existsOutroGrupoComMesmoAlias(GrupoUsuario $grupo_usuario): bool
+    {
+        $lista_grupos_usuarios = new ArrayCollection($this->findAtivos([
+            'alias' => $grupo_usuario->getAlias()
+        ]));
+
+        return $lista_grupos_usuarios->exists(function ($key, GrupoUsuario $grupo_usuario_lista) use ($grupo_usuario) {
+            return $grupo_usuario_lista->getGrupoUsuarioId() !== $grupo_usuario->getGrupoUsuarioId();
+        });
     }
 }

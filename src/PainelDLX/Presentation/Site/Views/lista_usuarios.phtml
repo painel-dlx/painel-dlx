@@ -32,15 +32,9 @@ use Vilex\VileX;
 
 $lista_usuarios = $this->getAtributo('lista_usuarios');
 ?>
-[TITULO-PAGINA]
-<title><?php echo $this->getAtributo('titulo-pagina') ?></title>
-[/TITULO-PAGINA]
-
-[TOPO]
-<h1 class="titulo-pagina"><?php echo $this->getAtributo('titulo-pagina') ?></h1>
-[/TOPO]
-
 [CORPO]
+<h1 class="titulo-pagina"><?php echo $this->getAtributo('titulo-pagina') ?></h1>
+
 <nav class="menu-opcoes">
     <a href="/painel-dlx/usuarios/novo">Adicionar usuário</a>
 </nav>

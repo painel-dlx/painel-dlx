@@ -23,31 +23,15 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Domain\CadastroUsuarios\Repositories;
+namespace PainelDLX\Domain\CadastroUsuarios\Exceptions;
 
 
-use DLX\Domain\Repositories\EntityRepositoryInterface;
-use PainelDLX\Domain\CadastroUsuarios\Entities\GrupoUsuario;
+use DLX\Core\Exceptions\UserException;
 
-interface GrupoUsuarioRepositoryInterface extends EntityRepositoryInterface
+class AliasGrupoUsuarioJaUtilizadoException extends UserException
 {
-    /**
-     * Selecionar todos os grupos de usuários ativos.
-     * @return array
-     */
-    public function findAtivos(array $criteria = [], array $order_by = []): array;
-
-    /**
-     * Obter a lista de grupos de usuários por um array de IDs passados.
-     * @param int ...$grupo_usuario_id
-     * @return array
-     */
-    public function getListaGruposByIds(int ...$grupo_usuario_id): array;
-
-    /**
-     * Verificar se existe outro grupo com o mesmo alias
-     * @param GrupoUsuario $grupo_usuarios
-     * @return bool
-     */
-    public function existsOutroGrupoComMesmoAlias(GrupoUsuario $grupo_usuarios): bool;
+    public function __construct(string $alias)
+    {
+        parent::__construct("O alias informado {$alias} já está sendo usado em outro grupo de usuário.");
+    }
 }

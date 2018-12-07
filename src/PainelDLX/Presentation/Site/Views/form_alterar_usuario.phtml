@@ -37,6 +37,8 @@ $usuario = $this->getAtributo('usuario');
 $lista_grupos = $this->getAtributo('lista_grupos');
 ?>
 [CORPO]
+<h1 class="titulo-pagina"><?php echo $this->getAtributo('titulo-pagina') ?></h1>
+
 <form id="form-usuario" method="post" action="/painel-dlx/usuarios/salvar-usuario-existente" onsubmit="salvarUsuarioExistente(this)">
     <input type="hidden" name="usuario_id" value="<?php echo $usuario->getUsuarioId() ?>">
 

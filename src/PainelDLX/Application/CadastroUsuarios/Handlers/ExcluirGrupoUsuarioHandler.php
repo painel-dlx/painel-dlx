@@ -23,31 +23,38 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Domain\CadastroUsuarios\Repositories;
+namespace PainelDLX\Application\CadastroUsuarios\Handlers;
 
-
-use DLX\Domain\Repositories\EntityRepositoryInterface;
+use DLX\Contracts\CommandInterface;
+use DLX\Contracts\HandlerInterface;
+use PainelDLX\Application\CadastroUsuarios\Commands\ExcluirGrupoUsuarioCommand;
 use PainelDLX\Domain\CadastroUsuarios\Entities\GrupoUsuario;
+use PainelDLX\Domain\CadastroUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
 
-interface GrupoUsuarioRepositoryInterface extends EntityRepositoryInterface
+class ExcluirGrupoUsuarioHandler implements HandlerInterface
 {
-    /**
-     * Selecionar todos os grupos de usuários ativos.
-     * @return array
-     */
-    public function findAtivos(array $criteria = [], array $order_by = []): array;
+    /** @var GrupoUsuarioRepositoryInterface */
+    private $grupo_usuario_repository;
+
+    public function __construct(GrupoUsuarioRepositoryInterface $grupo_usuario_repository)
+    {
+        $this->grupo_usuario_repository = $grupo_usuario_repository;
+    }
 
     /**
-     * Obter a lista de grupos de usuários por um array de IDs passados.
-     * @param int ...$grupo_usuario_id
-     * @return array
+     * @param CommandInterface $command
+     * @throws \Exception
      */
-    public function getListaGruposByIds(int ...$grupo_usuario_id): array;
+    public function handle(CommandInterface $command)
+    {
+        /** @var ExcluirGrupoUsuarioCommand $command */
 
-    /**
-     * Verificar se existe outro grupo com o mesmo alias
-     * @param GrupoUsuario $grupo_usuarios
-     * @return bool
-     */
-    public function existsOutroGrupoComMesmoAlias(GrupoUsuario $grupo_usuarios): bool;
+        try {
+            /** @var GrupoUsuario $usuario */
+            $grupo_usuario = $this->grupo_usuario_repository->find($command->getGrupoUsuarioId());
+            $this->grupo_usuario_repository->delete($grupo_usuario);
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
 }

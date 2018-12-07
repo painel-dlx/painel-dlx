@@ -163,6 +163,6 @@ class GrupoUsuario extends Entity
      */
     public static function gerarAliasApartirNome(string $nome): string
     {
-        return strtoupper(str_replace(' ', '_', $nome));
+        return mb_strtoupper(str_replace(' ', '_', $nome));
     }
 }
