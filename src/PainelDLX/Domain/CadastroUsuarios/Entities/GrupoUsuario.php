@@ -201,8 +201,6 @@ class GrupoUsuario extends Entity
      */
     public function hasPermissao(PermissaoUsuario $permissao_usuario): bool
     {
-        return $this->permissoes->exists(function ($key, PermissaoUsuario $permica_usuario_ac) use ($permissao_usuario) {
-            return $permica_usuario_ac === $permissao_usuario;
-        });
+        return $this->permissoes->contains($permissao_usuario);
     }
 }

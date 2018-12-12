@@ -178,13 +178,11 @@ class Usuario extends Entity
 
     /**
      * Verificar se esse usuário já possui um determinado grupo de usuário
-     * @param GrupoUsuario $grupoUsuario
+     * @param GrupoUsuario $grupo_usuario
      * @return bool
      */
-    public function hasGrupoUsuario(GrupoUsuario $grupoUsuario): bool
+    public function hasGrupoUsuario(GrupoUsuario $grupo_usuario): bool
     {
-        return $this->getGrupos()->exists(function ($key, GrupoUsuario $grupoUsuarioAc) use ($grupoUsuario) {
-            return $grupoUsuarioAc === $grupoUsuario;
-        });
+        return $this->grupos->contains($grupo_usuario);
     }
 }
