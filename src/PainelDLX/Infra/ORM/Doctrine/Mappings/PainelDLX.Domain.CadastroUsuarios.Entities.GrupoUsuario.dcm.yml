@@ -24,3 +24,17 @@ PainelDLX\Domain\CadastroUsuarios\Entities\GrupoUsuario:
         usuarios:
             targetEntity: Usuario
             mappedBy: grupos
+        permissoes:
+            targetEntity: PermissaoUsuario
+            inversedBy: grupos
+            cascade:
+                - persist
+                - merge
+            joinTable:
+                name: dlx_permissoes_x_grupos
+                joinColumns:
+                    grupo_usuario_id:
+                        referencedColumnName: grupo_usuario_id
+                inverseJoinColumns:
+                    permissao_usuario_id:
+                        referencedColumnName: permissao_usuario_id

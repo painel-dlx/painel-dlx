@@ -23,32 +23,15 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Testes\Domain\Usuarios\Entities;
+namespace PainelDLX\Domain\CadastroUsuarios\Exceptions;
 
 
-use PainelDLX\Domain\CadastroUsuarios\Entities\GrupoUsuario;
-use PainelDLX\Domain\CadastroUsuarios\Entities\PermissaoUsuario;
-use PainelDLX\Domain\CadastroUsuarios\Exceptions\GrupoJaPossuiPermissaoException;
-use PHPUnit\Framework\TestCase;
+use DLX\Core\Exceptions\SystemException;
 
-class GrupoUsuarioTest extends TestCase
+class PermissaoUsuarioJaPossuiGrupoException extends SystemException
 {
-    public function test_createGrupoUsuarioReturn(): void
+    public function __construct(string $nome_grupo)
     {
-        $grupo_usuario = GrupoUsuario::create('Admin');
-        $this->assertInstanceOf(GrupoUsuario::class, $grupo_usuario);
-    }
-
-    /**
-     * @throws GrupoJaPossuiPermissaoException
-     */
-    public function test_adicionar_duas_permissoes_iguais()
-    {
-        $grupo_usuario = GrupoUsuario::create('Admin');
-        $permissao_usuario = PermissaoUsuario::create('TESTE', 'Teste');
-
-        $this->expectException(GrupoJaPossuiPermissaoException::class);
-        $grupo_usuario->addPermissao($permissao_usuario);
-        $grupo_usuario->addPermissao($permissao_usuario);
+        parent::__construct("Grupo de usuário {$nome_grupo} já existe nessa permissão.");
     }
 }

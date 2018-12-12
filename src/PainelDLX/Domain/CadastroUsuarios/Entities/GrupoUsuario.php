@@ -29,6 +29,7 @@ namespace PainelDLX\Domain\CadastroUsuarios\Entities;
 use DLX\Domain\Entities\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use PainelDLX\Domain\CadastroUsuarios\Exceptions\GrupoJaPossuiPermissaoException;
 
 class GrupoUsuario extends Entity
 {
@@ -42,6 +43,8 @@ class GrupoUsuario extends Entity
     private $deletado = false;
     /** @var Collection */
     private $usuarios;
+    /** @var ArrayCollection */
+    private $permissoes;
 
     /**
      * @return int
@@ -134,11 +137,36 @@ class GrupoUsuario extends Entity
     }
 
     /**
+     * @return Collection
+     */
+    public function getPermissoes(): Collection
+    {
+        return $this->permissoes;
+    }
+
+    /**
+     * Adicionar uma permissão a esse grupo.
+     * @param PermissaoUsuario $permissao_usuario
+     * @return GrupoUsuario
+     * @throws GrupoJaPossuiPermissaoException
+     */
+    public function addPermissao(PermissaoUsuario $permissao_usuario): GrupoUsuario
+    {
+        if ($this->hasPermissao($permissao_usuario)) {
+            throw new GrupoJaPossuiPermissaoException($permissao_usuario->getAlias());
+        }
+
+        $this->permissoes->add($permissao_usuario);
+        return $this;
+    }
+
+    /**
      * GrupoUsuario constructor.
      */
     public function __construct()
     {
         $this->usuarios = new ArrayCollection();
+        $this->permissoes = new ArrayCollection();
     }
 
     /**
@@ -164,5 +192,17 @@ class GrupoUsuario extends Entity
     public static function gerarAliasApartirNome(string $nome): string
     {
         return mb_strtoupper(str_replace(' ', '_', $nome));
+    }
+
+    /**
+     * Verificar se esse grupo já possui determinada permissão.
+     * @param PermissaoUsuario $permissao_usuario
+     * @return bool
+     */
+    public function hasPermissao(PermissaoUsuario $permissao_usuario): bool
+    {
+        return $this->permissoes->exists(function ($key, PermissaoUsuario $permica_usuario_ac) use ($permissao_usuario) {
+            return $permica_usuario_ac === $permissao_usuario;
+        });
     }
 }

@@ -28,27 +28,35 @@ namespace PainelDLX\Testes\Domain\Usuarios\Entities;
 
 use PainelDLX\Domain\CadastroUsuarios\Entities\GrupoUsuario;
 use PainelDLX\Domain\CadastroUsuarios\Entities\PermissaoUsuario;
-use PainelDLX\Domain\CadastroUsuarios\Exceptions\GrupoJaPossuiPermissaoException;
+use PainelDLX\Domain\CadastroUsuarios\Exceptions\PermissaoUsuarioJaPossuiGrupoException;
 use PHPUnit\Framework\TestCase;
 
-class GrupoUsuarioTest extends TestCase
+class PermissaoUsuarioTest extends TestCase
 {
-    public function test_createGrupoUsuarioReturn(): void
+    /** @var string */
+    const ALIAS = 'CADASTRAR_NOVO_USUARIO';
+    /** @var string */
+    const DESCRICAO = 'Cadastrar um novo usuário';
+
+    public function test_create_PermissaoUsuario(): void
     {
-        $grupo_usuario = GrupoUsuario::create('Admin');
-        $this->assertInstanceOf(GrupoUsuario::class, $grupo_usuario);
+        $permissao_usuario = PermissaoUsuario::create(self::ALIAS, self::DESCRICAO);
+
+        $this->assertInstanceOf(PermissaoUsuario::class, $permissao_usuario);
+        $this->assertEquals(self::ALIAS, $permissao_usuario->getAlias());
+        $this->assertEquals(self::DESCRICAO, $permissao_usuario->getDescricao());
     }
 
     /**
-     * @throws GrupoJaPossuiPermissaoException
+     * @throws PermissaoUsuarioJaPossuiGrupoException
      */
-    public function test_adicionar_duas_permissoes_iguais()
+    public function test_adicionar_grupos_iguais()
     {
+        $permissao_usuario = PermissaoUsuario::create(self::ALIAS, self::DESCRICAO);
         $grupo_usuario = GrupoUsuario::create('Admin');
-        $permissao_usuario = PermissaoUsuario::create('TESTE', 'Teste');
 
-        $this->expectException(GrupoJaPossuiPermissaoException::class);
-        $grupo_usuario->addPermissao($permissao_usuario);
-        $grupo_usuario->addPermissao($permissao_usuario);
+        $this->expectException(PermissaoUsuarioJaPossuiGrupoException::class);
+        $permissao_usuario->addGrupo($grupo_usuario);
+        $permissao_usuario->addGrupo($grupo_usuario);
     }
 }
