@@ -26,9 +26,7 @@
 namespace PainelDLX\Presentation\Site\Controllers;
 
 use DLX\Core\Exceptions\UserException;
-use DLX\Core\Services\CriarCommandByArray;
 use DLX\Infra\EntityManagerX;
-use Grpc\Server;
 use PainelDLX\Application\CadastroUsuarios\Commands\CadastrarNovoUsuarioCommand;
 use PainelDLX\Application\CadastroUsuarios\Commands\ExcluirUsuarioCommand;
 use PainelDLX\Application\CadastroUsuarios\Commands\SalvarUsuarioExistenteCommand;
