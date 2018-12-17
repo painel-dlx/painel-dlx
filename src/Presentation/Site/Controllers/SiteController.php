@@ -23,34 +23,26 @@
  * SOFTWARE.
  */
 
-use DLX\Core\Configure;
-use PainelDLX\Application\PainelDLXServiceProvider;
+namespace PainelDLX\Presentation\Site\Controllers;
 
-return [
-    'tipo-ambiente' => Configure::DEV,
+use DLX\Domain\Repositories\EntityRepositoryInterface;
+use League\Tactician\CommandBus;
+use Vilex\VileX;
 
-    'app' => [
-        'nome' => 'painel-dlx',
-        'nome-amigavel' => 'Painel DLX',
-        'rotas' => 'src/Presentation/rotas.php',
-        'service-provider' => PainelDLXServiceProvider::class,
-        'mapping' => include 'mapping.php'
-    ],
+abstract class SiteController
+{
+    /** @var VileX */
+    protected $view;
+    /** @var EntityRepositoryInterface */
+    protected $repository;
+    /** @var CommandBus */
+    protected $commandBus;
 
-    'bd' => [
-        'orm' => 'doctrine',
-        'mapping' => 'yaml',
-        // 'debug' => EchoSQLLogger::class,
-        'dir' => [
-            BASE_DIR . '/src/Infra/ORM/Doctrine/Mappings/',
-            BASE_DIR . '/src/Infra/ORM/Doctrine/Repositories/'
-        ],
-        'conexao' => [
-            'dbname' => 'dlx_dev',
-            'user' => 'root',
-            'password' => '$d5Ro0t',
-            'host' => 'localhost',
-            'driver' => 'pdo_mysql',
-        ]
-    ]
-];
+    public function __construct(
+        VileX $view,
+        CommandBus $commandBus
+    ) {
+        $this->view = $view;
+        $this->commandBus = $commandBus;
+    }
+}

@@ -23,34 +23,53 @@
  * SOFTWARE.
  */
 
-use DLX\Core\Configure;
-use PainelDLX\Application\PainelDLXServiceProvider;
+namespace PainelDLX\Application\CadastroUsuarios\Commands;
 
-return [
-    'tipo-ambiente' => Configure::DEV,
+use DLX\Contracts\CommandInterface;
 
-    'app' => [
-        'nome' => 'painel-dlx',
-        'nome-amigavel' => 'Painel DLX',
-        'rotas' => 'src/Presentation/rotas.php',
-        'service-provider' => PainelDLXServiceProvider::class,
-        'mapping' => include 'mapping.php'
-    ],
+class EditarGrupoUsuarioCommand implements CommandInterface
+{
+    /** @var int */
+    private $grupo_usuario_id;
+    /** @var string */
+    private $nome;
 
-    'bd' => [
-        'orm' => 'doctrine',
-        'mapping' => 'yaml',
-        // 'debug' => EchoSQLLogger::class,
-        'dir' => [
-            BASE_DIR . '/src/Infra/ORM/Doctrine/Mappings/',
-            BASE_DIR . '/src/Infra/ORM/Doctrine/Repositories/'
-        ],
-        'conexao' => [
-            'dbname' => 'dlx_dev',
-            'user' => 'root',
-            'password' => '$d5Ro0t',
-            'host' => 'localhost',
-            'driver' => 'pdo_mysql',
-        ]
-    ]
-];
+    /**
+     * @return int
+     */
+    public function getGrupoUsuarioId(): int
+    {
+        return $this->grupo_usuario_id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNome(): string
+    {
+        return $this->nome;
+    }
+
+    /**
+     * EditarUsuarioCommand constructor.
+     * @param int $grupo_usuario_id
+     * @param string $nome
+     */
+    public function __construct(int $grupo_usuario_id, string $nome)
+    {
+        $this->grupo_usuario_id = $grupo_usuario_id;
+        $this->nome = $nome;
+    }
+
+    /**
+     * Request completa do comando
+     * @return array Retorna um array associativo. A chave é o nome da propriedade e o valor seu respectivo valor
+     */
+    public function getRequest(): array
+    {
+        return [
+            'grupo_usuario_id' => $this->getGrupoUsuarioId(),
+            'nome' => $this->getNome()
+        ];
+    }
+}

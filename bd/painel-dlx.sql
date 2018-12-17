@@ -14,4 +14,4 @@ CREATE TABLE dlx_permissoes_x_grupos (
         references dlx_grupos_usuarios (grupo_usuario_id) on delete cascade
     constraint FK_dlx_permissoes_x_grupos_permissao_usuario_id foreign key (permissao_usuario_id)
         references dlx_permissoes_usuario (permissao_usuario_id) on delete cascade
-)
+) ENGINE=INNDOB;

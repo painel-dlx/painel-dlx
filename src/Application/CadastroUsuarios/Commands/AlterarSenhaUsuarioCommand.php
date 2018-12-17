@@ -23,34 +23,43 @@
  * SOFTWARE.
  */
 
-use DLX\Core\Configure;
-use PainelDLX\Application\PainelDLXServiceProvider;
+namespace PainelDLX\Application\CadastroUsuarios\Commands;
 
-return [
-    'tipo-ambiente' => Configure::DEV,
 
-    'app' => [
-        'nome' => 'painel-dlx',
-        'nome-amigavel' => 'Painel DLX',
-        'rotas' => 'src/Presentation/rotas.php',
-        'service-provider' => PainelDLXServiceProvider::class,
-        'mapping' => include 'mapping.php'
-    ],
+use PainelDLX\Domain\CadastroUsuarios\Entities\Usuario;
+use PainelDLX\Domain\CadastroUsuarios\ValueObjects\SenhaUsuario;
 
-    'bd' => [
-        'orm' => 'doctrine',
-        'mapping' => 'yaml',
-        // 'debug' => EchoSQLLogger::class,
-        'dir' => [
-            BASE_DIR . '/src/Infra/ORM/Doctrine/Mappings/',
-            BASE_DIR . '/src/Infra/ORM/Doctrine/Repositories/'
-        ],
-        'conexao' => [
-            'dbname' => 'dlx_dev',
-            'user' => 'root',
-            'password' => '$d5Ro0t',
-            'host' => 'localhost',
-            'driver' => 'pdo_mysql',
-        ]
-    ]
-];
+class AlterarSenhaUsuarioCommand
+{
+    /** @var Usuario */
+    private $usuario;
+    /** @var SenhaUsuario */
+    private $senha_usuario;
+
+    /**
+     * @return Usuario
+     */
+    public function getUsuario(): Usuario
+    {
+        return $this->usuario;
+    }
+
+    /**
+     * @return SenhaUsuario
+     */
+    public function getSenhaUsuario(): SenhaUsuario
+    {
+        return $this->senha_usuario;
+    }
+
+    /**
+     * AlterarSenhaUsuarioCommand constructor.
+     * @param Usuario $usuario
+     * @param SenhaUsuario $senha_usuario
+     */
+    public function __construct(Usuario $usuario, SenhaUsuario $senha_usuario)
+    {
+        $this->usuario = $usuario;
+        $this->senha_usuario = $senha_usuario;
+    }
+}

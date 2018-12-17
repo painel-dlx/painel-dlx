@@ -4,14 +4,15 @@
   "minimum-stability": "dev",
   "license": "MIT",
   "require": {
-    "dlepera88-php/dlx": "dev-master",
+    "dlepera88-php/dlx": "1.1.x-dev",
     "dlepera88-php/vilex": "1.2.0.x-dev",
-    "dlepera88-php/rauterex": "dev-master",
-    "components/jquery": "3.3.*"
+    "dlepera88-php/rauterex": "1.1.x-dev",
+    "components/jquery": "3.3.*",
+    "league/tactician-container": "dev-master"
   },
   "autoload": {
     "psr-4": {
-        "PainelDLX\\": "src/PainelDLX"
+        "PainelDLX\\": "src/"
     }
   },
   "autoload-dev": {

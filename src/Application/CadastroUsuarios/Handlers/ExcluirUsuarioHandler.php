@@ -23,34 +23,36 @@
  * SOFTWARE.
  */
 
-use DLX\Core\Configure;
-use PainelDLX\Application\PainelDLXServiceProvider;
+namespace PainelDLX\Application\CadastroUsuarios\Handlers;
 
-return [
-    'tipo-ambiente' => Configure::DEV,
+use DLX\Contracts\CommandInterface;
+use DLX\Contracts\HandlerInterface;
+use PainelDLX\Application\CadastroUsuarios\Commands\ExcluirUsuarioCommand;
+use PainelDLX\Domain\CadastroUsuarios\Entities\Usuario;
+use PainelDLX\Domain\CadastroUsuarios\Repositories\UsuarioRepositoryInterface;
 
-    'app' => [
-        'nome' => 'painel-dlx',
-        'nome-amigavel' => 'Painel DLX',
-        'rotas' => 'src/Presentation/rotas.php',
-        'service-provider' => PainelDLXServiceProvider::class,
-        'mapping' => include 'mapping.php'
-    ],
+class ExcluirUsuarioHandler implements HandlerInterface
+{
+    /** @var UsuarioRepositoryInterface */
+    private $usuario_repository;
 
-    'bd' => [
-        'orm' => 'doctrine',
-        'mapping' => 'yaml',
-        // 'debug' => EchoSQLLogger::class,
-        'dir' => [
-            BASE_DIR . '/src/Infra/ORM/Doctrine/Mappings/',
-            BASE_DIR . '/src/Infra/ORM/Doctrine/Repositories/'
-        ],
-        'conexao' => [
-            'dbname' => 'dlx_dev',
-            'user' => 'root',
-            'password' => '$d5Ro0t',
-            'host' => 'localhost',
-            'driver' => 'pdo_mysql',
-        ]
-    ]
-];
+    public function __construct(UsuarioRepositoryInterface $usuario_repository)
+    {
+        $this->usuario_repository = $usuario_repository;
+    }
+
+    /**
+     * @param CommandInterface $command
+     * @throws \Exception
+     */
+    public function handle(CommandInterface $command)
+    {
+        /** @var ExcluirUsuarioCommand $command */
+
+        try {
+            $this->usuario_repository->delete($command->getUsuario());
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
+}

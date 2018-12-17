@@ -23,34 +23,15 @@
  * SOFTWARE.
  */
 
-use DLX\Core\Configure;
-use PainelDLX\Application\PainelDLXServiceProvider;
+namespace PainelDLX\Domain\CadastroUsuarios\Exceptions;
 
-return [
-    'tipo-ambiente' => Configure::DEV,
 
-    'app' => [
-        'nome' => 'painel-dlx',
-        'nome-amigavel' => 'Painel DLX',
-        'rotas' => 'src/Presentation/rotas.php',
-        'service-provider' => PainelDLXServiceProvider::class,
-        'mapping' => include 'mapping.php'
-    ],
+use DLX\Core\Exceptions\UserException;
 
-    'bd' => [
-        'orm' => 'doctrine',
-        'mapping' => 'yaml',
-        // 'debug' => EchoSQLLogger::class,
-        'dir' => [
-            BASE_DIR . '/src/Infra/ORM/Doctrine/Mappings/',
-            BASE_DIR . '/src/Infra/ORM/Doctrine/Repositories/'
-        ],
-        'conexao' => [
-            'dbname' => 'dlx_dev',
-            'user' => 'root',
-            'password' => '$d5Ro0t',
-            'host' => 'localhost',
-            'driver' => 'pdo_mysql',
-        ]
-    ]
-];
+class UsuarioNaoEncontrado extends UserException
+{
+    public function __construct()
+    {
+        parent::__construct('Usuário não encontrado!');
+    }
+}

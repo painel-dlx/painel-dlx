@@ -23,34 +23,41 @@
  * SOFTWARE.
  */
 
-use DLX\Core\Configure;
-use PainelDLX\Application\PainelDLXServiceProvider;
+namespace PainelDLX\Application\CadastroUsuarios\Commands;
 
-return [
-    'tipo-ambiente' => Configure::DEV,
 
-    'app' => [
-        'nome' => 'painel-dlx',
-        'nome-amigavel' => 'Painel DLX',
-        'rotas' => 'src/Presentation/rotas.php',
-        'service-provider' => PainelDLXServiceProvider::class,
-        'mapping' => include 'mapping.php'
-    ],
+use DLX\Contracts\CommandInterface;
 
-    'bd' => [
-        'orm' => 'doctrine',
-        'mapping' => 'yaml',
-        // 'debug' => EchoSQLLogger::class,
-        'dir' => [
-            BASE_DIR . '/src/Infra/ORM/Doctrine/Mappings/',
-            BASE_DIR . '/src/Infra/ORM/Doctrine/Repositories/'
-        ],
-        'conexao' => [
-            'dbname' => 'dlx_dev',
-            'user' => 'root',
-            'password' => '$d5Ro0t',
-            'host' => 'localhost',
-            'driver' => 'pdo_mysql',
-        ]
-    ]
-];
+class NovoGrupoUsuarioCommand implements CommandInterface
+{
+    /** @var string */
+    private $nome;
+
+    /**
+     * @return string
+     */
+    public function getNome(): string
+    {
+        return $this->nome;
+    }
+
+    /**
+     * NovoUsuarioCommand constructor.
+     * @param string $nome
+     */
+    public function __construct(string $nome)
+    {
+        $this->nome = $nome;
+    }
+
+    /**
+     * Request completa do comando
+     * @return array Retorna um array associativo. A chave é o nome da propriedade e o valor seu respectivo valor
+     */
+    public function getRequest(): array
+    {
+        return [
+            'nome' => $this->getNome()
+        ];
+    }
+}

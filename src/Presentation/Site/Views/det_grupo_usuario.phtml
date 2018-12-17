@@ -23,34 +23,32 @@
  * SOFTWARE.
  */
 
-use DLX\Core\Configure;
-use PainelDLX\Application\PainelDLXServiceProvider;
+use PainelDLX\Domain\CadastroUsuarios\Entities\GrupoUsuario;
+use PainelDLX\Domain\CadastroUsuarios\Entities\Usuario;
+use Vilex\VileX;
 
-return [
-    'tipo-ambiente' => Configure::DEV,
+/**
+ * @var VileX $this
+ */
 
-    'app' => [
-        'nome' => 'painel-dlx',
-        'nome-amigavel' => 'Painel DLX',
-        'rotas' => 'src/Presentation/rotas.php',
-        'service-provider' => PainelDLXServiceProvider::class,
-        'mapping' => include 'mapping.php'
-    ],
+/** @var GrupoUsuario $grupo_usuario */
+$grupo_usuario = $this->getAtributo('grupo-usuario');
+?>
 
-    'bd' => [
-        'orm' => 'doctrine',
-        'mapping' => 'yaml',
-        // 'debug' => EchoSQLLogger::class,
-        'dir' => [
-            BASE_DIR . '/src/Infra/ORM/Doctrine/Mappings/',
-            BASE_DIR . '/src/Infra/ORM/Doctrine/Repositories/'
-        ],
-        'conexao' => [
-            'dbname' => 'dlx_dev',
-            'user' => 'root',
-            'password' => '$d5Ro0t',
-            'host' => 'localhost',
-            'driver' => 'pdo_mysql',
-        ]
-    ]
-];
+[CORPO]
+<h1 class="titulo-pagina"><?php echo $this->getAtributo('titulo-pagina') ?></h1>
+
+<details class="detalhe-registro" open>
+    <summary class="detalhe-registro-titulo">Geral</summary>
+
+    <p class="detalhe-registro-paragr">
+        <span class="detalhe-registro-rotulo">Alias (apelido):</span>
+        <?php echo $grupo_usuario->getAlias() ?>
+    </p>
+
+    <p class="detalhe-registro-paragr">
+        <span class="detalhe-registro-rotulo">Nome:</span>
+        <?php echo $grupo_usuario->getNome() ?>
+    </p>
+</details>
+[/CORPO]
