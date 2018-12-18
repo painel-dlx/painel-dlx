@@ -1,0 +1,23 @@
+.dlx-menu {
+    $pd-vertical: 7px;
+
+    // Posicionamento
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 2;
+
+    // Tamanho
+    width: 100%;
+    height: 55px;
+    box-sizing: border-box;
+
+    // Margens
+    margin: 0;
+    padding-top: $pd-vertical;
+    padding-bottom: $pd-vertical;
+    background: #33909F;
+
+    // Visual
+    box-shadow: 0 0 5px rgba(black , .5);
+}

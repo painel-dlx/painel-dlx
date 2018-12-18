@@ -1,0 +1,26 @@
+.link-mostrar-menu {
+    $tm: 28px;
+
+    // Texto
+    text-decoration: none;
+    color: transparent;
+
+    // Tamanho
+    width: $tm;
+    height: $tm;
+
+    // Visual
+    display: inline-block;
+
+    &::before {
+        // Conteúdo
+        content: '\e9bd';
+
+        // Texto
+        color: #FFF;
+        font: 28px icomoon;
+
+        // Alinhamento
+        vertical-align: middle;
+    }
+}

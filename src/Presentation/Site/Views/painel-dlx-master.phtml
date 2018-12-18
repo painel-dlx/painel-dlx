@@ -33,6 +33,7 @@ use Vilex\VileX;
 
 <html>
 <head>
+    <base href="<?php Configure::get('app', 'base-html') ?>"/>
     <meta name="Content-type" content="text-html">
     <title><?php echo Configure::get('app', 'nome-amigavel') ?></title>
 
@@ -41,37 +42,55 @@ use Vilex\VileX;
 </head>
 
 <body>
-<header class="dlx-topo">
-    [TOPO/]
+<nav class="dlx-menu">
+    <label>
+        <input type="search" id="filtrar-menu" class="form-controle menu-filtro">
+    </label>
 
-    <nav class="dlx-menu">
-        <ul class="menu-principal">
-            <li class="menu-item">
-                <a href="/painel-dlx/usuarios" class="menu-item">
-                    Usuários
-                </a>
-            </li>
+    <a href="javascript:" class="link-mostrar-menu" onclick="mostrarMenu()" title="Abrir menu">
+        Mostrar Menu
+    </a>
 
-            <li class="menu-item">
-                <a href="/painel-dlx/grupos-de-usuarios" class="menu-item">
-                    Grupos de Usuários
-                </a>
-            </li>
-        </ul>
-    </nav>
-</header>
+    <ul class="menu-principal">
+        <a href="javascript:" class="link-fechar-menu" onclick="mostrarMenu()" title="Fechar menu">X</a>
 
-<div class="dlx-conteudo">
-    [CORPO/]
+        <li class="menu-item">
+            <span class="menu-link">Admin</span>
+
+            <ul class="sub-menu">
+                <li class="sub-menu-item">
+                    <a href="/painel-dlx/usuarios" class="sub-menu-link">
+                        Usuários
+                    </a>
+                </li>
+
+                <li class="sub-menu-item">
+                    <a href="/painel-dlx/grupos-de-usuarios" class="sub-menu-link">
+                        Grupos de Usuários
+                    </a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</nav>
+
+<div class="wrapper">
+    <header class="dlx-topo">
+        [TOPO/]
+    </header>
+
+    <div class="dlx-conteudo">
+        [CORPO/]
+    </div>
+
+    <footer class="dlx-rodape">
+        [RODAPE/]
+    </footer>
 </div>
-
-<footer class="dlx-rodape">
-    [RODAPE/]
-</footer>
 
 <!-- TODO: CRIAR OPÇÃO PARA O VILEX ADICIONAR OS JS COMO ERA FEITO NO DLX ORIGINAL -->
 <script src="/vendor/components/jquery/jquery.min.js"></script>
-[ARQUIVOS-JAVASCRIPTS/]
+[ARQUIVOS-JAVASCRIPT/]
 [SCRIPTS/]
 </body>
 </html>

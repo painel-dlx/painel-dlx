@@ -1,0 +1,41 @@
+@font-face {
+    font-family: icomoon;
+    src: url('fontes/icomoon/fonts/icomoon.eot'); // IE9
+    src: url('fontes/icomoon/fonts/icomoon.woff') format('woff'),
+        url('fontes/icomoon/fonts/icomoon.ttf') format('truetype'),
+        url('fontes/icomoon/fonts/icomoon.svg') format('svg');
+}
+
+body {
+    // Visual
+    background: #F4F7FB;
+
+    // Texto
+    font: 14px "Open Sans", sans-serif;
+
+    // Margens
+    padding: 95px 1% 40px;
+
+    .wrapper {
+        // Transições
+        transition: filter .1s;
+    }
+
+    &.mostrando-menu {
+        .wrapper {
+            // Visual
+            filter: blur(4px);
+        }
+
+        .menu-principal {
+            // Visual
+            display: flex;
+        }
+    }
+}
+
+@import "layout/dlx-menu";
+@import "componentes/link-mostrar-menu";
+@import "componentes/link-fechar-menu";
+@import "componentes/menu-principal";
+@import "componentes/titulo-pagina";
