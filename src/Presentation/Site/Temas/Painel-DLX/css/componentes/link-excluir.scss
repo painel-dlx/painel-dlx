@@ -1,40 +1,17 @@
 .link-excluir {
-    $tm: 30px;
     $cor-fundo: #990500;
 
-    // Visual
-    display: inline-block;
-
-    // Tamanho
-    width: $tm;
-    height: $tm;
-
-    // Texto
-    white-space: nowrap;
-    color: transparent;
+    @extend .so-icone;
 
     &::before {
         // Conteúdo
         content: '\e9ac';
 
-        // Texto
-        color: #FFF;
-        font: 14px icomoon;
-        text-align: center;
-        line-height: $tm;
-
         // Visual
-        display: inline-block;
         background: lighten($cor-fundo, .9);
-        border-radius: 50%;
         border-bottom: 4px solid darken($cor-fundo, .9);
 
-        // Tamanho
-        width: $tm;
-        height: $tm;
-        box-sizing: border-box;
-
-        // Alinhamento
-        vertical-align: middle;
+        // Texto
+        color: #FFF;
     }
 }

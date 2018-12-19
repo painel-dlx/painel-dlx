@@ -1,0 +1,24 @@
+.menu-lateral {
+    // Visual
+    background: #FFF;
+    border-radius: 4px;
+
+    // Tamanho
+    min-width: 250px;
+    max-width: 100%;
+    box-sizing: border-box;
+
+    > .menu-lateral-item {
+        @extend .com-icone;
+
+        // Visual
+        display: block;
+
+        // Tamanho
+        width: 100%;
+
+        // Texto
+        text-transform: uppercase;
+        font-family: "Open Sans", sans-serif;
+    }
+}

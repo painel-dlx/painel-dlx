@@ -1,0 +1,40 @@
+.com-icone {
+    $tm: 30px;
+
+    // Visual
+    display: inline-block;
+
+    // Texto
+    line-height: $tm;
+    white-space: nowrap;
+    text-decoration: none;
+
+    // Margens
+    padding-left: 10px;
+    padding-right: 15px;
+
+    // Tamanho
+    box-sizing: border-box;
+
+    &::before {
+        // Conteúdo
+        content: '\e91f';
+
+        // Texto
+        font: 14px icomoon;
+        text-align: center;
+        line-height: $tm;
+
+        // Visual
+        display: inline-block;
+        border-radius: 50%;
+
+        // Tamanho
+        width: $tm;
+        height: $tm;
+        box-sizing: border-box;
+
+        // Alinhamento
+        vertical-align: middle;
+    }
+}

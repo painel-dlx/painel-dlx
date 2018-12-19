@@ -9,6 +9,7 @@
 body {
     // Visual
     background: #F4F7FB;
+    overflow-x: hidden;
 
     // Texto
     font: 14px "Open Sans", sans-serif;
@@ -34,13 +35,28 @@ body {
     }
 }
 
-@import "layout/dlx-menu";
-@import "componentes/link-mostrar-menu";
-@import "componentes/link-fechar-menu";
-@import "componentes/menu-principal";
-@import "componentes/menu-filtro";
+// Geral
 @import "componentes/titulo-pagina";
 @import "componentes/lista-registros";
+
+// Menus
+@import "layout/dlx-menu";
+@import "componentes/menu-principal";
+@import "componentes/menu-filtro";
+@import "componentes/layout-menu-lateral";
+@import "componentes/menu-lateral";
+
+// Links
+@import "componentes/link-mostrar-menu";
+@import "componentes/link-fechar-menu";
+@import "componentes/com-icone";
+@import "componentes/so-icone";
+@import "componentes/link-inserir";
 @import "componentes/link-detalhe";
 @import "componentes/link-editar";
 @import "componentes/link-excluir";
+
+// Formulário
+@import "componentes/form/form-rotulo";
+@import "componentes/form/form-controle";
+@import "componentes/form/form-grupo";

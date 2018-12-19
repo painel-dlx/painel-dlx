@@ -1,0 +1,17 @@
+.layout-barra-lateral {
+    // Flex
+    display: flex;
+
+    > .barra-lateral {
+        // Flex
+        flex: 25% 0 0;
+
+        // Margens
+        margin-right: 30px;
+    }
+
+    > * {
+        // Flex
+        flex: auto;
+    }
+}
