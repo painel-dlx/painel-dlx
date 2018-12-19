@@ -43,18 +43,62 @@ use Vilex\VileX;
 
 <body>
 <nav class="dlx-menu">
-    <label>
-        <input type="search" id="filtrar-menu" class="form-controle menu-filtro">
-    </label>
-
     <a href="javascript:" class="link-mostrar-menu" onclick="mostrarMenu()" title="Abrir menu">
         Mostrar Menu
     </a>
 
-    <ul class="menu-principal">
+    <div class="menu-principal">
+        <div class="menu-filtro">
+            <label>
+                <input type="search" id="filtrar-menu" class="form-controle">
+            </label>
+        </div>
+
         <a href="javascript:" class="link-fechar-menu" onclick="mostrarMenu()" title="Fechar menu">X</a>
 
-        <li class="menu-item">
+        <div class="menu-item">
+            <span class="menu-link">Reservas</span>
+
+            <ul class="sub-menu">
+                <li class="sub-menu-item">
+                    <a href="#" class="sub-menu-link">
+                        Disponibilidade
+                    </a>
+                </li>
+
+                <li class="sub-menu-item">
+                    <a href="#" class="sub-menu-link">
+                        Reservas
+                    </a>
+                </li>
+
+                <li class="sub-menu-item">
+                    <a href="#" class="sub-menu-link">
+                        Quartos
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="menu-item">
+            <span class="menu-link">Website</span>
+
+            <ul class="sub-menu">
+                <li class="sub-menu-item">
+                    <a href="#" class="sub-menu-link">
+                        Contatos recebidos
+                    </a>
+                </li>
+
+                <li class="sub-menu-item">
+                    <a href="#" class="sub-menu-link">
+                        Redes Sociais
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="menu-item">
             <span class="menu-link">Admin</span>
 
             <ul class="sub-menu">
@@ -70,8 +114,32 @@ use Vilex\VileX;
                     </a>
                 </li>
             </ul>
-        </li>
-    </ul>
+        </div>
+
+        <div class="menu-item">
+            <span class="menu-link">Minha Conta</span>
+
+            <ul class="sub-menu">
+                <li class="sub-menu-item">
+                    <a href="#" class="sub-menu-link">
+                        Meus dados
+                    </a>
+                </li>
+
+                <li class="sub-menu-item">
+                    <a href="#" class="sub-menu-link">
+                        Alterar minha senha
+                    </a>
+                </li>
+
+                <li class="sub-menu-item">
+                    <a href="#" class="sub-menu-link">
+                        Configurações
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
 </nav>
 
 <div class="wrapper">
@@ -91,6 +159,7 @@ use Vilex\VileX;
 <!-- TODO: CRIAR OPÇÃO PARA O VILEX ADICIONAR OS JS COMO ERA FEITO NO DLX ORIGINAL -->
 <script src="/vendor/components/jquery/jquery.min.js"></script>
 [ARQUIVOS-JAVASCRIPT/]
+
 [SCRIPTS/]
 </body>
 </html>

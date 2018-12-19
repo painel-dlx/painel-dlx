@@ -1,0 +1,42 @@
+.menu-filtro {
+    $tm: 40px;
+
+    // Visual
+    background: rgba(black, .2);
+    border-radius: 4px;
+
+    // Tamanho
+    width: 50%;
+    height: $tm;
+
+    // Margens
+    margin: 0 auto;
+
+    // Posicionamento
+    position: absolute;
+    top: 7.5px;
+
+    .form-controle {
+        // Visual
+        background: transparent;
+        border: none;
+
+        // Tamanho
+        width: 100%;
+        height: $tm;
+        box-sizing: border-box;
+
+        // Texto
+        line-height: $tm;
+        font-size: 18px;
+        color: #FFF;
+
+        // Margens
+        padding: 0 15px;
+
+        &:focus {
+            // Visual
+            outline: none;
+        }
+    }
+}

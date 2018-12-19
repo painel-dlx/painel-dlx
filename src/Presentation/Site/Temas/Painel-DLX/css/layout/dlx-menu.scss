@@ -1,5 +1,5 @@
 .dlx-menu {
-    $pd-vertical: 7px;
+    $pd-vertical: 7.5px;
 
     // Posicionamento
     position: fixed;
@@ -14,10 +14,13 @@
 
     // Margens
     margin: 0;
-    padding-top: $pd-vertical;
-    padding-bottom: $pd-vertical;
+    padding: $pd-vertical 15px;
     background: #33909F;
 
     // Visual
+    display: flex;
     box-shadow: 0 0 5px rgba(black , .5);
+
+    // Flex
+    align-items: center;
 }
