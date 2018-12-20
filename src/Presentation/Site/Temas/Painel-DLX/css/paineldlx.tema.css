@@ -165,8 +165,40 @@ body.mostrando-menu .menu-principal {
 .menu-lateral > .menu-lateral-item {
   display: block;
   width: 100%;
-  text-transform: uppercase;
+  height: 40px;
   font-family: "Open Sans", sans-serif;
+  color: #666;
+  line-height: 40px !important;
+}
+.menu-lateral > .menu-lateral-item:hover, .menu-lateral > .menu-lateral-item.ativo {
+  color: #FFF;
+  background: orange;
+}
+.menu-lateral > .menu-lateral-item.ativo {
+  position: relative;
+}
+.menu-lateral > .menu-lateral-item.ativo::after {
+  content: "";
+  display: inline-block;
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  border-left: 7px solid orange;
+  vertical-align: middle;
+  margin-right: 10px;
+  width: 0;
+  height: 0;
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  transform: translateY(-50%);
+}
+.menu-lateral > .menu-lateral-item:first-child {
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+.menu-lateral > .menu-lateral-item:last-child {
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
 }
 
 .link-mostrar-menu {
@@ -279,9 +311,37 @@ body.mostrando-menu .menu-principal {
 .form-controle:focus {
   outline: 2px solid orange;
 }
+.form-controle-checkbox, .form-controle-radio {
+  width: auto;
+  height: auto;
+  vertical-align: middle;
+}
 
 .form-grupo {
   border: none;
+  padding: 0;
+}
+
+.form-titulo {
+  display: block;
+  background: #1e8788;
+  border-radius: 3px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px 15px;
+  color: #FFF;
+}
+
+.form-botoes {
+  display: block;
+  border-top: 1px solid orange;
+  padding-top: 8px;
+  text-align: center;
+}
+
+.form-alterar-usuario #form-acesso-sistema,
+.form-alterar-usuario #form-grupos-usuarios {
+  display: none;
 }
 
 /*# sourceMappingURL=paineldlx.tema.css.map */

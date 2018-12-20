@@ -20,4 +20,14 @@
         // Visual
         outline: 2px solid orange;
     }
+
+    &-checkbox,
+    &-radio {
+        // Tamanho
+        width: auto;
+        height: auto;
+
+        // Alinhamento
+        vertical-align: middle;
+    }
 }

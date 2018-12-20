@@ -42,11 +42,11 @@ $lista_grupos = $this->getAtributo('lista_grupos');
 <div class="layout-barra-lateral">
     <aside class="barra-lateral">
         <nav class="menu-lateral">
-            <a href="#" class="menu-lateral-item">
+            <a href="#" class="menu-lateral-item ativo" onclick="trocarForm('form-acesso-sistema', 'form-dados-pessoais', this)">
                 Dados Pessoais
             </a>
 
-            <a href="#" class="menu-lateral-item">
+            <a href="javascript:" class="menu-lateral-item" onclick="trocarForm('form-dados-pessoais', 'form-acesso-sistema', this)">
                 Acesso ao sistema
             </a>
 
@@ -54,13 +54,17 @@ $lista_grupos = $this->getAtributo('lista_grupos');
                 Grupos de Usuário
             </a>
 
-            <a href="#" class="menu-lateral-item">
+            <a href="/painel-dlx/usuarios/novo" class="menu-lateral-item">
+                Novo Usuário
+            </a>
+
+            <a href="/painel-dlx/usuarios" class="menu-lateral-item">
                 Todos usuários
             </a>
         </nav>
     </aside>
 
-    <form id="form-usuario" method="post" action="/painel-dlx/usuarios/salvar-usuario-existente" onsubmit="salvarUsuarioExistente(this)">
+    <form id="form-usuario" method="post" action="/painel-dlx/usuarios/salvar-usuario-existente" onsubmit="salvarUsuarioExistente(this)" class="form-alterar-usuario">
         <input type="hidden" name="usuario_id" value="<?php echo $usuario->getUsuarioId() ?>">
 
         <fieldset class="form-grupo" id="form-dados-pessoais">
@@ -118,6 +122,28 @@ $lista_grupos = $this->getAtributo('lista_grupos');
 
 [SCRIPTS]
 <script>
+    function ocultarParteHtml() {
+        for (var idx in arguments) {
+            $('#' + arguments[idx]).hide();
+        }
+    }
+
+    function exibirParteHtml(mostrar) {
+        for (var idx in arguments) {
+            $('#' + arguments[idx]).show();
+        }
+    }
+
+    function trocarForm(ocultar, mostrar, link) {
+        var $link = $(link);
+
+        ocultarParteHtml(ocultar);
+        exibirParteHtml(mostrar);
+
+        $link.parents('.menu-lateral').find('.ativo').removeClass('ativo');
+        $link.addClass('ativo');
+    }
+
     function salvarUsuarioExistente(form) {
         var $form = $(form);
 
