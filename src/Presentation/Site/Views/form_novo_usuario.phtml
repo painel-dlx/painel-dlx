@@ -36,7 +36,7 @@ $lista_grupos = $this->getAtributo('lista_grupos')
 [CORPO]
 <h1 class="titulo-pagina"><?php echo $this->getAtributo('titulo-pagina') ?></h1>
 
-<form id="form-usuario" method="post" action="/painel-dlx/usuarios/cadastrar-novo-usuario" onsubmit="return cadastrarNovoUsuario(this)">
+<form id="form-usuario" method="post" action="/painel-dlx/usuarios/cadastrar-novo-usuario">
     <fieldset class="form-grupo">
         <legend class="form-titulo">Dados Pessoais</legend>
 
@@ -92,26 +92,20 @@ $lista_grupos = $this->getAtributo('lista_grupos')
 </form>
 [/CORPO]
 
+[ARQUIVOS-JAVASCRIPT]
+<script src="/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js"></script>
+[/ARQUIVOS-JAVASCRIPT]
+
 [SCRIPTS]
 <script>
-    function cadastrarNovoUsuario(form) {
-        var $form = $(form);
+    $('#form-usuario').formAjax({
+        func_depois: function(retorno) {
+            alert(retorno.mensagem);
 
-        $.ajax({
-            url: $form.attr('action'),
-            type: $form.attr('method'),
-            data: $form.serialize(),
-            dataType: 'json',
-            success: function(retorno) {
-                alert(retorno.mensagem);
-
-                if (retorno.retorno === 'sucesso') {
-                    window.location = '/painel-dlx/usuarios'
-                }
+            if (retorno.retorno === 'sucesso') {
+                window.location = '/painel-dlx/usuarios'
             }
-        });
-
-        return false;
-    }
+        }
+    });
 </script>
 [/SCRIPTS]

@@ -46,7 +46,8 @@ abstract class SiteController
         $this->commandBus = $commandBus;
 
         // TODO: retirar a inclusão do tema do controller. Está aqui apenas para agilizar o dev
-        $this->view->addArquivoCss('/src/Presentation/Site/Temas/Painel-DLX/css/paineldlx.tema.css');
-        $this->view->addArquivoJs('/src/Presentation/Site/Temas/Painel-DLX/js/paineldlx.tema.js');
+        $this->view->addArquivoCss('/src/Presentation/Site/public/temas/painel-dlx/css/paineldlx.tema.css');
+        $this->view->addArquivoJs('/src/Presentation/Site/public/temas/painel-dlx/js/paineldlx.tema.js');
+        $this->view->addArquivoJs('/src/Presentation/Site/public/js/painel-dlx.js');
     }
 }

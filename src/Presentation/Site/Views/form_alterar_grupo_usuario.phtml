@@ -37,7 +37,7 @@ $grupo_usuario = $this->getAtributo('grupo_usuario');
 [CORPO]
 <h1 class="titulo-pagina"><?php echo $this->getAtributo('titulo-pagina') ?></h1>
 
-<form id="form-grupo-usuario" method="post" action="/painel-dlx/grupos-de-usuarios/salvar" onsubmit="salvarGrupoUsuarioExistente(this)">
+<form id="form-grupo-usuario" method="post" action="/painel-dlx/grupos-de-usuarios/salvar">
     <input type="hidden" name="grupo_usuario_id" value="<?php echo $grupo_usuario->getGrupoUsuarioId() ?>">
 
     <fieldset class="form-grupo">
@@ -61,26 +61,20 @@ $grupo_usuario = $this->getAtributo('grupo_usuario');
 </form>
 [/CORPO]
 
+[ARQUIVOS-JAVASCRIPT]
+<script src="/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js"></script>
+[/ARQUIVOS-JAVASCRIPT]
+
 [SCRIPTS]
 <script>
-    function salvarGrupoUsuarioExistente(form) {
-        var $form = $(form);
+    $('#form-grupo-usuario').formAjax({
+        func_depois: function(retorno) {
+            alert(retorno.mensagem);
 
-        $.ajax({
-            url: $form.attr('action'),
-            type: $form.attr('method'),
-            data: $form.serialize(),
-            dataType: 'json',
-            success: function(retorno) {
-                alert(retorno.mensagem);
-
-                if (retorno.retorno === 'sucesso') {
-                    window.location = '/painel-dlx/grupos-de-usuarios'
-                }
+            if (retorno.retorno === 'sucesso') {
+                window.location = '/painel-dlx/grupos-de-usuarios'
             }
-        });
-
-        return false;
-    }
+        }
+    });
 </script>
 [/SCRIPTS]

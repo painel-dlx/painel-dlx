@@ -34,7 +34,7 @@ use Vilex\VileX;
 [CORPO]
 <h1 class="titulo-pagina"><?php echo $this->getAtributo('titulo-pagina') ?></h1>
 
-<form id="form-grupo-usuario" method="post" action="/painel-dlx/grupos-de-usuarios/cadastrar" onsubmit="cadastrarNovoGrupoUsuario(this)">
+<form id="form-grupo-usuario" method="post" action="/painel-dlx/grupos-de-usuarios/cadastrar">
     <fieldset class="form-grupo">
         <legend class="form-titulo">Geral</legend>
 
@@ -51,26 +51,20 @@ use Vilex\VileX;
 </form>
 [/CORPO]
 
+[ARQUIVOS-JAVASCRIPT]
+<script src="/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js"></script>
+[/ARQUIVOS-JAVASCRIPT]
+
 [SCRIPTS]
 <script>
-    function cadastrarNovoGrupoUsuario(form) {
-        var $form = $(form);
+    $('#form-grupo-usuario').formAjax({
+        func_depois: function(retorno) {
+            alert(retorno.mensagem);
 
-        $.ajax({
-            url: $form.attr('action'),
-            type: $form.attr('method'),
-            data: $form.serialize(),
-            dataType: 'json',
-            success: function(retorno) {
-                alert(retorno.mensagem);
-
-                if (retorno.retorno === 'sucesso') {
-                    window.location = '/painel-dlx/grupos-de-usuarios'
-                }
+            if (retorno.retorno === 'sucesso') {
+                window.location = '/painel-dlx/grupos-de-usuarios'
             }
-        });
-
-        return false;
-    }
+        }
+    });
 </script>
 [/SCRIPTS]

@@ -339,8 +339,8 @@ body.mostrando-menu .menu-principal {
   text-align: center;
 }
 
-.form-alterar-usuario #form-acesso-sistema,
-.form-alterar-usuario #form-grupos-usuarios {
+.form-alterar-usuario #acesso-sistema,
+.form-alterar-usuario #grupos-usuarios {
   display: none;
 }
 

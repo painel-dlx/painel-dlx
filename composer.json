@@ -1,6 +1,6 @@
 {
   "name": "dlepera88-php/painel-dlx",
-  "version": "2.0.0-dev",
+  "version": "2.0",
   "minimum-stability": "dev",
   "license": "MIT",
   "require": {
@@ -19,5 +19,8 @@
     "psr-4": {
       "PainelDLX\\Testes\\": "tests/"
     }
+  },
+  "require-dev": {
+    "dlepera88-jquery/jquery-form-ajax": "dev-master"
   }
 }
