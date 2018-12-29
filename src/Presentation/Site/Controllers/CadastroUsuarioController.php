@@ -61,8 +61,8 @@ class CadastroUsuarioController extends SiteController
     ) {
         parent::__construct($view, $commandBus);
 
-        $this->view->setPaginaMestra('src/Presentation/Site/Views/painel-dlx-master.phtml');
-        $this->view->setViewRoot('src/Presentation/Site/Views');
+        $this->view->setPaginaMestra('src/Presentation/Site/public/views/painel-dlx-master.phtml');
+        $this->view->setViewRoot('src/Presentation/Site/public/views/usuarios');
 
         $this->repository = $usuario_repository;
         $this->grupo_usuario_repository = $grupo_usuario_repository;
@@ -112,6 +112,9 @@ class CadastroUsuarioController extends SiteController
 
             // Views
             $this->view->addTemplate('form_novo_usuario');
+
+            // JS
+            $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js');
         } catch (UserException $e) {
             $this->view->addTemplate('mensagem_usuario');
             $this->view->setAtributo('mensagem', [
@@ -179,8 +182,11 @@ class CadastroUsuarioController extends SiteController
             $this->view->setAtributo('usuario', $usuario);
             $this->view->setAtributo('lista_grupos', $lista_grupos);
 
-            // Views
+            // views
             $this->view->addTemplate('form_alterar_usuario');
+
+            // JS
+            $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js');
         } catch (UserException $e) {
             $this->view->addTemplate('mensagem_usuario');
             $this->view->setAtributo('mensagem', [
@@ -266,7 +272,7 @@ class CadastroUsuarioController extends SiteController
             $this->view->setAtributo('titulo-pagina', $usuario->getNome());
             $this->view->setAtributo('usuario', $usuario);
 
-            // Views
+            // views
             $this->view->addTemplate('det_usuario');
         } catch (UserException $e) {
             $this->view->addTemplate('mensagem_usuario');

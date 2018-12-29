@@ -34,26 +34,21 @@ use Vilex\VileX;
 [CORPO]
 <h1 class="titulo-pagina"><?php echo $this->getAtributo('titulo-pagina') ?></h1>
 
-<form id="form-grupo-usuario" method="post" action="/painel-dlx/grupos-de-usuarios/cadastrar">
+<form id="form-grupo-usuario" method="post" action="cadastrar">
     <fieldset class="form-grupo">
         <legend class="form-titulo">Geral</legend>
 
         <p class="form-paragr">
-            <label for="txt-nome" class="form-rotulo">Nome:</label>
-            <input type="text" name="nome" id="txt-nome" class="form-controle form-controle-texto" required>
+            <label for="txt-nome" class="form-rotulo form-controle-grupo">Nome:</label>
+            <input type="text" name="nome" id="txt-nome" class="form-controle" required>
         </p>
     </fieldset>
 
     <p class="form-botoes">
-        <button type="submit" class="btn btn-salvar">Salvar</button>
-        <button type="reset" class="btn btn-cancelar">Cancelar</button>
+        <button type="submit" class="botao-salvar">Salvar</button>
     </p>
 </form>
 [/CORPO]
-
-[ARQUIVOS-JAVASCRIPT]
-<script src="/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js"></script>
-[/ARQUIVOS-JAVASCRIPT]
 
 [SCRIPTS]
 <script>

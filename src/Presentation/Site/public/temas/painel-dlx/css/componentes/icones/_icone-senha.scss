@@ -1,0 +1,9 @@
+.icone-senha {
+    &::before {
+        // Conteúdo
+        content: '\e98e';
+
+        // Texto
+        font-family: icomoon;
+    }
+}

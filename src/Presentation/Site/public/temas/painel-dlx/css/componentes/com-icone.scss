@@ -1,3 +1,14 @@
+@import "icones/icone-grupo";
+@import "icones/icone-info";
+@import "icones/icone-inserir";
+@import "icones/icone-lista";
+@import "icones/icone-sistema";
+@import "icones/icone-email";
+@import "icones/icone-usuario";
+@import "icones/icone-senha-nova";
+@import "icones/icone-senha-confirm";
+@import "icones/icone-senha";
+
 .com-icone {
     $tm: 30px;
 
@@ -17,9 +28,6 @@
     box-sizing: border-box;
 
     &::before {
-        // Conteúdo
-        content: '\e91f';
-
         // Texto
         font: 14px icomoon;
         text-align: center;

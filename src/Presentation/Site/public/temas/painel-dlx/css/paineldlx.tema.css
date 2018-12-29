@@ -201,6 +201,11 @@ body.mostrando-menu .menu-principal {
   border-bottom-right-radius: 4px;
 }
 
+.menu-opcoes {
+  margin-bottom: 20px;
+  text-align: right;
+}
+
 .link-mostrar-menu {
   text-decoration: none;
   color: transparent;
@@ -233,6 +238,56 @@ body.mostrando-menu .menu-principal {
   background: rgba(255, 255, 255, 0.1);
 }
 
+.icone-grupo::before, .form-controle-grupo::before {
+  content: "";
+  font-family: icomoon;
+}
+
+.icone-info::before {
+  content: "";
+  font-family: icomoon;
+}
+
+.icone-inserir::before {
+  content: "";
+  font-family: icomoon;
+}
+
+.icone-lista::before {
+  content: "";
+  font-family: icomoon;
+}
+
+.icone-sistema::before {
+  content: "";
+  font-family: icomoon;
+}
+
+.icone-email::before, .form-controle-email::before {
+  content: "";
+  font-family: icomoon;
+}
+
+.icone-usuario::before, .form-controle-usuario::before {
+  content: "";
+  font-family: icomoon;
+}
+
+.icone-senha-nova::before, .form-controle-senha-nova::before {
+  content: "";
+  font-family: icomoon;
+}
+
+.icone-senha-confirm::before, .form-controle-senha-confirm::before {
+  content: "";
+  font-family: icomoon;
+}
+
+.icone-senha::before, .form-controle-senha::before {
+  content: "";
+  font-family: icomoon;
+}
+
 .com-icone, .link-inserir, .so-icone, .link-excluir, .link-editar, .link-detalhe, .menu-lateral > .menu-lateral-item {
   display: inline-block;
   line-height: 30px;
@@ -243,7 +298,6 @@ body.mostrando-menu .menu-principal {
   box-sizing: border-box;
 }
 .com-icone::before, .link-inserir::before, .so-icone::before, .link-excluir::before, .link-editar::before, .link-detalhe::before, .menu-lateral > .menu-lateral-item::before {
-  content: "";
   font: 14px icomoon;
   text-align: center;
   line-height: 30px;
@@ -292,6 +346,31 @@ body.mostrando-menu .menu-principal {
   color: #FFF;
 }
 
+.botao, .botao-alterar-senha, .botao-salvar {
+  border: none;
+  border-bottom: 4px solid;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  padding: 10px 50px;
+  text-transform: uppercase;
+  color: #FFF;
+}
+.botao:hover, .botao-alterar-senha:hover, .botao-salvar:hover {
+  cursor: pointer;
+}
+.botao:active, .botao-alterar-senha:active, .botao-salvar:active, .botao:focus, .botao-alterar-senha:focus, .botao-salvar:focus {
+  outline: none;
+}
+
+.botao-submit, .botao-alterar-senha, .botao-salvar {
+  background: #83c129;
+  border-bottom-color: #69ad21;
+}
+.botao-submit:hover, .botao-alterar-senha:hover, .botao-salvar:hover {
+  background: #7bbe20;
+}
+
 .form-rotulo {
   display: block;
   padding: 3px 0;
@@ -317,12 +396,96 @@ body.mostrando-menu .menu-principal {
   vertical-align: middle;
 }
 
+.form-controle-email {
+  position: relative;
+}
+.form-controle-email::before {
+  position: absolute;
+  top: 34px;
+  left: 12px;
+  font-size: 16px;
+  color: #c6cacd;
+}
+.form-controle-email + .form-controle {
+  padding-left: 40px;
+}
+
+.form-controle-usuario {
+  position: relative;
+}
+.form-controle-usuario::before {
+  position: absolute;
+  top: 34px;
+  left: 12px;
+  font-size: 16px;
+  color: #c6cacd;
+}
+.form-controle-usuario + .form-controle {
+  padding-left: 40px;
+}
+
+.form-controle-senha {
+  position: relative;
+}
+.form-controle-senha::before {
+  position: absolute;
+  top: 34px;
+  left: 12px;
+  font-size: 16px;
+  color: #c6cacd;
+}
+.form-controle-senha + .form-controle {
+  padding-left: 40px;
+}
+
+.form-controle-senha-nova {
+  position: relative;
+}
+.form-controle-senha-nova::before {
+  position: absolute;
+  top: 34px;
+  left: 12px;
+  font-size: 16px;
+  color: #c6cacd;
+}
+.form-controle-senha-nova + .form-controle {
+  padding-left: 40px;
+}
+
+.form-controle-senha-confirm {
+  position: relative;
+}
+.form-controle-senha-confirm::before {
+  position: absolute;
+  top: 34px;
+  left: 12px;
+  font-size: 16px;
+  color: #c6cacd;
+}
+.form-controle-senha-confirm + .form-controle {
+  padding-left: 40px;
+}
+
+.form-controle-grupo {
+  position: relative;
+}
+.form-controle-grupo::before {
+  position: absolute;
+  top: 34px;
+  left: 12px;
+  font-size: 16px;
+  color: #c6cacd;
+}
+.form-controle-grupo + .form-controle {
+  padding-left: 40px;
+}
+
 .form-grupo {
   border: none;
   padding: 0;
 }
 
-.form-titulo {
+.form-titulo, .detalhe-registro-titulo {
   display: block;
   background: #1e8788;
   border-radius: 3px;
@@ -341,6 +504,16 @@ body.mostrando-menu .menu-principal {
 
 .form-alterar-usuario #acesso-sistema,
 .form-alterar-usuario #grupos-usuarios {
+  display: none;
+}
+
+.detalhe-registro-rotulo {
+  text-transform: uppercase;
+  display: block;
+}
+
+.detalhe-usuario #acesso-sistema,
+.detalhe-usuario #grupos-usuarios {
   display: none;
 }
 

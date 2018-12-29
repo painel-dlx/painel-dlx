@@ -40,44 +40,22 @@ $lista_grupos = $this->getAtributo('lista_grupos');
 <h1 class="titulo-pagina"><?php echo $this->getAtributo('titulo-pagina') ?></h1>
 
 <div class="layout-barra-lateral">
-    <aside class="barra-lateral">
-        <nav class="menu-lateral">
-            <a href="#" class="menu-lateral-item ativo" data-mostrar-html="#dados-pessoais">
-                Dados Pessoais
-            </a>
+    <?php include 'menu_lateral_usuarios.phtml'; ?>
 
-            <a href="javascript:" class="menu-lateral-item" data-mostrar-html="#acesso-sistema">
-                Acesso ao sistema
-            </a>
-
-            <a href="#" class="menu-lateral-item" data-mostrar-html="#grupos-usuarios">
-                Grupos de Usuário
-            </a>
-
-            <a href="/painel-dlx/usuarios/novo" class="menu-lateral-item">
-                Novo Usuário
-            </a>
-
-            <a href="/painel-dlx/usuarios" class="menu-lateral-item">
-                Todos usuários
-            </a>
-        </nav>
-    </aside>
-
-    <form id="form-usuario" method="post" action="/painel-dlx/usuarios/salvar-usuario-existente" class="form-alterar-usuario">
+    <form id="form-usuario" method="post" action="salvar-usuario-existente" class="form-alterar-usuario">
         <input type="hidden" name="usuario_id" value="<?php echo $usuario->getUsuarioId() ?>">
 
         <fieldset class="form-grupo" id="dados-pessoais">
             <legend class="form-titulo">Dados Pessoais</legend>
 
             <p class="form-paragr">
-                <label for="txt-nome" class="form-rotulo">Nome:</label>
+                <label for="txt-nome" class="form-rotulo form-controle-usuario">Nome</label>
                 <input type="text" name="nome" id="txt-nome" value="<?php echo $usuario->getNome() ?>" class="form-controle form-controle-texto" required>
             </p>
 
             <p class="form-paragr">
-                <label for="txt-email" class="form-rotulo">Email:</label>
-                <input type="email" name="email" id="txt-email" value="<?php echo $usuario->getEmail() ?>" placeholder="seunome@gmail.com" class="form-controle form-controle-email" required>
+                <label for="txt-email" class="form-rotulo form-controle-email">Email</label>
+                <input type="email" name="email" id="txt-email" value="<?php echo $usuario->getEmail() ?>" placeholder="seunome@gmail.com" class="form-controle" required>
             </p>
         </fieldset>
 
@@ -85,7 +63,7 @@ $lista_grupos = $this->getAtributo('lista_grupos');
         <fieldset class="form-grupo" id="acesso-sistema">
             <legend class="form-titulo">Acesso ao Sistema</legend>
 
-            <a href="/painel-dlx/usuarios/alterar-senha?usuario_id=<?php echo $usuario->getUsuarioId() ?>" class="btn btn-alterar-senha">
+            <a href="alterar-senha?usuario_id=<?php echo $usuario->getUsuarioId() ?>" class="btn btn-alterar-senha">
                 Alterar senha
             </a>
         </fieldset>
@@ -98,9 +76,7 @@ $lista_grupos = $this->getAtributo('lista_grupos');
                     <?php
                     /** @var GrupoUsuario $grupo_usuario */
                     foreach($lista_grupos as $grupo_usuario) :
-                        $is_check = $usuario->getGrupos()->exists(function ($key, GrupoUsuario $grupo_usuario_x) use ($grupo_usuario) {
-                            return $grupo_usuario_x->getGrupoUsuarioId() === $grupo_usuario->getGrupoUsuarioId();
-                        }) ?>
+                        $is_check = $usuario->getGrupos()->contains($grupo_usuario) ?>
                         <p class="form-paragr">
                             <input type="checkbox" name="grupos[]" id="chk-grupo-usuario-<?php echo $grupo_usuario->getGrupoUsuarioId() ?>" value="<?php echo $grupo_usuario->getGrupoUsuarioId() ?>"<?php echo $is_check ? ' CHECKED' : '' ?> class="form-controle form-controle-checkbox">
                             <label for="chk-grupo-usuario-<?php echo $grupo_usuario->getGrupoUsuarioId() ?>"><?php echo $grupo_usuario->getNome() ?></label>
@@ -113,16 +89,11 @@ $lista_grupos = $this->getAtributo('lista_grupos');
         </fieldset>
 
         <p class="form-botoes">
-            <button type="submit" class="btn btn-salvar">Salvar</button>
-            <button type="reset" class="btn btn-cancelar">Cancelar</button>
+            <button type="submit" class="botao-salvar">Salvar</button>
         </p>
     </form>
 </div>
 [/CORPO]
-
-[ARQUIVOS-JAVASCRIPT]
-<script src="/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js"></script>
-[/ARQUIVOS-JAVASCRIPT]
 
 [SCRIPTS]
 <script>

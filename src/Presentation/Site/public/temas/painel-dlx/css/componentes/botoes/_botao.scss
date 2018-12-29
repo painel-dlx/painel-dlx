@@ -1,0 +1,26 @@
+.botao {
+    // Visual
+    border: none;
+    border-bottom: 4px solid;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+
+    // Margens
+    padding: 10px 50px;
+
+    // Texto
+    text-transform: uppercase;
+    color: #FFF;
+
+    &:hover {
+        // Visual
+        cursor: pointer;
+    }
+
+    &:active,
+    &:focus {
+        // Visual
+        outline: none;
+    }
+}

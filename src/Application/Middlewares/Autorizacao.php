@@ -9,29 +9,38 @@
 namespace PainelDLX\Application\Middlewares;
 
 
+use Application\Exceptions\UsuarioNaoPossuiPermissaoException;
 use PainelDLX\Application\Contracts\MiddlewareInterface;
 
 class Autorizacao implements MiddlewareInterface
 {
     /**
-     * @var string
+     * @var string[]
      */
-    private $permissao;
+    private $permissoes;
 
     /**
      * Autorizacao constructor.
-     * @param string $permissao
+     * @param string[] $permissoes
      */
-    public function __construct(string $permissao)
+    public function __construct(string ...$permissoes)
     {
-        $this->permissao = $permissao;
+        $this->permissoes = $permissoes;
     }
 
     /**
      * @return bool
+     * @throws UsuarioNaoPossuiPermissaoException
      */
     public function executar()
     {
+        foreach ($this->permissoes as $permissao) {
+            // TODO: se não possuir 1 das permissões, será lançada uma exceção
+            if (false) {
+                throw new UsuarioNaoPossuiPermissaoException();
+            }
+        }
+
         return true;
     }
 }

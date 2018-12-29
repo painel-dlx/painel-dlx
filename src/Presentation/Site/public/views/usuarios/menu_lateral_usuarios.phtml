@@ -30,45 +30,28 @@ use Vilex\VileX;
 /**
  * @var VileX $this
  */
-
-/** @var Usuario $usuario */
-$usuario = $this->getAtributo('usuario');
 ?>
 
-[CORPO]
-<h1 class="titulo-pagina"><?php echo $this->getAtributo('titulo-pagina') ?></h1>
-
-<details class="detalhe-registro" open>
-    <summary class="detalhe-registro-titulo">Dados Pessoais</summary>
-
-    <p class="detalhe-registro-paragr">
-        <span class="detalhe-registro-rotulo">Nome:</span>
-        <?php echo $usuario->getNome() ?>
-    </p>
-
-    <p class="detalhe-registro-paragr">
-        <span class="detalhe-registro-rotulo">Email:</span>
-        <?php echo $usuario->getEmail() ?>
-    </p>
-
-    <p class="detalhe-registro-paragr">
-        <a href="/painel-dlx/usuarios/alterar-senha?usuario_id=<?php echo $usuario->getUsuarioId() ?>" class="btn btn-alterar-senha">
-            Alterar senha
+<aside class="barra-lateral">
+    <nav class="menu-lateral">
+        <a href="#" class="menu-lateral-item icone-info ativo" data-mostrar-html="#dados-pessoais">
+            Dados Pessoais
         </a>
-    </p>
-</details>
 
-<details class="detalhe-registro" open>
-    <summary class="detalhe-registro-titulo">Grupos de Usuários</summary>
+        <a href="javascript:" class="menu-lateral-item icone-sistema" data-mostrar-html="#acesso-sistema">
+            Acesso ao sistema
+        </a>
 
-    <ul>
-        <?php
-        /** @var GrupoUsuario $grupo_usuario */
-        foreach ($usuario->getGrupos() as $grupo_usuario) : ?>
-            <li class="detalhe-registro-paragr">
-                <?php echo $grupo_usuario->getNome() ?>
-            </li>
-        <?php endforeach; ?>
-    </ul>
-</details>
-[/CORPO]
+        <a href="#" class="menu-lateral-item icone-grupo" data-mostrar-html="#grupos-usuarios">
+            Grupos de Usuário
+        </a>
+
+        <a href="novo" class="menu-lateral-item icone-inserir">
+            Novo Usuário
+        </a>
+
+        <a href="/painel-dlx/usuarios" class="menu-lateral-item icone-lista">
+            Todos usuários
+        </a>
+    </nav>
+</aside>

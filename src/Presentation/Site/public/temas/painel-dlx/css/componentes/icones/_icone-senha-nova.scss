@@ -1,0 +1,9 @@
+.icone-senha-nova {
+    &::before {
+        // Conteúdo
+        content: '\e98f';
+
+        // Texto
+        font-family: icomoon;
+    }
+}

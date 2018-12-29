@@ -1,4 +1,4 @@
-$('.menu-lateral-item').on('click', function () {
+$('.menu-lateral-item[data-mostrar-html]').on('click', function () {
     var $this = $(this);
     var $menu_lateral = $this.parents('.menu-lateral');
     var ocultar = [];

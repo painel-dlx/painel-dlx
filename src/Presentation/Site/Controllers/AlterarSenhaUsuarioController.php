@@ -58,8 +58,8 @@ class AlterarSenhaUsuarioController extends SiteController
     ) {
         parent::__construct($view, $commandBus);
 
-        $this->view->setPaginaMestra('src/Presentation/Site/Views/painel-dlx-master.phtml');
-        $this->view->setViewRoot('src/Presentation/Site/Views');
+        $this->view->setPaginaMestra('src/Presentation/Site/public/views/painel-dlx-master.phtml');
+        $this->view->setViewRoot('src/Presentation/Site/public/views');
 
         $this->repository = $usuario_repository;
     }
@@ -88,6 +88,9 @@ class AlterarSenhaUsuarioController extends SiteController
 
             // Views
             $this->view->addTemplate('form_alterar_senha');
+
+            // JS
+            $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js');
         } catch (UserException $e) {
             $this->view->addTemplate('mensagem_usuario');
             $this->view->setAtributo('mensagem', [

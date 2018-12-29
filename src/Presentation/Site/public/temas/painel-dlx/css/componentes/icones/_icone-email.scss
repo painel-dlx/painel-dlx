@@ -1,0 +1,9 @@
+.icone-email {
+    &::before {
+        // Conteúdo
+        content: '\ea85';
+
+        // Texto
+        font-family: icomoon;
+    }
+}

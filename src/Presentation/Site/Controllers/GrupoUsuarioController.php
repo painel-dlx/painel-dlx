@@ -57,8 +57,8 @@ class GrupoUsuarioController extends SiteController
     ) {
         parent::__construct($view, $command_bus);
 
-        $this->view->setPaginaMestra('src/Presentation/Site/Views/painel-dlx-master.phtml');
-        $this->view->setViewRoot('src/Presentation/Site/Views');
+        $this->view->setPaginaMestra('src/Presentation/Site/public/views/painel-dlx-master.phtml');
+        $this->view->setViewRoot('src/Presentation/Site/public/views/grupos-usuarios');
 
         $this->repository = $grupo_usuario_repository;
     }
@@ -79,7 +79,7 @@ class GrupoUsuarioController extends SiteController
             $this->view->setAtributo('titulo-pagina', 'Grupos de Usuários');
             $this->view->setAtributo('lista_grupos_usuarios', $lista_grupos_usuarios);
 
-            // Views
+            // views
             $this->view->addTemplate('lista_grupos_usuarios');
         } catch (UserException $e) {
             $this->view->addTemplate('mensagem_usuario');
@@ -102,8 +102,11 @@ class GrupoUsuarioController extends SiteController
             // Atributos
             $this->view->setAtributo('titulo-pagina', 'Adicionar novo grupo de usuário');
 
-            // Views
+            // views
             $this->view->addTemplate('form_novo_grupo_usuario');
+
+            // JS
+            $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js');
         } catch (UserException $e) {
             $this->view->addTemplate('mensagem_usuario');
             $this->view->setAtributo('mensagem', [
@@ -165,8 +168,11 @@ class GrupoUsuarioController extends SiteController
             $this->view->setAtributo('titulo-pagina', 'Atualizar informações do grupo de usuário');
             $this->view->setAtributo('grupo_usuario', $grupo_usuario);
 
-            // Views
+            // views
             $this->view->addTemplate('form_alterar_grupo_usuario');
+
+            // JS
+            $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js');
         } catch (UserException $e) {
             $this->view->addTemplate('mensagem_usuario');
             $this->view->setAtributo('mensagem', [
@@ -255,7 +261,7 @@ class GrupoUsuarioController extends SiteController
             $this->view->setAtributo('titulo-pagina', $grupo_usuario->getNome());
             $this->view->setAtributo('grupo-usuario', $grupo_usuario);
 
-            // Views
+            // views
             $this->view->addTemplate('det_grupo_usuario');
         } catch (UserException $e) {
             $this->view->addTemplate('mensagem_usuario');

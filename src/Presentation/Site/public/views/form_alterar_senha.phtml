@@ -38,7 +38,7 @@ $usuario = $this->getAtributo('usuario');
 [CORPO]
 <h1 class="titulo-pagina"><?php echo $this->getAtributo('titulo-pagina') ?></h1>
 
-<form id="form-alterar-senha" method="post" action="/painel-dlx/usuarios/alterar-senha">
+<form id="form-alterar-senha" method="post" action="alterar-senha">
     <input type="hidden" name="usuario_id" value="<?php echo $usuario->getUsuarioId() ?>">
 
     <p class="mensagem-usuario -atencao">
@@ -47,17 +47,17 @@ $usuario = $this->getAtributo('usuario');
     </p>
 
     <p class="form-paragr">
-        <label for="senha-atual" class="form-rotulo">Senha atual:</label>
+        <label for="senha-atual" class="form-rotulo form-controle-senha">Senha atual:</label>
         <input type="password" name="senha_atual" id="senha-atual" class="form-controle" required>
     </p>
 
     <p class="form-paragr">
-        <label for="senha-nova" class="form-rotulo">Senha nova:</label>
+        <label for="senha-nova" class="form-rotulo form-controle-senha-nova">Senha nova:</label>
         <input type="password" name="senha_nova" id="senha-nova" class="form-controle" required>
     </p>
 
     <p class="form-paragr">
-        <label for="senha-confirm" class="form-rotulo">Confirmar a senha:</label>
+        <label for="senha-confirm" class="form-rotulo form-controle-senha-confirm">Confirmar a senha:</label>
         <input type="password" name="senha_confirm" id="senha-confirm" class="form-controle" required>
     </p>
 
@@ -66,10 +66,6 @@ $usuario = $this->getAtributo('usuario');
     </p>
 </form>
 [/CORPO]
-
-[ARQUIVOS-JAVASCRIPT]
-<script src="/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js"></script>
-[/ARQUIVOS-JAVASCRIPT]
 
 [SCRIPTS]
 <script>
