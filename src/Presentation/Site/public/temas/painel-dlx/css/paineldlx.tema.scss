@@ -71,6 +71,8 @@ body {
 @import "componentes/form/form-controle-senha";
 @import "componentes/form/form-controle-senha-nova";
 @import "componentes/form/form-controle-senha-confirm";
+@import "componentes/form/form-controle-alias";
+@import "componentes/form/form-controle-descricao";
 @import "componentes/form/form-controle-grupo";
 @import "componentes/form/form-grupo";
 @import "componentes/form/form-titulo";
@@ -80,3 +82,6 @@ body {
 // Detalhes
 @import "componentes/detalhe-registro";
 @import "componentes/detalhes/detalhe-usuario";
+
+// Outros
+@import "componentes/dica-geral";

@@ -28,9 +28,17 @@ namespace PainelDLX\Presentation\Site\Controllers;
 
 use DLX\Core\Exceptions\UserException;
 use League\Tactician\CommandBus;
+use PainelDLX\Application\CadastroUsuarios\Commands\CadastrarPermissaoUsuarioCommand;
+use PainelDLX\Application\CadastroUsuarios\Commands\EditarPermissaoUsuarioCommand;
+use PainelDLX\Application\CadastroUsuarios\Commands\ExcluirPermissaoUsuarioCommand;
+use PainelDLX\Application\CadastroUsuarios\Handlers\CadastrarPermissaoUsuarioHandler;
+use PainelDLX\Application\CadastroUsuarios\Handlers\ExcluirPermissaoUsuarioHandler;
+use PainelDLX\Domain\CadastroUsuarios\Entities\PermissaoUsuario;
+use PainelDLX\Domain\CadastroUsuarios\Repositories\PermissaoUsuarioRepositoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Vilex\VileX;
+use Zend\Diactoros\Response\JsonResponse;
 
 class CadastroPermissaoController extends SiteController
 {
@@ -39,9 +47,46 @@ class CadastroPermissaoController extends SiteController
      * @param VileX $view
      * @param CommandBus $commandBus
      */
-    public function __construct(VileX $view, CommandBus $commandBus)
-    {
+    public function __construct(
+        VileX $view,
+        CommandBus $commandBus,
+        PermissaoUsuarioRepositoryInterface $permissao_usuario_repository
+    ) {
         parent::__construct($view, $commandBus);
+
+        $this->view->setPaginaMestra('src/Presentation/Site/public/views/painel-dlx-master.phtml');
+        $this->view->setViewRoot('src/Presentation/Site/public/views/permissoes');
+
+        $this->repository = $permissao_usuario_repository;
+    }
+
+    /**
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
+     * @throws \Vilex\Exceptions\ContextoInvalidoException
+     * @throws \Vilex\Exceptions\PaginaMestraNaoEncontradaException
+     * @throws \Vilex\Exceptions\ViewNaoEncontradaException
+     */
+    public function listaPermissoesUsuarios(ServerRequestInterface $request): ResponseInterface
+    {
+        try {
+            $lista_permissoes = $this->repository->findBy($request->getParsedBody());
+
+            // Atributos
+            $this->view->setAtributo('titulo-pagina', 'Permissões');
+            $this->view->setAtributo('lista_permissoes', $lista_permissoes);
+
+            // Views
+            $this->view->addTemplate('lista_permissoes');
+        } catch (UserException $e) {
+            $this->view->addTemplate('mensagem_usuario');
+            $this->view->setAtributo('mensagem', [
+                'tipo' => 'erro',
+                'mensagem' => $e->getMessage()
+            ]);
+        }
+
+        return $this->view->render();
     }
 
     /**
@@ -55,10 +100,13 @@ class CadastroPermissaoController extends SiteController
     {
         try {
             // Atributos
-            $this->view->setAtributo('titulo-pagina', 'Adicionar permissão de usuário');
+            $this->view->setAtributo('titulo-pagina', 'Criar nova permissão');
 
             // Views
             $this->view->addTemplate('form_nova_permissao');
+
+            // JS
+            $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js');
         } catch (UserException $e) {
             $this->view->addTemplate('mensagem_usuario');
             $this->view->setAtributo('mensagem', [
@@ -68,5 +116,205 @@ class CadastroPermissaoController extends SiteController
         }
 
         return $this->view->render();
+    }
+
+    /**
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
+     */
+    public function criarNovaPermissao(ServerRequestInterface $request): ResponseInterface
+    {
+        $post = filter_var_array(
+            $request->getParsedBody(),
+            [
+                'alias' => FILTER_SANITIZE_STRING,
+                'descricao' => FILTER_SANITIZE_STRING
+            ]
+        );
+
+        /**
+         * @var string $alias
+         * @var string $descricao
+         */
+        extract($post); unset($post);
+
+        try {
+            /**
+             * @var PermissaoUsuario $permissao_usuario
+             * @covers CadastrarPermissaoUsuarioHandler
+             */
+            $permissao_usuario = $this->commandBus->handle(new CadastrarPermissaoUsuarioCommand($alias, $descricao));
+
+            $msg['retorno'] = 'sucesso';
+            $msg['mensagem'] = 'Permissão criada com sucesso!';
+            $msg['permissao-usuario'] = $permissao_usuario->getPermissaoUsuarioId();
+        } catch (UserException $e) {
+            $msg['retorno'] = 'erro';
+            $msg['mensagem'] = $e->getMessage();
+        }
+
+        return new JsonResponse($msg);
+    }
+
+    /**
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
+     * @throws \Vilex\Exceptions\ContextoInvalidoException
+     * @throws \Vilex\Exceptions\PaginaMestraNaoEncontradaException
+     * @throws \Vilex\Exceptions\ViewNaoEncontradaException
+     */
+    public function formEditarPermissaoUsuario(ServerRequestInterface $request): ResponseInterface
+    {
+        $get = filter_var_array(
+            $request->getQueryParams(),
+            ['permissao_usuario_id' => FILTER_VALIDATE_INT]
+        );
+
+        /**
+         * @var int $permissao_usuario_id
+         */
+        extract($get); unset($get);
+
+        try {
+            /** @var PermissaoUsuario $permissao_usuario */
+            $permissao_usuario = $this->repository->find($permissao_usuario_id);
+
+            // Atributos
+            $this->view->setAtributo('titulo-pagina', 'Editar permissão');
+
+            // Views
+            $this->view->addTemplate('form_editar_permissao', [
+                'permissao-usuario' => $permissao_usuario
+            ]);
+
+            // JS
+            $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js');
+        } catch (UserException $e) {
+            $this->view->addTemplate('mensagem_usuario');
+            $this->view->setAtributo('mensagem', [
+                'tipo' => 'erro',
+                'mensagem' => $e->getMessage()
+            ]);
+        }
+
+        return $this->view->render();
+    }
+
+    /**
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
+     */
+    public function alterarPermissaoUsuario(ServerRequestInterface $request): ResponseInterface
+    {
+        $post = filter_var_array(
+            $request->getParsedBody(),
+            [
+                'permissao_usuario_id' => FILTER_VALIDATE_INT,
+                'descricao' => FILTER_SANITIZE_STRING
+            ]
+        );
+
+        /**
+         * @var int $permissao_usuario_id
+         * @var string $descricao
+         */
+        extract($post); unset($post);
+
+        try {
+            /**
+             * @var PermissaoUsuario $permissao_usuario
+             * @covers CadastrarPermissaoUsuarioHandler
+             */
+            $permissao_usuario = $this->commandBus->handle(new EditarPermissaoUsuarioCommand($permissao_usuario_id, $descricao));
+
+            $msg['retorno'] = 'sucesso';
+            $msg['mensagem'] = 'Permissão alterada com sucesso!';
+            $msg['permissao-usuario'] = $permissao_usuario->getPermissaoUsuarioId();
+        } catch (UserException $e) {
+            $msg['retorno'] = 'erro';
+            $msg['mensagem'] = $e->getMessage();
+        }
+
+        return new JsonResponse($msg);
+    }
+
+    /**
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
+     * @throws \Vilex\Exceptions\ContextoInvalidoException
+     * @throws \Vilex\Exceptions\PaginaMestraNaoEncontradaException
+     * @throws \Vilex\Exceptions\ViewNaoEncontradaException
+     */
+    public function detalhePermissaoUsuario(ServerRequestInterface $request): ResponseInterface
+    {
+        $get = filter_var_array(
+            $request->getQueryParams(),
+            ['permissao_usuario_id' => FILTER_VALIDATE_INT]
+        );
+
+        /**
+         * @var int $permissao_usuario_id
+         */
+        extract($get); unset($get);
+
+        try {
+            /** @var PermissaoUsuario|null $permissao_usuario */
+            $permissao_usuario = $this->repository->find($permissao_usuario_id);
+
+            if (!$permissao_usuario instanceof PermissaoUsuario) {
+                throw new UserException('Permissão de usuário não encontrada.');
+            }
+
+            // Atributos
+            $this->view->setAtributo('titulo-pagina', "Permissão: {$permissao_usuario->getDescricao()}");
+
+            // Views
+            $this->view->addTemplate('det_permissao', [
+                'permissao-usuario' => $permissao_usuario
+            ]);
+
+            // JS
+            $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js');
+        } catch (UserException $e) {
+            $this->view->addTemplate('mensagem_usuario');
+            $this->view->setAtributo('mensagem', [
+                'tipo' => 'erro',
+                'mensagem' => $e->getMessage()
+            ]);
+        }
+
+        return $this->view->render();
+    }
+
+    /**
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
+     */
+    public function excluirPermissaoUsuario(ServerRequestInterface $request): ResponseInterface
+    {
+        $post = filter_var_array(
+            $request->getParsedBody(),
+            ['permissao_usuario_id' => FILTER_VALIDATE_INT]
+        );
+
+        /**
+         * @var int $permissao_usuario_id
+         */
+        extract($post); unset($post);
+
+        try {
+            /**
+             * @covers ExcluirPermissaoUsuarioHandler
+             */
+            $this->commandBus->handle(new ExcluirPermissaoUsuarioCommand($permissao_usuario_id));
+
+            $msg['retorno'] = 'sucesso';
+            $msg['mensagem'] = 'Permissão excluída com sucesso!';
+        } catch (UserException $e) {
+            $msg['retorno'] = 'erro';
+            $msg['mensagem'] = $e->getMessage();
+        }
+
+        return new JsonResponse($msg);
     }
 }

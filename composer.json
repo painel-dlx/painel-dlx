@@ -8,7 +8,8 @@
     "dlepera88-php/vilex": "1.2.0.x-dev",
     "dlepera88-php/rauterex": "1.1.x-dev",
     "components/jquery": "3.3.*",
-    "league/tactician-container": "dev-master"
+    "league/tactician-container": "dev-master",
+    "dlepera88-php/sechianex": "dev-master"
   },
   "autoload": {
     "psr-4": {
@@ -21,6 +22,7 @@
     }
   },
   "require-dev": {
-    "dlepera88-jquery/jquery-form-ajax": "dev-master"
+    "dlepera88-jquery/jquery-form-ajax": "dev-master",
+    "phpunit/phpunit": "7.5.x-dev"
   }
 }

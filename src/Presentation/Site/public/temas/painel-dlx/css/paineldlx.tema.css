@@ -288,6 +288,22 @@ body.mostrando-menu .menu-principal {
   font-family: icomoon;
 }
 
+.icone-descricao::before, .form-controle-descricao::before {
+  content: "";
+  font-family: icomoon;
+}
+
+.icone-alias::before, .form-controle-alias::before {
+  content: "";
+  font-family: icomoon;
+}
+
+.icone-pergunta::before, .dica-geral::before {
+  content: "";
+  font-family: icomoon;
+  vertical-align: middle;
+}
+
 .com-icone, .link-inserir, .so-icone, .link-excluir, .link-editar, .link-detalhe, .menu-lateral > .menu-lateral-item {
   display: inline-block;
   line-height: 30px;
@@ -466,6 +482,34 @@ body.mostrando-menu .menu-principal {
   padding-left: 40px;
 }
 
+.form-controle-alias {
+  position: relative;
+}
+.form-controle-alias::before {
+  position: absolute;
+  top: 34px;
+  left: 12px;
+  font-size: 16px;
+  color: #c6cacd;
+}
+.form-controle-alias + .form-controle {
+  padding-left: 40px;
+}
+
+.form-controle-descricao {
+  position: relative;
+}
+.form-controle-descricao::before {
+  position: absolute;
+  top: 34px;
+  left: 12px;
+  font-size: 16px;
+  color: #c6cacd;
+}
+.form-controle-descricao + .form-controle {
+  padding-left: 40px;
+}
+
 .form-controle-grupo {
   position: relative;
 }
@@ -515,6 +559,31 @@ body.mostrando-menu .menu-principal {
 .detalhe-usuario #acesso-sistema,
 .detalhe-usuario #grupos-usuarios {
   display: none;
+}
+
+.dica-geral {
+  color: #999;
+  font-size: x-small;
+  vertical-align: text-top;
+  position: relative;
+}
+.dica-geral:hover {
+  cursor: pointer;
+}
+.dica-geral:hover::after {
+  content: attr(data-texto);
+  color: #FFF;
+  font-size: small;
+  text-align: justify;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
+  padding: 5px 10px;
+  min-width: 200px;
+  max-width: 300px;
+  box-sizing: border-box;
+  position: absolute;
+  left: 0;
+  top: 100%;
 }
 
 /*# sourceMappingURL=paineldlx.tema.css.map */

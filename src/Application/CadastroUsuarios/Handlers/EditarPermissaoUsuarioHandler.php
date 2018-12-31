@@ -26,11 +26,11 @@
 namespace PainelDLX\Application\CadastroUsuarios\Handlers;
 
 
-use PainelDLX\Application\CadastroUsuarios\Commands\CadastrarPermissaoUsuarioCommand;
+use PainelDLX\Application\CadastroUsuarios\Commands\EditarPermissaoUsuarioCommand;
 use PainelDLX\Domain\CadastroUsuarios\Entities\PermissaoUsuario;
 use PainelDLX\Domain\CadastroUsuarios\Repositories\PermissaoUsuarioRepositoryInterface;
 
-class CadastrarPermissaoUsuarioHandler
+class EditarPermissaoUsuarioHandler
 {
     /**
      * @var PermissaoUsuarioRepositoryInterface
@@ -38,24 +38,25 @@ class CadastrarPermissaoUsuarioHandler
     private $permissao_usuario_repository;
 
     /**
-     * CadastrarPermissaoUsuarioHandler constructor.
-     * @param PermissaoUsuario $permissao_usuario
+     * EditarPermissaoUsuarioHandler constructor.
      * @param PermissaoUsuarioRepositoryInterface $permissao_usuario_repository
      */
-    public function __construct(
-        PermissaoUsuarioRepositoryInterface $permissao_usuario_repository
-    ) {
+    public function __construct(PermissaoUsuarioRepositoryInterface $permissao_usuario_repository)
+    {
         $this->permissao_usuario_repository = $permissao_usuario_repository;
     }
 
     /**
-     * @param CadastrarPermissaoUsuarioCommand $command
+     * @param EditarPermissaoUsuarioCommand $command
+     * @return PermissaoUsuario
      */
-    public function handle(CadastrarPermissaoUsuarioCommand $command): PermissaoUsuario
+    public function handle(EditarPermissaoUsuarioCommand $command): PermissaoUsuario
     {
-        $permissao_usuario = PermissaoUsuario::create($command->getAlias(), $command->getDescricao());
-        $this->permissao_usuario_repository->create($permissao_usuario);
+        /** @var PermissaoUsuario $permissao_usuario */
+        $permissao_usuario = $this->permissao_usuario_repository->find($command->getPermissaoUsuarioId());
+        $permissao_usuario->setDescricao($command->getDescricao());
 
+        $this->permissao_usuario_repository->update($permissao_usuario);
         return $permissao_usuario;
     }
 }

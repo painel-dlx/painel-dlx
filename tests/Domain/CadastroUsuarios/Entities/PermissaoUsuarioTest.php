@@ -59,4 +59,14 @@ class PermissaoUsuarioTest extends TestCase
         $permissao_usuario->addGrupo($grupo_usuario);
         $permissao_usuario->addGrupo($grupo_usuario);
     }
+
+    /**
+     * O alias seguirá um padrão de ser sempre em letras maiúsculas e sem espaços
+     */
+    public function test_setAlias_formatacao()
+    {
+        $permissao_usuario = PermissaoUsuario::create('Teste de Alias', self::DESCRICAO);
+
+        $this->assertEquals('TESTE_DE_ALIAS', $permissao_usuario->getAlias());
+    }
 }

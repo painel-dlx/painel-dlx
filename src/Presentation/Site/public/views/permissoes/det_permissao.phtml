@@ -23,39 +23,31 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Application\CadastroUsuarios\Handlers;
-
-
-use PainelDLX\Application\CadastroUsuarios\Commands\CadastrarPermissaoUsuarioCommand;
 use PainelDLX\Domain\CadastroUsuarios\Entities\PermissaoUsuario;
-use PainelDLX\Domain\CadastroUsuarios\Repositories\PermissaoUsuarioRepositoryInterface;
+use Vilex\VileX;
 
-class CadastrarPermissaoUsuarioHandler
-{
-    /**
-     * @var PermissaoUsuarioRepositoryInterface
-     */
-    private $permissao_usuario_repository;
+/**
+ * @var VileX $this
+ */
 
-    /**
-     * CadastrarPermissaoUsuarioHandler constructor.
-     * @param PermissaoUsuario $permissao_usuario
-     * @param PermissaoUsuarioRepositoryInterface $permissao_usuario_repository
-     */
-    public function __construct(
-        PermissaoUsuarioRepositoryInterface $permissao_usuario_repository
-    ) {
-        $this->permissao_usuario_repository = $permissao_usuario_repository;
-    }
+/** @var PermissaoUsuario $permissao_usuario */
+$permissao_usuario = $this->getAtributo('permissao-usuario');
+?>
 
-    /**
-     * @param CadastrarPermissaoUsuarioCommand $command
-     */
-    public function handle(CadastrarPermissaoUsuarioCommand $command): PermissaoUsuario
-    {
-        $permissao_usuario = PermissaoUsuario::create($command->getAlias(), $command->getDescricao());
-        $this->permissao_usuario_repository->create($permissao_usuario);
+[CORPO]
+<h1 class="titulo-pagina"><?php echo $this->getAtributo('titulo-pagina') ?></h1>
 
-        return $permissao_usuario;
-    }
-}
+<details class="detalhe-registro" open>
+    <summary class="detalhe-registro-titulo">Geral</summary>
+
+    <p class="detalhe-registro-paragr">
+        <span class="detalhe-registro-rotulo">Alias</span>
+        <?php echo $permissao_usuario->getAlias() ?>
+    </p>
+
+    <p class="detalhe-registro-paragr">
+        <span class="detalhe-registro-rotulo">Descrição</span>
+        <?php echo $permissao_usuario->getDescricao() ?>
+    </p>
+</details>
+[/CORPO]

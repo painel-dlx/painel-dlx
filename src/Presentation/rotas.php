@@ -27,6 +27,9 @@ use PainelDLX\Application\Middlewares\Autorizacao;
 use PainelDLX\Presentation\Site\Controllers\AlterarSenhaUsuarioController;
 use PainelDLX\Presentation\Site\Controllers\CadastroUsuarioController;
 use PainelDLX\Presentation\Site\Controllers\GrupoUsuarioController;
+use PainelDLX\Presentation\Site\Controllers\CadastroPermissaoController;
+use PainelDLX\Application\Middlewares\VerificarLogonMiddleware;
+use SechianeX\Factories\SessionFactory;
 
 /** @var \RautereX\RautereX $router */
 
@@ -35,7 +38,10 @@ $router->get(
     '/painel-dlx/usuarios',
     [CadastroUsuarioController::class, 'listaUsuarios']
 )
-    ->middlewares(new Autorizacao('ACESSAR_CADASTRO_USUARIOS'));
+    ->middlewares(
+        new VerificarLogonMiddleware(SessionFactory::createPHPSession('painel-dlx')),
+        new Autorizacao('ACESSAR_CADASTRO_USUARIOS')
+    );
 
 $router->get(
     '/painel-dlx/usuarios/novo',
@@ -117,7 +123,7 @@ $router->post(
 )
     ->middlewares(new Autorizacao('EXCLUIR_GRUPO_USUARIO'));
 
-// Alteração de senha --------------------------------------------------------------------------------------------- //
+// Alteração de senha ----------------------------------------------------------------------------------------------- //
 $router->get(
     '/painel-dlx/usuarios/alterar-senha',
     [AlterarSenhaUsuarioController::class, 'formAlterarSenha']
@@ -129,3 +135,46 @@ $router->post(
     [AlterarSenhaUsuarioController::class, 'alterarSenhaUsuario']
 )
     ->middlewares(new Autorizacao('ALTERAR_SENHA_USUARIO'));
+
+// Permissões ------------------------------------------------------------------------------------------------------- //
+$router->get(
+    '/painel-dlx/permissoes',
+    [CadastroPermissaoController::class, 'listaPermissoesUsuarios']
+)
+    ->middlewares(new Autorizacao('CRIAR_PERMISSOES_USUARIO'));
+
+$router->get(
+    '/painel-dlx/permissoes/novo',
+    [CadastroPermissaoController::class, 'formNovaPermissaoUsuario']
+)
+    ->middlewares(new Autorizacao('CRIAR_PERMISSOES_USUARIO'));
+
+$router->post(
+    '/painel-dlx/permissoes/criar-nova-permissao',
+    [CadastroPermissaoController::class, 'criarNovaPermissao']
+)
+    ->middlewares(new Autorizacao('CRIAR_PERMISSOES_USUARIO'));
+
+$router->get(
+    '/painel-dlx/permissoes/editar',
+    [CadastroPermissaoController::class, 'formEditarPermissaoUsuario']
+)
+    ->middlewares(new Autorizacao('EDITAR_PERMISSOES_USUARIO'));
+
+$router->post(
+    '/painel-dlx/permissoes/editar-permissao',
+    [CadastroPermissaoController::class, 'alterarPermissaoUsuario']
+)
+    ->middlewares(new Autorizacao('EDITAR_PERMISSOES_USUARIO'));
+
+$router->get(
+    '/painel-dlx/permissoes/detalhe',
+    [CadastroPermissaoController::class, 'detalhePermissaoUsuario']
+)
+    ->middlewares(new Autorizacao('CRIAR_PERMISSOES_USUARIO'));
+
+$router->post(
+    '/painel-dlx/permissoes/excluir-permissao',
+    [CadastroPermissaoController::class, 'excluirPermissaoUsuario']
+)
+    ->middlewares(new Autorizacao('EXCLUIR_PERMISSOES_USUARIO'));

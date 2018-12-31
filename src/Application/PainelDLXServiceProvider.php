@@ -37,9 +37,13 @@ use League\Tactician\Handler\CommandHandlerMiddleware;
 use League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor;
 use League\Tactician\Handler\MethodNameInflector\HandleInflector;
 use PainelDLX\Domain\CadastroUsuarios\Entities\GrupoUsuario;
+use PainelDLX\Domain\CadastroUsuarios\Entities\PermissaoUsuario;
 use PainelDLX\Domain\CadastroUsuarios\Entities\Usuario;
 use PainelDLX\Domain\CadastroUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
+use PainelDLX\Domain\CadastroUsuarios\Repositories\PermissaoUsuarioRepositoryInterface;
 use PainelDLX\Domain\CadastroUsuarios\Repositories\UsuarioRepositoryInterface;
+use SechianeX\Contracts\SessionInterface;
+use SechianeX\Factories\SessionFactory;
 use Vilex\VileX;
 
 class PainelDLXServiceProvider extends AbstractServiceProvider
@@ -49,7 +53,9 @@ class PainelDLXServiceProvider extends AbstractServiceProvider
         CommandBus::class,
         VileX::class,
         GrupoUsuarioRepositoryInterface::class,
-        UsuarioRepositoryInterface::class
+        UsuarioRepositoryInterface::class,
+        PermissaoUsuarioRepositoryInterface::class,
+        SessionInterface::class
     ];
 
     /**
@@ -59,11 +65,11 @@ class PainelDLXServiceProvider extends AbstractServiceProvider
      *
      * @return void
      * @throws \Doctrine\ORM\ORMException
+     * @throws \SechianeX\Exceptions\SessionAdapterInterfaceInvalidaException
+     * @throws \SechianeX\Exceptions\SessionAdapterNaoEncontradoException
      */
     public function register()
     {
-        global $commandBus;
-
         /** @var Container $container */
         $container = $this->getContainer();
 
@@ -96,6 +102,16 @@ class PainelDLXServiceProvider extends AbstractServiceProvider
         $container->add(
             UsuarioRepositoryInterface::class,
             EntityManagerX::getRepository(Usuario::class)
+        );
+
+        $container->add(
+            PermissaoUsuarioRepositoryInterface::class,
+            EntityManagerX::getRepository(PermissaoUsuario::class)
+        );
+
+        $container->add(
+            SessionInterface::class,
+            SessionFactory::createPHPSession('painel-dlx')
         );
     }
 }

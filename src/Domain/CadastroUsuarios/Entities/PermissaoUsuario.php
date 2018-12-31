@@ -75,7 +75,7 @@ class PermissaoUsuario extends Entity
      */
     public function setAlias(string $alias): PermissaoUsuario
     {
-        $this->alias = $alias;
+        $this->alias = str_replace(' ',  '_', strtoupper($alias));
         return $this;
     }
 

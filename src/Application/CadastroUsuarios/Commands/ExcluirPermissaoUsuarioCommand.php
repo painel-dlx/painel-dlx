@@ -23,13 +23,30 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Infra\ORM\Doctrine\Repositories;
+namespace PainelDLX\Application\CadastroUsuarios\Commands;
 
 
-use DLX\Infra\ORM\Doctrine\Repositories\EntityRepository;
-use PainelDLX\Domain\CadastroUsuarios\Repositories\PermissaoUsuarioRepositoryInterface;
-
-class PermissaoUsuarioUsuarioRepository extends EntityRepository implements PermissaoUsuarioRepositoryInterface
+class ExcluirPermissaoUsuarioCommand
 {
+    /**
+     * @var int
+     */
+    private $permissao_usuario_id;
 
+    /**
+     * @return int
+     */
+    public function getPermissaoUsuarioId(): int
+    {
+        return $this->permissao_usuario_id;
+    }
+
+    /**
+     * ExcluirPermissaoUsuarioCommand constructor.
+     * @param int $permissao_usuario_id
+     */
+    public function __construct(int $permissao_usuario_id)
+    {
+        $this->permissao_usuario_id = $permissao_usuario_id;
+    }
 }

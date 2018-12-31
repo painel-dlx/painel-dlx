@@ -28,6 +28,7 @@ include __DIR__ . '/vendor/autoload.php';
 use DLX\Core\Configure;
 use League\Tactician\Container\ContainerLocator;
 use RautereX\RautereX;
+use SechianeX\Factories\SessionFactory;
 use Zend\Diactoros\ServerRequestFactory;
 use League\Container\Container;
 use League\Container\ReflectionContainer;
@@ -51,6 +52,10 @@ try {
 
     $router = new RautereX($container);
     include_once Configure::get('app', 'rotas');
+
+    // TODO: retirar essa sessão daqui
+    $sessao = SessionFactory::createPHPSession('painel-dlx');
+    $sessao->set('logado', true);
 
     $response = $router->executarRota(
         $params['task'] === '/index.php' ? '/painel-dlx/usuarios' : $params['task'],

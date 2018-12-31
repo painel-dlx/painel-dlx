@@ -23,39 +23,13 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Application\CadastroUsuarios\Handlers;
+namespace PainelDLX\Infra\ORM\Doctrine\Repositories;
 
 
-use PainelDLX\Application\CadastroUsuarios\Commands\CadastrarPermissaoUsuarioCommand;
-use PainelDLX\Domain\CadastroUsuarios\Entities\PermissaoUsuario;
+use DLX\Infra\ORM\Doctrine\Repositories\EntityRepository;
 use PainelDLX\Domain\CadastroUsuarios\Repositories\PermissaoUsuarioRepositoryInterface;
 
-class CadastrarPermissaoUsuarioHandler
+class PermissaoUsuarioRepository extends EntityRepository implements PermissaoUsuarioRepositoryInterface
 {
-    /**
-     * @var PermissaoUsuarioRepositoryInterface
-     */
-    private $permissao_usuario_repository;
 
-    /**
-     * CadastrarPermissaoUsuarioHandler constructor.
-     * @param PermissaoUsuario $permissao_usuario
-     * @param PermissaoUsuarioRepositoryInterface $permissao_usuario_repository
-     */
-    public function __construct(
-        PermissaoUsuarioRepositoryInterface $permissao_usuario_repository
-    ) {
-        $this->permissao_usuario_repository = $permissao_usuario_repository;
-    }
-
-    /**
-     * @param CadastrarPermissaoUsuarioCommand $command
-     */
-    public function handle(CadastrarPermissaoUsuarioCommand $command): PermissaoUsuario
-    {
-        $permissao_usuario = PermissaoUsuario::create($command->getAlias(), $command->getDescricao());
-        $this->permissao_usuario_repository->create($permissao_usuario);
-
-        return $permissao_usuario;
-    }
 }

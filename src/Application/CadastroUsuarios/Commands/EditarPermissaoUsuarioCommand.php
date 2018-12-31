@@ -23,39 +23,44 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Application\CadastroUsuarios\Handlers;
+namespace PainelDLX\Application\CadastroUsuarios\Commands;
 
 
-use PainelDLX\Application\CadastroUsuarios\Commands\CadastrarPermissaoUsuarioCommand;
-use PainelDLX\Domain\CadastroUsuarios\Entities\PermissaoUsuario;
-use PainelDLX\Domain\CadastroUsuarios\Repositories\PermissaoUsuarioRepositoryInterface;
-
-class CadastrarPermissaoUsuarioHandler
+class EditarPermissaoUsuarioCommand
 {
     /**
-     * @var PermissaoUsuarioRepositoryInterface
+     * @var int
      */
-    private $permissao_usuario_repository;
+    private $permissao_usuario_id;
+    /**
+     * @var string
+     */
+    private $descricao;
 
     /**
-     * CadastrarPermissaoUsuarioHandler constructor.
-     * @param PermissaoUsuario $permissao_usuario
-     * @param PermissaoUsuarioRepositoryInterface $permissao_usuario_repository
+     * @return int
      */
-    public function __construct(
-        PermissaoUsuarioRepositoryInterface $permissao_usuario_repository
-    ) {
-        $this->permissao_usuario_repository = $permissao_usuario_repository;
+    public function getPermissaoUsuarioId(): int
+    {
+        return $this->permissao_usuario_id;
     }
 
     /**
-     * @param CadastrarPermissaoUsuarioCommand $command
+     * @return string
      */
-    public function handle(CadastrarPermissaoUsuarioCommand $command): PermissaoUsuario
+    public function getDescricao(): string
     {
-        $permissao_usuario = PermissaoUsuario::create($command->getAlias(), $command->getDescricao());
-        $this->permissao_usuario_repository->create($permissao_usuario);
+        return $this->descricao;
+    }
 
-        return $permissao_usuario;
+    /**
+     * EditarPermissaoUsuarioCommand constructor.
+     * @param int $permissao_usuario_id
+     * @param string $descricao
+     */
+    public function __construct(int $permissao_usuario_id, string $descricao)
+    {
+        $this->permissao_usuario_id = $permissao_usuario_id;
+        $this->descricao = $descricao;
     }
 }
