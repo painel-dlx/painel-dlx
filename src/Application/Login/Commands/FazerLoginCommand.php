@@ -23,26 +23,44 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Domain\CadastroUsuarios\Repositories;
+namespace PainelDLX\Application\Login\Commands;
 
 
-use DLX\Domain\Repositories\EntityRepositoryInterface;
-use PainelDLX\Domain\CadastroUsuarios\Entities\Usuario;
-
-interface UsuarioRepositoryInterface extends EntityRepositoryInterface
+class FazerLoginCommand
 {
     /**
-     * Verificar se há outro usuário com o mesmo email da entidade informada.
-     * @param Usuario $usuario
-     * @return bool
+     * @var string
      */
-    public function hasOutroUsuarioComMesmoEmail(Usuario $usuario): bool;
+    private $email;
+    /**
+     * @var string
+     */
+    private $senha;
 
     /**
-     * Fazer login
+     * @return string
+     */
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSenha(): string
+    {
+        return $this->senha;
+    }
+
+    /**
+     * FazerLoginCommand constructor.
      * @param string $email
      * @param string $senha
-     * @return Usuario|null
      */
-    public function fazerLogin(string $email, string $senha): ?Usuario;
+    public function __construct(string $email, string $senha)
+    {
+        $this->email = $email;
+        $this->senha = $senha;
+    }
 }

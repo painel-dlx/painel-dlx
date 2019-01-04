@@ -23,26 +23,18 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Domain\CadastroUsuarios\Repositories;
+namespace PainelDLX\Application\Login\Exceptions;
 
 
-use DLX\Domain\Repositories\EntityRepositoryInterface;
-use PainelDLX\Domain\CadastroUsuarios\Entities\Usuario;
+use DLX\Core\Exceptions\UserException;
 
-interface UsuarioRepositoryInterface extends EntityRepositoryInterface
+class UsuarioOuSenhaInvalidosException extends UserException
 {
     /**
-     * Verificar se há outro usuário com o mesmo email da entidade informada.
-     * @param Usuario $usuario
-     * @return bool
+     * UsuarioOuSenhaInvalidosException constructor.
      */
-    public function hasOutroUsuarioComMesmoEmail(Usuario $usuario): bool;
-
-    /**
-     * Fazer login
-     * @param string $email
-     * @param string $senha
-     * @return Usuario|null
-     */
-    public function fazerLogin(string $email, string $senha): ?Usuario;
+    public function __construct()
+    {
+        parent::__construct('Usuário e/ou senha inválidos!');
+    }
 }

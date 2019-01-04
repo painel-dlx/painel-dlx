@@ -29,9 +29,12 @@ use PainelDLX\Presentation\Site\Controllers\CadastroUsuarioController;
 use PainelDLX\Presentation\Site\Controllers\GrupoUsuarioController;
 use PainelDLX\Presentation\Site\Controllers\CadastroPermissaoController;
 use PainelDLX\Application\Middlewares\VerificarLogonMiddleware;
+use PainelDLX\Presentation\Site\Controllers\LoginController;
 use SechianeX\Factories\SessionFactory;
 
 /** @var \RautereX\RautereX $router */
+
+$session = SessionFactory::createPHPSession('painel-dlx');
 
 // Cadastro de Usuários --------------------------------------------------------------------------------------------- //
 $router->get(
@@ -39,7 +42,7 @@ $router->get(
     [CadastroUsuarioController::class, 'listaUsuarios']
 )
     ->middlewares(
-        new VerificarLogonMiddleware(SessionFactory::createPHPSession('painel-dlx')),
+        new VerificarLogonMiddleware($session),
         new Autorizacao('ACESSAR_CADASTRO_USUARIOS')
     );
 
@@ -47,134 +50,211 @@ $router->get(
     '/painel-dlx/usuarios/novo',
     [CadastroUsuarioController::class, 'formNovoUsuario']
 )
-    ->middlewares(new Autorizacao('CADASTRAR_NOVO_USUARIO'));
+    ->middlewares(
+        new VerificarLogonMiddleware($session),
+        new Autorizacao('CADASTRAR_NOVO_USUARIO')
+    );
 
 $router->get(
     '/painel-dlx/usuarios/editar',
     [CadastroUsuarioController::class, 'formAlterarUsuario']
 )
-    ->middlewares(new Autorizacao('EDITAR_CADASTRO_USUARIO'));
+    ->middlewares(
+        new VerificarLogonMiddleware($session),
+        new Autorizacao('EDITAR_CADASTRO_USUARIO')
+    );
 
 $router->get(
     '/painel-dlx/usuarios/detalhe',
     [CadastroUsuarioController::class, 'detalheUsuario']
 )
-    ->middlewares(new Autorizacao('ACESSAR_CADASTRO_USUARIOS'));
+    ->middlewares(
+        new VerificarLogonMiddleware($session),
+        new Autorizacao('ACESSAR_CADASTRO_USUARIOS')
+    );
 
 $router->post(
     '/painel-dlx/usuarios/cadastrar-novo-usuario',
     [CadastroUsuarioController::class, 'cadastrarNovoUsuario']
 )
-    ->middlewares(new Autorizacao('CADASTRAR_NOVO_USUARIO'));
+    ->middlewares(
+        new VerificarLogonMiddleware($session),
+        new Autorizacao('CADASTRAR_NOVO_USUARIO')
+    );
 
 
 $router->post(
     '/painel-dlx/usuarios/salvar-usuario-existente',
     [CadastroUsuarioController::class, 'atualizarUsuarioExistente']
 )
-    ->middlewares(new Autorizacao('EDITAR_CADASTRO_USUARIO'));
+    ->middlewares(
+        new VerificarLogonMiddleware($session),
+        new Autorizacao('EDITAR_CADASTRO_USUARIO')
+    );
 
 $router->post(
     '/painel-dlx/usuarios/excluir-usuario',
     [CadastroUsuarioController::class, 'excluirUsuario']
 )
-    ->middlewares(new Autorizacao('EXCLUIR_CADASTRO_USUARIO'));
+    ->middlewares(
+        new VerificarLogonMiddleware($session),
+        new Autorizacao('EXCLUIR_CADASTRO_USUARIO')
+    );
 
 // Grupos de Usuários ----------------------------------------------------------------------------------------------- //
 $router->get(
     '/painel-dlx/grupos-de-usuarios',
     [GrupoUsuarioController::class, 'listaGruposUsuarios']
 )
-    ->middlewares(new Autorizacao('VISUALIZAR_GRUPOS_USUARIOS'));
+    ->middlewares(
+        new VerificarLogonMiddleware($session),
+        new Autorizacao('VISUALIZAR_GRUPOS_USUARIOS')
+    );
 
 $router->get(
     '/painel-dlx/grupos-de-usuarios/novo',
     [GrupoUsuarioController::class, 'formNovoGrupoUsuario']
 )
-    ->middlewares(new Autorizacao('CADASTRAR_GRUPO_USUARIO'));
+    ->middlewares(
+        new VerificarLogonMiddleware($session),
+        new Autorizacao('CADASTRAR_GRUPO_USUARIO')
+    );
 
 $router->get(
     '/painel-dlx/grupos-de-usuarios/editar',
     [GrupoUsuarioController::class, 'formAlterarGrupoUsuario']
 )
-    ->middlewares(new Autorizacao('EDITAR_GRUPO_USUARIO'));
+    ->middlewares(
+        new VerificarLogonMiddleware($session),
+        new Autorizacao('EDITAR_GRUPO_USUARIO')
+    );
 
 $router->get(
     '/painel-dlx/grupos-de-usuarios/detalhe',
     [GrupoUsuarioController::class, 'detalheGrupoUsuario']
 )
-    ->middlewares(new Autorizacao('VISUALIZAR_GRUPOS_USUARIOS'));
+    ->middlewares(
+        new VerificarLogonMiddleware($session),
+        new Autorizacao('VISUALIZAR_GRUPOS_USUARIOS')
+    );
 
 $router->post(
     '/painel-dlx/grupos-de-usuarios/cadastrar',
     [GrupoUsuarioController::class, 'cadastrarNovoGrupoUsuario']
 )
-    ->middlewares(new Autorizacao('CADASTRAR_GRUPO_USUARIO'));
+    ->middlewares(
+        new VerificarLogonMiddleware($session),
+        new Autorizacao('CADASTRAR_GRUPO_USUARIO')
+    );
 
 $router->post(
     '/painel-dlx/grupos-de-usuarios/salvar',
     [GrupoUsuarioController::class, 'atualizarGrupoUsuarioExistente']
 )
-    ->middlewares(new Autorizacao('EDITAR_GRUPO_USUARIO'));;
+    ->middlewares(
+        new VerificarLogonMiddleware($session),
+        new Autorizacao('EDITAR_GRUPO_USUARIO')
+    );
 
 $router->post(
     '/painel-dlx/grupos-de-usuarios/excluir',
     [GrupoUsuarioController::class, 'excluirGrupoUsuario']
 )
-    ->middlewares(new Autorizacao('EXCLUIR_GRUPO_USUARIO'));
+    ->middlewares(
+        new VerificarLogonMiddleware($session),
+        new Autorizacao('EXCLUIR_GRUPO_USUARIO')
+    );
 
 // Alteração de senha ----------------------------------------------------------------------------------------------- //
 $router->get(
     '/painel-dlx/usuarios/alterar-senha',
     [AlterarSenhaUsuarioController::class, 'formAlterarSenha']
 )
-    ->middlewares(new Autorizacao('ALTERAR_SENHA_USUARIO'));
+    ->middlewares(
+        new VerificarLogonMiddleware($session),
+        new Autorizacao('ALTERAR_SENHA_USUARIO')
+    );
 
 $router->post(
     '/painel-dlx/usuarios/alterar-senha',
     [AlterarSenhaUsuarioController::class, 'alterarSenhaUsuario']
 )
-    ->middlewares(new Autorizacao('ALTERAR_SENHA_USUARIO'));
+    ->middlewares(
+        new VerificarLogonMiddleware($session),
+        new Autorizacao('ALTERAR_SENHA_USUARIO')
+    );
 
 // Permissões ------------------------------------------------------------------------------------------------------- //
 $router->get(
     '/painel-dlx/permissoes',
     [CadastroPermissaoController::class, 'listaPermissoesUsuarios']
 )
-    ->middlewares(new Autorizacao('CRIAR_PERMISSOES_USUARIO'));
+    ->middlewares(
+        new VerificarLogonMiddleware($session),
+        new Autorizacao('CRIAR_PERMISSOES_USUARIO')
+    );
 
 $router->get(
     '/painel-dlx/permissoes/novo',
     [CadastroPermissaoController::class, 'formNovaPermissaoUsuario']
 )
-    ->middlewares(new Autorizacao('CRIAR_PERMISSOES_USUARIO'));
+    ->middlewares(
+        new VerificarLogonMiddleware($session),
+        new Autorizacao('CRIAR_PERMISSOES_USUARIO')
+    );
 
 $router->post(
     '/painel-dlx/permissoes/criar-nova-permissao',
     [CadastroPermissaoController::class, 'criarNovaPermissao']
 )
-    ->middlewares(new Autorizacao('CRIAR_PERMISSOES_USUARIO'));
+    ->middlewares(
+        new VerificarLogonMiddleware($session),
+        new Autorizacao('CRIAR_PERMISSOES_USUARIO')
+    );
 
 $router->get(
     '/painel-dlx/permissoes/editar',
     [CadastroPermissaoController::class, 'formEditarPermissaoUsuario']
 )
-    ->middlewares(new Autorizacao('EDITAR_PERMISSOES_USUARIO'));
+    ->middlewares(
+        new VerificarLogonMiddleware($session),
+        new Autorizacao('EDITAR_PERMISSOES_USUARIO')
+    );
 
 $router->post(
     '/painel-dlx/permissoes/editar-permissao',
     [CadastroPermissaoController::class, 'alterarPermissaoUsuario']
 )
-    ->middlewares(new Autorizacao('EDITAR_PERMISSOES_USUARIO'));
+    ->middlewares(
+        new VerificarLogonMiddleware($session),
+        new Autorizacao('EDITAR_PERMISSOES_USUARIO')
+    );
 
 $router->get(
     '/painel-dlx/permissoes/detalhe',
     [CadastroPermissaoController::class, 'detalhePermissaoUsuario']
 )
-    ->middlewares(new Autorizacao('CRIAR_PERMISSOES_USUARIO'));
+    ->middlewares(
+        new VerificarLogonMiddleware($session),
+        new Autorizacao('CRIAR_PERMISSOES_USUARIO')
+    );
 
 $router->post(
     '/painel-dlx/permissoes/excluir-permissao',
     [CadastroPermissaoController::class, 'excluirPermissaoUsuario']
 )
-    ->middlewares(new Autorizacao('EXCLUIR_PERMISSOES_USUARIO'));
+    ->middlewares(
+        new VerificarLogonMiddleware($session),
+        new Autorizacao('EXCLUIR_PERMISSOES_USUARIO')
+    );
+
+// Login ------------------------------------------------------------------------------------------------------------ //
+$router->get(
+    '/painel-dlx/login',
+    [LoginController::class, 'formLogin']
+);
+
+$router->post(
+    '/painel-dlx/login/fazer-login',
+    [LoginController::class, 'fazerLogin']
+);

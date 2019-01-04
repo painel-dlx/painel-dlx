@@ -26,23 +26,20 @@
 include __DIR__ . '/vendor/autoload.php';
 
 use DLX\Core\Configure;
-use League\Tactician\Container\ContainerLocator;
+use PainelDLX\Application\Exceptions\UsuarioNaoLogadoException;
 use RautereX\RautereX;
 use SechianeX\Factories\SessionFactory;
+use Zend\Diactoros\Response\RedirectResponse;
 use Zend\Diactoros\ServerRequestFactory;
 use League\Container\Container;
 use League\Container\ReflectionContainer;
-use DLX\Core\CommandBus\CommandBusAdapter;
-use League\Tactician\Handler\CommandHandlerMiddleware;
-use League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor;
-use League\Tactician\Handler\MethodNameInflector\HandleInflector;
 
 define('BASE_DIR', dirname(__FILE__));
 
 try {
     $server_request = ServerRequestFactory::fromGlobals();
     $params = $server_request->getQueryParams();
-    
+
     Configure::init($params['ambiente'], "config/{$params['ambiente']}.php");
 
     $container = new Container;
@@ -55,10 +52,16 @@ try {
 
     // TODO: retirar essa sessão daqui
     $sessao = SessionFactory::createPHPSession('painel-dlx');
-    $sessao->set('logado', true);
 
     $response = $router->executarRota(
         $params['task'] === '/index.php' ? '/painel-dlx/usuarios' : $params['task'],
+        $server_request,
+        $server_request->getMethod()
+    );
+    echo $response->getBody();
+} catch (UsuarioNaoLogadoException $e) {
+    $response = $router->executarRota(
+        '/painel-dlx/login',
         $server_request,
         $server_request->getMethod()
     );

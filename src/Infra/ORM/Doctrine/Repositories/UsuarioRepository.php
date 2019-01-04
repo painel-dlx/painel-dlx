@@ -49,4 +49,23 @@ class UsuarioRepository extends EntityRepository implements UsuarioRepositoryInt
             return $usuarioLista->getUsuarioId() !== $usuario->getUsuarioId();
         });
     }
+
+    /**
+     * Fazer login
+     * @param string $email
+     * @param string $senha
+     * @return Usuario|null
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function fazerLogin(string $email, string $senha): ?Usuario
+    {
+        $qb = $this->createQueryBuilder('u')
+            ->where('u.email = :email')
+            ->andWhere('u.senha = :senha');
+
+        $qb->setParameter('email', $email);
+        $qb->setParameter('senha', $senha);
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
 }

@@ -43,6 +43,8 @@ use PainelDLX\Application\CadastroUsuarios\Commands\EditarPermissaoUsuarioComman
 use PainelDLX\Application\CadastroUsuarios\Handlers\EditarPermissaoUsuarioHandler;
 use PainelDLX\Application\CadastroUsuarios\Commands\ExcluirPermissaoUsuarioCommand;
 use PainelDLX\Application\CadastroUsuarios\Handlers\ExcluirPermissaoUsuarioHandler;
+use PainelDLX\Application\Login\Commands\FazerLoginCommand;
+use PainelDLX\Application\Login\Handlers\FazerLoginHandler;
 
 return [
     NovoUsuarioCommand::class => NovoUsuarioHandler::class,
@@ -55,4 +57,5 @@ return [
     CadastrarPermissaoUsuarioCommand::class => CadastrarPermissaoUsuarioHandler::class,
     EditarPermissaoUsuarioCommand::class => EditarPermissaoUsuarioHandler::class,
     ExcluirPermissaoUsuarioCommand::class => ExcluirPermissaoUsuarioHandler::class,
+    FazerLoginCommand::class => FazerLoginHandler::class,
 ];
