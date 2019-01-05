@@ -1,7 +1,6 @@
 {
   "name": "dlepera88-php/painel-dlx",
   "version": "2.0",
-  "minimum-stability": "dev",
   "license": "MIT",
   "require": {
     "dlepera88-php/dlx": "1.1.x-dev",
@@ -9,7 +8,8 @@
     "dlepera88-php/rauterex": "1.1.x-dev",
     "components/jquery": "3.3.*",
     "league/tactician-container": "dev-master",
-    "dlepera88-php/sechianex": "dev-master"
+    "dlepera88-php/sechianex": "dev-master",
+    "dlepera88-jquery/jquery-form-ajax": "dev-master"
   },
   "autoload": {
     "psr-4": {
@@ -22,7 +22,6 @@
     }
   },
   "require-dev": {
-    "dlepera88-jquery/jquery-form-ajax": "dev-master",
     "phpunit/phpunit": "7.5.x-dev"
   }
 }

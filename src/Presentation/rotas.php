@@ -34,7 +34,7 @@ use SechianeX\Factories\SessionFactory;
 
 /** @var \RautereX\RautereX $router */
 
-$session = SessionFactory::createPHPSession('painel-dlx');
+$session = SessionFactory::createPHPSession();
 
 // Cadastro de Usuários --------------------------------------------------------------------------------------------- //
 $router->get(
@@ -257,4 +257,9 @@ $router->get(
 $router->post(
     '/painel-dlx/login/fazer-login',
     [LoginController::class, 'fazerLogin']
+);
+
+$router->get(
+    '/painel-dlx/login/encerrar-sessao',
+    [LoginController::class, 'fazerLogout']
 );

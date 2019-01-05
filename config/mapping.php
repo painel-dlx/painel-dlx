@@ -45,6 +45,8 @@ use PainelDLX\Application\CadastroUsuarios\Commands\ExcluirPermissaoUsuarioComma
 use PainelDLX\Application\CadastroUsuarios\Handlers\ExcluirPermissaoUsuarioHandler;
 use PainelDLX\Application\Login\Commands\FazerLoginCommand;
 use PainelDLX\Application\Login\Handlers\FazerLoginHandler;
+use PainelDLX\Application\Login\Commands\FazerLogoutCommand;
+use PainelDLX\Application\Login\Handlers\FazerLogoutHandler;
 
 return [
     NovoUsuarioCommand::class => NovoUsuarioHandler::class,
@@ -58,4 +60,5 @@ return [
     EditarPermissaoUsuarioCommand::class => EditarPermissaoUsuarioHandler::class,
     ExcluirPermissaoUsuarioCommand::class => ExcluirPermissaoUsuarioHandler::class,
     FazerLoginCommand::class => FazerLoginHandler::class,
+    FazerLogoutCommand::class => FazerLogoutHandler::class,
 ];

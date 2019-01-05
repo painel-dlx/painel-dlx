@@ -24,11 +24,19 @@
  */
 
 use DLX\Core\Configure;
+use PainelDLX\Domain\CadastroUsuarios\Entities\Usuario;
+use SechianeX\Factories\SessionFactory;
 use Vilex\VileX;
 
 /**
  * @var VileX $this
  */
+
+// TODO: pegar a sessão por atributo
+$session = SessionFactory::createPHPSession();
+
+/** @var Usuario|null $usuario */
+$usuario = $session->get('usuario-logado');
 ?>
 
 <html>
@@ -122,29 +130,37 @@ use Vilex\VileX;
             </ul>
         </div>
 
-        <div class="menu-item">
-            <span class="menu-link">Minha Conta</span>
+        <?php if ($usuario instanceof Usuario) : ?>
+            <div class="menu-item">
+                <span class="menu-link">Minha Conta</span>
 
-            <ul class="sub-menu">
-                <li class="sub-menu-item">
-                    <a href="#" class="sub-menu-link">
-                        Meus dados
-                    </a>
-                </li>
+                <ul class="sub-menu">
+                    <li class="sub-menu-item">
+                        <a href="/painel-dlx/usuarios/detalhe?usuario_id=<?php echo $usuario->getUsuarioId() ?>" class="sub-menu-link">
+                            Meus dados
+                        </a>
+                    </li>
 
-                <li class="sub-menu-item">
-                    <a href="#" class="sub-menu-link">
-                        Alterar minha senha
-                    </a>
-                </li>
+                    <li class="sub-menu-item">
+                        <a href="#" class="sub-menu-link">
+                            Alterar minha senha
+                        </a>
+                    </li>
 
-                <li class="sub-menu-item">
-                    <a href="#" class="sub-menu-link">
-                        Configurações
-                    </a>
-                </li>
-            </ul>
-        </div>
+                    <li class="sub-menu-item">
+                        <a href="#" class="sub-menu-link">
+                            Configurações
+                        </a>
+                    </li>
+
+                    <li class="sub-menu-item">
+                        <a href="/painel-dlx/login/encerrar-sessao" class="sub-menu-link">
+                            Encerrar sessão
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        <?php endif ?>
     </div>
 </nav>
 

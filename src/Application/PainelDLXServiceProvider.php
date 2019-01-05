@@ -111,7 +111,7 @@ class PainelDLXServiceProvider extends AbstractServiceProvider
 
         $container->add(
             SessionInterface::class,
-            SessionFactory::createPHPSession('painel-dlx')
+            SessionFactory::createPHPSession()
         );
     }
 }

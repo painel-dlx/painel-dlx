@@ -29,6 +29,7 @@ namespace PainelDLX\Presentation\Site\Controllers;
 use DLX\Core\Exceptions\UserException;
 use League\Tactician\CommandBus;
 use PainelDLX\Application\Login\Commands\FazerLoginCommand;
+use PainelDLX\Application\Login\Commands\FazerLogoutCommand;
 use PainelDLX\Application\Login\Handlers\FazerLoginHandler;
 use PainelDLX\Domain\CadastroUsuarios\Entities\Usuario;
 use Psr\Http\Message\ResponseInterface;
@@ -36,13 +37,14 @@ use Psr\Http\Message\ServerRequestInterface;
 use SechianeX\Contracts\SessionInterface;
 use Vilex\VileX;
 use Zend\Diactoros\Response\JsonResponse;
+use Zend\Diactoros\Response\RedirectResponse;
 
 class LoginController extends SiteController
 {
     /**
      * @var SessionInterface
      */
-    private $sessao;
+    private $session;
 
     /**
      * LoginController constructor.
@@ -59,7 +61,7 @@ class LoginController extends SiteController
 
         $this->view->setPaginaMestra('src/Presentation/Site/public/views/painel-dlx-master.phtml');
         $this->view->setViewRoot('src/Presentation/Site/public/views/login');
-        $this->sessao = $sessao;
+        $this->session = $sessao;
     }
 
     /**
@@ -119,5 +121,27 @@ class LoginController extends SiteController
         }
 
         return new JsonResponse($json);
+    }
+
+    /**
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
+     */
+    public function fazerLogout(ServerRequestInterface $request): ResponseInterface
+    {
+        /** @var Usuario $usuario */
+        $usuario = $this->session->get('usuario-logado');
+
+        if ($this->commandBus->handle(new FazerLogoutCommand())) {
+            $json['retorno'] = 'sucesso';
+            $json['mensagem'] = "Até mais {$usuario->getNome()}!";
+
+            return new RedirectResponse('');
+        } else {
+            $json['retorno'] = 'erro';
+            $json['mensagem'] = 'Ocorreu um erro ao encerrar a sua sessão';
+
+            return new JsonResponse($json);
+        }
     }
 }
