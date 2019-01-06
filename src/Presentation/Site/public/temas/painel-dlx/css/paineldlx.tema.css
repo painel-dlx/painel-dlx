@@ -551,7 +551,7 @@ body.mostrando-menu .menu-principal {
   display: none;
 }
 
-.form-login {
+.form-login, .form-alterar-senha {
   width: 500px;
   max-width: 100%;
   margin: 0 auto;
@@ -565,6 +565,28 @@ body.mostrando-menu .menu-principal {
 .detalhe-usuario #acesso-sistema,
 .detalhe-usuario #grupos-usuarios {
   display: none;
+}
+
+.mensagem-usuario {
+  padding: 7px 20px;
+  border: 1px solid;
+  border-radius: 3px;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.15);
+}
+.mensagem-usuario.-atencao {
+  color: orange;
+  border-color: orange;
+  background: #fff6e6;
+}
+.mensagem-usuario.-info {
+  color: #069;
+  border-color: #069;
+  background: #80d5ff;
+}
+.mensagem-usuario.-sucesso {
+  color: green;
+  border-color: green;
+  background: #67ff67;
 }
 
 .dica-geral {

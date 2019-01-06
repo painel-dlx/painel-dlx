@@ -30,6 +30,7 @@ use PainelDLX\Presentation\Site\Controllers\GrupoUsuarioController;
 use PainelDLX\Presentation\Site\Controllers\CadastroPermissaoController;
 use PainelDLX\Application\Middlewares\VerificarLogonMiddleware;
 use PainelDLX\Presentation\Site\Controllers\LoginController;
+use PainelDLX\Presentation\Site\Controllers\MInhaContaController;
 use SechianeX\Factories\SessionFactory;
 
 /** @var \RautereX\RautereX $router */
@@ -262,5 +263,24 @@ $router->post(
 $router->get(
     '/painel-dlx/login/encerrar-sessao',
     [LoginController::class, 'fazerLogout']
+)
+    ->middlewares(new VerificarLogonMiddleware($session));
+
+// Minha conta ------------------------------------------------------------------------------------------------------ //
+$router->get(
+    '/painel-dlx/minha-conta',
+    [MInhaContaController::class, 'meusDados']
+)
+    ->middlewares(new VerificarLogonMiddleware($session));
+
+$router->get(
+    '/painel-dlx/alterar-minha-senha',
+    [MInhaContaController::class, 'formAlterarMinhaSenha']
+)
+    ->middlewares(new VerificarLogonMiddleware($session));
+
+$router->post(
+    '/painel-dlx/alterar-minha-senha',
+    [MInhaContaController::class, 'alterarMinhaSenha']
 )
     ->middlewares(new VerificarLogonMiddleware($session));

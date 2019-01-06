@@ -23,36 +23,36 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Application\Middlewares;
+namespace PainelDLX\Application\UseCases\GruposUsuarios\ExcluirGrupoUsuario;
 
+use Exception;
+use PainelDLX\Domain\CadastroUsuarios\Entities\GrupoUsuario;
+use PainelDLX\Domain\CadastroUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
 
-use PainelDLX\Application\Contracts\MiddlewareInterface;
-use PainelDLX\Application\Middlewares\Exceptions\UsuarioNaoLogadoException;
-use SechianeX\Contracts\SessionInterface;
-
-class VerificarLogonMiddleware implements MiddlewareInterface
+class ExcluirGrupoUsuarioHandler
 {
     /**
-     * @var SessionInterface
+     * @var GrupoUsuarioRepositoryInterface
      */
-    private $session;
+    private $grupo_usuario_repository;
 
-    /**
-     * VerificarLogonMiddleware constructor.
-     * @param SessionInterface $session
-     */
-    public function __construct(SessionInterface $session)
+    public function __construct(GrupoUsuarioRepositoryInterface $grupo_usuario_repository)
     {
-        $this->session = $session;
+        $this->grupo_usuario_repository = $grupo_usuario_repository;
     }
 
     /**
-     * @throws UsuarioNaoLogadoException
+     * @param ExcluirGrupoUsuarioCommand $command
+     * @throws Exception
      */
-    public function executar()
+    public function handle(ExcluirGrupoUsuarioCommand $command)
     {
-       if (!$this->session->isAtiva() || !$this->session->get('logado')) {
-           throw new UsuarioNaoLogadoException();
-       }
+        try {
+            /** @var GrupoUsuario $usuario */
+            $grupo_usuario = $this->grupo_usuario_repository->find($command->getGrupoUsuarioId());
+            $this->grupo_usuario_repository->delete($grupo_usuario);
+        } catch (Exception $e) {
+            throw $e;
+        }
     }
 }

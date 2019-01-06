@@ -30,38 +30,70 @@ use DLX\Core\Exceptions\UserException;
 use League\Tactician\CommandBus;
 use PainelDLX\Application\UseCases\Usuarios\AlterarSenhaUsuario\AlterarSenhaUsuarioCommand;
 use PainelDLX\Domain\CadastroUsuarios\Entities\Usuario;
-use PainelDLX\Domain\CadastroUsuarios\Exceptions\UsuarioNaoEncontrado;
-use PainelDLX\Domain\CadastroUsuarios\Repositories\UsuarioRepositoryInterface;
 use PainelDLX\Domain\CadastroUsuarios\ValueObjects\SenhaUsuario;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use SechianeX\Contracts\SessionInterface;
 use Vilex\VileX;
 use Zend\Diactoros\Response\JsonResponse;
 
-/**
- * Class AlterarSenhaUsuarioController
- * @package PainelDLX\Presentation\Site\Controllers
- * @property UsuarioRepositoryInterface repository
- */
-class AlterarSenhaUsuarioController extends SiteController
+class MInhaContaController extends SiteController
 {
     /**
-     * AlterarSenhaUsuarioController constructor.
+     * @var SessionInterface
+     */
+    private $session;
+    /**
+     * @var Usuario
+     */
+    private $usuario_logado;
+
+    /**
+     * MInhaContaController constructor.
      * @param VileX $view
      * @param CommandBus $commandBus
-     * @param UsuarioRepositoryInterface $usuario_repository
+     * @param SessionInterface $session
      */
     public function __construct(
         VileX $view,
         CommandBus $commandBus,
-        UsuarioRepositoryInterface $usuario_repository
+        SessionInterface $session
     ) {
         parent::__construct($view, $commandBus);
 
         $this->view->setPaginaMestra('src/Presentation/Site/public/views/painel-dlx-master.phtml');
-        $this->view->setViewRoot('src/Presentation/Site/public/views');
+        $this->view->setViewRoot('src/Presentation/Site/public/views/usuarios');
+        $this->session = $session;
+        $this->usuario_logado = $this->session->get('usuario-logado');
+    }
 
-        $this->repository = $usuario_repository;
+    /**
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
+     * @throws \Vilex\Exceptions\PaginaMestraNaoEncontradaException
+     * @throws \Vilex\Exceptions\ViewNaoEncontradaException
+     * @throws \Vilex\Exceptions\ContextoInvalidoException
+     */
+    public function meusDados(ServerRequestInterface $request): ResponseInterface
+    {
+        try {
+            // Atributos
+            $this->view->setAtributo('titulo-pagina', $this->usuario_logado->getNome());
+
+            // Visão
+            $this->view->addTemplate('det_usuario', [
+                'usuario' => $this->usuario_logado,
+                'is-usuario-logado' => true
+            ]);
+        } catch (UserException $e) {
+            $this->view->addTemplate('mensagem_usuario');
+            $this->view->setAtributo('mensagem', [
+                'tipo' => 'erro',
+                'mensagem' => $e->getMessage()
+            ]);
+        }
+
+        return $this->view->render();
     }
 
     /**
@@ -71,23 +103,15 @@ class AlterarSenhaUsuarioController extends SiteController
      * @throws \Vilex\Exceptions\PaginaMestraNaoEncontradaException
      * @throws \Vilex\Exceptions\ViewNaoEncontradaException
      */
-    public function formAlterarSenha(ServerRequestInterface $request): ResponseInterface
+    public function formAlterarMinhaSenha(ServerRequestInterface $request): ResponseInterface
     {
-        /**
-         * @var int $usuario_id
-         */
-        extract($request->getQueryParams());
-
         try {
-            /** @var Usuario $usuario */
-            $usuario = $this->repository->find($usuario_id);
-
             // Atributos
-            $this->view->setAtributo('titulo-pagina', 'Alterar senha');
-            $this->view->setAtributo('usuario', $usuario);
+            $this->view->setAtributo('titulo-pagina', 'Alterar minha senha');
+            $this->view->setAtributo('usuario', $this->usuario_logado);
 
             // Views
-            $this->view->addTemplate('form_alterar_senha');
+            $this->view->addTemplate('../form_alterar_senha');
 
             // JS
             $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js');
@@ -106,26 +130,29 @@ class AlterarSenhaUsuarioController extends SiteController
      * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
-    public function alterarSenhaUsuario(ServerRequestInterface $request): ResponseInterface
+    public function alterarMinhaSenha(ServerRequestInterface $request): ResponseInterface
     {
+        $post = filter_var_array(
+            $request->getParsedBody(),
+            [
+                'senha_atual' => FILTER_DEFAULT,
+                'senha_nova' => FILTER_DEFAULT,
+                'senha_confirm' => FILTER_DEFAULT
+            ]
+        );
+
         /**
-         * @var int $usuario_id
          * @var string $senha_atual
          * @var string $senha_nova
          * @var string $senha_confirm
          */
-        extract($request->getParsedBody());
+        extract($post); unset($post);
 
         try {
-            /** @var Usuario $usuario */
-            $usuario = $this->repository->find($usuario_id);
-
-            if (!$usuario instanceof Usuario) {
-                throw new UsuarioNaoEncontrado();
-            }
-
             $senha_usuario = new SenhaUsuario($senha_nova, $senha_confirm, $senha_atual);
-            $this->commandBus->handle(new AlterarSenhaUsuarioCommand($usuario, $senha_usuario));
+
+            /** @covers AlterarSenhaUsuarioHandler */
+            $this->commandBus->handle(new AlterarSenhaUsuarioCommand($this->usuario_logado, $senha_usuario));
 
             $json['retorno'] = 'sucesso';
             $json['mensagem'] = 'Senha alterada com sucesso!';

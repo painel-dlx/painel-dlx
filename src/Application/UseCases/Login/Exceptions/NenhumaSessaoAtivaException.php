@@ -23,36 +23,15 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Application\Middlewares;
+namespace PainelDLX\Application\UseCases\Login\Exceptions;
 
 
-use PainelDLX\Application\Contracts\MiddlewareInterface;
-use PainelDLX\Application\Middlewares\Exceptions\UsuarioNaoLogadoException;
-use SechianeX\Contracts\SessionInterface;
+use DLX\Core\Exceptions\UserException;
 
-class VerificarLogonMiddleware implements MiddlewareInterface
+class NenhumaSessaoAtivaException extends UserException
 {
-    /**
-     * @var SessionInterface
-     */
-    private $session;
-
-    /**
-     * VerificarLogonMiddleware constructor.
-     * @param SessionInterface $session
-     */
-    public function __construct(SessionInterface $session)
+    public function __construct()
     {
-        $this->session = $session;
-    }
-
-    /**
-     * @throws UsuarioNaoLogadoException
-     */
-    public function executar()
-    {
-       if (!$this->session->isAtiva() || !$this->session->get('logado')) {
-           throw new UsuarioNaoLogadoException();
-       }
+        parent::__construct( 'Nenhuma sessão ativa encontrada!');
     }
 }

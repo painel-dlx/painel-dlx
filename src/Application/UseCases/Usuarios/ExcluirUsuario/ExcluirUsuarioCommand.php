@@ -23,36 +23,31 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Application\Middlewares;
+namespace PainelDLX\Application\UseCases\Usuarios\ExcluirUsuario;
 
 
-use PainelDLX\Application\Contracts\MiddlewareInterface;
-use PainelDLX\Application\Middlewares\Exceptions\UsuarioNaoLogadoException;
-use SechianeX\Contracts\SessionInterface;
+use DLX\Contracts\CommandInterface;
+use PainelDLX\Domain\CadastroUsuarios\Entities\Usuario;
 
-class VerificarLogonMiddleware implements MiddlewareInterface
+class ExcluirUsuarioCommand
 {
-    /**
-     * @var SessionInterface
-     */
-    private $session;
+    /** @var Usuario */
+    private $usuario;
 
     /**
-     * VerificarLogonMiddleware constructor.
-     * @param SessionInterface $session
+     * @return Usuario
      */
-    public function __construct(SessionInterface $session)
+    public function getUsuario(): Usuario
     {
-        $this->session = $session;
+        return $this->usuario;
     }
 
     /**
-     * @throws UsuarioNaoLogadoException
+     * ExcluirUsuarioCommand constructor.
+     * @param Usuario $usuario
      */
-    public function executar()
+    public function __construct(Usuario $usuario)
     {
-       if (!$this->session->isAtiva() || !$this->session->get('logado')) {
-           throw new UsuarioNaoLogadoException();
-       }
+        $this->usuario = $usuario;
     }
 }

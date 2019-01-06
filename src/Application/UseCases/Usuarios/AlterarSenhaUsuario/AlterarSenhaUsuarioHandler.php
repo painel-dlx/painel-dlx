@@ -23,36 +23,42 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Application\Middlewares;
+namespace PainelDLX\Application\UseCases\Usuarios\AlterarSenhaUsuario;
 
+use PainelDLX\Domain\CadastroUsuarios\Repositories\UsuarioRepositoryInterface;
+use PainelDLX\Domain\CadastroUsuarios\Services\VerificaSenhasIguais;
 
-use PainelDLX\Application\Contracts\MiddlewareInterface;
-use PainelDLX\Application\Middlewares\Exceptions\UsuarioNaoLogadoException;
-use SechianeX\Contracts\SessionInterface;
-
-class VerificarLogonMiddleware implements MiddlewareInterface
+class AlterarSenhaUsuarioHandler
 {
-    /**
-     * @var SessionInterface
-     */
-    private $session;
+    /** @var UsuarioRepositoryInterface */
+    private $usuario_repository;
 
     /**
-     * VerificarLogonMiddleware constructor.
-     * @param SessionInterface $session
+     * AlterarSenhaUsuarioHandler constructor.
+     * @param UsuarioRepositoryInterface $usuario_repository
      */
-    public function __construct(SessionInterface $session)
+    public function __construct(UsuarioRepositoryInterface $usuario_repository)
     {
-        $this->session = $session;
+        $this->usuario_repository = $usuario_repository;
     }
 
     /**
-     * @throws UsuarioNaoLogadoException
+     * @param AlterarSenhaUsuarioCommand $command
+     * @throws \Exception
      */
-    public function executar()
+    public function handle(AlterarSenhaUsuarioCommand $command)
     {
-       if (!$this->session->isAtiva() || !$this->session->get('logado')) {
-           throw new UsuarioNaoLogadoException();
-       }
+        try {
+            $usuario = $command->getUsuario();
+            $senha = $command->getSenhaUsuario();
+
+            // Verificar se as senhas coincidem
+            (new VerificaSenhasIguais($usuario, $senha))->executar();
+
+            $usuario->setSenha($senha->getSenhaInformada());
+            $this->usuario_repository->update($usuario);
+        } catch (\Exception $e) {
+            throw $e;
+        }
     }
 }

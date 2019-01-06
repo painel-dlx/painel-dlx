@@ -9,8 +9,8 @@
 namespace PainelDLX\Application\Middlewares;
 
 
-use Application\Exceptions\UsuarioNaoPossuiPermissaoException;
 use PainelDLX\Application\Contracts\MiddlewareInterface;
+use PainelDLX\Application\Middlewares\Exceptions\UsuarioNaoPossuiPermissaoException;
 
 class Autorizacao implements MiddlewareInterface
 {

@@ -27,9 +27,12 @@ namespace PainelDLX\Presentation\Site\Controllers;
 
 use DLX\Core\Exceptions\UserException;
 use League\Tactician\CommandBus;
-use PainelDLX\Application\CadastroUsuarios\Commands\NovoUsuarioCommand;
-use PainelDLX\Application\CadastroUsuarios\Commands\ExcluirUsuarioCommand;
-use PainelDLX\Application\CadastroUsuarios\Commands\EditarUsuarioCommand;
+use PainelDLX\Application\UseCases\Usuarios\EditarUsuario\EditarUsuarioCommand;
+use PainelDLX\Application\UseCases\Usuarios\EditarUsuario\EditarUsuarioHandler;
+use PainelDLX\Application\UseCases\Usuarios\ExcluirUsuario\ExcluirUsuarioCommand;
+use PainelDLX\Application\UseCases\Usuarios\ExcluirUsuario\ExcluirUsuarioHandler;
+use PainelDLX\Application\UseCases\Usuarios\NovoUsuario\NovoUsuarioCommand;
+use PainelDLX\Application\UseCases\Usuarios\NovoUsuario\NovoUsuarioHandler;
 use PainelDLX\Domain\CadastroUsuarios\Entities\Usuario;
 use PainelDLX\Domain\CadastroUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
 use PainelDLX\Domain\CadastroUsuarios\Repositories\UsuarioRepositoryInterface;
@@ -148,6 +151,7 @@ class CadastroUsuarioController extends SiteController
             $usuario = Usuario::create($nome, $email, ...$grupos)
                 ->setSenha($senha);
 
+            /** @covers NovoUsuarioHandler */
             $this->commandBus->handle(new NovoUsuarioCommand($usuario, $senha_confirm));
 
             $msg['retorno'] = 'sucesso';
@@ -214,7 +218,10 @@ class CadastroUsuarioController extends SiteController
         extract($request->getParsedBody());
 
         try {
-            /** @var Usuario $usuario_atualizado */
+            /**
+             * @var Usuario $usuario_atualizado
+             * @covers EditarUsuarioHandler
+             */
             $usuario_atualizado = $this->commandBus->handle(new EditarUsuarioCommand($usuario_id, $nome, $email, $grupos));
 
             $msg['retorno'] = 'sucesso';
@@ -238,6 +245,8 @@ class CadastroUsuarioController extends SiteController
         try {
             /** @var Usuario $usuario */
             $usuario = $this->repository->find($usuario_id);
+
+            /** @covers ExcluirUsuarioHandler */
             $this->commandBus->handle(new ExcluirUsuarioCommand($usuario));
 
             $msg['retorno'] = 'sucesso';
@@ -271,6 +280,7 @@ class CadastroUsuarioController extends SiteController
             // Atributos
             $this->view->setAtributo('titulo-pagina', $usuario->getNome());
             $this->view->setAtributo('usuario', $usuario);
+            $this->view->setAtributo('is-usuario-logado', false);
 
             // views
             $this->view->addTemplate('det_usuario');

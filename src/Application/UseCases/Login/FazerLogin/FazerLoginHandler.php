@@ -23,36 +23,53 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Application\Middlewares;
+namespace PainelDLX\Application\UseCases\Login\FazerLogin;
 
-
-use PainelDLX\Application\Contracts\MiddlewareInterface;
-use PainelDLX\Application\Middlewares\Exceptions\UsuarioNaoLogadoException;
+use PainelDLX\Application\UseCases\Login\Exceptions\UsuarioOuSenhaInvalidosException;
+use PainelDLX\Domain\CadastroUsuarios\Entities\Usuario;
+use PainelDLX\Domain\CadastroUsuarios\Repositories\UsuarioRepositoryInterface;
 use SechianeX\Contracts\SessionInterface;
 
-class VerificarLogonMiddleware implements MiddlewareInterface
+class FazerLoginHandler
 {
+    /**
+     * @var UsuarioRepositoryInterface
+     */
+    private $usuario_repository;
     /**
      * @var SessionInterface
      */
     private $session;
 
     /**
-     * VerificarLogonMiddleware constructor.
+     * FazerLoginHandler constructor.
+     * @param UsuarioRepositoryInterface $usuario_repository
      * @param SessionInterface $session
      */
-    public function __construct(SessionInterface $session)
-    {
+    public function __construct(
+        UsuarioRepositoryInterface $usuario_repository,
+        SessionInterface $session
+    ) {
+        $this->usuario_repository = $usuario_repository;
         $this->session = $session;
     }
 
     /**
-     * @throws UsuarioNaoLogadoException
+     * @param FazerLoginCommand $command
+     * @return \PainelDLX\Domain\CadastroUsuarios\Entities\Usuario|null
+     * @throws UsuarioOuSenhaInvalidosException
      */
-    public function executar()
+    public function handle(FazerLoginCommand $command)
     {
-       if (!$this->session->isAtiva() || !$this->session->get('logado')) {
-           throw new UsuarioNaoLogadoException();
-       }
+        $usuario = $this->usuario_repository->fazerLogin($command->getEmail(), $command->getSenha());
+
+        if (!$usuario instanceof Usuario) {
+            throw new UsuarioOuSenhaInvalidosException();
+        }
+
+        $this->session->set('logado', true);
+        $this->session->set('usuario-logado', $usuario);
+        
+        return $usuario;
     }
 }

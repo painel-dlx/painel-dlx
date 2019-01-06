@@ -23,36 +23,51 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Application\Middlewares;
+namespace PainelDLX\Application\UseCases\GruposUsuarios\EditarGrupoUsuario;
 
-
-use PainelDLX\Application\Contracts\MiddlewareInterface;
-use PainelDLX\Application\Middlewares\Exceptions\UsuarioNaoLogadoException;
-use SechianeX\Contracts\SessionInterface;
-
-class VerificarLogonMiddleware implements MiddlewareInterface
+class EditarGrupoUsuarioCommand
 {
-    /**
-     * @var SessionInterface
-     */
-    private $session;
+    /** @var int */
+    private $grupo_usuario_id;
+    /** @var string */
+    private $nome;
 
     /**
-     * VerificarLogonMiddleware constructor.
-     * @param SessionInterface $session
+     * @return int
      */
-    public function __construct(SessionInterface $session)
+    public function getGrupoUsuarioId(): int
     {
-        $this->session = $session;
+        return $this->grupo_usuario_id;
     }
 
     /**
-     * @throws UsuarioNaoLogadoException
+     * @return string
      */
-    public function executar()
+    public function getNome(): string
     {
-       if (!$this->session->isAtiva() || !$this->session->get('logado')) {
-           throw new UsuarioNaoLogadoException();
-       }
+        return $this->nome;
+    }
+
+    /**
+     * EditarUsuarioCommand constructor.
+     * @param int $grupo_usuario_id
+     * @param string $nome
+     */
+    public function __construct(int $grupo_usuario_id, string $nome)
+    {
+        $this->grupo_usuario_id = $grupo_usuario_id;
+        $this->nome = $nome;
+    }
+
+    /**
+     * Request completa do comando
+     * @return array Retorna um array associativo. A chave é o nome da propriedade e o valor seu respectivo valor
+     */
+    public function getRequest(): array
+    {
+        return [
+            'grupo_usuario_id' => $this->getGrupoUsuarioId(),
+            'nome' => $this->getNome()
+        ];
     }
 }

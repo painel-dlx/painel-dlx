@@ -23,14 +23,12 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Application\Middlewares;
+namespace PainelDLX\Application\UseCases\Login\FazerLogout;
 
-
-use PainelDLX\Application\Contracts\MiddlewareInterface;
-use PainelDLX\Application\Middlewares\Exceptions\UsuarioNaoLogadoException;
+use PainelDLX\Application\UseCases\Login\Exceptions\NenhumaSessaoAtivaException;
 use SechianeX\Contracts\SessionInterface;
 
-class VerificarLogonMiddleware implements MiddlewareInterface
+class FazerLogoutHandler
 {
     /**
      * @var SessionInterface
@@ -38,7 +36,7 @@ class VerificarLogonMiddleware implements MiddlewareInterface
     private $session;
 
     /**
-     * VerificarLogonMiddleware constructor.
+     * FazerLogoutHandler constructor.
      * @param SessionInterface $session
      */
     public function __construct(SessionInterface $session)
@@ -47,12 +45,15 @@ class VerificarLogonMiddleware implements MiddlewareInterface
     }
 
     /**
-     * @throws UsuarioNaoLogadoException
+     * @return bool
+     * @throws NenhumaSessaoAtivaException
      */
-    public function executar()
+    public function handle(): bool
     {
-       if (!$this->session->isAtiva() || !$this->session->get('logado')) {
-           throw new UsuarioNaoLogadoException();
-       }
+        if (!$this->session->isAtiva()) {
+            throw new NenhumaSessaoAtivaException();
+        }
+
+        return $this->session->destroy();
     }
 }

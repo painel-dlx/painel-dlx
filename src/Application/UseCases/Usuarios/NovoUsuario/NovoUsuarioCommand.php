@@ -23,36 +23,43 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Application\Middlewares;
+namespace PainelDLX\Application\UseCases\Usuarios\NovoUsuario;
 
 
-use PainelDLX\Application\Contracts\MiddlewareInterface;
-use PainelDLX\Application\Middlewares\Exceptions\UsuarioNaoLogadoException;
-use SechianeX\Contracts\SessionInterface;
+use DLX\Contracts\CommandInterface;
+use PainelDLX\Domain\CadastroUsuarios\Entities\Usuario;
 
-class VerificarLogonMiddleware implements MiddlewareInterface
+class NovoUsuarioCommand
 {
-    /**
-     * @var SessionInterface
-     */
-    private $session;
+    /** @var Usuario */
+    private $usuario;
+    /** @var string */
+    private $senha_confirm;
 
     /**
-     * VerificarLogonMiddleware constructor.
-     * @param SessionInterface $session
+     * @return Usuario
      */
-    public function __construct(SessionInterface $session)
+    public function getUsuario(): Usuario
     {
-        $this->session = $session;
+        return $this->usuario;
     }
 
     /**
-     * @throws UsuarioNaoLogadoException
+     * @return string
      */
-    public function executar()
+    public function getSenhaConfirm(): string
     {
-       if (!$this->session->isAtiva() || !$this->session->get('logado')) {
-           throw new UsuarioNaoLogadoException();
-       }
+        return $this->senha_confirm;
+    }
+
+    /**
+     * NovoUsuarioCommand constructor.
+     * @param Usuario $usuario
+     * @param string $senha_confirm
+     */
+    public function __construct(Usuario $usuario, string $senha_confirm)
+    {
+        $this->usuario = $usuario;
+        $this->senha_confirm = $senha_confirm;
     }
 }

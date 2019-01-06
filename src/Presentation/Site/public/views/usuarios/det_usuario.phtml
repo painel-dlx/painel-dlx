@@ -42,16 +42,6 @@ $usuario = $this->getAtributo('usuario');
     <?php include 'menu_lateral_usuarios.phtml' ?>
 
     <div class="detalhe-usuario">
-        <!-- nav class="menu-opcoes">
-            <a href="editar?usuario_id=<?php echo $usuario->getUsuarioId() ?>" class="link-editar" title="Editar informações desse usuário">
-                Editar
-            </a>
-
-            <a href="excluir-usuario?usuario_id=<?php echo $usuario->getUsuarioId() ?>" class="link-excluir" title="Excluir esse usuário">
-                Excluir
-            </a>
-        </nav -->
-
         <details id="dados-pessoais" class="detalhe-registro" open>
             <summary class="detalhe-registro-titulo">Dados Pessoais</summary>
 
@@ -66,12 +56,12 @@ $usuario = $this->getAtributo('usuario');
             </p>
         </details>
 
-        <?php if (true) : ?>
+        <?php if ($this->getAtributo('is-usuario-logado')) : ?>
         <details id="acesso-sistema" class="detalhe-registro" open>
             <summary class="detalhe-registro-titulo">Acesso ao sistema</summary>
 
             <p class="detalhe-registro-paragr">
-                <a href="alterar-senha?usuario_id=<?php echo $usuario->getUsuarioId() ?>" class="btn btn-alterar-senha">
+                <a href="alterar-minha-senha" class="btn btn-alterar-senha">
                     Alterar senha
                 </a>
             </p>

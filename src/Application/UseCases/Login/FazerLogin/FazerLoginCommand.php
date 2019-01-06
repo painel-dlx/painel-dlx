@@ -23,36 +23,44 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Application\Middlewares;
+namespace PainelDLX\Application\UseCases\Login\FazerLogin;
 
 
-use PainelDLX\Application\Contracts\MiddlewareInterface;
-use PainelDLX\Application\Middlewares\Exceptions\UsuarioNaoLogadoException;
-use SechianeX\Contracts\SessionInterface;
-
-class VerificarLogonMiddleware implements MiddlewareInterface
+class FazerLoginCommand
 {
     /**
-     * @var SessionInterface
+     * @var string
      */
-    private $session;
+    private $email;
+    /**
+     * @var string
+     */
+    private $senha;
 
     /**
-     * VerificarLogonMiddleware constructor.
-     * @param SessionInterface $session
+     * @return string
      */
-    public function __construct(SessionInterface $session)
+    public function getEmail(): string
     {
-        $this->session = $session;
+        return $this->email;
     }
 
     /**
-     * @throws UsuarioNaoLogadoException
+     * @return string
      */
-    public function executar()
+    public function getSenha(): string
     {
-       if (!$this->session->isAtiva() || !$this->session->get('logado')) {
-           throw new UsuarioNaoLogadoException();
-       }
+        return $this->senha;
+    }
+
+    /**
+     * FazerLoginCommand constructor.
+     * @param string $email
+     * @param string $senha
+     */
+    public function __construct(string $email, string $senha)
+    {
+        $this->email = $email;
+        $this->senha = $senha;
     }
 }

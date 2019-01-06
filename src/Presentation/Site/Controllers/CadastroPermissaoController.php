@@ -28,11 +28,12 @@ namespace PainelDLX\Presentation\Site\Controllers;
 
 use DLX\Core\Exceptions\UserException;
 use League\Tactician\CommandBus;
-use PainelDLX\Application\CadastroUsuarios\Commands\CadastrarPermissaoUsuarioCommand;
-use PainelDLX\Application\CadastroUsuarios\Commands\EditarPermissaoUsuarioCommand;
-use PainelDLX\Application\CadastroUsuarios\Commands\ExcluirPermissaoUsuarioCommand;
-use PainelDLX\Application\CadastroUsuarios\Handlers\CadastrarPermissaoUsuarioHandler;
-use PainelDLX\Application\CadastroUsuarios\Handlers\ExcluirPermissaoUsuarioHandler;
+use PainelDLX\Application\UseCases\PermissoesUsuario\CadastrarPermissaoUsuario\CadastrarPermissaoUsuarioCommand;
+use PainelDLX\Application\UseCases\PermissoesUsuario\CadastrarPermissaoUsuario\CadastrarPermissaoUsuarioHandler;
+use PainelDLX\Application\UseCases\PermissoesUsuario\EditarPermissaoUsuario\EditarPermissaoUsuarioCommand;
+use PainelDLX\Application\UseCases\PermissoesUsuario\EditarPermissaoUsuario\EditarPermissaoUsuarioHandler;
+use PainelDLX\Application\UseCases\PermissoesUsuario\ExcluirPermissaoUsuario\ExcluirPermissaoUsuarioCommand;
+use PainelDLX\Application\UseCases\PermissoesUsuario\ExcluirPermissaoUsuario\ExcluirPermissaoUsuarioHandler;
 use PainelDLX\Domain\CadastroUsuarios\Entities\PermissaoUsuario;
 use PainelDLX\Domain\CadastroUsuarios\Repositories\PermissaoUsuarioRepositoryInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -223,7 +224,7 @@ class CadastroPermissaoController extends SiteController
         try {
             /**
              * @var PermissaoUsuario $permissao_usuario
-             * @covers CadastrarPermissaoUsuarioHandler
+             * @covers EditarPermissaoUsuarioHandler
              */
             $permissao_usuario = $this->commandBus->handle(new EditarPermissaoUsuarioCommand($permissao_usuario_id, $descricao));
 

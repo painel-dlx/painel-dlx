@@ -23,30 +23,31 @@
  * SOFTWARE.
  */
 
-use PainelDLX\Application\CadastroUsuarios\Commands\AlterarSenhaUsuarioCommand;
-use PainelDLX\Application\CadastroUsuarios\Commands\NovoGrupoUsuarioCommand;
-use PainelDLX\Application\CadastroUsuarios\Handlers\AlterarSenhaUsuarioHandler;
-use PainelDLX\Application\CadastroUsuarios\Handlers\NovoGrupoUsuarioHandler;
-use PainelDLX\Application\CadastroUsuarios\Commands\EditarGrupoUsuarioCommand;
-use PainelDLX\Application\CadastroUsuarios\Handlers\EditarGrupoUsuarioHandler;
-use PainelDLX\Application\CadastroUsuarios\Commands\ExcluirGrupoUsuarioCommand;
-use PainelDLX\Application\CadastroUsuarios\Handlers\ExcluirGrupoUsuarioHandler;
-use PainelDLX\Application\CadastroUsuarios\Commands\NovoUsuarioCommand;
-use PainelDLX\Application\CadastroUsuarios\Handlers\NovoUsuarioHandler;
-use PainelDLX\Application\CadastroUsuarios\Commands\EditarUsuarioCommand;
-use PainelDLX\Application\CadastroUsuarios\Handlers\EditarUsuarioHandler;
-use PainelDLX\Application\CadastroUsuarios\Commands\ExcluirUsuarioCommand;
-use PainelDLX\Application\CadastroUsuarios\Handlers\ExcluirUsuarioHandler;
-use PainelDLX\Application\CadastroUsuarios\Commands\CadastrarPermissaoUsuarioCommand;
-use PainelDLX\Application\CadastroUsuarios\Handlers\CadastrarPermissaoUsuarioHandler;
-use PainelDLX\Application\CadastroUsuarios\Commands\EditarPermissaoUsuarioCommand;
-use PainelDLX\Application\CadastroUsuarios\Handlers\EditarPermissaoUsuarioHandler;
-use PainelDLX\Application\CadastroUsuarios\Commands\ExcluirPermissaoUsuarioCommand;
-use PainelDLX\Application\CadastroUsuarios\Handlers\ExcluirPermissaoUsuarioHandler;
-use PainelDLX\Application\Login\Commands\FazerLoginCommand;
-use PainelDLX\Application\Login\Handlers\FazerLoginHandler;
-use PainelDLX\Application\Login\Commands\FazerLogoutCommand;
-use PainelDLX\Application\Login\Handlers\FazerLogoutHandler;
+
+use PainelDLX\Application\UseCases\GruposUsuarios\EditarGrupoUsuario\EditarGrupoUsuarioCommand;
+use PainelDLX\Application\UseCases\GruposUsuarios\EditarGrupoUsuario\EditarGrupoUsuarioHandler;
+use PainelDLX\Application\UseCases\GruposUsuarios\ExcluirGrupoUsuario\ExcluirGrupoUsuarioCommand;
+use PainelDLX\Application\UseCases\GruposUsuarios\ExcluirGrupoUsuario\ExcluirGrupoUsuarioHandler;
+use PainelDLX\Application\UseCases\GruposUsuarios\NovoGrupoUsuario\NovoGrupoUsuarioCommand;
+use PainelDLX\Application\UseCases\GruposUsuarios\NovoGrupoUsuario\NovoGrupoUsuarioHandler;
+use PainelDLX\Application\UseCases\Login\FazerLogin\FazerLoginCommand;
+use PainelDLX\Application\UseCases\Login\FazerLogin\FazerLoginHandler;
+use PainelDLX\Application\UseCases\Login\FazerLogout\FazerLogoutCommand;
+use PainelDLX\Application\UseCases\Login\FazerLogout\FazerLogoutHandler;
+use PainelDLX\Application\UseCases\PermissoesUsuario\CadastrarPermissaoUsuario\CadastrarPermissaoUsuarioCommand;
+use PainelDLX\Application\UseCases\PermissoesUsuario\CadastrarPermissaoUsuario\CadastrarPermissaoUsuarioHandler;
+use PainelDLX\Application\UseCases\PermissoesUsuario\EditarPermissaoUsuario\EditarPermissaoUsuarioCommand;
+use PainelDLX\Application\UseCases\PermissoesUsuario\EditarPermissaoUsuario\EditarPermissaoUsuarioHandler;
+use PainelDLX\Application\UseCases\PermissoesUsuario\ExcluirPermissaoUsuario\ExcluirPermissaoUsuarioCommand;
+use PainelDLX\Application\UseCases\PermissoesUsuario\ExcluirPermissaoUsuario\ExcluirPermissaoUsuarioHandler;
+use PainelDLX\Application\UseCases\Usuarios\AlterarSenhaUsuario\AlterarSenhaUsuarioCommand;
+use PainelDLX\Application\UseCases\Usuarios\AlterarSenhaUsuario\AlterarSenhaUsuarioHandler;
+use PainelDLX\Application\UseCases\Usuarios\EditarUsuario\EditarUsuarioCommand;
+use PainelDLX\Application\UseCases\Usuarios\EditarUsuario\EditarUsuarioHandler;
+use PainelDLX\Application\UseCases\Usuarios\ExcluirUsuario\ExcluirUsuarioCommand;
+use PainelDLX\Application\UseCases\Usuarios\ExcluirUsuario\ExcluirUsuarioHandler;
+use PainelDLX\Application\UseCases\Usuarios\NovoUsuario\NovoUsuarioCommand;
+use PainelDLX\Application\UseCases\Usuarios\NovoUsuario\NovoUsuarioHandler;
 
 return [
     NovoUsuarioCommand::class => NovoUsuarioHandler::class,

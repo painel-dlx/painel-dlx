@@ -26,10 +26,8 @@
 include __DIR__ . '/vendor/autoload.php';
 
 use DLX\Core\Configure;
-use PainelDLX\Application\Exceptions\UsuarioNaoLogadoException;
+use PainelDLX\Application\Middlewares\Exceptions\UsuarioNaoLogadoException;
 use RautereX\RautereX;
-use SechianeX\Factories\SessionFactory;
-use Zend\Diactoros\Response\RedirectResponse;
 use Zend\Diactoros\ServerRequestFactory;
 use League\Container\Container;
 use League\Container\ReflectionContainer;

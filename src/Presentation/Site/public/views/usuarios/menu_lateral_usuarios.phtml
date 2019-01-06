@@ -38,9 +38,11 @@ use Vilex\VileX;
             Dados Pessoais
         </a>
 
+        <?php if ($this->getAtributo('is-usuario-logado')) : ?>
         <a href="javascript:" class="menu-lateral-item icone-sistema" data-mostrar-html="#acesso-sistema">
             Acesso ao sistema
         </a>
+        <?php endif; ?>
 
         <a href="#" class="menu-lateral-item icone-grupo" data-mostrar-html="#grupos-usuarios">
             Grupos de Usuário

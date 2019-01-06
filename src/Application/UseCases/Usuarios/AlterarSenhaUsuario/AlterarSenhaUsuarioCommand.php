@@ -23,36 +23,43 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Application\Middlewares;
+namespace PainelDLX\Application\UseCases\Usuarios\AlterarSenhaUsuario;
 
 
-use PainelDLX\Application\Contracts\MiddlewareInterface;
-use PainelDLX\Application\Middlewares\Exceptions\UsuarioNaoLogadoException;
-use SechianeX\Contracts\SessionInterface;
+use PainelDLX\Domain\CadastroUsuarios\Entities\Usuario;
+use PainelDLX\Domain\CadastroUsuarios\ValueObjects\SenhaUsuario;
 
-class VerificarLogonMiddleware implements MiddlewareInterface
+class AlterarSenhaUsuarioCommand
 {
-    /**
-     * @var SessionInterface
-     */
-    private $session;
+    /** @var Usuario */
+    private $usuario;
+    /** @var SenhaUsuario */
+    private $senha_usuario;
 
     /**
-     * VerificarLogonMiddleware constructor.
-     * @param SessionInterface $session
+     * @return Usuario
      */
-    public function __construct(SessionInterface $session)
+    public function getUsuario(): Usuario
     {
-        $this->session = $session;
+        return $this->usuario;
     }
 
     /**
-     * @throws UsuarioNaoLogadoException
+     * @return SenhaUsuario
      */
-    public function executar()
+    public function getSenhaUsuario(): SenhaUsuario
     {
-       if (!$this->session->isAtiva() || !$this->session->get('logado')) {
-           throw new UsuarioNaoLogadoException();
-       }
+        return $this->senha_usuario;
+    }
+
+    /**
+     * AlterarSenhaUsuarioCommand constructor.
+     * @param Usuario $usuario
+     * @param SenhaUsuario $senha_usuario
+     */
+    public function __construct(Usuario $usuario, SenhaUsuario $senha_usuario)
+    {
+        $this->usuario = $usuario;
+        $this->senha_usuario = $senha_usuario;
     }
 }

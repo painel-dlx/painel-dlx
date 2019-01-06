@@ -79,10 +79,14 @@ body {
 @import "componentes/form/form-botoes";
 @import "componentes/form/form-alterar-usuario";
 @import "componentes/form/form-login";
+@import "componentes/form/form-alterar-senha";
 
 // Detalhes
 @import "componentes/detalhe-registro";
 @import "componentes/detalhes/detalhe-usuario";
+
+// Mansagens ao usuário
+@import "componentes/mensagem-usuario";
 
 // Outros
 @import "componentes/dica-geral";

@@ -23,36 +23,28 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Application\Middlewares;
+namespace PainelDLX\Application\UseCases\GruposUsuarios\NovoGrupoUsuario;
 
 
-use PainelDLX\Application\Contracts\MiddlewareInterface;
-use PainelDLX\Application\Middlewares\Exceptions\UsuarioNaoLogadoException;
-use SechianeX\Contracts\SessionInterface;
-
-class VerificarLogonMiddleware implements MiddlewareInterface
+class NovoGrupoUsuarioCommand
 {
-    /**
-     * @var SessionInterface
-     */
-    private $session;
+    /** @var string */
+    private $nome;
 
     /**
-     * VerificarLogonMiddleware constructor.
-     * @param SessionInterface $session
+     * @return string
      */
-    public function __construct(SessionInterface $session)
+    public function getNome(): string
     {
-        $this->session = $session;
+        return $this->nome;
     }
 
     /**
-     * @throws UsuarioNaoLogadoException
+     * NovoUsuarioCommand constructor.
+     * @param string $nome
      */
-    public function executar()
+    public function __construct(string $nome)
     {
-       if (!$this->session->isAtiva() || !$this->session->get('logado')) {
-           throw new UsuarioNaoLogadoException();
-       }
+        $this->nome = $nome;
     }
 }

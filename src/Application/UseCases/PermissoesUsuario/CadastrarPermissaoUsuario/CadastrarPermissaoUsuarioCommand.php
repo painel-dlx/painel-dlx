@@ -23,36 +23,44 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Application\Middlewares;
+namespace PainelDLX\Application\UseCases\PermissoesUsuario\CadastrarPermissaoUsuario;
 
 
-use PainelDLX\Application\Contracts\MiddlewareInterface;
-use PainelDLX\Application\Middlewares\Exceptions\UsuarioNaoLogadoException;
-use SechianeX\Contracts\SessionInterface;
-
-class VerificarLogonMiddleware implements MiddlewareInterface
+class CadastrarPermissaoUsuarioCommand
 {
     /**
-     * @var SessionInterface
+     * @var string
      */
-    private $session;
+    private $alias;
+    /**
+     * @var string
+     */
+    private $descricao;
 
     /**
-     * VerificarLogonMiddleware constructor.
-     * @param SessionInterface $session
+     * @return string
      */
-    public function __construct(SessionInterface $session)
+    public function getAlias(): string
     {
-        $this->session = $session;
+        return $this->alias;
     }
 
     /**
-     * @throws UsuarioNaoLogadoException
+     * @return string
      */
-    public function executar()
+    public function getDescricao(): string
     {
-       if (!$this->session->isAtiva() || !$this->session->get('logado')) {
-           throw new UsuarioNaoLogadoException();
-       }
+        return $this->descricao;
+    }
+
+    /**
+     * CadastrarPermissaoUsuarioCommand constructor.
+     * @param string $alias
+     * @param string $descricao
+     */
+    public function __construct(string $alias, string $descricao)
+    {
+        $this->alias = $alias;
+        $this->descricao = $descricao;
     }
 }

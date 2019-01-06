@@ -23,36 +23,19 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Application\Middlewares;
+namespace PainelDLX\Application\UseCases\CadastroUsuarios\Exceptions;
 
 
-use PainelDLX\Application\Contracts\MiddlewareInterface;
-use PainelDLX\Application\Middlewares\Exceptions\UsuarioNaoLogadoException;
-use SechianeX\Contracts\SessionInterface;
+use DLX\Core\Exceptions\UserException;
 
-class VerificarLogonMiddleware implements MiddlewareInterface
+class RegistroEntityNaoEncontradoException extends UserException
 {
     /**
-     * @var SessionInterface
+     * RegistroEntityNaoEncontradoException constructor.
+     * @param string $nome_amigavel_entity
      */
-    private $session;
-
-    /**
-     * VerificarLogonMiddleware constructor.
-     * @param SessionInterface $session
-     */
-    public function __construct(SessionInterface $session)
+    public function __construct(string $nome_amigavel_entity)
     {
-        $this->session = $session;
-    }
-
-    /**
-     * @throws UsuarioNaoLogadoException
-     */
-    public function executar()
-    {
-       if (!$this->session->isAtiva() || !$this->session->get('logado')) {
-           throw new UsuarioNaoLogadoException();
-       }
+        parent::__construct(sprintf('%s não encontrado!', $nome_amigavel_entity), 404);
     }
 }

@@ -1,0 +1,26 @@
+$tipos: (
+    'atencao' orange,
+    'info' #069,
+    'sucesso' green
+);
+
+.mensagem-usuario {
+    // Margens
+    padding: 7px 20px;
+
+    // Visual
+    border: 1px solid;
+    border-radius: 3px;
+    box-shadow: 0 0 3px rgba(black, .15);
+
+    @each $tipo, $cor in $tipos {
+        &.-#{$tipo} {
+            // Texto
+            color: $cor;
+
+            // Visual
+            border-color: $cor;
+            background: lighten($cor, 45%);
+        }
+    }
+}

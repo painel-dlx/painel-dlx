@@ -36,10 +36,10 @@ $usuario = $this->getAtributo('usuario');
 ?>
 
 [CORPO]
-<h1 class="titulo-pagina"><?php echo $this->getAtributo('titulo-pagina') ?></h1>
-
-<form id="form-alterar-senha" method="post" action="alterar-senha">
+<form id="form-alterar-senha" method="post" action="alterar-minha-senha" class="form-alterar-senha">
     <input type="hidden" name="usuario_id" value="<?php echo $usuario->getUsuarioId() ?>">
+
+    <h1 class="titulo-pagina"><?php echo $this->getAtributo('titulo-pagina') ?></h1>
 
     <p class="mensagem-usuario -atencao">
         Alterando a senha de <b><?php echo $usuario->getNome() ?></b>...<br>

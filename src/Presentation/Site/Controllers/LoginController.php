@@ -28,17 +28,16 @@ namespace PainelDLX\Presentation\Site\Controllers;
 
 use DLX\Core\Exceptions\UserException;
 use League\Tactician\CommandBus;
-use PainelDLX\Application\Login\Commands\FazerLoginCommand;
-use PainelDLX\Application\Login\Commands\FazerLogoutCommand;
-use PainelDLX\Application\Login\Handlers\FazerLoginHandler;
-use PainelDLX\Application\Login\Handlers\FazerLogoutHandler;
+use PainelDLX\Application\UseCases\Login\FazerLogin\FazerLoginCommand;
+use PainelDLX\Application\UseCases\Login\FazerLogin\FazerLoginHandler;
+use PainelDLX\Application\UseCases\Login\FazerLogout\FazerLogoutCommand;
+use PainelDLX\Application\UseCases\Login\FazerLogout\FazerLogoutHandler;
 use PainelDLX\Domain\CadastroUsuarios\Entities\Usuario;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use SechianeX\Contracts\SessionInterface;
 use Vilex\VileX;
 use Zend\Diactoros\Response\JsonResponse;
-use Zend\Diactoros\Response\RedirectResponse;
 
 class LoginController extends SiteController
 {

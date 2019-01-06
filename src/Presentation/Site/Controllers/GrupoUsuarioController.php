@@ -28,9 +28,12 @@ namespace PainelDLX\Presentation\Site\Controllers;
 
 use DLX\Core\Exceptions\UserException;
 use League\Tactician\CommandBus;
-use PainelDLX\Application\CadastroUsuarios\Commands\NovoGrupoUsuarioCommand;
-use PainelDLX\Application\CadastroUsuarios\Commands\ExcluirGrupoUsuarioCommand;
-use PainelDLX\Application\CadastroUsuarios\Commands\EditarGrupoUsuarioCommand;
+use PainelDLX\Application\UseCases\GruposUsuarios\EditarGrupoUsuario\EditarGrupoUsuarioCommand;
+use PainelDLX\Application\UseCases\GruposUsuarios\EditarGrupoUsuario\EditarGrupoUsuarioHandler;
+use PainelDLX\Application\UseCases\GruposUsuarios\ExcluirGrupoUsuario\ExcluirGrupoUsuarioCommand;
+use PainelDLX\Application\UseCases\GruposUsuarios\ExcluirGrupoUsuario\ExcluirGrupoUsuarioHandler;
+use PainelDLX\Application\UseCases\GruposUsuarios\NovoGrupoUsuario\NovoGrupoUsuarioCommand;
+use PainelDLX\Application\UseCases\GruposUsuarios\NovoGrupoUsuario\NovoGrupoUsuarioHandler;
 use PainelDLX\Domain\CadastroUsuarios\Entities\GrupoUsuario;
 use PainelDLX\Domain\CadastroUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
 use PainelDLX\Infra\ORM\Doctrine\Repositories\GrupoUsuarioRepository;
@@ -132,7 +135,10 @@ class GrupoUsuarioController extends SiteController
         extract($request->getParsedBody());
 
         try {
-            /** @var GrupoUsuario $grupo_usuario */
+            /**
+             * @var GrupoUsuario $grupo_usuario
+             * @covers NovoGrupoUsuarioHandler
+             */
             $grupo_usuario = $this->commandBus->handle(new NovoGrupoUsuarioCommand($nome));
 
             $msg['retorno'] = 'sucesso';
@@ -198,7 +204,10 @@ class GrupoUsuarioController extends SiteController
         extract($request->getParsedBody());
 
         try {
-            /** @var GrupoUsuario $grupo_usuario_atualizado */
+            /**
+             * @var GrupoUsuario $grupo_usuario_atualizado
+             * @covers EditarGrupoUsuarioHandler
+             */
             $grupo_usuario_atualizado = $this->commandBus->handle(
                 new EditarGrupoUsuarioCommand($grupo_usuario_id, $nome)
             );
@@ -227,6 +236,7 @@ class GrupoUsuarioController extends SiteController
         extract($request->getParsedBody());
 
         try {
+            /** @covers ExcluirGrupoUsuarioHandler */
             $this->commandBus->handle(new ExcluirGrupoUsuarioCommand($grupo_usuario_id));
 
             $msg['retorno'] = 'sucesso';

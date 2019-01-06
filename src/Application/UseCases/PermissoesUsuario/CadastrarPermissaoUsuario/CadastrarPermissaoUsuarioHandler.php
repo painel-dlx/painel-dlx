@@ -23,36 +23,38 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Application\Middlewares;
+namespace PainelDLX\Application\UseCases\PermissoesUsuario\CadastrarPermissaoUsuario;
 
 
-use PainelDLX\Application\Contracts\MiddlewareInterface;
-use PainelDLX\Application\Middlewares\Exceptions\UsuarioNaoLogadoException;
-use SechianeX\Contracts\SessionInterface;
+use PainelDLX\Domain\CadastroUsuarios\Entities\PermissaoUsuario;
+use PainelDLX\Domain\CadastroUsuarios\Repositories\PermissaoUsuarioRepositoryInterface;
 
-class VerificarLogonMiddleware implements MiddlewareInterface
+class CadastrarPermissaoUsuarioHandler
 {
     /**
-     * @var SessionInterface
+     * @var PermissaoUsuarioRepositoryInterface
      */
-    private $session;
+    private $permissao_usuario_repository;
 
     /**
-     * VerificarLogonMiddleware constructor.
-     * @param SessionInterface $session
+     * CadastrarPermissaoUsuarioHandler constructor.
+     * @param PermissaoUsuario $permissao_usuario
+     * @param PermissaoUsuarioRepositoryInterface $permissao_usuario_repository
      */
-    public function __construct(SessionInterface $session)
-    {
-        $this->session = $session;
+    public function __construct(
+        PermissaoUsuarioRepositoryInterface $permissao_usuario_repository
+    ) {
+        $this->permissao_usuario_repository = $permissao_usuario_repository;
     }
 
     /**
-     * @throws UsuarioNaoLogadoException
+     * @param CadastrarPermissaoUsuarioCommand $command
      */
-    public function executar()
+    public function handle(CadastrarPermissaoUsuarioCommand $command): PermissaoUsuario
     {
-       if (!$this->session->isAtiva() || !$this->session->get('logado')) {
-           throw new UsuarioNaoLogadoException();
-       }
+        $permissao_usuario = PermissaoUsuario::create($command->getAlias(), $command->getDescricao());
+        $this->permissao_usuario_repository->create($permissao_usuario);
+
+        return $permissao_usuario;
     }
 }

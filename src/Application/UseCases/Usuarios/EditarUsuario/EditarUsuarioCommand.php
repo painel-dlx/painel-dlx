@@ -23,36 +23,64 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Application\Middlewares;
+namespace PainelDLX\Application\UseCases\Usuarios\EditarUsuario;
 
 
-use PainelDLX\Application\Contracts\MiddlewareInterface;
-use PainelDLX\Application\Middlewares\Exceptions\UsuarioNaoLogadoException;
-use SechianeX\Contracts\SessionInterface;
-
-class VerificarLogonMiddleware implements MiddlewareInterface
+class EditarUsuarioCommand
 {
-    /**
-     * @var SessionInterface
-     */
-    private $session;
+    /** @var int */
+    private $usuario_id;
+    /** @var string */
+    private $nome;
+    /** @var string */
+    private $email;
+    /** @var int[] */
+    private $grupos = [];
 
     /**
-     * VerificarLogonMiddleware constructor.
-     * @param SessionInterface $session
+     * @return int
      */
-    public function __construct(SessionInterface $session)
+    public function getUsuarioId(): int
     {
-        $this->session = $session;
+        return $this->usuario_id;
     }
 
     /**
-     * @throws UsuarioNaoLogadoException
+     * @return string
      */
-    public function executar()
+    public function getNome(): string
     {
-       if (!$this->session->isAtiva() || !$this->session->get('logado')) {
-           throw new UsuarioNaoLogadoException();
-       }
+        return $this->nome;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    /**
+     * @return int[]
+     */
+    public function getGrupos(): array
+    {
+        return $this->grupos;
+    }
+
+    /**
+     * EditarUsuarioCommand constructor.
+     * @param int $usuario_id
+     * @param string $nome
+     * @param string $email
+     * @param array $grupos
+     */
+    public function __construct(int $usuario_id, string $nome, string $email, array $grupos)
+    {
+        $this->usuario_id = $usuario_id;
+        $this->nome = $nome;
+        $this->email = $email;
+        $this->grupos = $grupos;
     }
 }
