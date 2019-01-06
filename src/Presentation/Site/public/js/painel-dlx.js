@@ -1,3 +1,6 @@
+/**
+ * Exibir um determinado trecho HTML
+ */
 $('.menu-lateral-item[data-mostrar-html]').on('click', function () {
     var $this = $(this);
     var $menu_lateral = $this.parents('.menu-lateral');
@@ -18,3 +21,21 @@ $('.menu-lateral-item[data-mostrar-html]').on('click', function () {
         $this.addClass('ativo');
     }
 });
+
+/**
+ * Encerrar a sessão
+ */
+function encerrarSessao() {
+    $.ajax({
+        url: '/painel-dlx/login/encerrar-sessao',
+        type: 'get',
+        dataType: 'json',
+        success: function (json) {
+            if (json.retorno === 'sucesso') {
+                window.location = '/';
+            } else {
+                alert(json.mensagem);
+            }
+        }
+    })
+}

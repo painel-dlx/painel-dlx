@@ -42,7 +42,7 @@ $usuario = $this->getAtributo('usuario');
     <?php include 'menu_lateral_usuarios.phtml' ?>
 
     <div class="detalhe-usuario">
-        <nav class="menu-opcoes">
+        <!-- nav class="menu-opcoes">
             <a href="editar?usuario_id=<?php echo $usuario->getUsuarioId() ?>" class="link-editar" title="Editar informações desse usuário">
                 Editar
             </a>
@@ -50,7 +50,7 @@ $usuario = $this->getAtributo('usuario');
             <a href="excluir-usuario?usuario_id=<?php echo $usuario->getUsuarioId() ?>" class="link-excluir" title="Excluir esse usuário">
                 Excluir
             </a>
-        </nav>
+        </nav -->
 
         <details id="dados-pessoais" class="detalhe-registro" open>
             <summary class="detalhe-registro-titulo">Dados Pessoais</summary>
@@ -66,6 +66,7 @@ $usuario = $this->getAtributo('usuario');
             </p>
         </details>
 
+        <?php if (true) : ?>
         <details id="acesso-sistema" class="detalhe-registro" open>
             <summary class="detalhe-registro-titulo">Acesso ao sistema</summary>
 
@@ -75,6 +76,7 @@ $usuario = $this->getAtributo('usuario');
                 </a>
             </p>
         </details>
+        <?php endif ?>
 
         <details id="grupos-usuarios" class="detalhe-registro" open>
             <summary class="detalhe-registro-titulo">Grupos de Usuários</summary>

@@ -31,6 +31,7 @@ use League\Tactician\CommandBus;
 use PainelDLX\Application\Login\Commands\FazerLoginCommand;
 use PainelDLX\Application\Login\Commands\FazerLogoutCommand;
 use PainelDLX\Application\Login\Handlers\FazerLoginHandler;
+use PainelDLX\Application\Login\Handlers\FazerLogoutHandler;
 use PainelDLX\Domain\CadastroUsuarios\Entities\Usuario;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -129,19 +130,17 @@ class LoginController extends SiteController
      */
     public function fazerLogout(ServerRequestInterface $request): ResponseInterface
     {
-        /** @var Usuario $usuario */
-        $usuario = $this->session->get('usuario-logado');
+        try {
+            /** @covers FazerLogoutHandler */
+            $this->commandBus->handle(new FazerLogoutCommand());
 
-        if ($this->commandBus->handle(new FazerLogoutCommand())) {
             $json['retorno'] = 'sucesso';
-            $json['mensagem'] = "Até mais {$usuario->getNome()}!";
-
-            return new RedirectResponse('');
-        } else {
+            $json['mensagem'] = 'Sessão encerrada com sucesso!';
+        } catch (UserException $e) {
             $json['retorno'] = 'erro';
-            $json['mensagem'] = 'Ocorreu um erro ao encerrar a sua sessão';
-
-            return new JsonResponse($json);
+            $json['mensagem'] = $e->getMessage();
         }
+
+        return new JsonResponse($json);
     }
 }

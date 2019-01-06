@@ -262,4 +262,5 @@ $router->post(
 $router->get(
     '/painel-dlx/login/encerrar-sessao',
     [LoginController::class, 'fazerLogout']
-);
+)
+    ->middlewares(new VerificarLogonMiddleware($session));

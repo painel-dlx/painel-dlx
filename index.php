@@ -50,9 +50,6 @@ try {
     $router = new RautereX($container);
     include_once Configure::get('app', 'rotas');
 
-    // TODO: retirar essa sessão daqui
-    $sessao = SessionFactory::createPHPSession('painel-dlx');
-
     $response = $router->executarRota(
         $params['task'] === '/index.php' ? '/painel-dlx/usuarios' : $params['task'],
         $server_request,

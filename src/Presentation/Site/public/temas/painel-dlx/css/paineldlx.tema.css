@@ -551,6 +551,12 @@ body.mostrando-menu .menu-principal {
   display: none;
 }
 
+.form-login {
+  width: 500px;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
 .detalhe-registro-rotulo {
   text-transform: uppercase;
   display: block;

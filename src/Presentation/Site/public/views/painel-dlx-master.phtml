@@ -39,7 +39,7 @@ $session = SessionFactory::createPHPSession();
 $usuario = $session->get('usuario-logado');
 ?>
 
-<html>
+<html lang="pt">
 <head>
     <base href="<?php Configure::get('app', 'base-html') ?>"/>
     <meta name="Content-type" content="text-html">
@@ -50,8 +50,10 @@ $usuario = $session->get('usuario-logado');
 </head>
 
 <body>
+
 <nav class="dlx-menu">
-    <a href="javascript:" class="link-mostrar-menu" onclick="mostrarMenu()" title="Abrir menu">
+    <?php if ($session->get('logado')) : ?>
+    <a href="javascript:" class="link-mostrar-menu" onclick="mostrarOuOcultarMenu()" title="CTRL + ALT + M para abrir o menu">
         Mostrar Menu
     </a>
 
@@ -62,7 +64,7 @@ $usuario = $session->get('usuario-logado');
             </label>
         </div>
 
-        <a href="javascript:" class="link-fechar-menu" onclick="mostrarMenu()" title="Fechar menu">X</a>
+        <a href="javascript:" class="link-fechar-menu" onclick="ocultarMenu()" title="Fechar menu">X</a>
 
         <div class="menu-item">
             <span class="menu-link">Reservas</span>
@@ -154,7 +156,7 @@ $usuario = $session->get('usuario-logado');
                     </li>
 
                     <li class="sub-menu-item">
-                        <a href="/painel-dlx/login/encerrar-sessao" class="sub-menu-link">
+                        <a href="javascript:" class="sub-menu-link" onclick="encerrarSessao()">
                             Encerrar sessão
                         </a>
                     </li>
@@ -162,6 +164,7 @@ $usuario = $session->get('usuario-logado');
             </div>
         <?php endif ?>
     </div>
+    <?php endif ?>
 </nav>
 
 <div class="wrapper">

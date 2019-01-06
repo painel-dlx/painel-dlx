@@ -23,37 +23,15 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Application\Login\Handlers;
+namespace PainelDLX\Application\Login\Exceptions;
 
-use PainelDLX\Application\Login\Exceptions\NenhumaSessaoAtivaException;
-use SechianeX\Contracts\SessionInterface;
 
-class FazerLogoutHandler
+use DLX\Core\Exceptions\UserException;
+
+class NenhumaSessaoAtivaException extends UserException
 {
-    /**
-     * @var SessionInterface
-     */
-    private $session;
-
-    /**
-     * FazerLogoutHandler constructor.
-     * @param SessionInterface $session
-     */
-    public function __construct(SessionInterface $session)
+    public function __construct()
     {
-        $this->session = $session;
-    }
-
-    /**
-     * @return bool
-     * @throws NenhumaSessaoAtivaException
-     */
-    public function handle(): bool
-    {
-        if (!$this->session->isAtiva()) {
-            throw new NenhumaSessaoAtivaException();
-        }
-
-        return $this->session->destroy();
+        parent::__construct( 'Nenhuma sessão ativa encontrada!');
     }
 }
