@@ -25,8 +25,9 @@
 
 namespace PainelDLX\Application\UseCases\PermissoesUsuario\ExcluirPermissaoUsuario;
 
-use PainelDLX\Domain\CadastroUsuarios\Entities\PermissaoUsuario;
-use PainelDLX\Domain\CadastroUsuarios\Repositories\PermissaoUsuarioRepositoryInterface;
+
+use PainelDLX\Domain\PermissoesUsuario\Entities\PermissaoUsuario;
+use PainelDLX\Domain\PermissoesUsuario\Repositories\PermissaoUsuarioRepositoryInterface;
 
 class ExcluirPermissaoUsuarioHandler
 {

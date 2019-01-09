@@ -26,9 +26,6 @@
 namespace PainelDLX\Application\UseCases\GruposUsuarios\ExcluirGrupoUsuario;
 
 
-use DLX\Contracts\CommandInterface;
-use PainelDLX\Domain\CadastroUsuarios\Entities\Usuario;
-
 class ExcluirGrupoUsuarioCommand
 {
     /** @var int */

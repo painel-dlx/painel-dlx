@@ -23,7 +23,7 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Application\UseCases\CadastroUsuarios\Exceptions;
+namespace PainelDLX\Application\UseCases\Usuarios\Exceptions;
 
 
 use DLX\Core\Exceptions\UserException;

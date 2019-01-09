@@ -25,8 +25,9 @@
 
 namespace PainelDLX\Application\UseCases\Usuarios\AlterarSenhaUsuario;
 
-use PainelDLX\Domain\CadastroUsuarios\Repositories\UsuarioRepositoryInterface;
-use PainelDLX\Domain\CadastroUsuarios\Services\VerificaSenhasIguais;
+
+use PainelDLX\Domain\Usuarios\Repositories\UsuarioRepositoryInterface;
+use PainelDLX\Domain\Usuarios\Services\VerificaSenhasIguais;
 
 class AlterarSenhaUsuarioHandler
 {

@@ -26,10 +26,10 @@
 namespace PainelDLX\Application\UseCases\GruposUsuarios\EditarGrupoUsuario;
 
 use PainelDLX\Application\UseCases\CadastroUsuarios\Exceptions\RegistroEntityNaoEncontradoException;
-use PainelDLX\Domain\CadastroUsuarios\Entities\GrupoUsuario;
-use PainelDLX\Domain\CadastroUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
-use PainelDLX\Domain\CadastroUsuarios\Repositories\UsuarioRepositoryInterface;
-use PainelDLX\Domain\CadastroUsuarios\Services\VerificaAliasGrupoUsuarioJaExiste;
+use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
+use PainelDLX\Domain\GruposUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
+use PainelDLX\Domain\GruposUsuarios\Services\VerificaAliasGrupoUsuarioJaExiste;
+use PainelDLX\Domain\Usuarios\Repositories\UsuarioRepositoryInterface;
 
 class EditarGrupoUsuarioHandler
 {

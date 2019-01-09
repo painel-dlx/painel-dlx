@@ -26,8 +26,9 @@
 namespace PainelDLX\Application\UseCases\Usuarios\AlterarSenhaUsuario;
 
 
-use PainelDLX\Domain\CadastroUsuarios\Entities\Usuario;
-use PainelDLX\Domain\CadastroUsuarios\ValueObjects\SenhaUsuario;
+
+use PainelDLX\Domain\Usuarios\Entities\Usuario;
+use PainelDLX\Domain\Usuarios\ValueObjects\SenhaUsuario;
 
 class AlterarSenhaUsuarioCommand
 {

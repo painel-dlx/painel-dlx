@@ -36,12 +36,12 @@ use League\Tactician\Container\ContainerLocator;
 use League\Tactician\Handler\CommandHandlerMiddleware;
 use League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor;
 use League\Tactician\Handler\MethodNameInflector\HandleInflector;
-use PainelDLX\Domain\CadastroUsuarios\Entities\GrupoUsuario;
-use PainelDLX\Domain\CadastroUsuarios\Entities\PermissaoUsuario;
-use PainelDLX\Domain\CadastroUsuarios\Entities\Usuario;
-use PainelDLX\Domain\CadastroUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
-use PainelDLX\Domain\CadastroUsuarios\Repositories\PermissaoUsuarioRepositoryInterface;
-use PainelDLX\Domain\CadastroUsuarios\Repositories\UsuarioRepositoryInterface;
+use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
+use PainelDLX\Domain\GruposUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
+use PainelDLX\Domain\PermissoesUsuario\Entities\PermissaoUsuario;
+use PainelDLX\Domain\PermissoesUsuario\Repositories\PermissaoUsuarioRepositoryInterface;
+use PainelDLX\Domain\Usuarios\Entities\Usuario;
+use PainelDLX\Domain\Usuarios\Repositories\UsuarioRepositoryInterface;
 use SechianeX\Contracts\SessionInterface;
 use SechianeX\Factories\SessionFactory;
 use Vilex\VileX;
@@ -52,7 +52,6 @@ class PainelDLXServiceProvider extends AbstractServiceProvider
         GrupoUsuarioRepositoryInterface::class,
         CommandBus::class,
         VileX::class,
-        GrupoUsuarioRepositoryInterface::class,
         UsuarioRepositoryInterface::class,
         PermissaoUsuarioRepositoryInterface::class,
         SessionInterface::class

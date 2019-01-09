@@ -26,8 +26,8 @@
 namespace PainelDLX\Application\UseCases\GruposUsuarios\ExcluirGrupoUsuario;
 
 use Exception;
-use PainelDLX\Domain\CadastroUsuarios\Entities\GrupoUsuario;
-use PainelDLX\Domain\CadastroUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
+use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
+use PainelDLX\Domain\GruposUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
 
 class ExcluirGrupoUsuarioHandler
 {

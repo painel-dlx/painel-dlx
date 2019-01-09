@@ -25,8 +25,9 @@
 
 namespace PainelDLX\Application\UseCases\PermissoesUsuario\EditarPermissaoUsuario;
 
-use PainelDLX\Domain\CadastroUsuarios\Entities\PermissaoUsuario;
-use PainelDLX\Domain\CadastroUsuarios\Repositories\PermissaoUsuarioRepositoryInterface;
+
+use PainelDLX\Domain\PermissoesUsuario\Entities\PermissaoUsuario;
+use PainelDLX\Domain\PermissoesUsuario\Repositories\PermissaoUsuarioRepositoryInterface;
 
 class EditarPermissaoUsuarioHandler
 {

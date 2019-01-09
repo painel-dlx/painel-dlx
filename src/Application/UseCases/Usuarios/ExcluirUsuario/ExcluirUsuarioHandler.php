@@ -25,7 +25,8 @@
 
 namespace PainelDLX\Application\UseCases\Usuarios\ExcluirUsuario;
 
-use PainelDLX\Domain\CadastroUsuarios\Repositories\UsuarioRepositoryInterface;
+
+use PainelDLX\Domain\Usuarios\Repositories\UsuarioRepositoryInterface;
 
 class ExcluirUsuarioHandler
 {

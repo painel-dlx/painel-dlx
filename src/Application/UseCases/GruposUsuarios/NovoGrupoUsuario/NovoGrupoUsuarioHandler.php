@@ -25,9 +25,10 @@
 
 namespace PainelDLX\Application\UseCases\GruposUsuarios\NovoGrupoUsuario;
 
-use PainelDLX\Domain\CadastroUsuarios\Entities\GrupoUsuario;
-use PainelDLX\Domain\CadastroUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
-use PainelDLX\Domain\CadastroUsuarios\Services\VerificaAliasGrupoUsuarioJaExiste;
+
+use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
+use PainelDLX\Domain\GruposUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
+use PainelDLX\Domain\GruposUsuarios\Services\VerificaAliasGrupoUsuarioJaExiste;
 
 class NovoGrupoUsuarioHandler
 {

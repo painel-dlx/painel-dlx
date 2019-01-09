@@ -25,12 +25,12 @@
 
 namespace PainelDLX\Application\UseCases\Usuarios\EditarUsuario;
 
-use PainelDLX\Application\UseCases\CadastroUsuarios\Exceptions\RegistroEntityNaoEncontradoException;
-use PainelDLX\Domain\CadastroUsuarios\Entities\GrupoUsuario;
-use PainelDLX\Domain\CadastroUsuarios\Entities\Usuario;
-use PainelDLX\Domain\CadastroUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
-use PainelDLX\Domain\CadastroUsuarios\Repositories\UsuarioRepositoryInterface;
-use PainelDLX\Domain\CadastroUsuarios\Services\VerificaEmailJaCadastrado;
+use PainelDLX\Application\UseCases\Usuarios\Exceptions\RegistroEntityNaoEncontradoException;
+use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
+use PainelDLX\Domain\GruposUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
+use PainelDLX\Domain\Usuarios\Entities\Usuario;
+use PainelDLX\Domain\Usuarios\Repositories\UsuarioRepositoryInterface;
+use PainelDLX\Domain\Usuarios\Services\VerificaEmailJaCadastrado;
 
 class EditarUsuarioHandler
 {

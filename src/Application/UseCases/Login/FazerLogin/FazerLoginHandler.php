@@ -26,8 +26,8 @@
 namespace PainelDLX\Application\UseCases\Login\FazerLogin;
 
 use PainelDLX\Application\UseCases\Login\Exceptions\UsuarioOuSenhaInvalidosException;
-use PainelDLX\Domain\CadastroUsuarios\Entities\Usuario;
-use PainelDLX\Domain\CadastroUsuarios\Repositories\UsuarioRepositoryInterface;
+use PainelDLX\Domain\Usuarios\Entities\Usuario;
+use PainelDLX\Domain\Usuarios\Repositories\UsuarioRepositoryInterface;
 use SechianeX\Contracts\SessionInterface;
 
 class FazerLoginHandler
@@ -56,7 +56,7 @@ class FazerLoginHandler
 
     /**
      * @param FazerLoginCommand $command
-     * @return \PainelDLX\Domain\CadastroUsuarios\Entities\Usuario|null
+     * @return Usuario|null
      * @throws UsuarioOuSenhaInvalidosException
      */
     public function handle(FazerLoginCommand $command)

@@ -24,14 +24,15 @@
  */
 
 use PainelDLX\Application\Middlewares\Autorizacao;
-use PainelDLX\Presentation\Site\Controllers\AlterarSenhaUsuarioController;
-use PainelDLX\Presentation\Site\Controllers\CadastroUsuarioController;
-use PainelDLX\Presentation\Site\Controllers\GrupoUsuarioController;
-use PainelDLX\Presentation\Site\Controllers\CadastroPermissaoController;
 use PainelDLX\Application\Middlewares\VerificarLogonMiddleware;
-use PainelDLX\Presentation\Site\Controllers\LoginController;
-use PainelDLX\Presentation\Site\Controllers\MInhaContaController;
+use PainelDLX\Presentation\Site\GruposUsuarios\Controllers\GrupoUsuarioController;
+use PainelDLX\Presentation\Site\PermissoesUsuario\Controllers\CadastroPermissaoController;
+use PainelDLX\Presentation\Site\Usuarios\Controllers\AlterarSenhaUsuarioController;
+use PainelDLX\Presentation\Site\Usuarios\Controllers\CadastroUsuarioController;
+use PainelDLX\Presentation\Site\Usuarios\Controllers\LoginController;
+use PainelDLX\Presentation\Site\Usuarios\Controllers\MinhaContaController;
 use SechianeX\Factories\SessionFactory;
+
 
 /** @var \RautereX\RautereX $router */
 
@@ -269,18 +270,18 @@ $router->get(
 // Minha conta ------------------------------------------------------------------------------------------------------ //
 $router->get(
     '/painel-dlx/minha-conta',
-    [MInhaContaController::class, 'meusDados']
+    [MinhaContaController::class, 'meusDados']
 )
     ->middlewares(new VerificarLogonMiddleware($session));
 
 $router->get(
     '/painel-dlx/alterar-minha-senha',
-    [MInhaContaController::class, 'formAlterarMinhaSenha']
+    [MinhaContaController::class, 'formAlterarMinhaSenha']
 )
     ->middlewares(new VerificarLogonMiddleware($session));
 
 $router->post(
     '/painel-dlx/alterar-minha-senha',
-    [MInhaContaController::class, 'alterarMinhaSenha']
+    [MinhaContaController::class, 'alterarMinhaSenha']
 )
     ->middlewares(new VerificarLogonMiddleware($session));

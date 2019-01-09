@@ -28,8 +28,8 @@ namespace PainelDLX\Infra\ORM\Doctrine\Repositories;
 
 use DLX\Infra\ORM\Doctrine\Repositories\EntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
-use PainelDLX\Domain\CadastroUsuarios\Entities\GrupoUsuario;
-use PainelDLX\Domain\CadastroUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
+use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
+use PainelDLX\Domain\GruposUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
 
 class GrupoUsuarioRepository extends EntityRepository implements GrupoUsuarioRepositoryInterface
 {

@@ -58,16 +58,4 @@ class EditarGrupoUsuarioCommand
         $this->grupo_usuario_id = $grupo_usuario_id;
         $this->nome = $nome;
     }
-
-    /**
-     * Request completa do comando
-     * @return array Retorna um array associativo. A chave é o nome da propriedade e o valor seu respectivo valor
-     */
-    public function getRequest(): array
-    {
-        return [
-            'grupo_usuario_id' => $this->getGrupoUsuarioId(),
-            'nome' => $this->getNome()
-        ];
-    }
 }

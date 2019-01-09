@@ -26,8 +26,7 @@
 namespace PainelDLX\Application\UseCases\Usuarios\ExcluirUsuario;
 
 
-use DLX\Contracts\CommandInterface;
-use PainelDLX\Domain\CadastroUsuarios\Entities\Usuario;
+use PainelDLX\Domain\Usuarios\Entities\Usuario;
 
 class ExcluirUsuarioCommand
 {

@@ -26,7 +26,7 @@
 namespace PainelDLX\Tests\Presentation\Site\Controllers;
 
 
-use PainelDLX\Presentation\Site\Controllers\CadastroUsuarioController;
+use PainelDLX\Presentation\Site\Usuarios\Controllers\CadastroUsuarioController;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Zend\Diactoros\ServerRequest;

@@ -25,9 +25,7 @@
 
 namespace PainelDLX\Application\UseCases\Usuarios\NovoUsuario;
 
-
-use DLX\Contracts\CommandInterface;
-use PainelDLX\Domain\CadastroUsuarios\Entities\Usuario;
+use PainelDLX\Domain\Usuarios\Entities\Usuario;
 
 class NovoUsuarioCommand
 {

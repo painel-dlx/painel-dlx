@@ -1,0 +1,37 @@
+PainelDLX\Domain\Usuarios\Entities\Usuario:
+    type: entity
+    table: dlx_usuarios
+    repositoryClass: PainelDLX\Infra\ORM\Doctrine\Repositories\UsuarioRepository
+    id:
+        usuario_id:
+            type: integer
+            id: true
+            generator:
+                strategy: auto
+    fields:
+        nome:
+            type: string
+            length: 100
+        email:
+            type: string
+            length: 200
+        senha:
+            type: string
+            length: 32
+        deletado:
+            type: integer
+    manyToMany:
+        grupos:
+            targetEntity: PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario
+            inversedBy: usuarios
+            cascade:
+                - persist
+                - merge
+            joinTable:
+                name: dlx_grupos_x_usuarios
+                joinColumns:
+                    usuario_id:
+                        referencedColumnName: usuario_id
+                inverseJoinColumns:
+                    grupo_usuario_id:
+                        referencedColumnName: grupo_usuario_id

@@ -26,12 +26,11 @@
 namespace PainelDLX\Application\UseCases\Usuarios\NovoUsuario;
 
 
-use DLX\Contracts\CommandInterface;
-use PainelDLX\Domain\CadastroUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
-use PainelDLX\Domain\CadastroUsuarios\Repositories\UsuarioRepositoryInterface;
-use PainelDLX\Domain\CadastroUsuarios\Services\VerificaEmailJaCadastrado;
-use PainelDLX\Domain\CadastroUsuarios\Services\VerificaSenhasIguais;
-use PainelDLX\Domain\CadastroUsuarios\ValueObjects\SenhaUsuario;
+use PainelDLX\Domain\GruposUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
+use PainelDLX\Domain\Usuarios\Repositories\UsuarioRepositoryInterface;
+use PainelDLX\Domain\Usuarios\Services\VerificaEmailJaCadastrado;
+use PainelDLX\Domain\Usuarios\Services\VerificaSenhasIguais;
+use PainelDLX\Domain\Usuarios\ValueObjects\SenhaUsuario;
 
 class NovoUsuarioHandler
 {
@@ -54,7 +53,7 @@ class NovoUsuarioHandler
     }
 
     /**
-     * @param CommandInterface $command
+     * @param NovoUsuarioCommand $command
      * @throws \Exception
      */
     public function handle(NovoUsuarioCommand $command)
@@ -64,6 +63,7 @@ class NovoUsuarioHandler
 
             // Verificar se o email está cadastrado para outro usuário
             (new VerificaEmailJaCadastrado($this->usuario_repository, $usuario))->executar();
+            // Verificar as senhas informadas
             (new VerificaSenhasIguais($usuario, new SenhaUsuario($usuario->getSenha(), $command->getSenhaConfirm())))->executar();
             $this->usuario_repository->create($usuario);
         } catch (\Exception $e) {

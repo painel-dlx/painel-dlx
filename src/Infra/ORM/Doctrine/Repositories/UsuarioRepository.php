@@ -28,8 +28,8 @@ namespace PainelDLX\Infra\ORM\Doctrine\Repositories;
 
 use DLX\Infra\ORM\Doctrine\Repositories\EntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
-use PainelDLX\Domain\CadastroUsuarios\Entities\Usuario;
-use PainelDLX\Domain\CadastroUsuarios\Repositories\UsuarioRepositoryInterface;
+use PainelDLX\Domain\Usuarios\Entities\Usuario;
+use PainelDLX\Domain\Usuarios\Repositories\UsuarioRepositoryInterface;
 
 class UsuarioRepository extends EntityRepository implements UsuarioRepositoryInterface
 {
