@@ -23,8 +23,6 @@
  * SOFTWARE.
  */
 
-use PainelDLX\Domain\CadastroUsuarios\Entities\GrupoUsuario;
-use PainelDLX\Domain\CadastroUsuarios\Entities\Usuario;
 use Vilex\VileX;
 
 /**
@@ -39,9 +37,9 @@ use Vilex\VileX;
         </a>
 
         <?php if ($this->getAtributo('is-usuario-logado')) : ?>
-        <a href="javascript:" class="menu-lateral-item icone-sistema" data-mostrar-html="#acesso-sistema">
-            Acesso ao sistema
-        </a>
+            <a href="javascript:" class="menu-lateral-item icone-sistema" data-mostrar-html="#acesso-sistema">
+                Acesso ao sistema
+            </a>
         <?php endif; ?>
 
         <a href="#" class="menu-lateral-item icone-grupo" data-mostrar-html="#grupos-usuarios">

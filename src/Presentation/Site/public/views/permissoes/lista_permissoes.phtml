@@ -23,7 +23,7 @@
  * SOFTWARE.
  */
 
-use PainelDLX\Domain\CadastroUsuarios\Entities\PermissaoUsuario;
+use PainelDLX\Domain\PermissoesUsuario\Entities\PermissaoUsuario;
 use Vilex\VileX;
 
 /**
@@ -51,7 +51,7 @@ $lista_permissoes = $this->getAtributo('lista_permissoes');
     <tbody>
     <?php if (!count($lista_permissoes)) : ?>
     <tr>
-        <td colspan="3">Nenhum usuário encontrado.</td>
+        <td colspan="3">Nenhuma permissão de usuário encontrada.</td>
     </tr>
     <?php endif;
 

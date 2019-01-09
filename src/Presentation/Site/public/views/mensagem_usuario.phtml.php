@@ -33,7 +33,6 @@ $mensagem = $this->getAtributo('mensagem');
 
 [MENSAGEM-USUARIO]
 <p class="mensagem-usuario <?php echo $mensagem['tipo'] ?>">
-    <?php echo $mensagem['texto']
-    ?>
+    <?php echo $mensagem['texto'] ?>
 </p>
 [/MENSAGEM-USUARIO]
