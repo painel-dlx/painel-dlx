@@ -24,7 +24,7 @@
  */
 
 use PainelDLX\Application\Middlewares\Autorizacao;
-use PainelDLX\Application\Middlewares\VerificarLogonMiddleware;
+use PainelDLX\Application\Middlewares\VerificarLogon;
 use PainelDLX\Presentation\Site\GruposUsuarios\Controllers\GrupoUsuarioController;
 use PainelDLX\Presentation\Site\PermissoesUsuario\Controllers\CadastroPermissaoController;
 use PainelDLX\Presentation\Site\Usuarios\Controllers\AlterarSenhaUsuarioController;
@@ -44,7 +44,7 @@ $router->get(
     [CadastroUsuarioController::class, 'listaUsuarios']
 )
     ->middlewares(
-        new VerificarLogonMiddleware($session),
+        new VerificarLogon($session),
         new Autorizacao('ACESSAR_CADASTRO_USUARIOS')
     );
 
@@ -53,7 +53,7 @@ $router->get(
     [CadastroUsuarioController::class, 'formNovoUsuario']
 )
     ->middlewares(
-        new VerificarLogonMiddleware($session),
+        new VerificarLogon($session),
         new Autorizacao('CADASTRAR_NOVO_USUARIO')
     );
 
@@ -62,7 +62,7 @@ $router->get(
     [CadastroUsuarioController::class, 'formAlterarUsuario']
 )
     ->middlewares(
-        new VerificarLogonMiddleware($session),
+        new VerificarLogon($session),
         new Autorizacao('EDITAR_CADASTRO_USUARIO')
     );
 
@@ -71,7 +71,7 @@ $router->get(
     [CadastroUsuarioController::class, 'detalheUsuario']
 )
     ->middlewares(
-        new VerificarLogonMiddleware($session),
+        new VerificarLogon($session),
         new Autorizacao('ACESSAR_CADASTRO_USUARIOS')
     );
 
@@ -80,7 +80,7 @@ $router->post(
     [CadastroUsuarioController::class, 'cadastrarNovoUsuario']
 )
     ->middlewares(
-        new VerificarLogonMiddleware($session),
+        new VerificarLogon($session),
         new Autorizacao('CADASTRAR_NOVO_USUARIO')
     );
 
@@ -90,7 +90,7 @@ $router->post(
     [CadastroUsuarioController::class, 'atualizarUsuarioExistente']
 )
     ->middlewares(
-        new VerificarLogonMiddleware($session),
+        new VerificarLogon($session),
         new Autorizacao('EDITAR_CADASTRO_USUARIO')
     );
 
@@ -99,7 +99,7 @@ $router->post(
     [CadastroUsuarioController::class, 'excluirUsuario']
 )
     ->middlewares(
-        new VerificarLogonMiddleware($session),
+        new VerificarLogon($session),
         new Autorizacao('EXCLUIR_CADASTRO_USUARIO')
     );
 
@@ -109,7 +109,7 @@ $router->get(
     [GrupoUsuarioController::class, 'listaGruposUsuarios']
 )
     ->middlewares(
-        new VerificarLogonMiddleware($session),
+        new VerificarLogon($session),
         new Autorizacao('VISUALIZAR_GRUPOS_USUARIOS')
     );
 
@@ -118,7 +118,7 @@ $router->get(
     [GrupoUsuarioController::class, 'formNovoGrupoUsuario']
 )
     ->middlewares(
-        new VerificarLogonMiddleware($session),
+        new VerificarLogon($session),
         new Autorizacao('CADASTRAR_GRUPO_USUARIO')
     );
 
@@ -127,7 +127,7 @@ $router->get(
     [GrupoUsuarioController::class, 'formAlterarGrupoUsuario']
 )
     ->middlewares(
-        new VerificarLogonMiddleware($session),
+        new VerificarLogon($session),
         new Autorizacao('EDITAR_GRUPO_USUARIO')
     );
 
@@ -136,7 +136,7 @@ $router->get(
     [GrupoUsuarioController::class, 'detalheGrupoUsuario']
 )
     ->middlewares(
-        new VerificarLogonMiddleware($session),
+        new VerificarLogon($session),
         new Autorizacao('VISUALIZAR_GRUPOS_USUARIOS')
     );
 
@@ -145,7 +145,7 @@ $router->post(
     [GrupoUsuarioController::class, 'cadastrarNovoGrupoUsuario']
 )
     ->middlewares(
-        new VerificarLogonMiddleware($session),
+        new VerificarLogon($session),
         new Autorizacao('CADASTRAR_GRUPO_USUARIO')
     );
 
@@ -154,7 +154,7 @@ $router->post(
     [GrupoUsuarioController::class, 'atualizarGrupoUsuarioExistente']
 )
     ->middlewares(
-        new VerificarLogonMiddleware($session),
+        new VerificarLogon($session),
         new Autorizacao('EDITAR_GRUPO_USUARIO')
     );
 
@@ -163,7 +163,7 @@ $router->post(
     [GrupoUsuarioController::class, 'excluirGrupoUsuario']
 )
     ->middlewares(
-        new VerificarLogonMiddleware($session),
+        new VerificarLogon($session),
         new Autorizacao('EXCLUIR_GRUPO_USUARIO')
     );
 
@@ -173,7 +173,7 @@ $router->get(
     [AlterarSenhaUsuarioController::class, 'formAlterarSenha']
 )
     ->middlewares(
-        new VerificarLogonMiddleware($session),
+        new VerificarLogon($session),
         new Autorizacao('ALTERAR_SENHA_USUARIO')
     );
 
@@ -182,7 +182,7 @@ $router->post(
     [AlterarSenhaUsuarioController::class, 'alterarSenhaUsuario']
 )
     ->middlewares(
-        new VerificarLogonMiddleware($session),
+        new VerificarLogon($session),
         new Autorizacao('ALTERAR_SENHA_USUARIO')
     );
 
@@ -192,7 +192,7 @@ $router->get(
     [CadastroPermissaoController::class, 'listaPermissoesUsuarios']
 )
     ->middlewares(
-        new VerificarLogonMiddleware($session),
+        new VerificarLogon($session),
         new Autorizacao('CRIAR_PERMISSOES_USUARIO')
     );
 
@@ -201,7 +201,7 @@ $router->get(
     [CadastroPermissaoController::class, 'formNovaPermissaoUsuario']
 )
     ->middlewares(
-        new VerificarLogonMiddleware($session),
+        new VerificarLogon($session),
         new Autorizacao('CRIAR_PERMISSOES_USUARIO')
     );
 
@@ -210,7 +210,7 @@ $router->post(
     [CadastroPermissaoController::class, 'criarNovaPermissao']
 )
     ->middlewares(
-        new VerificarLogonMiddleware($session),
+        new VerificarLogon($session),
         new Autorizacao('CRIAR_PERMISSOES_USUARIO')
     );
 
@@ -219,7 +219,7 @@ $router->get(
     [CadastroPermissaoController::class, 'formEditarPermissaoUsuario']
 )
     ->middlewares(
-        new VerificarLogonMiddleware($session),
+        new VerificarLogon($session),
         new Autorizacao('EDITAR_PERMISSOES_USUARIO')
     );
 
@@ -228,7 +228,7 @@ $router->post(
     [CadastroPermissaoController::class, 'alterarPermissaoUsuario']
 )
     ->middlewares(
-        new VerificarLogonMiddleware($session),
+        new VerificarLogon($session),
         new Autorizacao('EDITAR_PERMISSOES_USUARIO')
     );
 
@@ -237,7 +237,7 @@ $router->get(
     [CadastroPermissaoController::class, 'detalhePermissaoUsuario']
 )
     ->middlewares(
-        new VerificarLogonMiddleware($session),
+        new VerificarLogon($session),
         new Autorizacao('CRIAR_PERMISSOES_USUARIO')
     );
 
@@ -246,7 +246,7 @@ $router->post(
     [CadastroPermissaoController::class, 'excluirPermissaoUsuario']
 )
     ->middlewares(
-        new VerificarLogonMiddleware($session),
+        new VerificarLogon($session),
         new Autorizacao('EXCLUIR_PERMISSOES_USUARIO')
     );
 
@@ -265,23 +265,23 @@ $router->get(
     '/painel-dlx/login/encerrar-sessao',
     [LoginController::class, 'fazerLogout']
 )
-    ->middlewares(new VerificarLogonMiddleware($session));
+    ->middlewares(new VerificarLogon($session));
 
 // Minha conta ------------------------------------------------------------------------------------------------------ //
 $router->get(
     '/painel-dlx/minha-conta',
     [MinhaContaController::class, 'meusDados']
 )
-    ->middlewares(new VerificarLogonMiddleware($session));
+    ->middlewares(new VerificarLogon($session));
 
 $router->get(
     '/painel-dlx/alterar-minha-senha',
     [MinhaContaController::class, 'formAlterarMinhaSenha']
 )
-    ->middlewares(new VerificarLogonMiddleware($session));
+    ->middlewares(new VerificarLogon($session));
 
 $router->post(
     '/painel-dlx/alterar-minha-senha',
     [MinhaContaController::class, 'alterarMinhaSenha']
 )
-    ->middlewares(new VerificarLogonMiddleware($session));
+    ->middlewares(new VerificarLogon($session));
