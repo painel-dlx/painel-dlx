@@ -23,6 +23,8 @@
  * SOFTWARE.
  */
 
+ini_set('session.save_handler', 'files');
+
 include __DIR__ . '/vendor/autoload.php';
 
 use DLX\Core\Configure;
