@@ -25,6 +25,7 @@
 
 use PainelDLX\Application\Middlewares\Autorizacao;
 use PainelDLX\Application\Middlewares\VerificarLogon;
+use PainelDLX\Presentation\Site\Emails\Controllers\NovaConfigSmtpController;
 use PainelDLX\Presentation\Site\GruposUsuarios\Controllers\GrupoUsuarioController;
 use PainelDLX\Presentation\Site\PermissoesUsuario\Controllers\CadastroPermissaoController;
 use PainelDLX\Presentation\Site\Usuarios\Controllers\AlterarSenhaUsuarioController;
@@ -244,11 +245,10 @@ $router->get(
 $router->post(
     '/painel-dlx/permissoes/excluir-permissao',
     [CadastroPermissaoController::class, 'excluirPermissaoUsuario']
-)
-    ->middlewares(
-        new VerificarLogon($session),
-        new Autorizacao('EXCLUIR_PERMISSOES_USUARIO')
-    );
+)->middlewares(
+    new VerificarLogon($session),
+    new Autorizacao('EXCLUIR_PERMISSOES_USUARIO')
+);
 
 // Login ------------------------------------------------------------------------------------------------------------ //
 $router->get(
@@ -285,3 +285,20 @@ $router->post(
     [MinhaContaController::class, 'alterarMinhaSenha']
 )
     ->middlewares(new VerificarLogon($session));
+
+// Configurações SMTP ----------------------------------------------------------------------------------------------- //
+$router->get(
+    '/painel-dlx/config-smtp',
+    [NovaConfigSmtpController::class, 'formNovaConfigSmtp']
+)->middlewares(
+    new VerificarLogon($session),
+    new Autorizacao('CRIAR_CONFIGURACAO_SMTP')
+);
+
+$router->post(
+    '/painel-dlx/config-smtp/salvar',
+    [NovaConfigSmtpController::class, 'salvarNovaConfigSmtp']
+)->middlewares(
+    new VerificarLogon($session),
+    new Autorizacao('CRIAR_CONFIGURACAO_SMTP')
+);

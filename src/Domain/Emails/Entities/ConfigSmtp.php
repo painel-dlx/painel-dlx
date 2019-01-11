@@ -104,7 +104,9 @@ class ConfigSmtp extends Entity
      */
     public function setPorta(int $porta): ConfigSmtp
     {
-        $this->porta = $porta;
+        $this->porta = filter_var($porta, FILTER_VALIDATE_INT, [
+            'options' => ['min_range' => 25, 'max_range' => 65535, 'default' => 25]
+        ]);
         return $this;
     }
 
@@ -122,7 +124,10 @@ class ConfigSmtp extends Entity
      */
     public function setCripto(?string $cripto): ConfigSmtp
     {
-        $this->cripto = $cripto;
+        $this->cripto = filter_var($cripto, FILTER_VALIDATE_REGEXP, [
+            'options' => ['regexp' => '~(ssl|tls)~'],
+            'flags' => FILTER_NULL_ON_FAILURE
+        ]);
         return $this;
     }
 
@@ -212,7 +217,7 @@ class ConfigSmtp extends Entity
      */
     public function setResponderPara(?string $responder_para): ConfigSmtp
     {
-        $this->responder_para = $responder_para;
+        $this->responder_para = filter_var($responder_para, FILTER_VALIDATE_EMAIL, FILTER_NULL_ON_FAILURE);
         return $this;
     }
 

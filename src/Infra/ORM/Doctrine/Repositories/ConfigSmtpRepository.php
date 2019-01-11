@@ -10,9 +10,20 @@ namespace PainelDLX\Infra\ORM\Doctrine\Repositories;
 
 
 use DLX\Infra\ORM\Doctrine\Repositories\EntityRepository;
+use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
 use PainelDLX\Domain\Emails\Repositories\ConfigSmtpRepositoryInterface;
 
 class ConfigSmtpRepository extends EntityRepository implements ConfigSmtpRepositoryInterface
 {
 
+    /**
+     * Verificar se existe outra configuração SMTP com o mesmo nome
+     * @param ConfigSmtp $config_smtp
+     * @return bool
+     */
+    public function existsOutroSmtpMesmoNome(ConfigSmtp $config_smtp): bool
+    {
+        // TODO: Implement existsOutroSmtpMesmoNome() method.
+        return false;
+    }
 }
