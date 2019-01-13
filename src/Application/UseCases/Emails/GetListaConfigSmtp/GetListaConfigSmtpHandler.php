@@ -23,36 +23,38 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Testes\Application\UserCases\Emails\NovaConfigSmtp;
+namespace PainelDLX\Application\UseCases\Emails\GetListaConfigSmtp;
 
-use DLX\Infra\EntityManagerX;
-use PainelDLX\Application\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpCommand;
-use PainelDLX\Application\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpHandler;
-use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
+
 use PainelDLX\Domain\Emails\Repositories\ConfigSmtpRepositoryInterface;
-use PainelDLX\Testes\PainelDLXTest;
 
-class NovaConfigSmtpHandlerTest extends PainelDLXTest
+class GetListaConfigSmtpHandler
 {
     /**
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \PainelDLX\Domain\Emails\Exceptions\AutentContaNaoInformadaException
-     * @throws \PainelDLX\Domain\Emails\Exceptions\AutentSenhaNaoInformadaException
+     * @var ConfigSmtpRepositoryInterface
      */
-    public function test_Handle(): ConfigSmtp
+    private $config_smtp_repository;
+
+    /**
+     * GetListaConfigSmtpHandler constructor.
+     * @param ConfigSmtpRepositoryInterface $config_smtp_repository
+     */
+    public function __construct(ConfigSmtpRepositoryInterface $config_smtp_repository)
     {
-        $config_smtp = new ConfigSmtp();
-        $config_smtp->setNome('Teste SMTP');
+        $this->config_smtp_repository = $config_smtp_repository;
+    }
 
-        $command = new NovaConfigSmtpCommand($config_smtp);
-
-        /** @var ConfigSmtpRepositoryInterface $config_smtp_repository */
-        $config_smtp_repository = EntityManagerX::getRepository(ConfigSmtp::class);
-
-        (new NovaConfigSmtpHandler($config_smtp_repository))->handle($command);
-
-        $this->assertNotNull($config_smtp->getConfigSmtpId());
-
-        return $config_smtp;
+    /**
+     * @param GetListaConfigSmtpCommand $command
+     * @return array
+     */
+    public function handle(GetListaConfigSmtpCommand $command): array
+    {
+        return $this->config_smtp_repository->findBy(
+            $command->getCriteria(),
+            $command->getOrderBy(),
+            $command->getLimit(),
+            $command->getOffset()
+        );
     }
 }

@@ -23,38 +23,32 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Tests\Presentation\Site\Controllers;
+namespace PainelDLX\Application\UseCases\Emails\EditarConfigSmtp;
 
 
-use PainelDLX\Presentation\Site\Usuarios\Controllers\CadastroUsuarioController;
-use PHPUnit\Framework\TestCase;
-use Psr\Http\Message\ResponseInterface;
-use Zend\Diactoros\ServerRequest;
-use Zend\Diactoros\ServerRequestFactory;
+use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
 
-class CadastroUsuarioControllerTest extends TestCase
+class EditarConfigSmtpCommand
 {
-    /** @var CadastroUsuarioController */
-    private static $controller;
-    /** @var ServerRequest */
-    private static $server_request;
+    /**
+     * @var ConfigSmtp
+     */
+    private $config_smtp;
 
-    public static function setUpBeforeClass()
+    /**
+     * @return ConfigSmtp
+     */
+    public function getConfigSmtp(): ConfigSmtp
     {
-        parent::setUpBeforeClass();
-        self::$controller = new CadastroUsuarioController();
-        self::$server_request = ServerRequestFactory::fromGlobals();
+        return $this->config_smtp;
     }
 
     /**
-     * @throws \Exception
+     * EditarConfigSmtpCommand constructor.
+     * @param ConfigSmtp $config_smtp
      */
-    public function test_formNovoUsuario()
+    public function __construct(ConfigSmtp $config_smtp)
     {
-        $this->markTestSkipped();
-
-        // TODO: configurar o PHPUnit para conseguir fazer o teste das controllers
-        $response = self::$controller->formNovoUsuario();
-        $this->assertInstanceOf(ResponseInterface::class, $response);
+        $this->config_smtp = $config_smtp;
     }
 }

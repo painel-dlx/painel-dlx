@@ -23,36 +23,41 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Testes\Application\UserCases\Emails\NovaConfigSmtp;
+namespace PainelDLX\Application\UseCases\Emails\EditarConfigSmtp;
 
-use DLX\Infra\EntityManagerX;
-use PainelDLX\Application\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpCommand;
-use PainelDLX\Application\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpHandler;
+
 use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
 use PainelDLX\Domain\Emails\Repositories\ConfigSmtpRepositoryInterface;
-use PainelDLX\Testes\PainelDLXTest;
+use PainelDLX\Domain\Emails\Services\Validators\SalvarConfigSmtpValidator;
 
-class NovaConfigSmtpHandlerTest extends PainelDLXTest
+class EditarConfigSmtpHandler
 {
     /**
-     * @throws \Doctrine\ORM\ORMException
+     * @var ConfigSmtpRepositoryInterface
+     */
+    private $config_smtp_repository;
+
+    /**
+     * EditarConfigSmtpHandler constructor.
+     * @param ConfigSmtpRepositoryInterface $config_smtp_repository
+     */
+    public function __construct(ConfigSmtpRepositoryInterface $config_smtp_repository)
+    {
+        $this->config_smtp_repository = $config_smtp_repository;
+    }
+
+    /**
+     * @param EditarConfigSmtpCommand $command
+     * @return ConfigSmtp
      * @throws \PainelDLX\Domain\Emails\Exceptions\AutentContaNaoInformadaException
      * @throws \PainelDLX\Domain\Emails\Exceptions\AutentSenhaNaoInformadaException
+     * @throws \PainelDLX\Domain\Emails\Exceptions\NomeSmtpRepetidoException
      */
-    public function test_Handle(): ConfigSmtp
+    public function handle(EditarConfigSmtpCommand $command): ConfigSmtp
     {
-        $config_smtp = new ConfigSmtp();
-        $config_smtp->setNome('Teste SMTP');
+        (new SalvarConfigSmtpValidator($command->getConfigSmtp(), $this->config_smtp_repository))->validar();
+        $this->config_smtp_repository->update($command->getConfigSmtp());
 
-        $command = new NovaConfigSmtpCommand($config_smtp);
-
-        /** @var ConfigSmtpRepositoryInterface $config_smtp_repository */
-        $config_smtp_repository = EntityManagerX::getRepository(ConfigSmtp::class);
-
-        (new NovaConfigSmtpHandler($config_smtp_repository))->handle($command);
-
-        $this->assertNotNull($config_smtp->getConfigSmtpId());
-
-        return $config_smtp;
+        return $command->getConfigSmtp();
     }
 }

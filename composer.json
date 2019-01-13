@@ -9,7 +9,8 @@
     "components/jquery": "3.3.*",
     "league/tactician-container": "dev-master",
     "dlepera88-php/sechianex": "dev-master",
-    "dlepera88-jquery/jquery-form-ajax": "dev-master"
+    "dlepera88-jquery/jquery-form-ajax": "dev-master",
+    "ext-json": "*"
   },
   "autoload": {
     "psr-4": {

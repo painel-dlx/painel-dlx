@@ -15,7 +15,7 @@ class ConfigSmtp extends Entity
 {
     /** @var int|null */
     private $config_smtp_id;
-    /** @var string */
+    /** @var string|null */
     private $nome;
     /** @var string */
     private $servidor = 'localhost';
@@ -55,9 +55,9 @@ class ConfigSmtp extends Entity
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getNome(): string
+    public function getNome(): ?string
     {
         return $this->nome;
     }

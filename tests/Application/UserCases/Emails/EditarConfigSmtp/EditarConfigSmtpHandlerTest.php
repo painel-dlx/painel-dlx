@@ -23,36 +23,50 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Testes\Application\UserCases\Emails\NovaConfigSmtp;
+namespace PainelDLX\Testes\Application\UserCases\Emails\EditarConfigSmtp;
 
 use DLX\Infra\EntityManagerX;
-use PainelDLX\Application\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpCommand;
-use PainelDLX\Application\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpHandler;
+use PainelDLX\Application\UseCases\Emails\EditarConfigSmtp\EditarConfigSmtpCommand;
+use PainelDLX\Application\UseCases\Emails\EditarConfigSmtp\EditarConfigSmtpHandler;
 use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
 use PainelDLX\Domain\Emails\Repositories\ConfigSmtpRepositoryInterface;
+use PainelDLX\Testes\Application\UserCases\Emails\NovaConfigSmtp\NovaConfigSmtpHandlerTest;
 use PainelDLX\Testes\PainelDLXTest;
 
-class NovaConfigSmtpHandlerTest extends PainelDLXTest
+class EditarConfigSmtpHandlerTest extends PainelDLXTest
 {
+    /** @var EditarConfigSmtpHandler */
+    private $handler;
+
+    /**
+     * @throws \DLX\Core\Exceptions\ArquivoConfiguracaoNaoEncontradoException
+     * @throws \DLX\Core\Exceptions\ArquivoConfiguracaoNaoInformadoException
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \PainelDLX\Application\Services\Exceptions\AmbienteNaoInformadoException
+     */
+    protected function setUp()
+    {
+        parent::setUp();
+
+        /** @var ConfigSmtpRepositoryInterface $config_smtp_repository */
+        $config_smtp_repository = EntityManagerX::getRepository(ConfigSmtp::class);
+        $this->handler = new EditarConfigSmtpHandler($config_smtp_repository);
+    }
+
     /**
      * @throws \Doctrine\ORM\ORMException
      * @throws \PainelDLX\Domain\Emails\Exceptions\AutentContaNaoInformadaException
      * @throws \PainelDLX\Domain\Emails\Exceptions\AutentSenhaNaoInformadaException
+     * @throws \PainelDLX\Domain\Emails\Exceptions\NomeSmtpRepetidoException
      */
-    public function test_Handle(): ConfigSmtp
+    public function test_Handle()
     {
-        $config_smtp = new ConfigSmtp();
-        $config_smtp->setNome('Teste SMTP');
+        $config_smtp = (new NovaConfigSmtpHandlerTest())->test_Handle();
+        $config_smtp->setNome('Outro Teste');
 
-        $command = new NovaConfigSmtpCommand($config_smtp);
+        $command = new EditarConfigSmtpCommand($config_smtp);
+        $config_smtp2 = $this->handler->handle($command);
 
-        /** @var ConfigSmtpRepositoryInterface $config_smtp_repository */
-        $config_smtp_repository = EntityManagerX::getRepository(ConfigSmtp::class);
-
-        (new NovaConfigSmtpHandler($config_smtp_repository))->handle($command);
-
-        $this->assertNotNull($config_smtp->getConfigSmtpId());
-
-        return $config_smtp;
+        $this->assertEquals($config_smtp->getNome(), $config_smtp2->getNome());
     }
 }

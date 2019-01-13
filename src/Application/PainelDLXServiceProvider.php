@@ -36,6 +36,8 @@ use League\Tactician\Container\ContainerLocator;
 use League\Tactician\Handler\CommandHandlerMiddleware;
 use League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor;
 use League\Tactician\Handler\MethodNameInflector\HandleInflector;
+use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
+use PainelDLX\Domain\Emails\Repositories\ConfigSmtpRepositoryInterface;
 use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
 use PainelDLX\Domain\GruposUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
 use PainelDLX\Domain\PermissoesUsuario\Entities\PermissaoUsuario;
@@ -54,7 +56,8 @@ class PainelDLXServiceProvider extends AbstractServiceProvider
         VileX::class,
         UsuarioRepositoryInterface::class,
         PermissaoUsuarioRepositoryInterface::class,
-        SessionInterface::class
+        SessionInterface::class,
+        ConfigSmtpRepositoryInterface::class
     ];
 
     /**
@@ -106,6 +109,11 @@ class PainelDLXServiceProvider extends AbstractServiceProvider
         $container->add(
             PermissaoUsuarioRepositoryInterface::class,
             EntityManagerX::getRepository(PermissaoUsuario::class)
+        );
+
+        $container->add(
+            ConfigSmtpRepositoryInterface::class,
+            EntityManagerX::getRepository(ConfigSmtp::class)
         );
 
         $container->add(

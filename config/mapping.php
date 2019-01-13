@@ -30,6 +30,8 @@ use PainelDLX\Application\UseCases\Emails\ExcluirConfigSmtp\ExcluirConfigSmtpCom
 use PainelDLX\Application\UseCases\Emails\ExcluirConfigSmtp\ExcluirConfigSmtpHandler;
 use PainelDLX\Application\UseCases\Emails\GetConfigSmtpPorId\GetConfigSmtpPorIdCommand;
 use PainelDLX\Application\UseCases\Emails\GetConfigSmtpPorId\GetConfigSmtpPorIdHandler;
+use PainelDLX\Application\UseCases\Emails\GetListaConfigSmtp\GetListaConfigSmtpCommand;
+use PainelDLX\Application\UseCases\Emails\GetListaConfigSmtp\GetListaConfigSmtpHandler;
 use PainelDLX\Application\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpCommand;
 use PainelDLX\Application\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpHandler;
 use PainelDLX\Application\UseCases\GruposUsuarios\EditarGrupoUsuario\EditarGrupoUsuarioCommand;
@@ -74,4 +76,5 @@ return [
     GetConfigSmtpPorIdCommand::class => GetConfigSmtpPorIdHandler::class,
     EditarConfigSmtpCommand::class => EditarConfigSmtpHandler::class,
     ExcluirConfigSmtpCommand::class => ExcluirConfigSmtpHandler::class,
+    GetListaConfigSmtpCommand::class => GetListaConfigSmtpHandler::class,
 ];

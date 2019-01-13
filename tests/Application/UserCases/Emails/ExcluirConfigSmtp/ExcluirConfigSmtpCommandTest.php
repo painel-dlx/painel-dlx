@@ -23,36 +23,20 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Testes\Application\UserCases\Emails\NovaConfigSmtp;
+namespace PainelDLX\Testes\Application\UserCases\Emails\ExcluirConfigSmtp;
 
-use DLX\Infra\EntityManagerX;
-use PainelDLX\Application\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpCommand;
-use PainelDLX\Application\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpHandler;
+use PainelDLX\Application\UseCases\Emails\ExcluirConfigSmtp\ExcluirConfigSmtpCommand;
 use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
-use PainelDLX\Domain\Emails\Repositories\ConfigSmtpRepositoryInterface;
 use PainelDLX\Testes\PainelDLXTest;
+use PHPUnit\Framework\TestCase;
 
-class NovaConfigSmtpHandlerTest extends PainelDLXTest
+class ExcluirConfigSmtpCommandTest extends PainelDLXTest
 {
-    /**
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \PainelDLX\Domain\Emails\Exceptions\AutentContaNaoInformadaException
-     * @throws \PainelDLX\Domain\Emails\Exceptions\AutentSenhaNaoInformadaException
-     */
-    public function test_Handle(): ConfigSmtp
+    public function testGetConfigSmtp()
     {
         $config_smtp = new ConfigSmtp();
-        $config_smtp->setNome('Teste SMTP');
+        $command = new ExcluirConfigSmtpCommand($config_smtp);
 
-        $command = new NovaConfigSmtpCommand($config_smtp);
-
-        /** @var ConfigSmtpRepositoryInterface $config_smtp_repository */
-        $config_smtp_repository = EntityManagerX::getRepository(ConfigSmtp::class);
-
-        (new NovaConfigSmtpHandler($config_smtp_repository))->handle($command);
-
-        $this->assertNotNull($config_smtp->getConfigSmtpId());
-
-        return $config_smtp;
+        $this->assertInstanceOf(ConfigSmtp::class, $command->getConfigSmtp());
     }
 }

@@ -23,36 +23,43 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Testes\Application\UserCases\Emails\NovaConfigSmtp;
+namespace PainelDLX\Testes\Application\UserCases\Emails\GetConfigSmtpPorId;
 
 use DLX\Infra\EntityManagerX;
-use PainelDLX\Application\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpCommand;
-use PainelDLX\Application\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpHandler;
+use PainelDLX\Application\UseCases\Emails\GetConfigSmtpPorId\GetConfigSmtpPorIdCommand;
+use PainelDLX\Application\UseCases\Emails\GetConfigSmtpPorId\GetConfigSmtpPorIdHandler;
 use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
 use PainelDLX\Domain\Emails\Repositories\ConfigSmtpRepositoryInterface;
+use PainelDLX\Testes\Application\UserCases\Emails\NovaConfigSmtp\NovaConfigSmtpHandlerTest;
 use PainelDLX\Testes\PainelDLXTest;
 
-class NovaConfigSmtpHandlerTest extends PainelDLXTest
+class GetConfigSmtpPorIdHandlerTest extends PainelDLXTest
 {
+    /** @var GetConfigSmtpPorIdHandler */
+    private $handler;
+
+    protected function setUp()
+    {
+        parent::setUp();
+
+        /** @var ConfigSmtpRepositoryInterface $config_smtp_repository */
+        $config_smtp_repository = EntityManagerX::getRepository(ConfigSmtp::class);
+        $this->handler = new GetConfigSmtpPorIdHandler($config_smtp_repository);
+    }
+
     /**
      * @throws \Doctrine\ORM\ORMException
      * @throws \PainelDLX\Domain\Emails\Exceptions\AutentContaNaoInformadaException
      * @throws \PainelDLX\Domain\Emails\Exceptions\AutentSenhaNaoInformadaException
      */
-    public function test_Handle(): ConfigSmtp
+    public function test_Handle()
     {
-        $config_smtp = new ConfigSmtp();
-        $config_smtp->setNome('Teste SMTP');
+        $config_smtp = (new NovaConfigSmtpHandlerTest())->test_Handle();
+        $command = new GetConfigSmtpPorIdCommand($config_smtp->getConfigSmtpId());
 
-        $command = new NovaConfigSmtpCommand($config_smtp);
+        $config_smtp2 = $this->handler->handle($command);
 
-        /** @var ConfigSmtpRepositoryInterface $config_smtp_repository */
-        $config_smtp_repository = EntityManagerX::getRepository(ConfigSmtp::class);
-
-        (new NovaConfigSmtpHandler($config_smtp_repository))->handle($command);
-
-        $this->assertNotNull($config_smtp->getConfigSmtpId());
-
-        return $config_smtp;
+        $this->assertInstanceOf(ConfigSmtp::class, $config_smtp2);
+        $this->assertEquals($config_smtp2, $config_smtp);
     }
 }

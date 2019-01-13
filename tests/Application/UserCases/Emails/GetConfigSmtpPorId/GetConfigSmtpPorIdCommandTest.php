@@ -23,12 +23,17 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Tests\Infra\ORM\Doctrine\Repositories;
+namespace PainelDLX\Testes\Application\UserCases\Emails\GetConfigSmtpPorId;
 
+use PainelDLX\Application\UseCases\Emails\GetConfigSmtpPorId\GetConfigSmtpPorIdCommand;
+use PainelDLX\Testes\PainelDLXTest;
 
-use PHPUnit\Framework\TestCase;
-
-class GrupoUsuarioRepositoryTest extends TestCase
+class GetConfigSmtpPorIdCommandTest extends PainelDLXTest
 {
-
+    public function testGetConfigSmtpId()
+    {
+        $config_smtp_id = 1;
+        $command = new GetConfigSmtpPorIdCommand($config_smtp_id);
+        $this->assertEquals($config_smtp_id, $command->getConfigSmtpId());
+    }
 }

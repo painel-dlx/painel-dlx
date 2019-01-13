@@ -23,16 +23,15 @@
  * SOFTWARE.
  */
 
-use Vilex\VileX;
+namespace PainelDLX\Application\Services\Exceptions;
 
-/**
- * @var Vilex $this
- */
-$mensagem = $this->getAtributo('mensagem');
-?>
 
-[MENSAGEM-USUARIO]
-<p class="mensagem-usuario <?php echo $mensagem['tipo'] ?>">
-    <?php echo $mensagem['texto'] ?>
-</p>
-[/MENSAGEM-USUARIO]
+use DLX\Core\Exceptions\SystemException;
+
+class AmbienteNaoInformadoException extends SystemException
+{
+    public function __construct()
+    {
+        parent::__construct('Ambiente não informado ou desconhecido!');
+    }
+}

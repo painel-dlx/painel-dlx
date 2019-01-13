@@ -28,8 +28,8 @@ namespace PainelDLX\Presentation\Site\Emails\Controllers;
 
 use DLX\Core\Exceptions\UserException;
 use League\Tactician\CommandBus;
-use PainelDLX\Application\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpCommand;
-use PainelDLX\Application\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpHandler;
+use PainelDLX\Application\UseCases\Emails\EditarConfigSmtp\EditarConfigSmtpCommand;
+use PainelDLX\Application\UseCases\Emails\GetConfigSmtpPorId\GetConfigSmtpPorIdCommand;
 use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
 use PainelDLX\Presentation\Site\Controllers\SiteController;
 use Psr\Http\Message\ResponseInterface;
@@ -37,10 +37,10 @@ use Psr\Http\Message\ServerRequestInterface;
 use Vilex\VileX;
 use Zend\Diactoros\Response\JsonResponse;
 
-class NovaConfigSmtpController extends SiteController
+class EditarConfigSmtpController extends SiteController
 {
     /**
-     * NovaConfigSmtpController constructor.
+     * EditarConfigSmtpController constructor.
      * @param VileX $view
      * @param CommandBus $commandBus
      */
@@ -55,25 +55,38 @@ class NovaConfigSmtpController extends SiteController
     /**
      * @param ServerRequestInterface $request
      * @return ResponseInterface
+     * @throws \Vilex\Exceptions\ContextoInvalidoException
      * @throws \Vilex\Exceptions\PaginaMestraNaoEncontradaException
      * @throws \Vilex\Exceptions\ViewNaoEncontradaException
-     * @throws \Vilex\Exceptions\ContextoInvalidoException
      */
-    public function formNovaConfigSmtp(ServerRequestInterface $request): ResponseInterface
+    public function formEditarConfigSmtp(ServerRequestInterface $request): ResponseInterface
     {
+        $config_smtp_id = filter_var(
+            $request->getQueryParams()['config_smtp_id'],
+            FILTER_VALIDATE_INT
+        );
+
         try {
+            /** @var ConfigSmtp $config_smtp */
+            $config_smtp = $this->commandBus->handle(new GetConfigSmtpPorIdCommand($config_smtp_id));
+
+            if (is_null($config_smtp)) {
+                throw new UserException('Configuração SMTP não encontrada!');
+            }
+
             // View
             $this->view->addTemplate('form_config_smtp', [
-                'titulo-pagina' => 'Nova configuração SMTP'
+                'titulo-pagina' => "Editar configuração SMTP: {$config_smtp->getNome()}",
+                'config-smtp' => $config_smtp
             ]);
 
             // JS
             $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js');
         } catch (UserException $e) {
-            $this->view->addTemplate('mensagem_usuario');
+            $this->view->addTemplate('../mensagem_usuario');
             $this->view->setAtributo('mensagem', [
                 'tipo' => 'erro',
-                'mensagem' => $e->getMessage()
+                'texto' => $e->getMessage()
             ]);
         }
 
@@ -84,9 +97,10 @@ class NovaConfigSmtpController extends SiteController
      * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
-    public function salvarNovaConfigSmtp(ServerRequestInterface $request): ResponseInterface
+    public function editarConfigSmtp(ServerRequestInterface $request): ResponseInterface
     {
         /**
+         * @var int $config_smtp_id
          * @var string $nome
          * @var string $servidor
          * @var int $porta
@@ -101,9 +115,12 @@ class NovaConfigSmtpController extends SiteController
         extract($request->getParsedBody());
 
         try {
-            $config_smtp = new ConfigSmtp($servidor, $porta);
+            /** @var ConfigSmtp $config_smtp */
+            $config_smtp = $this->commandBus->handle(new GetConfigSmtpPorIdCommand($config_smtp_id));
             $config_smtp
                 ->setNome($nome)
+                ->setServidor($servidor)
+                ->setPorta($porta)
                 ->setCripto($cripto)
                 ->setRequerAutent($requer_autent)
                 ->setConta($conta)
@@ -112,8 +129,7 @@ class NovaConfigSmtpController extends SiteController
                 ->setResponderPara($responder_para)
                 ->setCorpoHtml($corpo_html);
 
-            /** @covers NovaConfigSmtpHandler */
-            $this->commandBus->handle(new NovaConfigSmtpCommand($config_smtp));
+            $this->commandBus->handle(new EditarConfigSmtpCommand($config_smtp));
 
             $json['retorno'] = 'sucesso';
             $json['mensagem'] = 'Configuração SMTP salva com sucesso!';

@@ -25,6 +25,8 @@
 
 use PainelDLX\Application\Middlewares\Autorizacao;
 use PainelDLX\Application\Middlewares\VerificarLogon;
+use PainelDLX\Presentation\Site\Emails\Controllers\ConfigSmtpController;
+use PainelDLX\Presentation\Site\Emails\Controllers\EditarConfigSmtpController;
 use PainelDLX\Presentation\Site\Emails\Controllers\NovaConfigSmtpController;
 use PainelDLX\Presentation\Site\GruposUsuarios\Controllers\GrupoUsuarioController;
 use PainelDLX\Presentation\Site\PermissoesUsuario\Controllers\CadastroPermissaoController;
@@ -289,6 +291,14 @@ $router->post(
 // Configurações SMTP ----------------------------------------------------------------------------------------------- //
 $router->get(
     '/painel-dlx/config-smtp',
+    [ConfigSmtpController::class, 'listaConfigSmtp']
+)->middlewares(
+    new VerificarLogon($session),
+    new Autorizacao('CRIAR_CONFIGURACAO_SMTP')
+);
+
+$router->get(
+    '/painel-dlx/config-smtp/nova',
     [NovaConfigSmtpController::class, 'formNovaConfigSmtp']
 )->middlewares(
     new VerificarLogon($session),
@@ -296,8 +306,40 @@ $router->get(
 );
 
 $router->post(
-    '/painel-dlx/config-smtp/salvar',
+    '/painel-dlx/config-smtp/salvar-config-smtp',
     [NovaConfigSmtpController::class, 'salvarNovaConfigSmtp']
+)->middlewares(
+    new VerificarLogon($session),
+    new Autorizacao('CRIAR_CONFIGURACAO_SMTP')
+);
+
+$router->get(
+    '/painel-dlx/config-smtp/editar',
+    [EditarConfigSmtpController::class, 'formEditarConfigSmtp']
+)->middlewares(
+    new VerificarLogon($session),
+    new Autorizacao('CRIAR_CONFIGURACAO_SMTP')
+);
+
+$router->post(
+    '/painel-dlx/config-smtp/atualizar-config-smtp',
+    [EditarConfigSmtpController::class, 'editarConfigSmtp']
+)->middlewares(
+    new VerificarLogon($session),
+    new Autorizacao('CRIAR_CONFIGURACAO_SMTP')
+);
+
+$router->post(
+    '/painel-dlx/config-smtp/excluir-config-smtp',
+    [ConfigSmtpController::class, 'excluirConfigSmtp']
+)->middlewares(
+    new VerificarLogon($session),
+    new Autorizacao('CRIAR_CONFIGURACAO_SMTP')
+);
+
+$router->get(
+    '/painel-dlx/config-smtp/detalhe',
+    [ConfigSmtpController::class, 'detalheConfigSmtp']
 )->middlewares(
     new VerificarLogon($session),
     new Autorizacao('CRIAR_CONFIGURACAO_SMTP')

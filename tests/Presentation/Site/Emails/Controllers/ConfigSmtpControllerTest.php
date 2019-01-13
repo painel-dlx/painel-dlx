@@ -31,31 +31,24 @@ use League\Tactician\Container\ContainerLocator;
 use League\Tactician\Handler\CommandHandlerMiddleware;
 use League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor;
 use League\Tactician\Handler\MethodNameInflector\HandleInflector;
-use PainelDLX\Presentation\Site\Emails\Controllers\NovaConfigSmtpController;
+use PainelDLX\Presentation\Site\Emails\Controllers\ConfigSmtpController;
+use PainelDLX\Testes\Application\UserCases\Emails\NovaConfigSmtp\NovaConfigSmtpHandlerTest;
 use PainelDLX\Testes\PainelDLXTest;
 use Psr\Http\Message\ServerRequestInterface;
 use Vilex\VileX;
 use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Diactoros\Response\JsonResponse;
 
-class NovaConfigSmtpControllerTest extends PainelDLXTest
+class ConfigSmtpControllerTest extends PainelDLXTest
 {
-    /** @var NovaConfigSmtpController */
+    /** @var ConfigSmtpController */
     private $controller;
 
-    /**
-     * @throws \DLX\Core\Exceptions\ArquivoConfiguracaoNaoEncontradoException
-     * @throws \DLX\Core\Exceptions\ArquivoConfiguracaoNaoInformadoException
-     * @throws \RautereX\Exceptions\RotaNaoEncontradaException
-     * @throws \ReflectionException
-     * @throws \PainelDLX\Application\Services\Exceptions\AmbienteNaoInformadoException
-     * @throws \Doctrine\ORM\ORMException
-     */
     protected function setUp()
     {
         parent::setUp();
 
-        $this->controller = new NovaConfigSmtpController(
+        $this->controller = new ConfigSmtpController(
             new VileX(),
             CommandBusAdapter::create(new CommandHandlerMiddleware(
                 new ClassNameExtractor,
@@ -70,44 +63,67 @@ class NovaConfigSmtpControllerTest extends PainelDLXTest
      * @throws \Vilex\Exceptions\PaginaMestraNaoEncontradaException
      * @throws \Vilex\Exceptions\ViewNaoEncontradaException
      */
-    public function test_FormNovaConfigSmtp_deve_retornar_instancia_HtmlResponse()
+    public function test_ListaConfigSmtp_deve_retornar_um_HtmlResponse()
     {
-        /** @var ServerRequestInterface $request */
         $request = $this->createMock(ServerRequestInterface::class);
-        $response = $this->controller->formNovaConfigSmtp($request);
+        $request
+            ->method('getQueryParams')
+            ->willReturn([]);
+
+        /** @var ServerRequestInterface $request */
+        $response = $this->controller->listaConfigSmtp($request);
 
         $this->assertInstanceOf(HtmlResponse::class, $response);
     }
 
     /**
-     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \PainelDLX\Domain\Emails\Exceptions\AutentContaNaoInformadaException
+     * @throws \PainelDLX\Domain\Emails\Exceptions\AutentSenhaNaoInformadaException
      */
-    public function test_SalvarNovaConfigSmtp_retornar_instancia_JsonResponse()
+    public function test_ExcluirConfigSmtp_deve_retornar_JsonResponse()
     {
+        $config_smtp = (new NovaConfigSmtpHandlerTest())->test_Handle();
+
         $request = $this->createMock(ServerRequestInterface::class);
         $request
             ->method('getParsedBody')
             ->willReturn([
-                'nome' => 'Teste',
-                'servidor' => 'localhost',
-                'porta' => 25,
-                'cripto' => null,
-                'requer_autent' => false,
-                'conta' => null,
-                'senha' => null,
-                'de_nome' => 'Painel DLX',
-                'responder_para' => null,
-                'corpo_html' => true
+                'config_smtp_id' => $config_smtp->getConfigSmtpId()
             ]);
 
         /** @var ServerRequestInterface $request */
-        $response = $this->controller->salvarNovaConfigSmtp($request);
+        $response = $this->controller->excluirConfigSmtp($request);
 
         $this->assertInstanceOf(JsonResponse::class, $response);
 
         $json = json_decode((string)$response->getBody());
 
         $this->assertEquals('sucesso', $json->retorno);
-        $this->assertNotNull($json->config_smtp_id);
+    }
+
+    /**
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \PainelDLX\Domain\Emails\Exceptions\AutentContaNaoInformadaException
+     * @throws \PainelDLX\Domain\Emails\Exceptions\AutentSenhaNaoInformadaException
+     * @throws \Vilex\Exceptions\ContextoInvalidoException
+     * @throws \Vilex\Exceptions\PaginaMestraNaoEncontradaException
+     * @throws \Vilex\Exceptions\ViewNaoEncontradaException
+     */
+    public function test_DetalheConfigSmtp_deve_retornar_um_HtmlResponse()
+    {
+        $config_smtp = (new NovaConfigSmtpHandlerTest())->test_Handle();
+
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request
+            ->method('getQueryParams')
+            ->willReturn([
+                'config_smtp_id' => $config_smtp->getConfigSmtpId()
+            ]);
+
+        /** @var ServerRequestInterface $request */
+        $response = $this->controller->detalheConfigSmtp($request);
+
+        $this->assertInstanceOf(HtmlResponse::class, $response);
     }
 }

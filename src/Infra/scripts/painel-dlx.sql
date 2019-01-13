@@ -18,7 +18,7 @@ CREATE TABLE dlx_permissoes_x_grupos (
 
 -- Envio de emails
 CREATE TABLE dlx_config_smtp (
-    config_email_id int not null primary key auto_increment,
+    config_smtp_id int not null primary key auto_increment,
     nome varchar(30) not null,
     servidor varchar(30) not null default 'localhost',
     porta int not null default 25,

@@ -23,29 +23,34 @@
  * SOFTWARE.
  */
 
+use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
 use Vilex\VileX;
 
 /**
  * @var VileX $this
  */
+
+$config_smtp = $this->getAtributo('config-smtp') ?? new ConfigSmtp()
 ?>
 
 [CORPO]
 <h1 class="titulo-pagina"><?php echo $this->getAtributo('titulo-pagina') ?></h1>
 
-<form id="form-config-smtp" method="post" action="">
+<form id="form-config-smtp" method="post" action="<?php echo $config_smtp->getConfigSmtpId() ? '/painel-dlx/config-smtp/atualizar-config-smtp' : '/painel-dlx/config-smtp/salvar-config-smtp' ?>">
+    <input type="hidden" name="config_smtp_id" value="<?php echo $config_smtp->getConfigSmtpId() ?>">
+
     <fieldset class="form-grupo">
         <legend class="form-titulo">Geral</legend>
 
         <p class="form-paragr">
             <label for="txt-nome" class="form-rotulo form-controle-alias">Nome</label>
-            <input type="text" name="nome" id="txt-nome" class="form-controle" maxlength="30" required>
+            <input type="text" name="nome" id="txt-nome" value="<?php echo $config_smtp->getNome() ?>" class="form-controle" maxlength="30" required>
         </p>
 
         <p class="form-paragr">
             <label for="txt-servidor" class="form-rotulo form-controle-servidor">Servidor</label>
-            <input type="text" name="servidor" id="txt-servidor" maxlength="30" class="form-controle" required> :
-            <input type="number" name="porta" value="25" min="25" max="65535" size="5" class="form-controle" required>
+            <input type="text" name="servidor" id="txt-servidor" value="<?php echo $config_smtp->getServidor() ?>" maxlength="30" class="form-controle" required> :
+            <input type="number" name="porta" value="<?php echo $config_smtp->getPorta() ?>" min="25" max="65535" size="5" class="form-controle" required>
         </p>
     </fieldset>
 
@@ -54,26 +59,30 @@ use Vilex\VileX;
 
         <p class="form-paragr">
             <span class="form-rotulo">Requer autenticação?</span>
-            <input type="checkbox" name="requer_autent" value="1">
+            <input type="checkbox" name="requer_autent" id="chk-requer-autent" value="1"<?php echo $config_smtp->isRequerAutent() ? ' CHECKED' : '' ?>>
         </p>
 
-        <div class="config-autenticacao-servidor">
+        <div id="config-autenticacao-servidor"<?php echo !$config_smtp->isRequerAutent() ? ' style="display: none;"' : '' ?>>
             <p class="form-paragr">
                 <label for="txt-conta" class="form-rotulo form-controle-usuario">Conta</label>
-                <input type="text" name="conta" id="txt-conta" maxlength="100" class="form-controle">
+                <input type="text" name="conta" id="txt-conta" value="<?php echo $config_smtp->getConta() ?>" maxlength="100" class="form-controle">
             </p>
 
             <p class="form-paragr">
                 <label for="txt-senha" class="form-rotulo form-controle-senha">Senha</label>
-                <input type="text" name="senha" id="txt-senha" maxlength="20" class="form-controle">
+                <input type="text" name="senha" id="txt-senha" value="<?php echo $config_smtp->getSenha() ?>" maxlength="20" class="form-controle">
             </p>
 
             <p class="form-paragr">
                 <label for="sel-cripto" class="form-rotulo form-controle-cripto">Tipo de criptografia</label>
                 <select name="cripto" id="sel-cripto" class="form-controle">
                     <option value="">Nenhuma</option>
-                    <option value="tls">TLS</option>
-                    <option value="ssl">SSL</option>
+                    <option value="tls"<?php echo $config_smtp->getCripto() === 'tls' ? ' SELECTED' : '' ?>>
+                        TLS
+                    </option>
+                    <option value="ssl"<?php echo $config_smtp->getCripto() === 'ssl' ? ' SELECTED' : '' ?>>
+                        SSL
+                    </option>
                 </select>
             </p>
         </div>
@@ -84,17 +93,17 @@ use Vilex\VileX;
 
         <p class="form-paragr">
             <label for="txt-de-nome" class="form-rotulo form-controle-descricao">De (nome)</label>
-            <input type="text" name="de_nome" id="txt-de-nome" maxlength="50" class="form-controle">
+            <input type="text" name="de_nome" id="txt-de-nome" value="<?php echo $config_smtp->getDeNome() ?>" maxlength="50" class="form-controle">
         </p>
 
         <p class="form-paragr">
             <label for="txt-responder-para" class="form-rotulo form-controle-email">Responder para</label>
-            <input type="email" name="responder_para" id="txt-responder-para" maxlength="100" class="form-controle">
+            <input type="email" name="responder_para" id="txt-responder-para" value="<?php echo $config_smtp->getResponderPara() ?>" maxlength="100" class="form-controle">
         </p>
 
         <p class="form-paragr">
             <span class="form-rotulo">Enviar corpo em formato HTML?</span>
-            <input type="checkbox" name="corpo_html" value="1">
+            <input type="checkbox" name="corpo_html" value="1"<?php echo $config_smtp->isCorpoHtml() ? ' CHECKED' : '' ?>>
         </p>
     </fieldset>
 
@@ -114,6 +123,13 @@ use Vilex\VileX;
                 window.location = '/painel-dlx/config-smtp'
             }
         }
+    });
+
+    $('#chk-requer-autent').on('change', function () {
+        $('#config-autenticacao-servidor').css(
+            'display',
+            $(this).prop('checked') ? 'block' : 'none'
+        )
     });
 </script>
 [/SCRIPTS]

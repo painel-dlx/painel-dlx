@@ -23,46 +23,27 @@
  * SOFTWARE.
  */
 
-ini_set('session.save_handler', 'files');
-
 include __DIR__ . '/vendor/autoload.php';
 
 use DLX\Core\Configure;
 use PainelDLX\Application\Middlewares\Exceptions\UsuarioNaoLogadoException;
+use PainelDLX\Application\Services\IniciarPainelDLX;
 use RautereX\RautereX;
 use Zend\Diactoros\ServerRequestFactory;
 use League\Container\Container;
 use League\Container\ReflectionContainer;
 
-define('BASE_DIR', dirname(__FILE__));
-
 try {
     $server_request = ServerRequestFactory::fromGlobals();
-    $params = $server_request->getQueryParams();
-
-    Configure::init($params['ambiente'], "config/{$params['ambiente']}.php");
 
     $container = new Container;
-    $container
-        ->delegate(new ReflectionContainer)
-        ->addServiceProvider(Configure::get('app', 'service-provider'));
+    $container->delegate(new ReflectionContainer);
 
-    $router = new RautereX($container);
-    include_once Configure::get('app', 'rotas');
-
-    $response = $router->executarRota(
-        $params['task'] === '/index.php' ? '/painel-dlx/usuarios' : $params['task'],
-        $server_request,
-        $server_request->getMethod()
-    );
-    echo $response->getBody();
-} catch (UsuarioNaoLogadoException $e) {
-    $response = $router->executarRota(
-        '/painel-dlx/login',
-        $server_request,
-        $server_request->getMethod()
-    );
-    echo $response->getBody();
+    $painel_dlx = new IniciarPainelDLX($server_request, $container);
+    $painel_dlx
+        ->adicionarDiretorioInclusao(dirname(__FILE__))
+        ->init()
+        ->executar();
 } catch (\Exception $e) {
     var_dump($e);
 }

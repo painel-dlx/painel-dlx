@@ -23,26 +23,16 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Testes\Application\UserCases\Emails\NovaConfigSmtp;
+use Vilex\VileX;
 
-use PainelDLX\Application\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpCommand;
-use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
-use PainelDLX\Testes\PainelDLXTest;
-use PHPUnit\Framework\TestCase;
+/**
+ * @var Vilex $this
+ */
+$mensagem = $this->getAtributo('mensagem');
+?>
 
-class NovaConfigSmtpCommandTest extends PainelDLXTest
-{
-    public function test__construct()
-    {
-        $config_smtp = new ConfigSmtp();
-        $command = new NovaConfigSmtpCommand($config_smtp);
-        $this->assertInstanceOf(ConfigSmtp::class, $command->getConfigSmtp());
-    }
-
-    public function testGetConfigSmtp()
-    {
-        $config_smtp = new ConfigSmtp();
-        $command = new NovaConfigSmtpCommand($config_smtp);
-        $this->assertEquals('localhost', $command->getConfigSmtp()->getServidor());
-    }
-}
+[MENSAGEM-USUARIO]
+<p class="mensagem-usuario -<?php echo $mensagem['tipo'] ?>">
+    <?php echo $mensagem['texto'] ?>
+</p>
+[/MENSAGEM-USUARIO]
