@@ -26,6 +26,8 @@
 use DLX\Core\Configure;
 use PainelDLX\Application\PainelDLXServiceProvider;
 
+ini_set('session.save_handler', 'files');
+
 return [
     'tipo-ambiente' => Configure::DEV,
 
@@ -42,8 +44,8 @@ return [
         'mapping' => 'yaml',
         // 'debug' => EchoSQLLogger::class,
         'dir' => [
-            BASE_DIR . '/src/Infra/ORM/Doctrine/Mappings/',
-            BASE_DIR . '/src/Infra/ORM/Doctrine/Repositories/'
+            'src/Infra/ORM/Doctrine/Mappings/',
+            'src/Infra/ORM/Doctrine/Repositories/'
         ],
         'conexao' => [
             'dbname' => 'dlx_dev',

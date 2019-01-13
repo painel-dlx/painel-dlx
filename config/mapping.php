@@ -24,6 +24,14 @@
  */
 
 
+use PainelDLX\Application\UseCases\Emails\EditarConfigSmtp\EditarConfigSmtpCommand;
+use PainelDLX\Application\UseCases\Emails\EditarConfigSmtp\EditarConfigSmtpHandler;
+use PainelDLX\Application\UseCases\Emails\ExcluirConfigSmtp\ExcluirConfigSmtpCommand;
+use PainelDLX\Application\UseCases\Emails\ExcluirConfigSmtp\ExcluirConfigSmtpHandler;
+use PainelDLX\Application\UseCases\Emails\GetConfigSmtpPorId\GetConfigSmtpPorIdCommand;
+use PainelDLX\Application\UseCases\Emails\GetConfigSmtpPorId\GetConfigSmtpPorIdHandler;
+use PainelDLX\Application\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpCommand;
+use PainelDLX\Application\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpHandler;
 use PainelDLX\Application\UseCases\GruposUsuarios\EditarGrupoUsuario\EditarGrupoUsuarioCommand;
 use PainelDLX\Application\UseCases\GruposUsuarios\EditarGrupoUsuario\EditarGrupoUsuarioHandler;
 use PainelDLX\Application\UseCases\GruposUsuarios\ExcluirGrupoUsuario\ExcluirGrupoUsuarioCommand;
@@ -62,4 +70,8 @@ return [
     ExcluirPermissaoUsuarioCommand::class => ExcluirPermissaoUsuarioHandler::class,
     FazerLoginCommand::class => FazerLoginHandler::class,
     FazerLogoutCommand::class => FazerLogoutHandler::class,
+    NovaConfigSmtpCommand::class => NovaConfigSmtpHandler::class,
+    GetConfigSmtpPorIdCommand::class => GetConfigSmtpPorIdHandler::class,
+    EditarConfigSmtpCommand::class => EditarConfigSmtpHandler::class,
+    ExcluirConfigSmtpCommand::class => ExcluirConfigSmtpHandler::class,
 ];
