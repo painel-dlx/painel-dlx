@@ -32,14 +32,14 @@ use League\Tactician\Handler\CommandHandlerMiddleware;
 use League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor;
 use League\Tactician\Handler\MethodNameInflector\HandleInflector;
 use PainelDLX\Presentation\Site\Emails\Controllers\ConfigSmtpController;
-use PainelDLX\Testes\Application\UserCases\Emails\NovaConfigSmtp\NovaConfigSmtpHandlerTest;
-use PainelDLX\Testes\PainelDLXTest;
+use PainelDLX\Testes\Application\UserCases\Emails\NovaConfigSmtp\NovaConfigSmtpHandlerTests;
+use PainelDLX\Testes\PainelDLXTests;
 use Psr\Http\Message\ServerRequestInterface;
 use Vilex\VileX;
 use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Diactoros\Response\JsonResponse;
 
-class ConfigSmtpControllerTest extends PainelDLXTest
+class ConfigSmtpControllerTests extends PainelDLXTests
 {
     /** @var ConfigSmtpController */
     private $controller;
@@ -83,7 +83,7 @@ class ConfigSmtpControllerTest extends PainelDLXTest
      */
     public function test_ExcluirConfigSmtp_deve_retornar_JsonResponse()
     {
-        $config_smtp = (new NovaConfigSmtpHandlerTest())->test_Handle();
+        $config_smtp = (new NovaConfigSmtpHandlerTests())->test_Handle();
 
         $request = $this->createMock(ServerRequestInterface::class);
         $request
@@ -112,7 +112,7 @@ class ConfigSmtpControllerTest extends PainelDLXTest
      */
     public function test_DetalheConfigSmtp_deve_retornar_um_HtmlResponse()
     {
-        $config_smtp = (new NovaConfigSmtpHandlerTest())->test_Handle();
+        $config_smtp = (new NovaConfigSmtpHandlerTests())->test_Handle();
 
         $request = $this->createMock(ServerRequestInterface::class);
         $request

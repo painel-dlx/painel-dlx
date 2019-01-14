@@ -23,68 +23,48 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Testes;
-
+namespace PainelDLX\Testes\Application\UserCases\Emails\ExcluirConfigSmtp;
 
 use DLX\Infra\EntityManagerX;
-use League\Container\Container;
-use League\Container\ReflectionContainer;
-use PainelDLX\Application\PainelDLXServiceProvider;
-use PainelDLX\Application\Services\IniciarPainelDLX;
-use PHPUnit\Framework\TestCase;
-use Psr\Container\ContainerInterface;
-use Psr\Http\Message\ServerRequestInterface;
+use PainelDLX\Application\UseCases\Emails\ExcluirConfigSmtp\ExcluirConfigSmtpCommand;
+use PainelDLX\Application\UseCases\Emails\ExcluirConfigSmtp\ExcluirConfigSmtpHandler;
+use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
+use PainelDLX\Domain\Emails\Repositories\ConfigSmtpRepositoryInterface;
+use PainelDLX\Testes\Application\UserCases\Emails\NovaConfigSmtp\NovaConfigSmtpHandlerTests;
+use PainelDLX\Testes\PainelDLXTests;
 
-class PainelDLXTest extends TestCase
+class ExcluirConfigSmtpHandlerTests extends PainelDLXTests
 {
-    /** @var ContainerInterface */
-    protected $container;
+    /** @var ExcluirConfigSmtpHandler */
+    private $handler;
 
     /**
      * @throws \DLX\Core\Exceptions\ArquivoConfiguracaoNaoEncontradoException
      * @throws \DLX\Core\Exceptions\ArquivoConfiguracaoNaoInformadoException
-     * @throws \PainelDLX\Application\Services\Exceptions\AmbienteNaoInformadoException
      * @throws \Doctrine\ORM\ORMException
+     * @throws \PainelDLX\Application\Services\Exceptions\AmbienteNaoInformadoException
      */
     protected function setUp()
     {
         parent::setUp();
 
-        // Chegar até a página index
-        $q = 0;
-        $t = 10;
-        while (!file_exists('./config/paineldlx-dev.php') && $q < $t) {
-            chdir('../');
-            $q++;
-        }
-
-        $request = $this->createMock(ServerRequestInterface::class);
-        $request
-            ->method('getQueryParams')
-            ->willReturn(['ambiente' => 'paineldlx-dev']);
-
-        $this->container = new Container;
-        $this->container
-            ->delegate(new ReflectionContainer)
-            ->addServiceProvider(PainelDLXServiceProvider::class);
-
-        /** @var ServerRequestInterface $request */
-        (new IniciarPainelDLX($request, $this->container))
-            ->adicionarDiretorioInclusao(dirname('.'))
-            ->init();
-
-        EntityManagerX::beginTransaction();
+        /** @var ConfigSmtpRepositoryInterface $config_smtp_repository */
+        $config_smtp_repository = EntityManagerX::getRepository(ConfigSmtp::class);
+        $this->handler = new ExcluirConfigSmtpHandler($config_smtp_repository);
     }
 
     /**
-     * @throws \Doctrine\Common\Persistence\Mapping\MappingException
      * @throws \Doctrine\ORM\ORMException
+     * @throws \PainelDLX\Domain\Emails\Exceptions\AutentContaNaoInformadaException
+     * @throws \PainelDLX\Domain\Emails\Exceptions\AutentSenhaNaoInformadaException
      */
-    protected function tearDown()
+    public function test_Handle()
     {
-        parent::tearDown();
+        $config_smtp = (new NovaConfigSmtpHandlerTests())->test_Handle();
 
-        EntityManagerX::rollback();
-        EntityManagerX::getInstance()->clear();
+        $command = new ExcluirConfigSmtpCommand($config_smtp);
+        $this->handler->handle($command);
+
+        $this->assertNull($config_smtp->getConfigSmtpId());
     }
 }

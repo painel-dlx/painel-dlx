@@ -1,3 +1,12 @@
+-- Usuários
+CREATE TABLE dlx_reset_senha (
+    reset_senha_id int not null primary key auto_increment,
+    usuario_id int not null,
+    data datetime not null default current_timestamp,
+    hash varchar(50) not null,
+    constraint FK_dlx_reset_senha_usuario_id foreign key (usuario_id) references dlx_usuarios (usuario_id) on delete cascade
+) ENGINE=INNODB;
+
 -- Permissões de usuários
 CREATE TABLE dlx_permissoes_usuario (
     permissao_usuario_id int not null primary key auto_increment,

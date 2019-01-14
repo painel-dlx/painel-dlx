@@ -31,16 +31,17 @@ use League\Tactician\Container\ContainerLocator;
 use League\Tactician\Handler\CommandHandlerMiddleware;
 use League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor;
 use League\Tactician\Handler\MethodNameInflector\HandleInflector;
-use PainelDLX\Presentation\Site\Emails\Controllers\NovaConfigSmtpController;
-use PainelDLX\Testes\PainelDLXTest;
+use PainelDLX\Presentation\Site\Emails\Controllers\EditarConfigSmtpController;
+use PainelDLX\Testes\Application\UserCases\Emails\NovaConfigSmtp\NovaConfigSmtpHandlerTests;
+use PainelDLX\Testes\PainelDLXTests;
 use Psr\Http\Message\ServerRequestInterface;
 use Vilex\VileX;
 use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Diactoros\Response\JsonResponse;
 
-class NovaConfigSmtpControllerTest extends PainelDLXTest
+class EditarConfigSmtpControllerTests extends PainelDLXTests
 {
-    /** @var NovaConfigSmtpController */
+    /** @var EditarConfigSmtpController */
     private $controller;
 
     /**
@@ -55,7 +56,7 @@ class NovaConfigSmtpControllerTest extends PainelDLXTest
     {
         parent::setUp();
 
-        $this->controller = new NovaConfigSmtpController(
+        $this->controller = new EditarConfigSmtpController(
             new VileX(),
             CommandBusAdapter::create(new CommandHandlerMiddleware(
                 new ClassNameExtractor,
@@ -70,25 +71,30 @@ class NovaConfigSmtpControllerTest extends PainelDLXTest
      * @throws \Vilex\Exceptions\PaginaMestraNaoEncontradaException
      * @throws \Vilex\Exceptions\ViewNaoEncontradaException
      */
-    public function test_FormNovaConfigSmtp_deve_retornar_instancia_HtmlResponse()
+    public function test_FormEditarConfigSmtp_deve_retornar_HtmlResponse()
     {
         /** @var ServerRequestInterface $request */
         $request = $this->createMock(ServerRequestInterface::class);
-        $response = $this->controller->formNovaConfigSmtp($request);
+        $response = $this->controller->formEditarConfigSmtp($request);
 
         $this->assertInstanceOf(HtmlResponse::class, $response);
     }
 
     /**
-     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \PainelDLX\Domain\Emails\Exceptions\AutentContaNaoInformadaException
+     * @throws \PainelDLX\Domain\Emails\Exceptions\AutentSenhaNaoInformadaException
      */
-    public function test_SalvarNovaConfigSmtp_retornar_instancia_JsonResponse()
+    public function test_EditarConfigSmtp()
     {
+        $config_smtp = (new NovaConfigSmtpHandlerTests())->test_Handle();
+
         $request = $this->createMock(ServerRequestInterface::class);
         $request
             ->method('getParsedBody')
             ->willReturn([
-                'nome' => 'Teste',
+                'config_smtp_id' => $config_smtp->getConfigSmtpId(),
+                'nome' => 'Teste de edição',
                 'servidor' => 'localhost',
                 'porta' => 25,
                 'cripto' => null,
@@ -101,7 +107,7 @@ class NovaConfigSmtpControllerTest extends PainelDLXTest
             ]);
 
         /** @var ServerRequestInterface $request */
-        $response = $this->controller->salvarNovaConfigSmtp($request);
+        $response = $this->controller->editarConfigSmtp($request);
 
         $this->assertInstanceOf(JsonResponse::class, $response);
 

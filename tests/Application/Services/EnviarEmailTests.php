@@ -27,10 +27,10 @@ namespace PainelDLX\Testes\Application\Services;
 
 use PainelDLX\Application\Services\EnviarEmail;
 use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
-use PainelDLX\Testes\PainelDLXTest;
+use PainelDLX\Testes\PainelDLXTests;
 use PHPMailer\PHPMailer\PHPMailer;
 
-class EnviarEmailTest extends PainelDLXTest
+class EnviarEmailTests extends PainelDLXTests
 {
     /** @var EnviarEmail */
     private $enviar_email;

@@ -23,26 +23,17 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Testes\Application\UserCases\Emails\NovaConfigSmtp;
+namespace PainelDLX\Testes\Application\UserCases\Emails\GetConfigSmtpPorId;
 
-use PainelDLX\Application\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpCommand;
-use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
-use PainelDLX\Testes\PainelDLXTest;
-use PHPUnit\Framework\TestCase;
+use PainelDLX\Application\UseCases\Emails\GetConfigSmtpPorId\GetConfigSmtpPorIdCommand;
+use PainelDLX\Testes\PainelDLXTests;
 
-class NovaConfigSmtpCommandTest extends PainelDLXTest
+class GetConfigSmtpPorIdCommandTests extends PainelDLXTests
 {
-    public function test__construct()
+    public function testGetConfigSmtpId()
     {
-        $config_smtp = new ConfigSmtp();
-        $command = new NovaConfigSmtpCommand($config_smtp);
-        $this->assertInstanceOf(ConfigSmtp::class, $command->getConfigSmtp());
-    }
-
-    public function testGetConfigSmtp()
-    {
-        $config_smtp = new ConfigSmtp();
-        $command = new NovaConfigSmtpCommand($config_smtp);
-        $this->assertEquals('localhost', $command->getConfigSmtp()->getServidor());
+        $config_smtp_id = 1;
+        $command = new GetConfigSmtpPorIdCommand($config_smtp_id);
+        $this->assertEquals($config_smtp_id, $command->getConfigSmtpId());
     }
 }

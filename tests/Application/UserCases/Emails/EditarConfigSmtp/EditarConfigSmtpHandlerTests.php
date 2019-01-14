@@ -23,43 +23,50 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Testes\Application\UserCases\Emails\GetConfigSmtpPorId;
+namespace PainelDLX\Testes\Application\UserCases\Emails\EditarConfigSmtp;
 
 use DLX\Infra\EntityManagerX;
-use PainelDLX\Application\UseCases\Emails\GetConfigSmtpPorId\GetConfigSmtpPorIdCommand;
-use PainelDLX\Application\UseCases\Emails\GetConfigSmtpPorId\GetConfigSmtpPorIdHandler;
+use PainelDLX\Application\UseCases\Emails\EditarConfigSmtp\EditarConfigSmtpCommand;
+use PainelDLX\Application\UseCases\Emails\EditarConfigSmtp\EditarConfigSmtpHandler;
 use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
 use PainelDLX\Domain\Emails\Repositories\ConfigSmtpRepositoryInterface;
-use PainelDLX\Testes\Application\UserCases\Emails\NovaConfigSmtp\NovaConfigSmtpHandlerTest;
-use PainelDLX\Testes\PainelDLXTest;
+use PainelDLX\Testes\Application\UserCases\Emails\NovaConfigSmtp\NovaConfigSmtpHandlerTests;
+use PainelDLX\Testes\PainelDLXTests;
 
-class GetConfigSmtpPorIdHandlerTest extends PainelDLXTest
+class EditarConfigSmtpHandlerTests extends PainelDLXTests
 {
-    /** @var GetConfigSmtpPorIdHandler */
+    /** @var EditarConfigSmtpHandler */
     private $handler;
 
+    /**
+     * @throws \DLX\Core\Exceptions\ArquivoConfiguracaoNaoEncontradoException
+     * @throws \DLX\Core\Exceptions\ArquivoConfiguracaoNaoInformadoException
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \PainelDLX\Application\Services\Exceptions\AmbienteNaoInformadoException
+     */
     protected function setUp()
     {
         parent::setUp();
 
         /** @var ConfigSmtpRepositoryInterface $config_smtp_repository */
         $config_smtp_repository = EntityManagerX::getRepository(ConfigSmtp::class);
-        $this->handler = new GetConfigSmtpPorIdHandler($config_smtp_repository);
+        $this->handler = new EditarConfigSmtpHandler($config_smtp_repository);
     }
 
     /**
      * @throws \Doctrine\ORM\ORMException
      * @throws \PainelDLX\Domain\Emails\Exceptions\AutentContaNaoInformadaException
      * @throws \PainelDLX\Domain\Emails\Exceptions\AutentSenhaNaoInformadaException
+     * @throws \PainelDLX\Domain\Emails\Exceptions\NomeSmtpRepetidoException
      */
     public function test_Handle()
     {
-        $config_smtp = (new NovaConfigSmtpHandlerTest())->test_Handle();
-        $command = new GetConfigSmtpPorIdCommand($config_smtp->getConfigSmtpId());
+        $config_smtp = (new NovaConfigSmtpHandlerTests())->test_Handle();
+        $config_smtp->setNome('Outro Teste');
 
+        $command = new EditarConfigSmtpCommand($config_smtp);
         $config_smtp2 = $this->handler->handle($command);
 
-        $this->assertInstanceOf(ConfigSmtp::class, $config_smtp2);
-        $this->assertEquals($config_smtp2, $config_smtp);
+        $this->assertEquals($config_smtp->getNome(), $config_smtp2->getNome());
     }
 }

@@ -28,9 +28,9 @@ namespace PainelDLX\Testes\Application\UserCases\Emails\EditarConfigSmtp;
 
 use PainelDLX\Application\UseCases\Emails\EditarConfigSmtp\EditarConfigSmtpCommand;
 use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
-use PainelDLX\Testes\PainelDLXTest;
+use PainelDLX\Testes\PainelDLXTests;
 
-class EditarConfigSmtpCommandTest extends PainelDLXTest
+class EditarConfigSmtpCommandTests extends PainelDLXTests
 {
     public function testGetConfigSmtp()
     {
