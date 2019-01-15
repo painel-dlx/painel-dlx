@@ -34,6 +34,7 @@ use PainelDLX\Presentation\Site\Usuarios\Controllers\AlterarSenhaUsuarioControll
 use PainelDLX\Presentation\Site\Usuarios\Controllers\CadastroUsuarioController;
 use PainelDLX\Presentation\Site\Usuarios\Controllers\LoginController;
 use PainelDLX\Presentation\Site\Usuarios\Controllers\MinhaContaController;
+use PainelDLX\Presentation\Site\Usuarios\Controllers\ResetSenhaController;
 use SechianeX\Factories\SessionFactory;
 
 
@@ -266,27 +267,33 @@ $router->post(
 $router->get(
     '/painel-dlx/login/encerrar-sessao',
     [LoginController::class, 'fazerLogout']
-)
-    ->middlewares(new VerificarLogon($session));
+)->middlewares(new VerificarLogon($session));
+
+$router->get(
+    '/painel-dlx/recuperar-senha',
+    [ResetSenhaController::class, 'formSolicitarResetSenha']
+);
+
+$router->post(
+    '/painel-dlx/reset-senha/solicitar',
+    [ResetSenhaController::class, 'solicitarResetSenha']
+);
 
 // Minha conta ------------------------------------------------------------------------------------------------------ //
 $router->get(
     '/painel-dlx/minha-conta',
     [MinhaContaController::class, 'meusDados']
-)
-    ->middlewares(new VerificarLogon($session));
+)->middlewares(new VerificarLogon($session));
 
 $router->get(
     '/painel-dlx/alterar-minha-senha',
     [MinhaContaController::class, 'formAlterarMinhaSenha']
-)
-    ->middlewares(new VerificarLogon($session));
+)->middlewares(new VerificarLogon($session));
 
 $router->post(
     '/painel-dlx/alterar-minha-senha',
     [MinhaContaController::class, 'alterarMinhaSenha']
-)
-    ->middlewares(new VerificarLogon($session));
+)->middlewares(new VerificarLogon($session));
 
 // Configurações SMTP ----------------------------------------------------------------------------------------------- //
 $router->get(

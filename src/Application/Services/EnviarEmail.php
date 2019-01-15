@@ -124,10 +124,11 @@ class EnviarEmail
         }
 
         // Configurações do email
-        $this->php_mailer->Subject = $this->assunto;
+        $this->php_mailer->Subject = utf8_decode($this->assunto);
         $this->php_mailer->Body = $this->corpo;
+        $this->php_mailer->isHTML($this->config_smtp->isCorpoHtml());
 
-        $this->php_mailer->SMTPDebug = 1;
+        $this->php_mailer->SMTPDebug = 0;
 
         if (!empty($this->config_smtp->getResponderPara())) {
             $this->php_mailer->addReplyTo($this->config_smtp->getResponderPara());

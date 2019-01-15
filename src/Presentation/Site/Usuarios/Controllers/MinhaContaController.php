@@ -87,10 +87,10 @@ class MinhaContaController extends SiteController
                 'is-usuario-logado' => true
             ]);
         } catch (UserException $e) {
-            $this->view->addTemplate('mensagem_usuario');
+            $this->view->addTemplate('../mensagem_usuario');
             $this->view->setAtributo('mensagem', [
                 'tipo' => 'erro',
-                'mensagem' => $e->getMessage()
+                'texto' => $e->getMessage()
             ]);
         }
 
@@ -117,10 +117,10 @@ class MinhaContaController extends SiteController
             // JS
             $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js');
         } catch (UserException $e) {
-            $this->view->addTemplate('mensagem_usuario');
+            $this->view->addTemplate('../mensagem_usuario');
             $this->view->setAtributo('mensagem', [
                 'tipo' => 'erro',
-                'mensagem' => $e->getMessage()
+                'texto' => $e->getMessage()
             ]);
         }
 

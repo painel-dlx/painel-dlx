@@ -107,4 +107,14 @@ class ResetSenha extends Entity
 
         return $hoje <= $limite;
     }
+
+    /**
+     * @return ResetSenha
+     * @throws Exception
+     */
+    public function gerarHash(): ResetSenha
+    {
+        $this->hash = crypt(md5(new DateTime()), 'pdlx');
+        return $this;
+    }
 }

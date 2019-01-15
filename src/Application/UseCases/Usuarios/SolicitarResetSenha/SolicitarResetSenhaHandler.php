@@ -60,7 +60,7 @@ class SolicitarResetSenhaHandler
         $reset_senha = (new ResetSenha())
             ->setUsuario($usuario)
             ->setData(new DateTime())
-            ->setHash('');
+            ->gerarHash();
         $this->reset_senha_repository->create($reset_senha);
 
         return $reset_senha;

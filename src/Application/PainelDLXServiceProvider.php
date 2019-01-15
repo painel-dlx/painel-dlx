@@ -42,7 +42,9 @@ use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
 use PainelDLX\Domain\GruposUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
 use PainelDLX\Domain\PermissoesUsuario\Entities\PermissaoUsuario;
 use PainelDLX\Domain\PermissoesUsuario\Repositories\PermissaoUsuarioRepositoryInterface;
+use PainelDLX\Domain\Usuarios\Entities\ResetSenha;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
+use PainelDLX\Domain\Usuarios\Repositories\ResetSenhaRepositoryInterface;
 use PainelDLX\Domain\Usuarios\Repositories\UsuarioRepositoryInterface;
 use SechianeX\Contracts\SessionInterface;
 use SechianeX\Factories\SessionFactory;
@@ -57,7 +59,8 @@ class PainelDLXServiceProvider extends AbstractServiceProvider
         UsuarioRepositoryInterface::class,
         PermissaoUsuarioRepositoryInterface::class,
         SessionInterface::class,
-        ConfigSmtpRepositoryInterface::class
+        ConfigSmtpRepositoryInterface::class,
+        ResetSenhaRepositoryInterface::class,
     ];
 
     /**
@@ -99,6 +102,11 @@ class PainelDLXServiceProvider extends AbstractServiceProvider
         $container->add(
             GrupoUsuarioRepositoryInterface::class,
             EntityManagerX::getRepository(GrupoUsuario::class)
+        );
+
+        $container->add(
+            ResetSenhaRepositoryInterface::class,
+            EntityManagerX::getRepository(ResetSenha::class)
         );
 
         $container->add(

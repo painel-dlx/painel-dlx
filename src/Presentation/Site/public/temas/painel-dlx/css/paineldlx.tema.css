@@ -362,7 +362,7 @@ body.mostrando-menu .menu-principal {
   color: #FFF;
 }
 
-.botao, .botao-alterar-senha, .botao-salvar {
+.botao, .botao-reset-senha, .botao-alterar-senha, .botao-salvar {
   border: none;
   border-bottom: 4px solid;
   -webkit-border-radius: 4px;
@@ -372,18 +372,18 @@ body.mostrando-menu .menu-principal {
   text-transform: uppercase;
   color: #FFF;
 }
-.botao:hover, .botao-alterar-senha:hover, .botao-salvar:hover {
+.botao:hover, .botao-reset-senha:hover, .botao-alterar-senha:hover, .botao-salvar:hover {
   cursor: pointer;
 }
-.botao:active, .botao-alterar-senha:active, .botao-salvar:active, .botao:focus, .botao-alterar-senha:focus, .botao-salvar:focus {
+.botao:active, .botao-reset-senha:active, .botao-alterar-senha:active, .botao-salvar:active, .botao:focus, .botao-reset-senha:focus, .botao-alterar-senha:focus, .botao-salvar:focus {
   outline: none;
 }
 
-.botao-submit, .botao-alterar-senha, .botao-salvar {
+.botao-submit, .botao-reset-senha, .botao-alterar-senha, .botao-salvar {
   background: #83c129;
   border-bottom-color: #69ad21;
 }
-.botao-submit:hover, .botao-alterar-senha:hover, .botao-salvar:hover {
+.botao-submit:hover, .botao-reset-senha:hover, .botao-alterar-senha:hover, .botao-salvar:hover {
   background: #7bbe20;
 }
 
@@ -551,7 +551,7 @@ body.mostrando-menu .menu-principal {
   display: none;
 }
 
-.form-login, .form-alterar-senha {
+.form-login, .form-reset-senha, .form-alterar-senha {
   width: 500px;
   max-width: 100%;
   margin: 0 auto;

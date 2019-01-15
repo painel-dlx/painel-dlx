@@ -54,10 +54,14 @@ use PainelDLX\Application\UseCases\Usuarios\AlterarSenhaUsuario\AlterarSenhaUsua
 use PainelDLX\Application\UseCases\Usuarios\AlterarSenhaUsuario\AlterarSenhaUsuarioHandler;
 use PainelDLX\Application\UseCases\Usuarios\EditarUsuario\EditarUsuarioCommand;
 use PainelDLX\Application\UseCases\Usuarios\EditarUsuario\EditarUsuarioHandler;
+use PainelDLX\Application\UseCases\Usuarios\EnviarEmailResetSenha\EnviarEmailResetSenhaCommand;
+use PainelDLX\Application\UseCases\Usuarios\EnviarEmailResetSenha\EnviarEmailResetSenhaHandler;
 use PainelDLX\Application\UseCases\Usuarios\ExcluirUsuario\ExcluirUsuarioCommand;
 use PainelDLX\Application\UseCases\Usuarios\ExcluirUsuario\ExcluirUsuarioHandler;
 use PainelDLX\Application\UseCases\Usuarios\NovoUsuario\NovoUsuarioCommand;
 use PainelDLX\Application\UseCases\Usuarios\NovoUsuario\NovoUsuarioHandler;
+use PainelDLX\Application\UseCases\Usuarios\SolicitarResetSenha\SolicitarResetSenhaCommand;
+use PainelDLX\Application\UseCases\Usuarios\SolicitarResetSenha\SolicitarResetSenhaHandler;
 
 return [
     NovoUsuarioCommand::class => NovoUsuarioHandler::class,
@@ -77,4 +81,6 @@ return [
     EditarConfigSmtpCommand::class => EditarConfigSmtpHandler::class,
     ExcluirConfigSmtpCommand::class => ExcluirConfigSmtpHandler::class,
     GetListaConfigSmtpCommand::class => GetListaConfigSmtpHandler::class,
+    SolicitarResetSenhaCommand::class => SolicitarResetSenhaHandler::class,
+    EnviarEmailResetSenhaCommand::class => EnviarEmailResetSenhaHandler::class,
 ];
