@@ -35,8 +35,13 @@ use Vilex\VileX;
 <form id="form-reset-senha" method="post" action="/painel-dlx/reset-senha/solicitar" class="form-reset-senha">
     <h1 class="titulo-pagina"><?php echo $this->getAtributo('titulo-pagina') ?></h1>
 
+    <p class="mensagem-usuario -info">
+        Para recuperar sua senha, informe o seu email cadastrado no sistema, que será onde receberá as informções para
+        recuperação da senha.
+    </p>
+
     <p class="form-paragr">
-        <label for="senha-atual" class="form-rotulo form-controle-email">Email</label>
+        <label for="email" class="form-rotulo form-controle-email">Email</label>
         <input type="email" name="email" id="email" class="form-controle" required>
     </p>
 

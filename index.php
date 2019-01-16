@@ -25,25 +25,28 @@
 
 include __DIR__ . '/vendor/autoload.php';
 
-use DLX\Core\Configure;
 use PainelDLX\Application\Middlewares\Exceptions\UsuarioNaoLogadoException;
 use PainelDLX\Application\Services\IniciarPainelDLX;
-use RautereX\RautereX;
 use Zend\Diactoros\ServerRequestFactory;
 use League\Container\Container;
 use League\Container\ReflectionContainer;
 
+$server_request = ServerRequestFactory::fromGlobals();
+
+$container = new Container;
+$container->delegate(new ReflectionContainer);
+
 try {
-    $server_request = ServerRequestFactory::fromGlobals();
-
-    $container = new Container;
-    $container->delegate(new ReflectionContainer);
-
     $painel_dlx = new IniciarPainelDLX($server_request, $container);
     $painel_dlx
         ->adicionarDiretorioInclusao(dirname(__FILE__))
         ->init()
         ->executar();
-} catch (\Exception $e) {
+} catch (UsuarioNaoLogadoException $e) {
+    $query_param = $server_request->getQueryParams();
+    $query_param['task'] = '/painel-dlx/login';
+    $server_request_login = $server_request->withQueryParams($query_param);
+    $painel_dlx->redirect($server_request_login);
+} catch (Exception $e) {
     var_dump($e);
 }

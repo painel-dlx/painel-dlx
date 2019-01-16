@@ -16,6 +16,9 @@ PainelDLX\Domain\Usuarios\Entities\ResetSenha:
             type: string
             nullable: false
             length: 50
+        utilizado:
+            type: boolean
+            nullable: false
     manyToOne:
         usuario:
             targetEntity: Usuario

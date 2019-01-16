@@ -23,6 +23,8 @@ class ResetSenha extends Entity
     private $data;
     /** @var string */
     private $hash;
+    /** @var bool */
+    private $utilizado = false;
 
     /**
      * @return int|null
@@ -98,6 +100,24 @@ class ResetSenha extends Entity
 
     /**
      * @return bool
+     */
+    public function isUtilizado(): bool
+    {
+        return $this->utilizado;
+    }
+
+    /**
+     * @param bool $utilizado
+     * @return ResetSenha
+     */
+    public function setUtilizado(bool $utilizado): ResetSenha
+    {
+        $this->utilizado = $utilizado;
+        return $this;
+    }
+
+    /**
+     * @return bool
      * @throws Exception
      */
     public function isExpirado(): bool
@@ -114,7 +134,7 @@ class ResetSenha extends Entity
      */
     public function gerarHash(): ResetSenha
     {
-        $this->hash = crypt(md5(new DateTime()), 'pdlx');
+        $this->hash = crypt(md5((new DateTime())->format('Y-m-d H:i:s')), 'pdlx');
         return $this;
     }
 }

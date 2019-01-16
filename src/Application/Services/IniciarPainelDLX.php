@@ -44,6 +44,26 @@ class IniciarPainelDLX
     private $container;
 
     /**
+     * @param ServerRequestInterface $server_request
+     * @return IniciarPainelDLX
+     */
+    public function setServerRequest(ServerRequestInterface $server_request): IniciarPainelDLX
+    {
+        $this->server_request = $server_request;
+        return $this;
+    }
+
+    /**
+     * @param ContainerInterface|null $container
+     * @return IniciarPainelDLX
+     */
+    public function setContainer(?ContainerInterface $container): IniciarPainelDLX
+    {
+        $this->container = $container;
+        return $this;
+    }
+
+    /**
      * IniciarPainelDLX constructor.
      * @param string $ambiente
      * @param ServerRequestInterface $server_request
@@ -80,16 +100,28 @@ class IniciarPainelDLX
 
         // TODO: desacoplar a classe RautereX
         $router = new RautereX($this->container);
-        include_once Configure::get('app', 'rotas');
+        include Configure::get('app', 'rotas');
 
         $params = $this->server_request->getQueryParams();
 
         $response = $router->executarRota(
-            $params['task'] === '/index.php' ? '/painel-dlx/usuarios' : $params['task'],
+            $params['task'],
             $this->server_request,
             $this->server_request->getMethod()
         );
         echo $response->getBody();
+    }
+
+    /**
+     * Redirecionar para outra ação.
+     * @param ServerRequestInterface $request
+     * @throws \RautereX\Exceptions\RotaNaoEncontradaException
+     * @throws \ReflectionException
+     */
+    public function redirect(ServerRequestInterface $request)
+    {
+        $this->setServerRequest($request);
+        $this->executar();
     }
 
     /**

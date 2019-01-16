@@ -4,6 +4,7 @@ CREATE TABLE dlx_reset_senha (
     usuario_id int not null,
     data datetime not null default current_timestamp,
     hash varchar(50) not null,
+    utilizado bool not null default 0,
     constraint FK_dlx_reset_senha_usuario_id foreign key (usuario_id) references dlx_usuarios (usuario_id) on delete cascade
 ) ENGINE=INNODB;
 

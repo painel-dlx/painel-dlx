@@ -32,6 +32,7 @@ use PainelDLX\Application\UseCases\Usuarios\EnviarEmailResetSenha\EnviarEmailRes
 use PainelDLX\Application\UseCases\Usuarios\EnviarEmailResetSenha\EnviarEmailResetSenhaHandler;
 use PainelDLX\Application\UseCases\Usuarios\SolicitarResetSenha\SolicitarResetSenhaCommand;
 use PainelDLX\Application\UseCases\Usuarios\SolicitarResetSenha\SolicitarResetSenhaHandler;
+use PainelDLX\Domain\Usuarios\Entities\ResetSenha;
 use PainelDLX\Presentation\Site\Controllers\SiteController;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -50,7 +51,7 @@ class ResetSenhaController extends SiteController
         parent::__construct($view, $commandBus);
 
         $this->view->setPaginaMestra('src/Presentation/Site/public/views/painel-dlx-master.phtml');
-        $this->view->setViewRoot('src/Presentation/Site/public/views/senhas');
+        $this->view->setViewRoot('src/Presentation/Site/public/views/login');
     }
 
     /**
@@ -90,7 +91,10 @@ class ResetSenhaController extends SiteController
         $email = filter_var($request->getParsedBody()['email'], FILTER_VALIDATE_EMAIL);
 
         try {
-            /** @covers SolicitarResetSenhaHandler */
+            /**
+             * @covers SolicitarResetSenhaHandler
+             * @var ResetSenha $reset_senha
+             */
             $reset_senha = $this->commandBus->handle(new SolicitarResetSenhaCommand($email));
 
             /** @covers EnviarEmailResetSenhaHandler */
@@ -98,6 +102,7 @@ class ResetSenhaController extends SiteController
 
             $json['retorno'] = 'erro';
             $json['mensagem'] = 'Foi enviado um email com instruções para recuperar sua senha.';
+            $json['reset_senha_id'] = $reset_senha->getResetSenhaId();
         } catch (UserException $e) {
             $json['retorno'] = 'erro';
             $json['mensagem'] = $e->getMessage();
