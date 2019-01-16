@@ -19,6 +19,7 @@ use PainelDLX\Testes\PainelDLXTests;
 use Psr\Http\Message\ServerRequestInterface;
 use Vilex\VileX;
 use Zend\Diactoros\Response\HtmlResponse;
+use Zend\Diactoros\Response\JsonResponse;
 
 class ResetSenhaControllerTest extends PainelDLXTests
 {
@@ -53,6 +54,9 @@ class ResetSenhaControllerTest extends PainelDLXTests
         $this->assertInstanceOf(HtmlResponse::class, $response);
     }
 
+    /**
+     *
+     */
     public function test_SolicitarResetSenha_deve_retornar_JsonResponse_sucesso()
     {
         $request = $this->createMock(ServerRequestInterface::class);

@@ -100,7 +100,7 @@ class ResetSenhaController extends SiteController
             /** @covers EnviarEmailResetSenhaHandler */
             $this->commandBus->handle(new EnviarEmailResetSenhaCommand($reset_senha));
 
-            $json['retorno'] = 'erro';
+            $json['retorno'] = 'sucesso';
             $json['mensagem'] = 'Foi enviado um email com instruções para recuperar sua senha.';
             $json['reset_senha_id'] = $reset_senha->getResetSenhaId();
         } catch (UserException $e) {

@@ -57,10 +57,17 @@ class SolicitarResetSenhaHandler
         $usuario = current($lista_usuarios);
 
         // Gravar a solicitação
-        $reset_senha = (new ResetSenha())
-            ->setUsuario($usuario)
-            ->setData(new DateTime())
-            ->gerarHash();
+        // Antes verificar se existe uma solicitação ativa
+        $reset_senha = $this->reset_senha_repository->findResetSenhaAtivo($usuario);
+
+        // Se não houver, cria uma nova
+        if (is_null($reset_senha))  {
+            $reset_senha = (new ResetSenha())
+                ->setUsuario($usuario)
+                ->setData(new DateTime())
+                ->gerarHash();
+        }
+
         $this->reset_senha_repository->create($reset_senha);
 
         return $reset_senha;

@@ -10,9 +10,27 @@ namespace PainelDLX\Infra\ORM\Doctrine\Repositories;
 
 
 use DLX\Infra\ORM\Doctrine\Repositories\EntityRepository;
+use PainelDLX\Domain\Usuarios\Entities\ResetSenha;
+use PainelDLX\Domain\Usuarios\Entities\Usuario;
 use PainelDLX\Domain\Usuarios\Repositories\ResetSenhaRepositoryInterface;
 
 class ResetSenhaRepository extends EntityRepository implements ResetSenhaRepositoryInterface
 {
 
+    /**
+     * Procura uma solicitação de reset senha ativa para esse usuário.
+     * @param Usuario $usuario
+     * @return ResetSenha
+     * @throws \Exception
+     */
+    public function findResetSenhaAtivo(Usuario $usuario): ?ResetSenha
+    {
+        /** @var ResetSenha $reset_senha */
+        $reset_senha = $this->findOneBy([
+            'usuario' => $usuario,
+            'utilizado' => false
+        ]);
+
+        return is_null($reset_senha) || $reset_senha->isExpirado() ? null : $reset_senha;
+    }
 }

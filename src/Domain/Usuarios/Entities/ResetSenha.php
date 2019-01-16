@@ -125,7 +125,7 @@ class ResetSenha extends Entity
         $hoje = new DateTime();
         $limite = (clone $this->getData())->modify('+5 days');
 
-        return $hoje <= $limite;
+        return $hoje > $limite;
     }
 
     /**
