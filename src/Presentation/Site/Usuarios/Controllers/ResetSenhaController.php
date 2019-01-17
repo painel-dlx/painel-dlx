@@ -27,12 +27,16 @@ namespace PainelDLX\Presentation\Site\Usuarios\Controllers;
 
 
 use DLX\Core\Exceptions\UserException;
+use DLX\Infra\EntityManagerX;
 use League\Tactician\CommandBus;
 use PainelDLX\Application\UseCases\Usuarios\EnviarEmailResetSenha\EnviarEmailResetSenhaCommand;
 use PainelDLX\Application\UseCases\Usuarios\EnviarEmailResetSenha\EnviarEmailResetSenhaHandler;
+use PainelDLX\Application\UseCases\Usuarios\GetResetSenhaPorHash\GetResetSenhaPorHashCommand;
+use PainelDLX\Application\UseCases\Usuarios\GetResetSenhaPorHash\GetResetSenhaPorHashHandler;
 use PainelDLX\Application\UseCases\Usuarios\SolicitarResetSenha\SolicitarResetSenhaCommand;
 use PainelDLX\Application\UseCases\Usuarios\SolicitarResetSenha\SolicitarResetSenhaHandler;
 use PainelDLX\Domain\Usuarios\Entities\ResetSenha;
+use PainelDLX\Domain\Usuarios\Entities\Usuario;
 use PainelDLX\Presentation\Site\Controllers\SiteController;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -109,5 +113,43 @@ class ResetSenhaController extends SiteController
         }
 
         return new JsonResponse($json);
+    }
+
+    /**
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
+     * @throws \Vilex\Exceptions\ContextoInvalidoException
+     * @throws \Vilex\Exceptions\PaginaMestraNaoEncontradaException
+     * @throws \Vilex\Exceptions\ViewNaoEncontradaException
+     */
+    public function formResetSenha(ServerRequestInterface $request): ResponseInterface
+    {
+        $hash = $request->getQueryParams()['hash'];
+
+        try {
+            /** @covers GetResetSenhaPorHashHandler */
+            $reset_senha = $this->commandBus->handle(new GetResetSenhaPorHashCommand($hash));
+
+            if (is_null($reset_senha)) {
+                throw new UserException('Solicitação não encontrada!');
+            }
+
+            // Views
+            $this->view->addTemplate('form_resetar_senha', [
+                'titulo-pagina' => 'Recuperação de senha',
+                'reset-senha' => $reset_senha
+            ]);
+
+            // JS
+            $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js');
+        } catch (UserException $e) {
+            $this->view->addTemplate('../mensagem_usuario');
+            $this->view->setAtributo('mensagem', [
+                'tipo' => 'erro',
+                'texto' => $e->getMessage()
+            ]);
+        }
+
+        return $this->view->render();
     }
 }

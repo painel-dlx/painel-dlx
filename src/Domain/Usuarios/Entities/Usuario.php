@@ -186,4 +186,9 @@ class Usuario extends Entity
     {
         return $this->grupos->contains($grupo_usuario);
     }
+
+    public function __toString()
+    {
+        return $this->getNome() ?? '';
+    }
 }

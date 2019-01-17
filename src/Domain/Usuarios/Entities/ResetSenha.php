@@ -134,7 +134,7 @@ class ResetSenha extends Entity
      */
     public function gerarHash(): ResetSenha
     {
-        $this->hash = crypt(md5((new DateTime())->format('Y-m-d H:i:s')), 'pdlx');
+        $this->hash = uniqid('pdlx');
         return $this;
     }
 }

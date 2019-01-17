@@ -58,6 +58,8 @@ use PainelDLX\Application\UseCases\Usuarios\EnviarEmailResetSenha\EnviarEmailRes
 use PainelDLX\Application\UseCases\Usuarios\EnviarEmailResetSenha\EnviarEmailResetSenhaHandler;
 use PainelDLX\Application\UseCases\Usuarios\ExcluirUsuario\ExcluirUsuarioCommand;
 use PainelDLX\Application\UseCases\Usuarios\ExcluirUsuario\ExcluirUsuarioHandler;
+use PainelDLX\Application\UseCases\Usuarios\GetResetSenhaPorHash\GetResetSenhaPorHashCommand;
+use PainelDLX\Application\UseCases\Usuarios\GetResetSenhaPorHash\GetResetSenhaPorHashHandler;
 use PainelDLX\Application\UseCases\Usuarios\NovoUsuario\NovoUsuarioCommand;
 use PainelDLX\Application\UseCases\Usuarios\NovoUsuario\NovoUsuarioHandler;
 use PainelDLX\Application\UseCases\Usuarios\SolicitarResetSenha\SolicitarResetSenhaCommand;
@@ -83,4 +85,5 @@ return [
     GetListaConfigSmtpCommand::class => GetListaConfigSmtpHandler::class,
     SolicitarResetSenhaCommand::class => SolicitarResetSenhaHandler::class,
     EnviarEmailResetSenhaCommand::class => EnviarEmailResetSenhaHandler::class,
+    GetResetSenhaPorHashCommand::class => GetResetSenhaPorHashHandler::class
 ];

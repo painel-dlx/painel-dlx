@@ -58,7 +58,7 @@ class SolicitarResetSenhaHandler
 
         // Gravar a solicitação
         // Antes verificar se existe uma solicitação ativa
-        $reset_senha = $this->reset_senha_repository->findResetSenhaAtivo($usuario);
+        $reset_senha = $this->reset_senha_repository->findResetSenhaAtivoPorUsuario($usuario);
 
         // Se não houver, cria uma nova
         if (is_null($reset_senha))  {

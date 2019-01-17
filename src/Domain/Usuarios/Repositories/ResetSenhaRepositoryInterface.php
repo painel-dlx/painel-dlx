@@ -20,5 +20,12 @@ interface ResetSenhaRepositoryInterface extends EntityRepositoryInterface
      * @param Usuario $usuario
      * @return ResetSenha
      */
-    public function findResetSenhaAtivo(Usuario $usuario): ?ResetSenha;
+    public function findResetSenhaAtivoPorUsuario(Usuario $usuario): ?ResetSenha;
+
+    /**
+     * Procura uma solicitação de reset de senha pelo hash informado.
+     * @param string $hash
+     * @return ResetSenha|null
+     */
+    public function findResetSenhaAtivoPorHash(string $hash): ?ResetSenha;
 }

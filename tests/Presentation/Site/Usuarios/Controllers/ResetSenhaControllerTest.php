@@ -6,7 +6,7 @@
  * Time: 13:45
  */
 
-namespace PainelDLX\Testes\Presentation\Site\Emails\Controllers;
+namespace PainelDLX\Testes\Presentation\Site\Usuarios\Controllers;
 
 use DLX\Core\CommandBus\CommandBusAdapter;
 use DLX\Core\Configure;
@@ -15,6 +15,7 @@ use League\Tactician\Handler\CommandHandlerMiddleware;
 use League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor;
 use League\Tactician\Handler\MethodNameInflector\HandleInflector;
 use PainelDLX\Presentation\Site\Usuarios\Controllers\ResetSenhaController;
+use PainelDLX\Testes\Application\UserCases\Usuarios\SolicitarResetSenha\SolicitarResetSenhaHandlerTest;
 use PainelDLX\Testes\PainelDLXTests;
 use Psr\Http\Message\ServerRequestInterface;
 use Vilex\VileX;
@@ -73,5 +74,27 @@ class ResetSenhaControllerTest extends PainelDLXTests
 
         $this->assertEquals('sucesso', $json->retorno);
         $this->assertNotNull($json->reset_senha_id);
+    }
+
+    /**
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \PainelDLX\Domain\Usuarios\Exceptions\UsuarioNaoEncontrado
+     * @throws \Vilex\Exceptions\ContextoInvalidoException
+     * @throws \Vilex\Exceptions\PaginaMestraNaoEncontradaException
+     * @throws \Vilex\Exceptions\ViewNaoEncontradaException
+     */
+    public function test_FormResetSenha_deve_retornar_um_HtmlResponse()
+    {
+        $reset_senha = (new SolicitarResetSenhaHandlerTest())->test_Handle();
+
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request
+            ->method('getQueryParams')
+            ->willReturn(['hash' => $reset_senha->getHash()]);
+
+        /** @var ServerRequestInterface $request */
+        $response = $this->controller->formResetSenha($request);
+
+        $this->assertInstanceOf(HtmlResponse::class, $response);
     }
 }
