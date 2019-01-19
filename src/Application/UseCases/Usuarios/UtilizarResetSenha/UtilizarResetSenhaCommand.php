@@ -23,58 +23,32 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Application\UseCases\Usuarios\AlterarSenhaUsuario;
+namespace PainelDLX\Application\UseCases\Usuarios\UtilizarResetSenha;
 
 
+use PainelDLX\Domain\Usuarios\Entities\ResetSenha;
 
-use PainelDLX\Domain\Usuarios\Entities\Usuario;
-use PainelDLX\Domain\Usuarios\ValueObjects\SenhaUsuario;
-
-class AlterarSenhaUsuarioCommand
+class UtilizarResetSenhaCommand
 {
-    /** @var Usuario */
-    private $usuario;
-    /** @var SenhaUsuario */
-    private $senha_usuario;
     /**
-     * @var bool
+     * @var ResetSenha
      */
-    private $reset;
+    private $reset_senha;
 
     /**
-     * @return Usuario
+     * @return ResetSenha
      */
-    public function getUsuario(): Usuario
+    public function getResetSenha(): ResetSenha
     {
-        return $this->usuario;
+        return $this->reset_senha;
     }
 
     /**
-     * @return SenhaUsuario
+     * UtilizarResetSenhaCommand constructor.
+     * @param ResetSenha $reset_senha
      */
-    public function getSenhaUsuario(): SenhaUsuario
+    public function __construct(ResetSenha $reset_senha)
     {
-        return $this->senha_usuario;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isReset(): bool
-    {
-        return $this->reset;
-    }
-
-    /**
-     * AlterarSenhaUsuarioCommand constructor.
-     * @param Usuario $usuario
-     * @param SenhaUsuario $senha_usuario
-     * @param bool $reset
-     */
-    public function __construct(Usuario $usuario, SenhaUsuario $senha_usuario, bool $reset = false)
-    {
-        $this->usuario = $usuario;
-        $this->senha_usuario = $senha_usuario;
-        $this->reset = $reset;
+        $this->reset_senha = $reset_senha;
     }
 }

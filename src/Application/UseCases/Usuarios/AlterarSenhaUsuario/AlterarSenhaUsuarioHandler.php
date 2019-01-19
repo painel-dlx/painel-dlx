@@ -52,9 +52,10 @@ class AlterarSenhaUsuarioHandler
         try {
             $usuario = $command->getUsuario();
             $senha = $command->getSenhaUsuario();
+            $is_reset = $command->isReset();
 
             // Verificar se as senhas coincidem
-            (new VerificaSenhasIguais($usuario, $senha))->executar();
+            (new VerificaSenhasIguais($usuario, $senha, $is_reset))->executar();
 
             $usuario->setSenha($senha->getSenhaInformada());
             $this->usuario_repository->update($usuario);

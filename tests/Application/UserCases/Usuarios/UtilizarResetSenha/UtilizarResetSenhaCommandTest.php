@@ -23,58 +23,22 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Application\UseCases\Usuarios\AlterarSenhaUsuario;
+namespace PainelDLX\Testes\Application\UserCases\Usuarios\UtilizarResetSenha;
 
+use PainelDLX\Application\UseCases\Usuarios\UtilizarResetSenha\UtilizarResetSenhaCommand;
+use PainelDLX\Domain\Usuarios\Entities\ResetSenha;
+use PHPUnit\Framework\TestCase;
 
-
-use PainelDLX\Domain\Usuarios\Entities\Usuario;
-use PainelDLX\Domain\Usuarios\ValueObjects\SenhaUsuario;
-
-class AlterarSenhaUsuarioCommand
+class UtilizarResetSenhaCommandTest extends TestCase
 {
-    /** @var Usuario */
-    private $usuario;
-    /** @var SenhaUsuario */
-    private $senha_usuario;
     /**
-     * @var bool
+     *
      */
-    private $reset;
-
-    /**
-     * @return Usuario
-     */
-    public function getUsuario(): Usuario
+    public function test_GetResetSenha()
     {
-        return $this->usuario;
-    }
+        $reset_senha = new ResetSenha();
+        $command = new UtilizarResetSenhaCommand($reset_senha);
 
-    /**
-     * @return SenhaUsuario
-     */
-    public function getSenhaUsuario(): SenhaUsuario
-    {
-        return $this->senha_usuario;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isReset(): bool
-    {
-        return $this->reset;
-    }
-
-    /**
-     * AlterarSenhaUsuarioCommand constructor.
-     * @param Usuario $usuario
-     * @param SenhaUsuario $senha_usuario
-     * @param bool $reset
-     */
-    public function __construct(Usuario $usuario, SenhaUsuario $senha_usuario, bool $reset = false)
-    {
-        $this->usuario = $usuario;
-        $this->senha_usuario = $senha_usuario;
-        $this->reset = $reset;
+        $this->assertInstanceOf(ResetSenha::class, $command->getResetSenha());
     }
 }

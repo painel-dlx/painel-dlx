@@ -29,33 +29,49 @@ namespace PainelDLX\Presentation\Site\Usuarios\Controllers;
 use DLX\Core\Exceptions\UserException;
 use DLX\Infra\EntityManagerX;
 use League\Tactician\CommandBus;
+use PainelDLX\Application\UseCases\Usuarios\AlterarSenhaUsuario\AlterarSenhaUsuarioCommand;
+use PainelDLX\Application\UseCases\Usuarios\AlterarSenhaUsuario\AlterarSenhaUsuarioHandler;
 use PainelDLX\Application\UseCases\Usuarios\EnviarEmailResetSenha\EnviarEmailResetSenhaCommand;
 use PainelDLX\Application\UseCases\Usuarios\EnviarEmailResetSenha\EnviarEmailResetSenhaHandler;
 use PainelDLX\Application\UseCases\Usuarios\GetResetSenhaPorHash\GetResetSenhaPorHashCommand;
 use PainelDLX\Application\UseCases\Usuarios\GetResetSenhaPorHash\GetResetSenhaPorHashHandler;
 use PainelDLX\Application\UseCases\Usuarios\SolicitarResetSenha\SolicitarResetSenhaCommand;
 use PainelDLX\Application\UseCases\Usuarios\SolicitarResetSenha\SolicitarResetSenhaHandler;
+use PainelDLX\Application\UseCases\Usuarios\UtilizarResetSenha\UtilizarResetSenhaCommand;
+use PainelDLX\Application\UseCases\Usuarios\UtilizarResetSenha\UtilizarResetSenhaHandler;
 use PainelDLX\Domain\Usuarios\Entities\ResetSenha;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
+use PainelDLX\Domain\Usuarios\ValueObjects\SenhaUsuario;
 use PainelDLX\Presentation\Site\Controllers\SiteController;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use SechianeX\Contracts\SessionInterface;
 use Vilex\VileX;
 use Zend\Diactoros\Response\JsonResponse;
 
 class ResetSenhaController extends SiteController
 {
     /**
+     * @var SessionInterface
+     */
+    private $session;
+
+    /**
      * ResetSenhaController constructor.
      * @param VileX $view
      * @param CommandBus $commandBus
+     * @param SessionInterface $session
      */
-    public function __construct(VileX $view, CommandBus $commandBus)
-    {
+    public function __construct(
+        VileX $view,
+        CommandBus $commandBus,
+        SessionInterface $session
+    ) {
         parent::__construct($view, $commandBus);
 
         $this->view->setPaginaMestra('src/Presentation/Site/public/views/painel-dlx-master.phtml');
         $this->view->setViewRoot('src/Presentation/Site/public/views/login');
+        $this->session = $session;
     }
 
     /**
@@ -127,12 +143,17 @@ class ResetSenhaController extends SiteController
         $hash = $request->getQueryParams()['hash'];
 
         try {
+            // TODO: está dando erro para gerar o proxy do usuário
+            EntityManagerX::getRepository(Usuario::class)->find(2);
+
             /** @covers GetResetSenhaPorHashHandler */
             $reset_senha = $this->commandBus->handle(new GetResetSenhaPorHashCommand($hash));
 
             if (is_null($reset_senha)) {
                 throw new UserException('Solicitação não encontrada!');
             }
+
+            $this->session->set('hash', $hash);
 
             // Views
             $this->view->addTemplate('form_resetar_senha', [
@@ -151,5 +172,52 @@ class ResetSenhaController extends SiteController
         }
 
         return $this->view->render();
+    }
+
+    /**
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
+     */
+    public function resetarSenha(ServerRequestInterface $request): ResponseInterface
+    {
+        $hash = $this->session->get('hash');
+
+        $post = filter_var_array(
+            $request->getParsedBody(),
+            [
+                'senha_nova' => FILTER_DEFAULT,
+                'senha_confirm' => FILTER_DEFAULT
+            ]
+        );
+
+        /**
+         * @var string $senha_nova
+         * @var string $senha_confirm
+         */
+        extract($post); unset($post);
+
+        try {
+            // TODO: está dando erro para gerar o proxy do usuário
+            EntityManagerX::getRepository(Usuario::class)->find(2);
+
+            $senha_usuario = new SenhaUsuario($senha_nova, $senha_confirm);
+
+            /** @covers GetResetSenhaPorHashHandler */
+            $reset_senha = $this->commandBus->handle(new GetResetSenhaPorHashCommand($hash));
+
+            /** @covers AlterarSenhaUsuarioHandler */
+            $this->commandBus->handle(new AlterarSenhaUsuarioCommand($reset_senha->getUsuario(), $senha_usuario, true));
+
+            /** @covers UtilizarResetSenhaHandler */
+            $this->commandBus->handle(new UtilizarResetSenhaCommand($reset_senha));
+
+            $json['retorno'] = 'sucesso';
+            $json['mensagem'] = 'Senha alterada com sucesso!';
+        } catch (UserException $e) {
+            $json['retorno'] = 'erro';
+            $json['mensagem'] = $e->getMessage();
+        }
+
+        return new JsonResponse($json);
     }
 }

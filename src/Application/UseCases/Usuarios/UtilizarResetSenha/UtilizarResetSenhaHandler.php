@@ -23,58 +23,37 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Application\UseCases\Usuarios\AlterarSenhaUsuario;
+namespace PainelDLX\Application\UseCases\Usuarios\UtilizarResetSenha;
 
 
+use PainelDLX\Domain\Usuarios\Entities\ResetSenha;
+use PainelDLX\Domain\Usuarios\Repositories\ResetSenhaRepositoryInterface;
 
-use PainelDLX\Domain\Usuarios\Entities\Usuario;
-use PainelDLX\Domain\Usuarios\ValueObjects\SenhaUsuario;
-
-class AlterarSenhaUsuarioCommand
+class UtilizarResetSenhaHandler
 {
-    /** @var Usuario */
-    private $usuario;
-    /** @var SenhaUsuario */
-    private $senha_usuario;
     /**
-     * @var bool
+     * @var ResetSenhaRepositoryInterface
      */
-    private $reset;
+    private $reset_senha_repository;
 
     /**
-     * @return Usuario
+     * UtilizarResetSenhaHandler constructor.
+     * @param ResetSenhaRepositoryInterface $reset_senha_repository
      */
-    public function getUsuario(): Usuario
+    public function __construct(ResetSenhaRepositoryInterface $reset_senha_repository)
     {
-        return $this->usuario;
+        $this->reset_senha_repository = $reset_senha_repository;
     }
 
     /**
-     * @return SenhaUsuario
+     * @param UtilizarResetSenhaCommand $command
+     * @return ResetSenha
      */
-    public function getSenhaUsuario(): SenhaUsuario
+    public function handle(UtilizarResetSenhaCommand $command): ResetSenha
     {
-        return $this->senha_usuario;
-    }
+        $command->getResetSenha()->setUtilizado(true);
+        $this->reset_senha_repository->update($command->getResetSenha());
 
-    /**
-     * @return bool
-     */
-    public function isReset(): bool
-    {
-        return $this->reset;
-    }
-
-    /**
-     * AlterarSenhaUsuarioCommand constructor.
-     * @param Usuario $usuario
-     * @param SenhaUsuario $senha_usuario
-     * @param bool $reset
-     */
-    public function __construct(Usuario $usuario, SenhaUsuario $senha_usuario, bool $reset = false)
-    {
-        $this->usuario = $usuario;
-        $this->senha_usuario = $senha_usuario;
-        $this->reset = $reset;
+        return $command->getResetSenha();
     }
 }

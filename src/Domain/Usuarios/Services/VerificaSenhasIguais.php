@@ -21,11 +21,22 @@ class VerificaSenhasIguais implements ServiceInterface
     private $usuario;
     /** @var SenhaUsuario */
     private $senha_usuario;
+    /**
+     * @var bool
+     */
+    private $reset;
 
-    public function __construct(Usuario $usuario, SenhaUsuario $senha_usuario)
+    /**
+     * VerificaSenhasIguais constructor.
+     * @param Usuario $usuario
+     * @param SenhaUsuario $senha_usuario
+     * @param bool $reset
+     */
+    public function __construct(Usuario $usuario, SenhaUsuario $senha_usuario, bool $reset = false)
     {
         $this->usuario = $usuario;
         $this->senha_usuario = $senha_usuario;
+        $this->reset = $reset;
     }
 
     /**
@@ -49,8 +60,10 @@ class VerificaSenhasIguais implements ServiceInterface
      */
     private function compararSenhaAtual(): bool
     {
-        if ($this->usuario->getUsuarioId() > 0 && $this->senha_usuario->getSenhaAtual() !== $this->usuario->getSenha()) {
-            throw new SenhaAtualNaoConfereException();
+        if (!$this->reset) {
+            if ($this->usuario->getUsuarioId() > 0 && $this->senha_usuario->getSenhaAtual() !== $this->usuario->getSenha()) {
+                throw new SenhaAtualNaoConfereException();
+            }
         }
 
         return true;

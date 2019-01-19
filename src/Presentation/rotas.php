@@ -282,6 +282,11 @@ $router->get(
     [ResetSenhaController::class, 'formResetSenha']
 );
 
+$router->post(
+    '/painel-dlx/recuperar-minha-senha',
+    [ResetSenhaController::class, 'resetarSenha']
+);
+
 // Minha conta ------------------------------------------------------------------------------------------------------ //
 $router->get(
     '/painel-dlx/minha-conta',

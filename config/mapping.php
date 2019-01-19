@@ -64,6 +64,8 @@ use PainelDLX\Application\UseCases\Usuarios\NovoUsuario\NovoUsuarioCommand;
 use PainelDLX\Application\UseCases\Usuarios\NovoUsuario\NovoUsuarioHandler;
 use PainelDLX\Application\UseCases\Usuarios\SolicitarResetSenha\SolicitarResetSenhaCommand;
 use PainelDLX\Application\UseCases\Usuarios\SolicitarResetSenha\SolicitarResetSenhaHandler;
+use PainelDLX\Application\UseCases\Usuarios\UtilizarResetSenha\UtilizarResetSenhaCommand;
+use PainelDLX\Application\UseCases\Usuarios\UtilizarResetSenha\UtilizarResetSenhaHandler;
 
 return [
     NovoUsuarioCommand::class => NovoUsuarioHandler::class,
@@ -85,5 +87,6 @@ return [
     GetListaConfigSmtpCommand::class => GetListaConfigSmtpHandler::class,
     SolicitarResetSenhaCommand::class => SolicitarResetSenhaHandler::class,
     EnviarEmailResetSenhaCommand::class => EnviarEmailResetSenhaHandler::class,
-    GetResetSenhaPorHashCommand::class => GetResetSenhaPorHashHandler::class
+    GetResetSenhaPorHashCommand::class => GetResetSenhaPorHashHandler::class,
+    UtilizarResetSenhaCommand::class => UtilizarResetSenhaHandler::class
 ];
