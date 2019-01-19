@@ -23,14 +23,14 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Testes\Application\UserCases\Emails\GetConfigSmtpPorId;
+namespace PainelDLX\Testes\Application\UseCases\Emails\GetConfigSmtpPorId;
 
 use DLX\Infra\EntityManagerX;
 use PainelDLX\Application\UseCases\Emails\GetConfigSmtpPorId\GetConfigSmtpPorIdCommand;
 use PainelDLX\Application\UseCases\Emails\GetConfigSmtpPorId\GetConfigSmtpPorIdHandler;
 use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
 use PainelDLX\Domain\Emails\Repositories\ConfigSmtpRepositoryInterface;
-use PainelDLX\Testes\Application\UserCases\Emails\NovaConfigSmtp\NovaConfigSmtpHandlerTests;
+use PainelDLX\Testes\Application\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpHandlerTests;
 use PainelDLX\Testes\PainelDLXTests;
 
 class GetConfigSmtpPorIdHandlerTests extends PainelDLXTests

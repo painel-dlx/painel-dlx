@@ -23,17 +23,20 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Testes\Application\UserCases\Emails\GetConfigSmtpPorId;
+namespace PainelDLX\Testes\Application\UseCases\Emails\EditarConfigSmtp;
 
-use PainelDLX\Application\UseCases\Emails\GetConfigSmtpPorId\GetConfigSmtpPorIdCommand;
+
+use PainelDLX\Application\UseCases\Emails\EditarConfigSmtp\EditarConfigSmtpCommand;
+use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
 use PainelDLX\Testes\PainelDLXTests;
 
-class GetConfigSmtpPorIdCommandTests extends PainelDLXTests
+class EditarConfigSmtpCommandTests extends PainelDLXTests
 {
-    public function testGetConfigSmtpId()
+    public function test_GetConfigSmtp()
     {
-        $config_smtp_id = 1;
-        $command = new GetConfigSmtpPorIdCommand($config_smtp_id);
-        $this->assertEquals($config_smtp_id, $command->getConfigSmtpId());
+        $config_smtp = new ConfigSmtp();
+        $command = new EditarConfigSmtpCommand($config_smtp);
+
+        $this->assertInstanceOf(ConfigSmtp::class, $command->getConfigSmtp());
     }
 }

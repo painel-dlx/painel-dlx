@@ -23,14 +23,14 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Testes\Application\UserCases\Emails\ExcluirConfigSmtp;
+namespace PainelDLX\Testes\Application\UseCases\Emails\ExcluirConfigSmtp;
 
 use DLX\Infra\EntityManagerX;
 use PainelDLX\Application\UseCases\Emails\ExcluirConfigSmtp\ExcluirConfigSmtpCommand;
 use PainelDLX\Application\UseCases\Emails\ExcluirConfigSmtp\ExcluirConfigSmtpHandler;
 use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
 use PainelDLX\Domain\Emails\Repositories\ConfigSmtpRepositoryInterface;
-use PainelDLX\Testes\Application\UserCases\Emails\NovaConfigSmtp\NovaConfigSmtpHandlerTests;
+use PainelDLX\Testes\Application\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpHandlerTests;
 use PainelDLX\Testes\PainelDLXTests;
 
 class ExcluirConfigSmtpHandlerTests extends PainelDLXTests

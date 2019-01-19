@@ -23,20 +23,22 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Testes\Application\UserCases\Emails\EditarConfigSmtp;
+namespace PainelDLX\Testes\Application\UseCases\Usuarios\UtilizarResetSenha;
 
+use PainelDLX\Application\UseCases\Usuarios\UtilizarResetSenha\UtilizarResetSenhaCommand;
+use PainelDLX\Domain\Usuarios\Entities\ResetSenha;
+use PHPUnit\Framework\TestCase;
 
-use PainelDLX\Application\UseCases\Emails\EditarConfigSmtp\EditarConfigSmtpCommand;
-use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
-use PainelDLX\Testes\PainelDLXTests;
-
-class EditarConfigSmtpCommandTests extends PainelDLXTests
+class UtilizarResetSenhaCommandTest extends TestCase
 {
-    public function testGetConfigSmtp()
+    /**
+     *
+     */
+    public function test_GetResetSenha()
     {
-        $config_smtp = new ConfigSmtp();
-        $command = new EditarConfigSmtpCommand($config_smtp);
+        $reset_senha = new ResetSenha();
+        $command = new UtilizarResetSenhaCommand($reset_senha);
 
-        $this->assertInstanceOf(ConfigSmtp::class, $command->getConfigSmtp());
+        $this->assertInstanceOf(ResetSenha::class, $command->getResetSenha());
     }
 }

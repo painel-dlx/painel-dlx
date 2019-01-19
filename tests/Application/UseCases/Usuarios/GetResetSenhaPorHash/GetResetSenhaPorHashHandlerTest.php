@@ -23,7 +23,7 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Testes\Application\UserCases\Usuarios\GetResetSenhaPorHash;
+namespace PainelDLX\Testes\Application\UseCases\Usuarios\GetResetSenhaPorHash;
 
 use DLX\Infra\EntityManagerX;
 use PainelDLX\Application\UseCases\Emails\GetConfigSmtpPorId\GetConfigSmtpPorIdHandler;
@@ -31,7 +31,7 @@ use PainelDLX\Application\UseCases\Usuarios\GetResetSenhaPorHash\GetResetSenhaPo
 use PainelDLX\Application\UseCases\Usuarios\GetResetSenhaPorHash\GetResetSenhaPorHashHandler;
 use PainelDLX\Domain\Usuarios\Entities\ResetSenha;
 use PainelDLX\Domain\Usuarios\Repositories\ResetSenhaRepositoryInterface;
-use PainelDLX\Testes\Application\UserCases\Usuarios\SolicitarResetSenha\SolicitarResetSenhaHandlerTest;
+use PainelDLX\Testes\Application\UseCases\Usuarios\SolicitarResetSenha\SolicitarResetSenhaHandlerTest;
 use PainelDLX\Testes\PainelDLXTests;
 
 class GetResetSenhaPorHashHandlerTest extends PainelDLXTests

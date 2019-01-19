@@ -6,7 +6,7 @@
  * Time: 13:58
  */
 
-namespace PainelDLX\Testes\Application\UserCases\Usuarios\EnviarEmailResetSenha;
+namespace PainelDLX\Testes\Application\UseCases\Usuarios\EnviarEmailResetSenha;
 
 use DateTime;
 use PainelDLX\Application\UseCases\Usuarios\EnviarEmailResetSenha\EnviarEmailResetSenhaCommand;

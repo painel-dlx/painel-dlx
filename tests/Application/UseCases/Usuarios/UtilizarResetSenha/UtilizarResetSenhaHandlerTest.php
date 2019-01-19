@@ -23,22 +23,33 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Testes\Application\UserCases\Usuarios\UtilizarResetSenha;
+namespace PainelDLX\Testes\Application\UseCases\Usuarios\UtilizarResetSenha;
 
+use DLX\Infra\EntityManagerX;
 use PainelDLX\Application\UseCases\Usuarios\UtilizarResetSenha\UtilizarResetSenhaCommand;
+use PainelDLX\Application\UseCases\Usuarios\UtilizarResetSenha\UtilizarResetSenhaHandler;
 use PainelDLX\Domain\Usuarios\Entities\ResetSenha;
-use PHPUnit\Framework\TestCase;
+use PainelDLX\Domain\Usuarios\Repositories\ResetSenhaRepositoryInterface;
+use PainelDLX\Testes\Application\UseCases\Usuarios\SolicitarResetSenha\SolicitarResetSenhaHandlerTest;
+use PainelDLX\Testes\PainelDLXTests;
 
-class UtilizarResetSenhaCommandTest extends TestCase
+class UtilizarResetSenhaHandlerTest extends PainelDLXTests
 {
     /**
-     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \PainelDLX\Domain\Usuarios\Exceptions\UsuarioNaoEncontrado
      */
-    public function test_GetResetSenha()
+    public function test_Handle()
     {
-        $reset_senha = new ResetSenha();
-        $command = new UtilizarResetSenhaCommand($reset_senha);
+        $reset_senha = (new SolicitarResetSenhaHandlerTest())->test_Handle();
+        $this->assertFalse($reset_senha->isUtilizado());
 
-        $this->assertInstanceOf(ResetSenha::class, $command->getResetSenha());
+        /** @var ResetSenhaRepositoryInterface $reset_senha_repository */
+        $reset_senha_repository = EntityManagerX::getRepository(ResetSenha::class);
+
+        $command = new UtilizarResetSenhaCommand($reset_senha);
+        $reset_senha = (new UtilizarResetSenhaHandler($reset_senha_repository))->handle($command);
+
+        $this->assertTrue($reset_senha->isUtilizado());
     }
 }

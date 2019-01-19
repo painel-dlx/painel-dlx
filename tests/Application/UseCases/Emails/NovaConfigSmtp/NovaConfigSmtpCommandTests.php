@@ -23,20 +23,26 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Testes\Application\UserCases\Emails\ExcluirConfigSmtp;
+namespace PainelDLX\Testes\Application\UseCases\Emails\NovaConfigSmtp;
 
-use PainelDLX\Application\UseCases\Emails\ExcluirConfigSmtp\ExcluirConfigSmtpCommand;
+use PainelDLX\Application\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpCommand;
 use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
 use PainelDLX\Testes\PainelDLXTests;
 use PHPUnit\Framework\TestCase;
 
-class ExcluirConfigSmtpCommandTests extends PainelDLXTests
+class NovaConfigSmtpCommandTests extends PainelDLXTests
 {
+    public function test__construct()
+    {
+        $config_smtp = new ConfigSmtp();
+        $command = new NovaConfigSmtpCommand($config_smtp);
+        $this->assertInstanceOf(ConfigSmtp::class, $command->getConfigSmtp());
+    }
+
     public function testGetConfigSmtp()
     {
         $config_smtp = new ConfigSmtp();
-        $command = new ExcluirConfigSmtpCommand($config_smtp);
-
-        $this->assertInstanceOf(ConfigSmtp::class, $command->getConfigSmtp());
+        $command = new NovaConfigSmtpCommand($config_smtp);
+        $this->assertEquals('localhost', $command->getConfigSmtp()->getServidor());
     }
 }

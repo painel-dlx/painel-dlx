@@ -6,7 +6,7 @@
  * Time: 15:34
  */
 
-namespace PainelDLX\Testes\Application\UserCases\Usuarios\SolicitarResetSenha;
+namespace PainelDLX\Testes\Application\UseCases\Usuarios\SolicitarResetSenha;
 
 use DLX\Infra\EntityManagerX;
 use PainelDLX\Application\UseCases\Usuarios\SolicitarResetSenha\SolicitarResetSenhaCommand;

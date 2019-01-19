@@ -6,7 +6,7 @@
  * Time: 13:54
  */
 
-namespace PainelDLX\Testes\Application\UserCases\Usuarios\SolicitarResetSenha;
+namespace PainelDLX\Testes\Application\UseCases\Usuarios\SolicitarResetSenha;
 
 use PainelDLX\Application\UseCases\Usuarios\SolicitarResetSenha\SolicitarResetSenhaCommand;
 use PainelDLX\Testes\PainelDLXTests;
