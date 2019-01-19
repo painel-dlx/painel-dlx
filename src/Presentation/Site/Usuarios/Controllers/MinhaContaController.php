@@ -153,7 +153,7 @@ class MinhaContaController extends SiteController
             $senha_usuario = new SenhaUsuario($senha_nova, $senha_confirm, $senha_atual);
 
             /** @covers AlterarSenhaUsuarioHandler */
-            $this->commandBus->handle(new AlterarSenhaUsuarioCommand($this->usuario_logado, $senha_usuario));
+            $this->command_bus->handle(new AlterarSenhaUsuarioCommand($this->usuario_logado, $senha_usuario));
 
             $json['retorno'] = 'sucesso';
             $json['mensagem'] = 'Senha alterada com sucesso!';

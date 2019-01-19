@@ -68,7 +68,7 @@ class EditarConfigSmtpController extends SiteController
 
         try {
             /** @var ConfigSmtp $config_smtp */
-            $config_smtp = $this->commandBus->handle(new GetConfigSmtpPorIdCommand($config_smtp_id));
+            $config_smtp = $this->command_bus->handle(new GetConfigSmtpPorIdCommand($config_smtp_id));
 
             if (is_null($config_smtp)) {
                 throw new UserException('Configuração SMTP não encontrada!');
@@ -116,7 +116,7 @@ class EditarConfigSmtpController extends SiteController
 
         try {
             /** @var ConfigSmtp $config_smtp */
-            $config_smtp = $this->commandBus->handle(new GetConfigSmtpPorIdCommand($config_smtp_id));
+            $config_smtp = $this->command_bus->handle(new GetConfigSmtpPorIdCommand($config_smtp_id));
             $config_smtp
                 ->setNome($nome)
                 ->setServidor($servidor)
@@ -129,7 +129,7 @@ class EditarConfigSmtpController extends SiteController
                 ->setResponderPara($responder_para)
                 ->setCorpoHtml($corpo_html);
 
-            $this->commandBus->handle(new EditarConfigSmtpCommand($config_smtp));
+            $this->command_bus->handle(new EditarConfigSmtpCommand($config_smtp));
 
             $json['retorno'] = 'sucesso';
             $json['mensagem'] = 'Configuração SMTP salva com sucesso!';

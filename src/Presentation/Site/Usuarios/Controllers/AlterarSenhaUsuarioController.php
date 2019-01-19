@@ -126,7 +126,7 @@ class AlterarSenhaUsuarioController extends SiteController
             }
 
             $senha_usuario = new SenhaUsuario($senha_nova, $senha_confirm, $senha_atual);
-            $this->commandBus->handle(new AlterarSenhaUsuarioCommand($usuario, $senha_usuario));
+            $this->command_bus->handle(new AlterarSenhaUsuarioCommand($usuario, $senha_usuario));
 
             $json['retorno'] = 'sucesso';
             $json['mensagem'] = 'Senha alterada com sucesso!';

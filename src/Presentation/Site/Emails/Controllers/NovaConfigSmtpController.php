@@ -113,7 +113,7 @@ class NovaConfigSmtpController extends SiteController
                 ->setCorpoHtml($corpo_html);
 
             /** @covers NovaConfigSmtpHandler */
-            $this->commandBus->handle(new NovaConfigSmtpCommand($config_smtp));
+            $this->command_bus->handle(new NovaConfigSmtpCommand($config_smtp));
 
             $json['retorno'] = 'sucesso';
             $json['mensagem'] = 'Configuração SMTP salva com sucesso!';

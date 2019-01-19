@@ -36,14 +36,14 @@ abstract class SiteController
     /** @var EntityRepositoryInterface */
     protected $repository;
     /** @var CommandBus */
-    protected $commandBus;
+    protected $command_bus;
 
     public function __construct(
         VileX $view,
         CommandBus $commandBus
     ) {
         $this->view = $view;
-        $this->commandBus = $commandBus;
+        $this->command_bus = $commandBus;
 
         // TODO: retirar a inclusão do tema do controller. Está aqui apenas para agilizar o dev
         $this->view->addArquivoCss('/src/Presentation/Site/public/temas/painel-dlx/css/paineldlx.tema.css');

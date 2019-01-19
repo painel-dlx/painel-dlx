@@ -17,9 +17,13 @@ use PainelDLX\Domain\Usuarios\ValueObjects\SenhaUsuario;
 
 class VerificaSenhasIguais implements ServiceInterface
 {
-    /** @var Usuario */
+    /**
+     * @var Usuario
+     */
     private $usuario;
-    /** @var SenhaUsuario */
+    /**
+     * @var SenhaUsuario
+     */
     private $senha_usuario;
     /**
      * @var bool

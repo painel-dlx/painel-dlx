@@ -145,7 +145,7 @@ class CadastroPermissaoController extends SiteController
              * @var PermissaoUsuario $permissao_usuario
              * @covers CadastrarPermissaoUsuarioHandler
              */
-            $permissao_usuario = $this->commandBus->handle(new CadastrarPermissaoUsuarioCommand($alias, $descricao));
+            $permissao_usuario = $this->command_bus->handle(new CadastrarPermissaoUsuarioCommand($alias, $descricao));
 
             $msg['retorno'] = 'sucesso';
             $msg['mensagem'] = 'Permissão criada com sucesso!';
@@ -227,7 +227,7 @@ class CadastroPermissaoController extends SiteController
              * @var PermissaoUsuario $permissao_usuario
              * @covers EditarPermissaoUsuarioHandler
              */
-            $permissao_usuario = $this->commandBus->handle(new EditarPermissaoUsuarioCommand($permissao_usuario_id, $descricao));
+            $permissao_usuario = $this->command_bus->handle(new EditarPermissaoUsuarioCommand($permissao_usuario_id, $descricao));
 
             $msg['retorno'] = 'sucesso';
             $msg['mensagem'] = 'Permissão alterada com sucesso!';
@@ -308,7 +308,7 @@ class CadastroPermissaoController extends SiteController
             /**
              * @covers ExcluirPermissaoUsuarioHandler
              */
-            $this->commandBus->handle(new ExcluirPermissaoUsuarioCommand($permissao_usuario_id));
+            $this->command_bus->handle(new ExcluirPermissaoUsuarioCommand($permissao_usuario_id));
 
             $msg['retorno'] = 'sucesso';
             $msg['mensagem'] = 'Permissão excluída com sucesso!';

@@ -67,7 +67,7 @@ class ConfigSmtpController extends SiteController
 
         try {
             /** @var ConfigSmtp $config_smtp */
-            $config_smtp = $this->commandBus->handle(new GetConfigSmtpPorIdCommand($config_smtp_id));
+            $config_smtp = $this->command_bus->handle(new GetConfigSmtpPorIdCommand($config_smtp_id));
 
             // View
             $this->view->addTemplate('det_config_smtp', [
@@ -98,7 +98,7 @@ class ConfigSmtpController extends SiteController
         unset($param['ambiente'], $param['task']);
 
         try {
-            $lista_config_smtp = $this->commandBus->handle(new GetListaConfigSmtpCommand($param, []));
+            $lista_config_smtp = $this->command_bus->handle(new GetListaConfigSmtpCommand($param, []));
 
             // View
             $this->view->addTemplate('lista_config_smtp', [
@@ -129,10 +129,10 @@ class ConfigSmtpController extends SiteController
 
         try {
             /** @var ConfigSmtp $config_smtp */
-            $config_smtp = $this->commandBus->handle(new GetConfigSmtpPorIdCommand($config_smtp_id));
+            $config_smtp = $this->command_bus->handle(new GetConfigSmtpPorIdCommand($config_smtp_id));
 
             /** @covers ExcluirConfigSmtpHandler */
-            $this->commandBus->handle(new ExcluirConfigSmtpCommand($config_smtp));
+            $this->command_bus->handle(new ExcluirConfigSmtpCommand($config_smtp));
 
             $json['retorno'] = 'sucesso';
             $json['mensagem'] = 'Configuração SMTP excluída com sucesso!';

@@ -153,7 +153,7 @@ class CadastroUsuarioController extends SiteController
                 ->setSenha($senha);
 
             /** @covers NovoUsuarioHandler */
-            $this->commandBus->handle(new NovoUsuarioCommand($usuario, $senha_confirm));
+            $this->command_bus->handle(new NovoUsuarioCommand($usuario, $senha_confirm));
 
             $msg['retorno'] = 'sucesso';
             $msg['mensagem'] = 'Usuário cadastrado com sucesso!';
@@ -223,7 +223,7 @@ class CadastroUsuarioController extends SiteController
              * @var Usuario $usuario_atualizado
              * @covers EditarUsuarioHandler
              */
-            $usuario_atualizado = $this->commandBus->handle(new EditarUsuarioCommand($usuario_id, $nome, $email, $grupos));
+            $usuario_atualizado = $this->command_bus->handle(new EditarUsuarioCommand($usuario_id, $nome, $email, $grupos));
 
             $msg['retorno'] = 'sucesso';
             $msg['mensagem'] = 'Usuário atualizado com sucesso!';
@@ -248,7 +248,7 @@ class CadastroUsuarioController extends SiteController
             $usuario = $this->repository->find($usuario_id);
 
             /** @covers ExcluirUsuarioHandler */
-            $this->commandBus->handle(new ExcluirUsuarioCommand($usuario));
+            $this->command_bus->handle(new ExcluirUsuarioCommand($usuario));
 
             $msg['retorno'] = 'sucesso';
             $msg['mensagem'] = 'Usuário excluído com sucesso!';

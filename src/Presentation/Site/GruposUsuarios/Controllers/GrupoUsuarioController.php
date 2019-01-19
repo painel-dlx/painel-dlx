@@ -139,7 +139,7 @@ class GrupoUsuarioController extends SiteController
              * @var GrupoUsuario $grupo_usuario
              * @covers NovoGrupoUsuarioHandler
              */
-            $grupo_usuario = $this->commandBus->handle(new NovoGrupoUsuarioCommand($nome));
+            $grupo_usuario = $this->command_bus->handle(new NovoGrupoUsuarioCommand($nome));
 
             $msg['retorno'] = 'sucesso';
             $msg['mensagem'] = 'Grupo de usuário cadastrado com sucesso!';
@@ -208,7 +208,7 @@ class GrupoUsuarioController extends SiteController
              * @var GrupoUsuario $grupo_usuario_atualizado
              * @covers EditarGrupoUsuarioHandler
              */
-            $grupo_usuario_atualizado = $this->commandBus->handle(
+            $grupo_usuario_atualizado = $this->command_bus->handle(
                 new EditarGrupoUsuarioCommand($grupo_usuario_id, $nome)
             );
 
@@ -237,7 +237,7 @@ class GrupoUsuarioController extends SiteController
 
         try {
             /** @covers ExcluirGrupoUsuarioHandler */
-            $this->commandBus->handle(new ExcluirGrupoUsuarioCommand($grupo_usuario_id));
+            $this->command_bus->handle(new ExcluirGrupoUsuarioCommand($grupo_usuario_id));
 
             $msg['retorno'] = 'sucesso';
             $msg['mensagem'] = 'Grupo de usuário excluído com sucesso!';

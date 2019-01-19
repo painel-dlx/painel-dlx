@@ -26,6 +26,7 @@
 namespace PainelDLX\Presentation\Site\Usuarios\Controllers;
 
 
+use DLX\Contracts\TransacaoInterface;
 use DLX\Core\Exceptions\UserException;
 use DLX\Infra\EntityManagerX;
 use League\Tactician\CommandBus;
@@ -55,23 +56,30 @@ class ResetSenhaController extends SiteController
      * @var SessionInterface
      */
     private $session;
+    /**
+     * @var TransacaoInterface
+     */
+    private $transacao;
 
     /**
      * ResetSenhaController constructor.
      * @param VileX $view
      * @param CommandBus $commandBus
      * @param SessionInterface $session
+     * @param TransacaoInterface $transacao
      */
     public function __construct(
         VileX $view,
         CommandBus $commandBus,
-        SessionInterface $session
+        SessionInterface $session,
+        TransacaoInterface $transacao
     ) {
         parent::__construct($view, $commandBus);
 
         $this->view->setPaginaMestra('src/Presentation/Site/public/views/painel-dlx-master.phtml');
         $this->view->setViewRoot('src/Presentation/Site/public/views/login');
         $this->session = $session;
+        $this->transacao = $transacao;
     }
 
     /**
@@ -115,10 +123,10 @@ class ResetSenhaController extends SiteController
              * @covers SolicitarResetSenhaHandler
              * @var ResetSenha $reset_senha
              */
-            $reset_senha = $this->commandBus->handle(new SolicitarResetSenhaCommand($email));
+            $reset_senha = $this->command_bus->handle(new SolicitarResetSenhaCommand($email));
 
             /** @covers EnviarEmailResetSenhaHandler */
-            $this->commandBus->handle(new EnviarEmailResetSenhaCommand($reset_senha));
+            $this->command_bus->handle(new EnviarEmailResetSenhaCommand($reset_senha));
 
             $json['retorno'] = 'sucesso';
             $json['mensagem'] = 'Foi enviado um email com instruções para recuperar sua senha.';
@@ -147,7 +155,7 @@ class ResetSenhaController extends SiteController
             EntityManagerX::getRepository(Usuario::class)->find(2);
 
             /** @covers GetResetSenhaPorHashHandler */
-            $reset_senha = $this->commandBus->handle(new GetResetSenhaPorHashCommand($hash));
+            $reset_senha = $this->command_bus->handle(new GetResetSenhaPorHashCommand($hash));
 
             if (is_null($reset_senha)) {
                 throw new UserException('Solicitação não encontrada!');
@@ -203,17 +211,26 @@ class ResetSenhaController extends SiteController
             $senha_usuario = new SenhaUsuario($senha_nova, $senha_confirm);
 
             /** @covers GetResetSenhaPorHashHandler */
-            $reset_senha = $this->commandBus->handle(new GetResetSenhaPorHashCommand($hash));
+            $reset_senha = $this->command_bus->handle(new GetResetSenhaPorHashCommand($hash));
+
+            if (is_null($reset_senha)) {
+                throw new UserException('Solicitação não encontrada!');
+            }
+
+            $this->transacao->begin();
 
             /** @covers AlterarSenhaUsuarioHandler */
-            $this->commandBus->handle(new AlterarSenhaUsuarioCommand($reset_senha->getUsuario(), $senha_usuario, true));
+            $this->command_bus->handle(new AlterarSenhaUsuarioCommand($reset_senha->getUsuario(), $senha_usuario, true));
 
             /** @covers UtilizarResetSenhaHandler */
-            $this->commandBus->handle(new UtilizarResetSenhaCommand($reset_senha));
+            $this->command_bus->handle(new UtilizarResetSenhaCommand($reset_senha));
+
+            $this->transacao->commit();
 
             $json['retorno'] = 'sucesso';
-            $json['mensagem'] = 'Senha alterada com sucesso!';
+            $json['mensagem'] = 'Senha alterada com sucesso! Faça login no sistema com sua nova senha.';
         } catch (UserException $e) {
+            $this->transacao->rollback();
             $json['retorno'] = 'erro';
             $json['mensagem'] = $e->getMessage();
         }

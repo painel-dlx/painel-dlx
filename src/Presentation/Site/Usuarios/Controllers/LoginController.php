@@ -112,7 +112,7 @@ class LoginController extends SiteController
              * @covers FazerLoginHandler
              * @var Usuario|null $usuario
              */
-            $usuario = $this->commandBus->handle(new FazerLoginCommand($email, $senha));
+            $usuario = $this->command_bus->handle(new FazerLoginCommand($email, $senha));
 
             $json['retorno'] = 'sucesso';
             $json['mensagem'] = "Seja bem-vindo {$usuario->getNome()}!";
@@ -132,7 +132,7 @@ class LoginController extends SiteController
     {
         try {
             /** @covers FazerLogoutHandler */
-            $this->commandBus->handle(new FazerLogoutCommand());
+            $this->command_bus->handle(new FazerLogoutCommand());
 
             $json['retorno'] = 'sucesso';
             $json['mensagem'] = 'Sessão encerrada com sucesso!';
