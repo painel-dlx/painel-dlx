@@ -48,6 +48,29 @@ body.mostrando-menu .menu-principal {
   align-items: center;
 }
 
+.lista-gerenciar-permissoes {
+  max-height: 300px;
+  overflow-y: auto;
+  display: block;
+}
+.lista-gerenciar-permissoes tbody {
+  display: block;
+  width: 99%;
+}
+.lista-gerenciar-permissoes tbody tr {
+  cursor: pointer;
+}
+.lista-gerenciar-permissoes tbody tr:hover {
+  background: rgba(102, 205, 170, 0.16);
+  color: #32909F;
+}
+.lista-gerenciar-permissoes tbody tr [type=checkbox] {
+  visibility: hidden;
+  position: fixed;
+  top: -9999px;
+  left: -9999;
+}
+
 .dlx-menu {
   position: fixed;
   top: 0;
@@ -555,6 +578,20 @@ body.mostrando-menu .menu-principal {
   width: 500px;
   max-width: 100%;
   margin: 0 auto;
+}
+
+.form-config-permissoes {
+  display: flex;
+  flex-wrap: wrap;
+}
+.form-config-permissoes > .form-grupo {
+  flex: 48% 0 0;
+}
+.form-config-permissoes > .form-grupo:nth-of-type(2) {
+  margin-left: 3.086%;
+}
+.form-config-permissoes > .form-botoes {
+  flex: 100% 1 1;
 }
 
 .detalhe-registro-rotulo {

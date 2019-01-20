@@ -34,10 +34,14 @@ use PainelDLX\Application\UseCases\Emails\GetListaConfigSmtp\GetListaConfigSmtpC
 use PainelDLX\Application\UseCases\Emails\GetListaConfigSmtp\GetListaConfigSmtpHandler;
 use PainelDLX\Application\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpCommand;
 use PainelDLX\Application\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpHandler;
+use PainelDLX\Application\UseCases\GruposUsuarios\ConfigurarPermissoes\ConfigurarPermissoesCommand;
+use PainelDLX\Application\UseCases\GruposUsuarios\ConfigurarPermissoes\ConfigurarPermissoesHandler;
 use PainelDLX\Application\UseCases\GruposUsuarios\EditarGrupoUsuario\EditarGrupoUsuarioCommand;
 use PainelDLX\Application\UseCases\GruposUsuarios\EditarGrupoUsuario\EditarGrupoUsuarioHandler;
 use PainelDLX\Application\UseCases\GruposUsuarios\ExcluirGrupoUsuario\ExcluirGrupoUsuarioCommand;
 use PainelDLX\Application\UseCases\GruposUsuarios\ExcluirGrupoUsuario\ExcluirGrupoUsuarioHandler;
+use PainelDLX\Application\UseCases\GruposUsuarios\GetGrupoUsuarioPorId\GetGrupoUsuarioPorIdCommand;
+use PainelDLX\Application\UseCases\GruposUsuarios\GetGrupoUsuarioPorId\GetGrupoUsuarioPorIdHandler;
 use PainelDLX\Application\UseCases\GruposUsuarios\NovoGrupoUsuario\NovoGrupoUsuarioCommand;
 use PainelDLX\Application\UseCases\GruposUsuarios\NovoGrupoUsuario\NovoGrupoUsuarioHandler;
 use PainelDLX\Application\UseCases\Login\FazerLogin\FazerLoginCommand;
@@ -50,6 +54,8 @@ use PainelDLX\Application\UseCases\PermissoesUsuario\EditarPermissaoUsuario\Edit
 use PainelDLX\Application\UseCases\PermissoesUsuario\EditarPermissaoUsuario\EditarPermissaoUsuarioHandler;
 use PainelDLX\Application\UseCases\PermissoesUsuario\ExcluirPermissaoUsuario\ExcluirPermissaoUsuarioCommand;
 use PainelDLX\Application\UseCases\PermissoesUsuario\ExcluirPermissaoUsuario\ExcluirPermissaoUsuarioHandler;
+use PainelDLX\Application\UseCases\PermissoesUsuario\GetListaPermissaoUsuario\GetListaPermissaoUsuarioCommand;
+use PainelDLX\Application\UseCases\PermissoesUsuario\GetListaPermissaoUsuario\GetListaPermissaoUsuarioHandler;
 use PainelDLX\Application\UseCases\Usuarios\AlterarSenhaUsuario\AlterarSenhaUsuarioCommand;
 use PainelDLX\Application\UseCases\Usuarios\AlterarSenhaUsuario\AlterarSenhaUsuarioHandler;
 use PainelDLX\Application\UseCases\Usuarios\EditarUsuario\EditarUsuarioCommand;
@@ -88,5 +94,8 @@ return [
     SolicitarResetSenhaCommand::class => SolicitarResetSenhaHandler::class,
     EnviarEmailResetSenhaCommand::class => EnviarEmailResetSenhaHandler::class,
     GetResetSenhaPorHashCommand::class => GetResetSenhaPorHashHandler::class,
-    UtilizarResetSenhaCommand::class => UtilizarResetSenhaHandler::class
+    UtilizarResetSenhaCommand::class => UtilizarResetSenhaHandler::class,
+    GetGrupoUsuarioPorIdCommand::class => GetGrupoUsuarioPorIdHandler::class,
+    ConfigurarPermissoesCommand::class => ConfigurarPermissoesHandler::class,
+    GetListaPermissaoUsuarioCommand::class => GetListaPermissaoUsuarioHandler::class,
 ];

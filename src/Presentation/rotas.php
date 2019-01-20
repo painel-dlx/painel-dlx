@@ -28,6 +28,7 @@ use PainelDLX\Application\Middlewares\VerificarLogon;
 use PainelDLX\Presentation\Site\Emails\Controllers\ConfigSmtpController;
 use PainelDLX\Presentation\Site\Emails\Controllers\EditarConfigSmtpController;
 use PainelDLX\Presentation\Site\Emails\Controllers\NovaConfigSmtpController;
+use PainelDLX\Presentation\Site\GruposUsuarios\Controllers\ConfigurarPermissoesController;
 use PainelDLX\Presentation\Site\GruposUsuarios\Controllers\GrupoUsuarioController;
 use PainelDLX\Presentation\Site\PermissoesUsuario\Controllers\CadastroPermissaoController;
 use PainelDLX\Presentation\Site\Usuarios\Controllers\AlterarSenhaUsuarioController;
@@ -145,29 +146,42 @@ $router->get(
 $router->post(
     '/painel-dlx/grupos-de-usuarios/cadastrar',
     [GrupoUsuarioController::class, 'cadastrarNovoGrupoUsuario']
-)
-    ->middlewares(
-        new VerificarLogon($session),
-        new Autorizacao('CADASTRAR_GRUPO_USUARIO')
-    );
+)->middlewares(
+    new VerificarLogon($session),
+    new Autorizacao('CADASTRAR_GRUPO_USUARIO')
+);
 
 $router->post(
     '/painel-dlx/grupos-de-usuarios/salvar',
     [GrupoUsuarioController::class, 'atualizarGrupoUsuarioExistente']
-)
-    ->middlewares(
-        new VerificarLogon($session),
-        new Autorizacao('EDITAR_GRUPO_USUARIO')
-    );
+)->middlewares(
+    new VerificarLogon($session),
+    new Autorizacao('EDITAR_GRUPO_USUARIO')
+);
 
 $router->post(
     '/painel-dlx/grupos-de-usuarios/excluir',
     [GrupoUsuarioController::class, 'excluirGrupoUsuario']
-)
-    ->middlewares(
-        new VerificarLogon($session),
-        new Autorizacao('EXCLUIR_GRUPO_USUARIO')
-    );
+)->middlewares(
+    new VerificarLogon($session),
+    new Autorizacao('EXCLUIR_GRUPO_USUARIO')
+);
+
+$router->get(
+    '/painel-dlx/grupos-de-usuarios/permissoes',
+    [ConfigurarPermissoesController::class, 'formConfigurarPermissao']
+)->middlewares(
+    new VerificarLogon($session),
+    new Autorizacao('GERENCIAR_PERMISSOES_GRUPOS')
+);
+
+$router->post(
+    '/painel-dlx/grupos-de-usuarios/configurar-permissoes',
+    [ConfigurarPermissoesController::class, 'salvarConfiguracaoPermissao']
+)->middlewares(
+    new VerificarLogon($session),
+    new Autorizacao('GERENCIAR_PERMISSOES_GRUPOS')
+);
 
 // Alteração de senha ----------------------------------------------------------------------------------------------- //
 $router->get(

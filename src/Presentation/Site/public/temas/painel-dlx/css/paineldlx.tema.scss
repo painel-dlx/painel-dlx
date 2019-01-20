@@ -38,6 +38,7 @@ body {
 // Geral
 @import "componentes/titulo-pagina";
 @import "componentes/lista-registros";
+@import "componentes/lista-gerenciar-permissoes";
 
 // Menus
 @import "layout/dlx-menu";
@@ -82,6 +83,7 @@ body {
 @import "componentes/form/form-login";
 @import "componentes/form/form-alterar-senha";
 @import "componentes/form/form-reset-senha";
+@import "componentes/form/form-config-permissoes";
 
 // Detalhes
 @import "componentes/detalhe-registro";

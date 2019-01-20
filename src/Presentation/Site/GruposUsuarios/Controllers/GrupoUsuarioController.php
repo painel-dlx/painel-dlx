@@ -106,16 +106,16 @@ class GrupoUsuarioController extends SiteController
             // Atributos
             $this->view->setAtributo('titulo-pagina', 'Adicionar novo grupo de usuário');
 
-            // views
+            // Views
             $this->view->addTemplate('form_novo_grupo_usuario');
 
             // JS
             $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js');
         } catch (UserException $e) {
             $this->view->addTemplate('mensagem_usuario');
-            $this->view->setAtributo('mensagem', [
+            $this->view->setAtributo('../mensagem', [
                 'tipo' => 'erro',
-                'mensagem' => $e->getMessage()
+                'texto' => $e->getMessage()
             ]);
         }
 
