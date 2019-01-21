@@ -268,7 +268,7 @@ class GrupoUsuarioController extends SiteController
             $grupo_usuario = $this->repository->find($grupo_usuario_id);
 
             // Atributos
-            $this->view->setAtributo('titulo-pagina', $grupo_usuario->getNome());
+            $this->view->setAtributo('titulo-pagina', "Grupo de Usuário: {$grupo_usuario->getNome()}");
             $this->view->setAtributo('grupo-usuario', $grupo_usuario);
 
             // views

@@ -24,6 +24,7 @@
  */
 
 use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
+use PainelDLX\Domain\PermissoesUsuario\Entities\PermissaoUsuario;
 use Vilex\VileX;
 
 /**
@@ -49,5 +50,20 @@ $grupo_usuario = $this->getAtributo('grupo-usuario');
         <span class="detalhe-registro-rotulo">Nome:</span>
         <?php echo $grupo_usuario->getNome() ?>
     </p>
+</details>
+
+<details class="detalhe-registro" open>
+    <summary class="detalhe-registro-titulo">Permissões</summary>
+
+    <ul class="lista-permissoes">
+        <?php
+        /** @var PermissaoUsuario $permissao */
+        foreach ($grupo_usuario->getPermissoes() as $permissao) : ?>
+            <li class="permissao">
+                <?php echo $permissao->getDescricao() ?><br>
+                <?php echo $permissao->getAlias() ?>
+            </li>
+        <?php endforeach ?>
+    </ul>
 </details>
 [/CORPO]

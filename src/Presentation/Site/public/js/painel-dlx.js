@@ -39,3 +39,24 @@ function encerrarSessao() {
         }
     })
 }
+
+// Grupos de Usuários ----------------------------------------------------------------------------------------------- //
+/**
+ * Mostrar popup para gerenciar configurações
+ * @param grupo_usuario_id
+ */
+function popupGerenciarConfiguracoes(grupo_usuario_id) {
+    if ($('#popup-gerenciar-permissoes').length < 1) {
+        $.get(
+            '/painel-dlx/grupos-de-usuarios/permissoes',
+            {grupo_usuario_id: grupo_usuario_id},
+            function (html) {
+                $(document.createElement('div'))
+                    .attr('id', 'popup-gerenciar-permissoes')
+                    .addClass('box-popup')
+                    .html(html)
+                    .appendTo($('body'));
+            }
+        );
+    }
+}
