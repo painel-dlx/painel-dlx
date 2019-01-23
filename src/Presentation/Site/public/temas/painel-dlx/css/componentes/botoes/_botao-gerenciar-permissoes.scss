@@ -1,0 +1,18 @@
+.botao-gerenciar-permissoes {
+    @extend .botao;
+
+    // Visual
+    background: orange;
+    border-bottom-color: darkorange;
+
+    // Texto
+    text-decoration: none;
+
+    // Margens
+    margin: 0 auto;
+
+    &:hover {
+        // Visual
+        background: #ff9505;
+    }
+}

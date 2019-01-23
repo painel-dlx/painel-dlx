@@ -58,6 +58,10 @@ $grupo_usuario = $this->getAtributo('grupo_usuario');
     <fieldset class="form-grupo">
         <legend class="form-titulo">Permissões</legend>
 
+        <a href="javascript:" onclick="popupGerenciarConfiguracoes(<?php echo $grupo_usuario->getGrupoUsuarioId() ?>)" class="botao-gerenciar-permissoes">
+            Gerenciar permissões
+        </a>
+
         <ul class="lista-permissoes">
             <?php
             /** @var PermissaoUsuario $permissao */
@@ -68,10 +72,6 @@ $grupo_usuario = $this->getAtributo('grupo_usuario');
                 </li>
             <?php endforeach ?>
         </ul>
-
-        <a href="javascript:" onclick="popupGerenciarConfiguracoes(<?php echo $grupo_usuario->getGrupoUsuarioId() ?>)">
-            Gerenciar permissões
-        </a>
     </fieldset>
 
     <p class="form-botoes">

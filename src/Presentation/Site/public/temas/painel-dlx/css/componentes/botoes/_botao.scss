@@ -1,5 +1,6 @@
 .botao {
     // Visual
+    display: inline-block;
     border: none;
     border-bottom: 4px solid;
     -webkit-border-radius: 4px;
@@ -7,11 +8,12 @@
     border-radius: 4px;
 
     // Margens
-    padding: 10px 50px;
+    padding: 10px 40px;
 
     // Texto
     text-transform: uppercase;
     color: #FFF;
+    font-size: 11px;
 
     &:hover {
         // Visual
