@@ -73,7 +73,7 @@ $lista_permissoes = $this->getAtributo('lista-permissoes');
             <?php foreach ($grupo_usuario->getPermissoes() as $permissao) : ?>
                 <tr onclick="retirarPermissao(this)">
                     <td>
-                        <input type="checkbox" name="permissao_usuario_ids[]" value="<?php echo $permissao->getPermissaoUsuarioId() ?>">
+                        <input type="checkbox" name="permissao_usuario_ids[]" value="<?php echo $permissao->getPermissaoUsuarioId() ?>" checked>
                         <?php echo $permissao->getDescricao() ?>
                     </td>
                 </tr>
@@ -121,7 +121,7 @@ $lista_permissoes = $this->getAtributo('lista-permissoes');
             alert(retorno.mensagem);
 
             if (retorno.retorno === 'sucesso') {
-                window.location = '/painel-dlx/grupos-de-usuarios'
+                window.location.reload();
             }
         }
     });

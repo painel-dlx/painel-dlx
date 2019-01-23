@@ -56,7 +56,25 @@ function popupGerenciarConfiguracoes(grupo_usuario_id) {
                     .addClass('box-popup')
                     .html(html)
                     .appendTo($('body'));
+
+                $(window).on('keyup.__gerenciarPermissoes', function (evt) {
+                    var kc = evt.keycode || evt.which;
+
+                    if (kc === 27) {
+                        fecharPopupGerenciarConfiguracoes();
+                    }
+                });
             }
         );
     }
+}
+
+/**
+ * Fechar o popup de gerenciamento das configurações
+ */
+function fecharPopupGerenciarConfiguracoes() {
+    $('#popup-gerenciar-permissoes').fadeOut('fast', function () {
+        $(this).remove();
+        $(window).off('keyup.__gerenciarPermissoes');
+    });
 }

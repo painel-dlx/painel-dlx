@@ -87,7 +87,7 @@ $grupo_usuario = $this->getAtributo('grupo_usuario');
             alert(retorno.mensagem);
 
             if (retorno.retorno === 'sucesso') {
-                window.location = '/painel-dlx/grupos-de-usuarios'
+                window.location.reload();
             }
         }
     });

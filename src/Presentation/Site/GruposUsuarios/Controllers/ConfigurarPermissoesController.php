@@ -100,6 +100,9 @@ class ConfigurarPermissoesController extends SiteController
 
             // JS
             $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js');
+
+            // Página mestra
+            $this->view->setPaginaMestra('src/Presentation/Site/public/views/conteudo-master.phtml');
         } catch (UserException $e) {
             $this->view->addTemplate('../mensagem_usuario');
             $this->view->setAtributo('mensagem', [
