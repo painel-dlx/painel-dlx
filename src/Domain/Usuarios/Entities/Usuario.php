@@ -13,6 +13,7 @@ use DLX\Domain\Entities\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
+use PainelDLX\Domain\PermissoesUsuario\Entities\PermissaoUsuario;
 use PainelDLX\Domain\Usuarios\Exceptions\UsuarioJaPossuiGrupoException;
 
 class Usuario extends Entity
@@ -185,6 +186,19 @@ class Usuario extends Entity
     public function hasGrupoUsuario(GrupoUsuario $grupo_usuario): bool
     {
         return $this->grupos->contains($grupo_usuario);
+    }
+
+    /**
+     * @param string $alias
+     * @return bool
+     */
+    public function hasPermissao(string $alias): bool
+    {
+        return $this->getGrupos()->exists(function ($key, GrupoUsuario $grupo_usuario) use ($alias) {
+            return $grupo_usuario->getPermissoes()->exists(function ($key, PermissaoUsuario $permissao_usuario) use ($alias) {
+                return $permissao_usuario->getAlias() === $alias;
+            });
+        });
     }
 
     public function __toString()

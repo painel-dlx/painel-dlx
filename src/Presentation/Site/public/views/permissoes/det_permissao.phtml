@@ -23,6 +23,7 @@
  * SOFTWARE.
  */
 
+use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
 use PainelDLX\Domain\PermissoesUsuario\Entities\PermissaoUsuario;
 use Vilex\VileX;
 
@@ -49,5 +50,25 @@ $permissao_usuario = $this->getAtributo('permissao-usuario');
         <span class="detalhe-registro-rotulo">Descrição</span>
         <?php echo $permissao_usuario->getDescricao() ?>
     </p>
+</details>
+
+<details class="detalhe-registro" open>
+    <summary class="detalhe-registro-titulo">Grupos de Usuários</summary>
+
+    <p class="mensagem-usuario -info">
+        Grupos de Usuários que possuem essa permissão.
+    </p>
+
+    <?php if (!$permissao_usuario->getGrupos()->count()) : ?>
+        <p class="sem-registros">Nenhum grupo de usuário com essa permissão.</p>
+    <?php else : ?>
+        <ul class="lista-grupos-permissoes">
+            <?php
+            /** @var GrupoUsuario $grupo_usuario */
+            foreach ($permissao_usuario->getGrupos() as $grupo_usuario) : ?>
+                <li class="grupo"><?php echo $grupo_usuario->getNome() ?></li>
+            <?php endforeach; ?>
+        </ul>
+    <?php endif; ?>
 </details>
 [/CORPO]

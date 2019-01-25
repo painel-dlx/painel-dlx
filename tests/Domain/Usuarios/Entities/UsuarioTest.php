@@ -26,6 +26,7 @@
 namespace PainelDLX\Testes\Domain\Usuarios\Entities;
 
 use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
+use PainelDLX\Domain\PermissoesUsuario\Entities\PermissaoUsuario;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
 use PainelDLX\Domain\Usuarios\Exceptions\UsuarioJaPossuiGrupoException;
 use PHPUnit\Framework\TestCase;
@@ -56,5 +57,25 @@ class UsuarioTest extends TestCase
 
         $this->expectException(UsuarioJaPossuiGrupoException::class);
         $usuario->addGrupo($grupo_usuario);
+    }
+
+    /**
+     * @return Usuario
+     * @throws UsuarioJaPossuiGrupoException
+     * @throws \PainelDLX\Domain\GruposUsuarios\Exceptions\GrupoJaPossuiPermissaoException
+     */
+    public function test_hasPermissao_deve_retornar_bool(): Usuario
+    {
+        $permissao_usuario = PermissaoUsuario::create('TESTE', 'Teste de permissão de usuário');
+
+        $grupo_usuario = GrupoUsuario::create('Admin');
+        $grupo_usuario->addPermissao($permissao_usuario);
+
+        $usuario = Usuario::create('Usuário Teste', 'teste@teste.com.br', $grupo_usuario);
+
+        $this->assertTrue($usuario->hasPermissao('TESTE'));
+        $this->assertFalse($usuario->hasPermissao('OUTRO_TESTE'));
+
+        return $usuario;
     }
 }

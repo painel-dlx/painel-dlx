@@ -28,6 +28,7 @@ namespace PainelDLX\Domain\PermissoesUsuario\Entities;
 
 use DLX\Domain\Entities\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
 use PainelDLX\Domain\PermissoesUsuario\Exceptions\PermissaoUsuarioJaPossuiGrupoException;
 
@@ -99,9 +100,9 @@ class PermissaoUsuario extends Entity
     }
 
     /**
-     * @return ArrayCollection
+     * @return Collection
      */
-    public function getGrupos(): ArrayCollection
+    public function getGrupos(): Collection
     {
         return $this->grupos;
     }

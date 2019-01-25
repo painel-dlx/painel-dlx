@@ -9,11 +9,18 @@
 namespace PainelDLX\Application\Middlewares;
 
 
+use DLX\Infra\EntityManagerX;
 use PainelDLX\Application\Contracts\MiddlewareInterface;
 use PainelDLX\Application\Middlewares\Exceptions\UsuarioNaoPossuiPermissaoException;
+use PainelDLX\Domain\Usuarios\Entities\Usuario;
+use SechianeX\Contracts\SessionInterface;
+use SechianeX\Factories\SessionFactory;
 
 class Autorizacao implements MiddlewareInterface
 {
+    /** @var SessionInterface */
+    private $session;
+
     /**
      * @var string[]
      */
@@ -21,10 +28,14 @@ class Autorizacao implements MiddlewareInterface
 
     /**
      * Autorizacao constructor.
-     * @param string[] $permissoes
+     * @param string ...$permissoes
+     * @throws \SechianeX\Exceptions\SessionAdapterInterfaceInvalidaException
+     * @throws \SechianeX\Exceptions\SessionAdapterNaoEncontradoException
      */
     public function __construct(string ...$permissoes)
     {
+        // TODO: Tentar desacoplar a sessão
+        $this->session = SessionFactory::createPHPSession();
         $this->permissoes = $permissoes;
     }
 
@@ -32,11 +43,13 @@ class Autorizacao implements MiddlewareInterface
      * @return bool
      * @throws UsuarioNaoPossuiPermissaoException
      */
-    public function executar()
+    public function executar(): bool
     {
+        /** @var Usuario $usuario */
+        $usuario = $this->session->get('usuario-logado');
+
         foreach ($this->permissoes as $permissao) {
-            // TODO: se não possuir 1 das permissões, será lançada uma exceção
-            if (false) {
+            if (!$usuario->hasPermissao($permissao)) {
                 throw new UsuarioNaoPossuiPermissaoException();
             }
         }

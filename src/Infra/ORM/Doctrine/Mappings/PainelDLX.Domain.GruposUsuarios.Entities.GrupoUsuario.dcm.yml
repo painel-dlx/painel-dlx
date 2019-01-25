@@ -27,6 +27,7 @@ PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario:
         permissoes:
             targetEntity: PainelDLX\Domain\PermissoesUsuario\Entities\PermissaoUsuario
             inversedBy: grupos
+            fetch: EAGER
             cascade:
                 - persist
                 - merge

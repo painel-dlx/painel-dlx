@@ -24,6 +24,7 @@ PainelDLX\Domain\Usuarios\Entities\Usuario:
         grupos:
             targetEntity: PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario
             inversedBy: usuarios
+            fetch: EAGER
             cascade:
                 - persist
                 - merge
