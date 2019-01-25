@@ -26,6 +26,7 @@
 include __DIR__ . '/vendor/autoload.php';
 
 use PainelDLX\Application\Middlewares\Exceptions\UsuarioNaoLogadoException;
+use PainelDLX\Application\Middlewares\Exceptions\UsuarioNaoPossuiPermissaoException;
 use PainelDLX\Application\Services\IniciarPainelDLX;
 use Zend\Diactoros\ServerRequestFactory;
 use League\Container\Container;
@@ -47,6 +48,12 @@ try {
     $query_param['task'] = '/painel-dlx/login';
     $server_request_login = $server_request->withQueryParams($query_param);
     $painel_dlx->redirect($server_request_login);
+} catch (UsuarioNaoPossuiPermissaoException $e) {
+    $query_param = $server_request->getQueryParams();
+    $query_param['task'] = '/painel-dlx/erro-http';
+    $query_param['erro'] = 403;
+    $server_request_403 = $server_request->withQueryParams($query_param);
+    $painel_dlx->redirect($server_request_403);
 } catch (Exception $e) {
     var_dump($e);
 }

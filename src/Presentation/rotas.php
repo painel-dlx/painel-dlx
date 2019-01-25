@@ -373,3 +373,9 @@ $router->get(
     new VerificarLogon($session),
     new Autorizacao('CRIAR_CONFIGURACAO_SMTP')
 );
+
+// Erros HTTP ------------------------------------------------------------------------------------------------------- //
+$router->get(
+    '/painel-dlx/config-smtp/detalhe',
+    [Erro::class, 'detalheConfigSmtp']
+);
