@@ -28,6 +28,7 @@ use PainelDLX\Application\Middlewares\VerificarLogon;
 use PainelDLX\Presentation\Site\Emails\Controllers\ConfigSmtpController;
 use PainelDLX\Presentation\Site\Emails\Controllers\EditarConfigSmtpController;
 use PainelDLX\Presentation\Site\Emails\Controllers\NovaConfigSmtpController;
+use PainelDLX\Presentation\Site\ErrosHttp\Controllers\ErroHttp;
 use PainelDLX\Presentation\Site\GruposUsuarios\Controllers\ConfigurarPermissoesController;
 use PainelDLX\Presentation\Site\GruposUsuarios\Controllers\GrupoUsuarioController;
 use PainelDLX\Presentation\Site\PermissoesUsuario\Controllers\CadastroPermissaoController;
@@ -187,75 +188,67 @@ $router->post(
 $router->get(
     '/painel-dlx/usuarios/alterar-senha',
     [AlterarSenhaUsuarioController::class, 'formAlterarSenha']
-)
-    ->middlewares(
-        new VerificarLogon($session),
-        new Autorizacao('ALTERAR_SENHA_USUARIO')
-    );
+)->middlewares(
+    new VerificarLogon($session),
+    new Autorizacao('ALTERAR_SENHA_USUARIO')
+);
 
 $router->post(
     '/painel-dlx/usuarios/alterar-senha',
     [AlterarSenhaUsuarioController::class, 'alterarSenhaUsuario']
-)
-    ->middlewares(
-        new VerificarLogon($session),
-        new Autorizacao('ALTERAR_SENHA_USUARIO')
-    );
+)->middlewares(
+    new VerificarLogon($session),
+    new Autorizacao('ALTERAR_SENHA_USUARIO')
+);
 
 // Permissões ------------------------------------------------------------------------------------------------------- //
 $router->get(
     '/painel-dlx/permissoes',
     [CadastroPermissaoController::class, 'listaPermissoesUsuarios']
-)
-    ->middlewares(
-        new VerificarLogon($session),
-        new Autorizacao('CRIAR_PERMISSOES_USUARIO')
-    );
+)->middlewares(
+    new VerificarLogon($session),
+    new Autorizacao('CRIAR_PERMISSOES_USUARIO')
+);
 
 $router->get(
     '/painel-dlx/permissoes/novo',
     [CadastroPermissaoController::class, 'formNovaPermissaoUsuario']
-)
-    ->middlewares(
-        new VerificarLogon($session),
-        new Autorizacao('CRIAR_PERMISSOES_USUARIO')
-    );
+)->middlewares(
+    new VerificarLogon($session),
+    new Autorizacao('CRIAR_PERMISSOES_USUARIO')
+);
 
 $router->post(
     '/painel-dlx/permissoes/criar-nova-permissao',
     [CadastroPermissaoController::class, 'criarNovaPermissao']
-)
-    ->middlewares(
-        new VerificarLogon($session),
-        new Autorizacao('CRIAR_PERMISSOES_USUARIO')
-    );
+)->middlewares(
+    new VerificarLogon($session),
+    new Autorizacao('CRIAR_PERMISSOES_USUARIO')
+);
 
 $router->get(
     '/painel-dlx/permissoes/editar',
     [CadastroPermissaoController::class, 'formEditarPermissaoUsuario']
-)
-    ->middlewares(
-        new VerificarLogon($session),
-        new Autorizacao('EDITAR_PERMISSOES_USUARIO')
-    );
+)->middlewares(
+    new VerificarLogon($session),
+    new Autorizacao('EDITAR_PERMISSOES_USUARIO')
+);
 
 $router->post(
     '/painel-dlx/permissoes/editar-permissao',
     [CadastroPermissaoController::class, 'alterarPermissaoUsuario']
-)
-    ->middlewares(
-        new VerificarLogon($session),
-        new Autorizacao('EDITAR_PERMISSOES_USUARIO')
-    );
+)->middlewares(
+    new VerificarLogon($session),
+    new Autorizacao('EDITAR_PERMISSOES_USUARIO')
+);
 
 $router->get(
     '/painel-dlx/permissoes/detalhe',
     [CadastroPermissaoController::class, 'detalhePermissaoUsuario']
-)
-    ->middlewares(
-        new VerificarLogon($session),
-        new Autorizacao('CRIAR_PERMISSOES_USUARIO')
-    );
+)->middlewares(
+    new VerificarLogon($session),
+    new Autorizacao('CRIAR_PERMISSOES_USUARIO')
+);
 
 $router->post(
     '/painel-dlx/permissoes/excluir-permissao',
@@ -376,6 +369,6 @@ $router->get(
 
 // Erros HTTP ------------------------------------------------------------------------------------------------------- //
 $router->get(
-    '/painel-dlx/config-smtp/detalhe',
-    [Erro::class, 'detalheConfigSmtp']
+    '/painel-dlx/erro-http',
+    [ErroHttp::class, 'exibirPaginaErro']
 );

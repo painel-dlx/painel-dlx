@@ -69,6 +69,7 @@ body {
 @import "componentes/botoes/botao-alterar-senha";
 @import "componentes/botoes/botao-reset-senha";
 @import "componentes/botoes/botao-gerenciar-permissoes";
+@import "componentes/botoes/botao-voltar";
 
 // Lista
 @import "componentes/lista-permissoes";
@@ -99,6 +100,9 @@ body {
 
 // Mansagens ao usuário
 @import "componentes/mensagem-usuario";
+
+// Erros HTTP
+@import "componentes/erro-http";
 
 // Outros
 @import "componentes/dica-geral";

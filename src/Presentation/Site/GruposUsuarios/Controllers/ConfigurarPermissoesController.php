@@ -120,16 +120,13 @@ class ConfigurarPermissoesController extends SiteController
      */
     public function salvarConfiguracaoPermissao(ServerRequestInterface $request): ResponseInterface
     {
-        $post = filter_var_array(
-            $request->getParsedBody(),
-            [
-                'grupo_usuario_id' => FILTER_VALIDATE_INT,
-                'permissao_usuario_ids' => [
-                    'filter' => FILTER_VALIDATE_INT,
-                    'flags' => FILTER_REQUIRE_ARRAY
-                ]
+        $post = filter_var_array($request->getParsedBody(), [
+            'grupo_usuario_id' => FILTER_VALIDATE_INT,
+            'permissao_usuario_ids' => [
+                'filter' => FILTER_VALIDATE_INT,
+                'flags' => FILTER_REQUIRE_ARRAY
             ]
-        );
+        ]);
 
         /**
          * @var int $grupo_usuario_id

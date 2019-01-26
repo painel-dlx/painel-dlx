@@ -39,7 +39,6 @@ $(window).on('keydown.__atalhos', function (evt) {
     }
 
     if (evt.ctrlKey && evt.altKey) {
-        console.log(evt.key);
         switch (tecla_press) {
             case 'm':
             case 'µ': // Mac OSX

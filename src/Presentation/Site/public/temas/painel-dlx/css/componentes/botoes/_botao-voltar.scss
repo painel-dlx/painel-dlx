@@ -1,0 +1,16 @@
+.botao-voltar {
+    @extend .botao;
+    @extend .botao-submit;
+    @extend .icone-voltar;
+
+    &::before {
+        // Texto
+        font-size: 15px;
+
+        // Alinhamento
+        vertical-align: middle;
+
+        // Margens
+        margin-right: 4px;
+    }
+}
