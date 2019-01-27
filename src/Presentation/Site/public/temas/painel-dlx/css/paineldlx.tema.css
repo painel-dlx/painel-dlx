@@ -28,49 +28,6 @@ body.mostrando-menu .menu-principal {
   padding-bottom: 8px;
 }
 
-.lista-registros {
-  width: 100%;
-  box-sizing: border-box;
-  border-collapse: collapse;
-}
-.lista-registros thead {
-  display: none;
-}
-.lista-registros tbody tr {
-  background: #FFF;
-  border-radius: 4px;
-  width: 100%;
-  box-sizing: border-box;
-  margin: 10px 0;
-  padding: 7.5px 15px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.lista-gerenciar-permissoes {
-  max-height: 300px;
-  overflow-y: auto;
-  display: block;
-}
-.lista-gerenciar-permissoes tbody {
-  display: block;
-  width: 99%;
-}
-.lista-gerenciar-permissoes tbody tr {
-  cursor: pointer;
-}
-.lista-gerenciar-permissoes tbody tr:hover {
-  background: rgba(102, 205, 170, 0.16);
-  color: #32909F;
-}
-.lista-gerenciar-permissoes tbody tr [type=checkbox] {
-  visibility: hidden;
-  position: fixed;
-  top: -9999px;
-  left: -9999px;
-}
-
 .box-popup {
   position: fixed;
   left: 0;
@@ -114,7 +71,7 @@ body.mostrando-menu .menu-principal {
   height: 35px;
 }
 
-@media screen and (min-width: 0) and (max-width: 479px) {
+@media (min-width: 0) and (max-width: 480px) {
   .flex-box-mp-col-1 {
     flex: 33.3333333333% 0 1;
     box-sizing: border-box;
@@ -125,12 +82,12 @@ body.mostrando-menu .menu-principal {
     box-sizing: border-box;
   }
 
-  .flex-box-mp-col-3, .erro-http-descricao, .erro-http-titulo, .lista-permissoes > .permissao {
+  .flex-box-mp-col-3, .erro-http-descricao, .erro-http-titulo, .lista-permissoes > .permissao, .layout-barra-lateral > *, .layout-barra-lateral > .barra-lateral {
     flex: 100% 0 1;
     box-sizing: border-box;
   }
 }
-@media screen and (min-width: 480px) and (max-width: 799px) {
+@media (min-width: 481px) and (max-width: 800px) {
   .flex-box-pq-col-1 {
     flex: 16.6666666667% 0 1;
     box-sizing: border-box;
@@ -141,7 +98,7 @@ body.mostrando-menu .menu-principal {
     box-sizing: border-box;
   }
 
-  .flex-box-pq-col-3, .erro-http-descricao, .erro-http-titulo, .lista-permissoes > .permissao {
+  .flex-box-pq-col-3, .erro-http-descricao, .erro-http-titulo, .lista-permissoes > .permissao, .layout-barra-lateral > *, .layout-barra-lateral > .barra-lateral {
     flex: 50% 0 1;
     box-sizing: border-box;
   }
@@ -161,7 +118,7 @@ body.mostrando-menu .menu-principal {
     box-sizing: border-box;
   }
 }
-@media screen and (min-width: 800px) and (max-width: 1024px) {
+@media (min-width: 801px) and (max-width: 1024px) {
   .flex-box-md-col-1 {
     flex: 8.3333333333% 0 1;
     box-sizing: border-box;
@@ -172,7 +129,7 @@ body.mostrando-menu .menu-principal {
     box-sizing: border-box;
   }
 
-  .flex-box-md-col-3 {
+  .flex-box-md-col-3, .layout-barra-lateral > .barra-lateral {
     flex: 25% 0 1;
     box-sizing: border-box;
   }
@@ -202,7 +159,7 @@ body.mostrando-menu .menu-principal {
     box-sizing: border-box;
   }
 
-  .flex-box-md-col-9, .erro-http-descricao {
+  .flex-box-md-col-9, .erro-http-descricao, .layout-barra-lateral > * {
     flex: 75% 0 1;
     box-sizing: border-box;
   }
@@ -222,7 +179,7 @@ body.mostrando-menu .menu-principal {
     box-sizing: border-box;
   }
 }
-@media screen and (min-width: 1025px) and (max-width: 1280px) {
+@media (min-width: 1025px) and (max-width: 1280px) {
   .flex-box-gd-col-1 {
     flex: 8.3333333333% 0 1;
     box-sizing: border-box;
@@ -233,7 +190,7 @@ body.mostrando-menu .menu-principal {
     box-sizing: border-box;
   }
 
-  .flex-box-gd-col-3, .erro-http-titulo, .lista-permissoes > .permissao {
+  .flex-box-gd-col-3, .erro-http-titulo, .lista-permissoes > .permissao, .layout-barra-lateral > .barra-lateral {
     flex: 25% 0 1;
     box-sizing: border-box;
   }
@@ -263,7 +220,7 @@ body.mostrando-menu .menu-principal {
     box-sizing: border-box;
   }
 
-  .flex-box-gd-col-9, .erro-http-descricao {
+  .flex-box-gd-col-9, .erro-http-descricao, .layout-barra-lateral > * {
     flex: 75% 0 1;
     box-sizing: border-box;
   }
@@ -283,7 +240,7 @@ body.mostrando-menu .menu-principal {
     box-sizing: border-box;
   }
 }
-@media screen and (min-width: 1281px) and (max-width: 4800px) {
+@media (min-width: 1281px) and (max-width: 4800px) {
   .flex-box-mg-col-1 {
     flex: 6.6666666667% 0 1;
     box-sizing: border-box;
@@ -294,7 +251,7 @@ body.mostrando-menu .menu-principal {
     box-sizing: border-box;
   }
 
-  .flex-box-mg-col-3, .erro-http-titulo, .lista-permissoes > .permissao {
+  .flex-box-mg-col-3, .erro-http-titulo, .lista-permissoes > .permissao, .layout-barra-lateral > .barra-lateral {
     flex: 20% 0 1;
     box-sizing: border-box;
   }
@@ -339,7 +296,7 @@ body.mostrando-menu .menu-principal {
     box-sizing: border-box;
   }
 
-  .flex-box-mg-col-12 {
+  .flex-box-mg-col-12, .layout-barra-lateral > * {
     flex: 80% 0 1;
     box-sizing: border-box;
   }
@@ -359,7 +316,7 @@ body.mostrando-menu .menu-principal {
     box-sizing: border-box;
   }
 }
-.flex-box, .erro-http, .lista-permissoes {
+.flex-box, .erro-http, .lista-permissoes, .layout-barra-lateral {
   display: flex;
   flex-flow: row wrap;
 }
@@ -460,22 +417,14 @@ body.mostrando-menu .menu-principal {
   outline: none;
 }
 
-.layout-barra-lateral {
-  display: flex;
-}
 .layout-barra-lateral > .barra-lateral {
-  flex: 25% 0 0;
-  margin-right: 30px;
+  padding-right: 20px;
+  margin-bottom: 20px;
 }
-.layout-barra-lateral > * {
-  flex: auto;
-}
-
 .menu-lateral {
   background: #FFF;
   border-radius: 4px;
-  min-width: 250px;
-  max-width: 100%;
+  width: 100%;
   box-sizing: border-box;
 }
 .menu-lateral > .menu-lateral-item {
@@ -728,6 +677,49 @@ body.mostrando-menu .menu-principal {
   font-size: 15px;
   vertical-align: middle;
   margin-right: 4px;
+}
+
+.lista-registros {
+  width: 100%;
+  box-sizing: border-box;
+  border-collapse: collapse;
+}
+.lista-registros thead {
+  display: none;
+}
+.lista-registros tbody tr {
+  background: #FFF;
+  border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 10px 0;
+  padding: 7.5px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.lista-gerenciar-permissoes {
+  max-height: 300px;
+  overflow-y: auto;
+  display: block;
+}
+.lista-gerenciar-permissoes tbody {
+  display: block;
+  width: 99%;
+}
+.lista-gerenciar-permissoes tbody tr {
+  cursor: pointer;
+}
+.lista-gerenciar-permissoes tbody tr:hover {
+  background: rgba(102, 205, 170, 0.16);
+  color: #32909F;
+}
+.lista-gerenciar-permissoes tbody tr [type=checkbox] {
+  visibility: hidden;
+  position: fixed;
+  top: -9999px;
+  left: -9999px;
 }
 
 .lista-permissoes {

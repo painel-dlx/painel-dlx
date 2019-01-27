@@ -37,8 +37,6 @@ body {
 
 // Geral
 @import "componentes/titulo-pagina";
-@import "componentes/lista-registros";
-@import "componentes/lista-gerenciar-permissoes";
 @import "componentes/box-popup";
 @import "componentes/logo-site";
 
@@ -73,6 +71,8 @@ body {
 @import "componentes/botoes/botao-voltar";
 
 // Lista
+@import "componentes/lista-registros";
+@import "componentes/lista-gerenciar-permissoes";
 @import "componentes/lista-permissoes";
 
 // Formulário

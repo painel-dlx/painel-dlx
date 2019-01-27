@@ -1,17 +1,26 @@
 .layout-barra-lateral {
     // Flex
-    display: flex;
+    @extend .flex-box;
 
     > .barra-lateral {
-        // Flex
-        flex: 25% 0 0;
+        // Configurar colunas flexíveis
+        @extend .flex-box-mp-col-3;
+        @extend .flex-box-pq-col-3;
+        @extend .flex-box-md-col-3;
+        @extend .flex-box-gd-col-3;
+        @extend .flex-box-mg-col-3;
 
         // Margens
-        margin-right: 30px;
+        padding-right: 20px;
+        margin-bottom: 20px;
     }
 
     > * {
-        // Flex
-        flex: auto;
+        // Configurar colunas flexíveis
+        @extend .flex-box-mp-col-3;
+        @extend .flex-box-pq-col-3;
+        @extend .flex-box-md-col-9;
+        @extend .flex-box-gd-col-9;
+        @extend .flex-box-mg-col-12;
     }
 }

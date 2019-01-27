@@ -1,5 +1,5 @@
 @mixin gerar-colunas ($id, $qtde-colunas, $tela-tm-min, $tela-tm-max) {
-    @media screen and (min-width: $tela-tm-min) and (max-width: $tela-tm-max) {
+    @media (min-width: $tela-tm-min) and (max-width: $tela-tm-max) {
         @for $i from 1 through $qtde-colunas {
             $tm: (100% / $qtde-colunas) * $i;
 
