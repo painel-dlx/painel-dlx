@@ -4,4 +4,9 @@
 
     // Margens
     padding: 0;
+
+    &:not(:last-of-type) {
+        // Margens
+        margin-bottom: 20px;
+    }
 }

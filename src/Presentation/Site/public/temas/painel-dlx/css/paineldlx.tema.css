@@ -94,6 +94,26 @@ body.mostrando-menu .menu-principal {
   padding: 1px 8px;
 }
 
+.logo-site {
+  text-decoration: none;
+  font: 24px "Avenir Next Condensed";
+  line-height: 40px;
+  color: #FFF;
+  display: inline-block;
+  height: 100%;
+}
+.logo-site::before {
+  content: "";
+  display: inline-block;
+  background: #FFF url("imgs/logotipo.png") center no-repeat;
+  background-size: 80%;
+  border-radius: 50%;
+  vertical-align: middle;
+  margin-right: 4px;
+  width: 35px;
+  height: 35px;
+}
+
 @media screen and (min-width: 0) and (max-width: 479px) {
   .flex-box-mp-col-1 {
     flex: 33.3333333333% 0 1;
@@ -508,6 +528,9 @@ body.mostrando-menu .menu-principal {
   width: 28px;
   height: 28px;
   display: inline-block;
+  border-right: 1px solid #39a1b2;
+  padding-right: 10px;
+  margin-right: 10px;
 }
 .link-mostrar-menu::before {
   content: "";
@@ -861,6 +884,9 @@ body.mostrando-menu .menu-principal {
 .form-grupo {
   border: none;
   padding: 0;
+}
+.form-grupo:not(:last-of-type) {
+  margin-bottom: 20px;
 }
 
 .form-titulo, .detalhe-registro-titulo {

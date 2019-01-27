@@ -56,7 +56,11 @@ $usuario = $session->get('usuario-logado');
     <a href="javascript:" class="link-mostrar-menu" onclick="mostrarOuOcultarMenu()" title="CTRL + ALT + M para abrir o menu">
         Mostrar Menu
     </a>
+    <?php endif; ?>
 
+    <a href="" class="logo-site">Painel-DLX</a>
+
+    <?php if ($session->get('logado')) : ?>
     <div class="menu-principal">
         <div class="menu-filtro">
             <label>
