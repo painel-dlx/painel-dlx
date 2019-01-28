@@ -59,7 +59,7 @@ class ConfigurarPermissoesController extends SiteController
     {
         parent::__construct($view, $commandBus);
 
-        $this->view->setPaginaMestra('src/Presentation/Site/public/views/painel-dlx-master.phtml');
+        $this->view->setPaginaMestra('src/Presentation/Site/public/views/paginas-mestras/painel-dlx-master.phtml');
         $this->view->setViewRoot('src/Presentation/Site/public/views/grupos-usuarios');
         $this->transacao = $transacao;
     }
@@ -102,7 +102,7 @@ class ConfigurarPermissoesController extends SiteController
             $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js');
 
             // Página mestra
-            $this->view->setPaginaMestra('src/Presentation/Site/public/views/conteudo-master.phtml');
+            $this->view->setPaginaMestra('src/Presentation/Site/public/views/paginas-mestras/conteudo-master.phtml');
         } catch (UserException $e) {
             $this->view->addTemplate('../mensagem_usuario');
             $this->view->setAtributo('mensagem', [

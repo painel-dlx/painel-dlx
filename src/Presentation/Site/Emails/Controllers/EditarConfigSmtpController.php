@@ -48,7 +48,7 @@ class EditarConfigSmtpController extends SiteController
     {
         parent::__construct($view, $commandBus);
 
-        $this->view->setPaginaMestra('src/Presentation/Site/public/views/painel-dlx-master.phtml');
+        $this->view->setPaginaMestra('src/Presentation/Site/public/views/paginas-mestras/painel-dlx-master.phtml');
         $this->view->setViewRoot('src/Presentation/Site/public/views/emails');
     }
 

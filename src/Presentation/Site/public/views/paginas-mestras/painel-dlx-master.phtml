@@ -112,37 +112,53 @@ $usuario = $session->get('usuario-logado');
             </ul>
         </div>
 
+        <?php
+        $has_cadastro_usuario = $usuario->hasPermissao('ACESSAR_CADASTRO_USUARIOS');
+        $has_grupos_usuarios = $usuario->hasPermissao('VISUALIZAR_GRUPOS_USUARIOS');
+        $has_permissoes_usuarios = $usuario->hasPermissao('CRIAR_PERMISSOES_USUARIO');
+        $has_configuracao_smtp = $usuario->hasPermissao('CRIAR_CONFIGURACAO_SMTP');
+
+        if ($has_cadastro_usuario || $has_grupos_usuarios || $has_permissoes_usuarios || $has_configuracao_smtp) : ?>
         <div class="menu-item">
             <span class="menu-link">Admin</span>
 
             <ul class="sub-menu">
-                <li class="sub-menu-item">
-                    <a href="/painel-dlx/usuarios" class="sub-menu-link">
-                        Usuários
-                    </a>
-                </li>
+                <?php if ($has_cadastro_usuario) : ?>
+                    <li class="sub-menu-item">
+                        <a href="/painel-dlx/usuarios" class="sub-menu-link">
+                            Usuários
+                        </a>
+                    </li>
+                <?php endif;
 
-                <li class="sub-menu-item">
-                    <a href="/painel-dlx/grupos-de-usuarios" class="sub-menu-link">
-                        Grupos de Usuários
-                    </a>
-                </li>
+                if ($has_grupos_usuarios) : ?>
+                    <li class="sub-menu-item">
+                        <a href="/painel-dlx/grupos-de-usuarios" class="sub-menu-link">
+                            Grupos de Usuários
+                        </a>
+                    </li>
+                <?php endif;
 
-                <li class="sub-menu-item">
-                    <a href="/painel-dlx/permissoes" class="sub-menu-link">
-                        Permissões
-                    </a>
-                </li>
+                if ($has_permissoes_usuarios) : ?>
+                    <li class="sub-menu-item">
+                        <a href="/painel-dlx/permissoes" class="sub-menu-link">
+                            Permissões
+                        </a>
+                    </li>
+                <?php endif;
 
-                <li class="sub-menu-item">
-                    <a href="/painel-dlx/config-smtp" class="sub-menu-link">
-                        Configurações SMTP
-                    </a>
-                </li>
+                if ($has_configuracao_smtp) : ?>
+                    <li class="sub-menu-item">
+                        <a href="/painel-dlx/config-smtp" class="sub-menu-link">
+                            Configurações SMTP
+                        </a>
+                    </li>
+                <?php endif; ?>
             </ul>
         </div>
+        <?php endif;
 
-        <?php if ($usuario instanceof Usuario) : ?>
+        if ($usuario instanceof Usuario) : ?>
             <div class="menu-item">
                 <span class="menu-link">Minha Conta</span>
 
@@ -158,12 +174,6 @@ $usuario = $session->get('usuario-logado');
                             Alterar minha senha
                         </a>
                     </li>
-
-                    <!-- li class="sub-menu-item">
-                        <a href="#" class="sub-menu-link">
-                            Configurações
-                        </a>
-                    </li -->
 
                     <li class="sub-menu-item">
                         <a href="javascript:" class="sub-menu-link" onclick="encerrarSessao()">

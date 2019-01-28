@@ -62,7 +62,7 @@ class MinhaContaController extends SiteController
     ) {
         parent::__construct($view, $commandBus);
 
-        $this->view->setPaginaMestra('src/Presentation/Site/public/views/painel-dlx-master.phtml');
+        $this->view->setPaginaMestra('src/Presentation/Site/public/views/paginas-mestras/painel-dlx-master.phtml');
         $this->view->setViewRoot('src/Presentation/Site/public/views/usuarios');
         $this->session = $session;
         $this->usuario_logado = $this->session->get('usuario-logado');
@@ -112,7 +112,7 @@ class MinhaContaController extends SiteController
             $this->view->setAtributo('usuario', $this->usuario_logado);
 
             // Views
-            $this->view->addTemplate('../form_alterar_senha');
+            $this->view->addTemplate('form_alterar_senha');
 
             // JS
             $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js');

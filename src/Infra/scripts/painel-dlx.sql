@@ -26,6 +26,31 @@ CREATE TABLE dlx_permissoes_x_grupos (
         references dlx_permissoes_usuario (permissao_usuario_id) on delete cascade
 ) ENGINE=INNODB;
 
+INSERT INTO dlx_permissoes_usuario (alias, descricao) VALUES
+	-- Cadastro de usuário
+    ('ACESSAR_CADASTRO_USUARIOS', 'Acessar o cadastro de usuários'),
+    ('CADASTRAR_NOVO_USUARIO', 'Cadastrar um novo usuario'),
+    ('EDITAR_CADASTRO_USUARIO', 'Editar cadastro de usuário'),
+    ('EXCLUIR_CADASTRO_USUARIO', 'Excluir o cadastro de um usuário'),
+
+    -- Grupos de usuários
+    ('VISUALIZAR_GRUPOS_USUARIOS', 'Visualizar os grupos de usuários'),
+    ('CADASTRAR_GRUPO_USUARIO', 'Cadastrar um novo grupo de usuário'),
+    ('EDITAR_GRUPO_USUARIO', 'Editar as informações dos grupos de usuário'),
+    ('EXCLUIR_GRUPO_USUARIO', 'Excluir um grupo de usuário'),
+    ('GERENCIAR_PERMISSOES_GRUPOS', 'Gerenciar as permissões do grupo de usuário'),
+
+    -- Permissões de usuários
+    ('CRIAR_PERMISSOES_USUARIO', 'Criar permissões de usuário'),
+    ('EDITAR_PERMISSOES_USUARIO', 'Editar permissões de usuário'),
+    ('EXCLUIR_PERMISSOES_USUARIO', 'Excluir uma permissão de usuário'),
+
+    -- Configurações SMTP
+    ('VER_CONFIGURACOES_SMTP', 'Ver as configurações SMTP do sistema'),
+    ('CRIAR_CONFIGURACAO_SMTP', 'Criar uma nova configuração SMTP'),
+    ('EDITAR_CONFIGURACAO_SMTP', 'Editar configuração SMTP'),
+    ('EXCLUIR_CONFIGURACAO_SMTP', 'Excluir configuração SMTP');
+
 -- Envio de emails
 CREATE TABLE dlx_config_smtp (
     config_smtp_id int not null primary key auto_increment,

@@ -61,7 +61,7 @@ class GrupoUsuarioController extends SiteController
     ) {
         parent::__construct($view, $command_bus);
 
-        $this->view->setPaginaMestra('src/Presentation/Site/public/views/painel-dlx-master.phtml');
+        $this->view->setPaginaMestra('src/Presentation/Site/public/views/paginas-mestras/painel-dlx-master.phtml');
         $this->view->setViewRoot('src/Presentation/Site/public/views/grupos-usuarios');
 
         $this->repository = $grupo_usuario_repository;

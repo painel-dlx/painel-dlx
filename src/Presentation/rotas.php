@@ -316,7 +316,7 @@ $router->get(
     [ConfigSmtpController::class, 'listaConfigSmtp']
 )->middlewares(
     new VerificarLogon($session),
-    new Autorizacao('CRIAR_CONFIGURACAO_SMTP')
+    new Autorizacao('VER_CONFIGURACOES_SMTP')
 );
 
 $router->get(
@@ -340,7 +340,7 @@ $router->get(
     [EditarConfigSmtpController::class, 'formEditarConfigSmtp']
 )->middlewares(
     new VerificarLogon($session),
-    new Autorizacao('CRIAR_CONFIGURACAO_SMTP')
+    new Autorizacao('EDITAR_CONFIGURACAO_SMTP')
 );
 
 $router->post(
@@ -348,7 +348,7 @@ $router->post(
     [EditarConfigSmtpController::class, 'editarConfigSmtp']
 )->middlewares(
     new VerificarLogon($session),
-    new Autorizacao('CRIAR_CONFIGURACAO_SMTP')
+    new Autorizacao('EDITAR_CONFIGURACAO_SMTP')
 );
 
 $router->post(
@@ -356,7 +356,7 @@ $router->post(
     [ConfigSmtpController::class, 'excluirConfigSmtp']
 )->middlewares(
     new VerificarLogon($session),
-    new Autorizacao('CRIAR_CONFIGURACAO_SMTP')
+    new Autorizacao('EXCLUIR_CONFIGURACAO_SMTP')
 );
 
 $router->get(
@@ -364,7 +364,7 @@ $router->get(
     [ConfigSmtpController::class, 'detalheConfigSmtp']
 )->middlewares(
     new VerificarLogon($session),
-    new Autorizacao('CRIAR_CONFIGURACAO_SMTP')
+    new Autorizacao('VER_CONFIGURACOES_SMTP')
 );
 
 // Erros HTTP ------------------------------------------------------------------------------------------------------- //
