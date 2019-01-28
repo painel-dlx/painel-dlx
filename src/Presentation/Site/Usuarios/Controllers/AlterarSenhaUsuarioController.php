@@ -74,14 +74,13 @@ class AlterarSenhaUsuarioController extends SiteController
      */
     public function formAlterarSenha(ServerRequestInterface $request): ResponseInterface
     {
-        /**
-         * @var int $usuario_id
-         */
-        extract($request->getQueryParams());
+        $get = filter_var($request->getQueryParams(), [
+            'usuario_id' => FILTER_VALIDATE_INT
+        ]);
 
         try {
             /** @var Usuario $usuario */
-            $usuario = $this->repository->find($usuario_id);
+            $usuario = $this->repository->find($get['usuario_id']);
 
             // Atributos
             $this->view->setAtributo('titulo-pagina', 'Alterar senha');
@@ -93,10 +92,10 @@ class AlterarSenhaUsuarioController extends SiteController
             // JS
             $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js');
         } catch (UserException $e) {
-            $this->view->addTemplate('mensagem_usuario');
+            $this->view->addTemplate('../mensagem_usuario');
             $this->view->setAtributo('mensagem', [
                 'tipo' => 'erro',
-                'mensagem' => $e->getMessage()
+                'texto' => $e->getMessage()
             ]);
         }
 
@@ -109,13 +108,20 @@ class AlterarSenhaUsuarioController extends SiteController
      */
     public function alterarSenhaUsuario(ServerRequestInterface $request): ResponseInterface
     {
+        $post = filter_var_array($request->getParsedBody(), [
+            'usuario_id' => FILTER_VALIDATE_INT,
+            'senha_atual' => FILTER_DEFAULT,
+            'senha_nova' => FILTER_DEFAULT,
+            'senha_confirm' => FILTER_DEFAULT
+        ]);
+
         /**
          * @var int $usuario_id
          * @var string $senha_atual
          * @var string $senha_nova
          * @var string $senha_confirm
          */
-        extract($request->getParsedBody());
+        extract($post); unset($post);
 
         try {
             /** @var Usuario $usuario */

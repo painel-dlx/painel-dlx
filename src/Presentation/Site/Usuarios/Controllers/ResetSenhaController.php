@@ -148,7 +148,7 @@ class ResetSenhaController extends SiteController
      */
     public function formResetSenha(ServerRequestInterface $request): ResponseInterface
     {
-        $hash = $request->getQueryParams()['hash'];
+        $hash = filter_var($request->getQueryParams()['hash']);
 
         try {
             // TODO: está dando erro para gerar o proxy do usuário
@@ -190,13 +190,10 @@ class ResetSenhaController extends SiteController
     {
         $hash = $this->session->get('hash');
 
-        $post = filter_var_array(
-            $request->getParsedBody(),
-            [
-                'senha_nova' => FILTER_DEFAULT,
-                'senha_confirm' => FILTER_DEFAULT
-            ]
-        );
+        $post = filter_var_array($request->getParsedBody(), [
+            'senha_nova' => FILTER_DEFAULT,
+            'senha_confirm' => FILTER_DEFAULT
+        ]);
 
         /**
          * @var string $senha_nova

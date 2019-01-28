@@ -133,14 +133,11 @@ class MinhaContaController extends SiteController
      */
     public function alterarMinhaSenha(ServerRequestInterface $request): ResponseInterface
     {
-        $post = filter_var_array(
-            $request->getParsedBody(),
-            [
-                'senha_atual' => FILTER_DEFAULT,
-                'senha_nova' => FILTER_DEFAULT,
-                'senha_confirm' => FILTER_DEFAULT
-            ]
-        );
+        $post = filter_var_array($request->getParsedBody(), [
+            'senha_atual' => FILTER_DEFAULT,
+            'senha_nova' => FILTER_DEFAULT,
+            'senha_confirm' => FILTER_DEFAULT
+        ]);
 
         /**
          * @var string $senha_atual

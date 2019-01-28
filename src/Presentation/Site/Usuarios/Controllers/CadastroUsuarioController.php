@@ -175,11 +175,13 @@ class CadastroUsuarioController extends SiteController
      */
     public function formAlterarUsuario(ServerRequestInterface $request): ResponseInterface
     {
-        $usuario_id = $request->getQueryParams()['usuario_id'];
+        $get = filter_var_array($request->getQueryParams(), [
+            'usuario_id' => FILTER_VALIDATE_INT
+        ]);
 
         try {
             /** @var Usuario $usuario */
-            $usuario = $this->repository->find($usuario_id);
+            $usuario = $this->repository->find($get['usuario_id']);
             $lista_grupos = $this->grupo_usuario_repository->findAtivos();
 
             // Atributos
@@ -210,13 +212,20 @@ class CadastroUsuarioController extends SiteController
      */
     public function atualizarUsuarioExistente(ServerRequestInterface $request): ResponseInterface
     {
+        $post = filter_var_array($request->getParsedBody(), [
+            'usuario_id' => FILTER_VALIDATE_INT,
+            'nome' => FILTER_SANITIZE_STRING,
+            'email' => FILTER_VALIDATE_EMAIL,
+            'grupos' => ['filter' => FILTER_VALIDATE_INT, 'flags' => FILTER_REQUIRE_ARRAY]
+        ]);
+
         /**
          * @var int $usuario_id
          * @var string $nome
          * @var string $email
          * @var array $grupos
          */
-        extract($request->getParsedBody());
+        extract($post); unset($post);
 
         try {
             /**
@@ -238,14 +247,13 @@ class CadastroUsuarioController extends SiteController
 
     public function excluirUsuario(ServerRequestInterface $request): ResponseInterface
     {
-        /**
-         * @var int $usuario_id
-         */
-        extract($request->getParsedBody());
+        $post = filter_var_array($request->getParsedBody(), [
+            'usuario_id' => FILTER_VALIDATE_INT
+        ]);
 
         try {
             /** @var Usuario $usuario */
-            $usuario = $this->repository->find($usuario_id);
+            $usuario = $this->repository->find($post['usuario_id']);
 
             /** @covers ExcluirUsuarioHandler */
             $this->command_bus->handle(new ExcluirUsuarioCommand($usuario));

@@ -92,14 +92,11 @@ class LoginController extends SiteController
      */
     public function fazerLogin(ServerRequestInterface $request): ResponseInterface
     {
-        $get = filter_var_array(
-            $request->getParsedBody(),
-            [
-                'email' => FILTER_VALIDATE_EMAIL,
-                'senha' => FILTER_DEFAULT,
-                'redirect-url' => FILTER_DEFAULT
-            ]
-        );
+        $get = filter_var_array($request->getParsedBody(), [
+            'email' => FILTER_VALIDATE_EMAIL,
+            'senha' => FILTER_DEFAULT,
+            'redirect-url' => FILTER_DEFAULT
+        ]);
 
         /**
          * @var string $email
