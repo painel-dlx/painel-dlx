@@ -17,9 +17,9 @@
         // Configurar colunas flexíveis
         @extend .flex-box-mp-col-3;
         @extend .flex-box-pq-col-3;
-        @extend .flex-box-md-col-4;
+        @extend .flex-box-md-col-3;
         @extend .flex-box-gd-col-3;
-        @extend .flex-box-mg-col-3;
+        @extend .flex-box-mg-col-5;
     }
 
     &-descricao {
@@ -28,7 +28,7 @@
         @extend .flex-box-pq-col-3;
         @extend .flex-box-md-col-9;
         @extend .flex-box-gd-col-9;
-        @extend .flex-box-mg-col-9;
+        @extend .flex-box-mg-col-10;
 
         // Margens
         padding-left: 30px;
