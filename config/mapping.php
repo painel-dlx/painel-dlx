@@ -66,6 +66,8 @@ use PainelDLX\Application\UseCases\Usuarios\ExcluirUsuario\ExcluirUsuarioCommand
 use PainelDLX\Application\UseCases\Usuarios\ExcluirUsuario\ExcluirUsuarioHandler;
 use PainelDLX\Application\UseCases\Usuarios\GetResetSenhaPorHash\GetResetSenhaPorHashCommand;
 use PainelDLX\Application\UseCases\Usuarios\GetResetSenhaPorHash\GetResetSenhaPorHashHandler;
+use PainelDLX\Application\UseCases\Usuarios\GetUsuarioPeloId\GetUsuarioPeloIdCommand;
+use PainelDLX\Application\UseCases\Usuarios\GetUsuarioPeloId\GetUsuarioPeloIdHandler;
 use PainelDLX\Application\UseCases\Usuarios\NovoUsuario\NovoUsuarioCommand;
 use PainelDLX\Application\UseCases\Usuarios\NovoUsuario\NovoUsuarioHandler;
 use PainelDLX\Application\UseCases\Usuarios\SolicitarResetSenha\SolicitarResetSenhaCommand;
@@ -98,4 +100,5 @@ return [
     GetGrupoUsuarioPorIdCommand::class => GetGrupoUsuarioPorIdHandler::class,
     ConfigurarPermissoesCommand::class => ConfigurarPermissoesHandler::class,
     GetListaPermissaoUsuarioCommand::class => GetListaPermissaoUsuarioHandler::class,
+    GetUsuarioPeloIdCommand::class => GetUsuarioPeloIdHandler::class,
 ];
