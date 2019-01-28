@@ -24,6 +24,7 @@
  */
 
 use PainelDLX\Application\Middlewares\Autorizacao;
+use PainelDLX\Application\Middlewares\CriptografarSenhas;
 use PainelDLX\Application\Middlewares\VerificarLogon;
 use PainelDLX\Presentation\Site\Emails\Controllers\ConfigSmtpController;
 use PainelDLX\Presentation\Site\Emails\Controllers\EditarConfigSmtpController;
@@ -303,7 +304,10 @@ $router->get(
 $router->get(
     '/painel-dlx/alterar-minha-senha',
     [MinhaContaController::class, 'formAlterarMinhaSenha']
-)->middlewares(new VerificarLogon($session));
+)->middlewares(
+    new VerificarLogon($session),
+    new CriptografarSenhas('senha_atual', 'senha_nova', 'senha_nova_confirm')
+);
 
 $router->post(
     '/painel-dlx/alterar-minha-senha',
