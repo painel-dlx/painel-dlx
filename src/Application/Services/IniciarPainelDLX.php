@@ -44,6 +44,14 @@ class IniciarPainelDLX
     private $container;
 
     /**
+     * @return ServerRequestInterface
+     */
+    public function getServerRequest(): ServerRequestInterface
+    {
+        return $this->server_request;
+    }
+
+    /**
      * @param ServerRequestInterface $server_request
      * @return IniciarPainelDLX
      */

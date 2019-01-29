@@ -92,7 +92,8 @@ $router->post(
     [CadastroUsuarioController::class, 'cadastrarNovoUsuario']
 )->middlewares(
     new VerificarLogon($session),
-    new Autorizacao('CADASTRAR_NOVO_USUARIO')
+    new Autorizacao('CADASTRAR_NOVO_USUARIO'),
+    new CriptografarSenhas('senha', 'senha_confirm')
 );
 
 
@@ -199,7 +200,8 @@ $router->post(
     [AlterarSenhaUsuarioController::class, 'alterarSenhaUsuario']
 )->middlewares(
     new VerificarLogon($session),
-    new Autorizacao('ALTERAR_SENHA_USUARIO')
+    new Autorizacao('ALTERAR_SENHA_USUARIO'),
+    new CriptografarSenhas('senha_atual', 'senha_nova', 'senha_confirm')
 );
 
 // Permissões ------------------------------------------------------------------------------------------------------- //
@@ -268,7 +270,7 @@ $router->get(
 $router->post(
     '/painel-dlx/login/fazer-login',
     [LoginController::class, 'fazerLogin']
-);
+)->middlewares(new CriptografarSenhas('senha'));
 
 $router->get(
     '/painel-dlx/login/encerrar-sessao',
@@ -293,7 +295,7 @@ $router->get(
 $router->post(
     '/painel-dlx/recuperar-minha-senha',
     [ResetSenhaController::class, 'resetarSenha']
-);
+)->middlewares(new CriptografarSenhas('senha_nova', 'senha_confirm'));
 
 // Minha conta ------------------------------------------------------------------------------------------------------ //
 $router->get(
@@ -305,14 +307,16 @@ $router->get(
     '/painel-dlx/alterar-minha-senha',
     [MinhaContaController::class, 'formAlterarMinhaSenha']
 )->middlewares(
-    new VerificarLogon($session),
-    new CriptografarSenhas('senha_atual', 'senha_nova', 'senha_nova_confirm')
+    new VerificarLogon($session)
 );
 
 $router->post(
     '/painel-dlx/alterar-minha-senha',
     [MinhaContaController::class, 'alterarMinhaSenha']
-)->middlewares(new VerificarLogon($session));
+)->middlewares(
+    new VerificarLogon($session),
+    new CriptografarSenhas('senha_atual', 'senha_nova', 'senha_confirm')
+);
 
 // Configurações SMTP ----------------------------------------------------------------------------------------------- //
 $router->get(
