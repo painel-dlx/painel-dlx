@@ -33,27 +33,25 @@ use Vilex\VileX;
 [CORPO]
 <h1 class="titulo-pagina"><?php echo $this->getAtributo('titulo-pagina') ?></h1>
 
-<div class="layout-barra-lateral">
-    <form id="form-permissao" method="post" action="criar-nova-permissao">
-        <fieldset class="form-grupo">
-            <legend class="form-titulo">Geral</legend>
+<form id="form-permissao" method="post" action="criar-nova-permissao">
+    <fieldset class="form-grupo">
+        <legend class="form-titulo">Geral</legend>
 
-            <p class="form-paragr">
-                <label for="txt-alias" class="form-rotulo form-controle-alias">Alias</label>
-                <input type="text" name="alias" id="txt-alias" maxlength="50" class="form-controle" required>
-            </p>
-
-            <p class="form-paragr">
-                <label for="txt-descricao" class="form-rotulo form-controle-descricao">Descrição</label>
-                <input type="text" name="descricao" id="txt-descricao" maxlength="150" class="form-controle" required>
-            </p>
-        </fieldset>
-
-        <p class="form-botoes">
-            <button type="submit" class="botao-salvar">Salvar</button>
+        <p class="form-paragr">
+            <label for="txt-alias" class="form-rotulo form-controle-alias">Alias</label>
+            <input type="text" name="alias" id="txt-alias" maxlength="50" class="form-controle" required>
         </p>
-    </form>
-</div>
+
+        <p class="form-paragr">
+            <label for="txt-descricao" class="form-rotulo form-controle-descricao">Descrição</label>
+            <input type="text" name="descricao" id="txt-descricao" maxlength="150" class="form-controle" required>
+        </p>
+    </fieldset>
+
+    <p class="form-botoes">
+        <button type="submit" class="botao-salvar">Salvar</button>
+    </p>
+</form>
 [/CORPO]
 
 [SCRIPTS]

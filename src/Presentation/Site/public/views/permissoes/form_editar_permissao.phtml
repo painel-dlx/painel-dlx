@@ -37,32 +37,30 @@ $permissao_usuario = $this->getAtributo('permissao-usuario');
 [CORPO]
 <h1 class="titulo-pagina"><?php echo $this->getAtributo('titulo-pagina') ?></h1>
 
-<div class="layout-barra-lateral">
-    <form id="form-permissao" method="post" action="editar-permissao">
-        <input type="hidden" name="permissao_usuario_id" value="<?php echo $permissao_usuario->getPermissaoUsuarioId() ?> ">
-        
-        <fieldset class="form-grupo">
-            <legend class="form-titulo">Geral</legend>
+<form id="form-permissao" method="post" action="editar-permissao">
+    <input type="hidden" name="permissao_usuario_id" value="<?php echo $permissao_usuario->getPermissaoUsuarioId() ?> ">
 
-            <p class="form-paragr">
-                <label for="txt-alias" class="form-rotulo">Alias</label>
-                <?php echo $permissao_usuario->getAlias() ?>
-                <span class="dica-geral" data-texto="Após a criação da permissão ela pode ser solicitada em alguma funcionalidade do sistema para verificação da autorização do usuário. Alterá-la pode fazer com que o sistema deixe de funcionar corretamente.">
-                    (por que não posso alterar?)
-                </span>
-            </p>
+    <fieldset class="form-grupo">
+        <legend class="form-titulo">Geral</legend>
 
-            <p class="form-paragr">
-                <label for="txt-descricao" class="form-rotulo form-controle-descricao">Descrição</label>
-                <input type="text" name="descricao" id="txt-descricao" value="<?php echo $permissao_usuario->getDescricao() ?>" maxlength="150" class="form-controle" required>
-            </p>
-        </fieldset>
-
-        <p class="form-botoes">
-            <button type="submit" class="botao-salvar">Salvar</button>
+        <p class="form-paragr">
+            <label for="txt-alias" class="form-rotulo">Alias</label>
+            <?php echo $permissao_usuario->getAlias() ?>
+            <span class="dica-geral" data-texto="Após a criação da permissão ela pode ser solicitada em alguma funcionalidade do sistema para verificação da autorização do usuário. Alterá-la pode fazer com que o sistema deixe de funcionar corretamente.">
+                (por que não posso alterar?)
+            </span>
         </p>
-    </form>
-</div>
+
+        <p class="form-paragr">
+            <label for="txt-descricao" class="form-rotulo form-controle-descricao">Descrição</label>
+            <input type="text" name="descricao" id="txt-descricao" value="<?php echo $permissao_usuario->getDescricao() ?>" maxlength="150" class="form-controle" required>
+        </p>
+    </fieldset>
+
+    <p class="form-botoes">
+        <button type="submit" class="botao-salvar">Salvar</button>
+    </p>
+</form>
 [/CORPO]
 
 [SCRIPTS]
