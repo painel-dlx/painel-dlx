@@ -32,26 +32,37 @@ use PainelDLX\Application\UseCases\Emails\ExcluirConfigSmtp\ExcluirConfigSmtpCom
 use PainelDLX\Application\UseCases\Emails\ExcluirConfigSmtp\ExcluirConfigSmtpHandler;
 use PainelDLX\Application\UseCases\Emails\GetConfigSmtpPorId\GetConfigSmtpPorIdCommand;
 use PainelDLX\Application\UseCases\Emails\GetListaConfigSmtp\GetListaConfigSmtpCommand;
+use PainelDLX\Application\UseCases\Emails\TestarConfigSmtp\TestarConfigSmtpCommand;
+use PainelDLX\Application\UseCases\Emails\TestarConfigSmtp\TestarConfigSmtpHandler;
 use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
+use PainelDLX\Domain\Usuarios\Entities\Usuario;
 use PainelDLX\Presentation\Site\Controllers\SiteController;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use SechianeX\Contracts\SessionInterface;
 use Vilex\VileX;
 use Zend\Diactoros\Response\JsonResponse;
 
 class ConfigSmtpController extends SiteController
 {
     /**
+     * @var SessionInterface
+     */
+    private $session;
+
+    /**
      * ConfigSmtpController constructor.
      * @param VileX $view
      * @param CommandBus $commandBus
+     * @param SessionInterface $session
      */
-    public function __construct(VileX $view, CommandBus $commandBus)
+    public function __construct(VileX $view, CommandBus $commandBus, SessionInterface $session)
     {
         parent::__construct($view, $commandBus);
 
         $this->view->setPaginaMestra('src/Presentation/Site/public/views/paginas-mestras/painel-dlx-master.phtml');
         $this->view->setViewRoot('src/Presentation/Site/public/views/emails');
+        $this->session = $session;
     }
 
     /**
@@ -133,6 +144,51 @@ class ConfigSmtpController extends SiteController
 
             /** @covers ExcluirConfigSmtpHandler */
             $this->command_bus->handle(new ExcluirConfigSmtpCommand($config_smtp));
+
+            $json['retorno'] = 'sucesso';
+            $json['mensagem'] = 'Configuração SMTP excluída com sucesso!';
+        } catch (UserException $e) {
+            $json['retorno'] = 'erro';
+            $json['mensagem'] = $e->getMessage();
+        }
+
+        return new JsonResponse($json);
+    }
+
+    /**
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
+     */
+    public function testarConfigSmtp(ServerRequestInterface $request): ResponseInterface
+    {
+        $post = filter_var_array($request->getParsedBody(), [
+            'servidor' => FILTER_SANITIZE_STRING,
+            'porta' => FILTER_VALIDATE_INT,
+            'requer_autent' => FILTER_VALIDATE_BOOLEAN,
+            'conta' => FILTER_SANITIZE_STRING,
+            'senha' => FILTER_SANITIZE_STRING,
+            'cripto' => FILTER_SANITIZE_STRING,
+            'de_nome' => FILTER_SANITIZE_STRING,
+            'responder_para' => FILTER_VALIDATE_EMAIL,
+            'corpo_html' => FILTER_VALIDATE_BOOLEAN
+        ]);
+
+        try {
+            /** @var Usuario $usuario */
+            $usuario = $this->session->get('usuario-logado');
+
+            $config_smtp = new ConfigSmtp($post['servidor'], $post['porta']);
+            $config_smtp
+                ->setRequerAutent($post['requer_autent'])
+                ->setConta($post['conta'])
+                ->setSenha($post['senha'])
+                ->setCripto($post['cripto'])
+                ->setDeNome($post['de_nome'])
+                ->setResponderPara($post['responder_para'])
+                ->setCorpoHtml($post['corpo_html']);
+
+            /** @covers TestarConfigSmtpHandler */
+            $this->command_bus->handle(new TestarConfigSmtpCommand($config_smtp, $usuario->getEmail()));
 
             $json['retorno'] = 'sucesso';
             $json['mensagem'] = 'Configuração SMTP excluída com sucesso!';
