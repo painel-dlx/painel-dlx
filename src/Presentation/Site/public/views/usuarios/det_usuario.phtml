@@ -57,15 +57,15 @@ $usuario = $this->getAtributo('usuario');
         </details>
 
         <?php if ($this->getAtributo('is-usuario-logado')) : ?>
-        <details id="acesso-sistema" class="detalhe-registro" open>
-            <summary class="detalhe-registro-titulo">Acesso ao sistema</summary>
+            <details id="acesso-sistema" class="detalhe-registro" open>
+                <summary class="detalhe-registro-titulo">Acesso ao sistema</summary>
 
-            <p class="detalhe-registro-paragr">
-                <a href="alterar-minha-senha" class="btn btn-alterar-senha">
-                    Alterar senha
-                </a>
-            </p>
-        </details>
+                <p class="detalhe-registro-paragr">
+                    <a href="/painel-dlx/alterar-minha-senha" class="botao-alterar-senha">
+                        Alterar senha
+                    </a>
+                </p>
+            </details>
         <?php endif ?>
 
         <details id="grupos-usuarios" class="detalhe-registro" open>
