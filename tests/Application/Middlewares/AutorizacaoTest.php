@@ -29,7 +29,6 @@ use PainelDLX\Application\Middlewares\Autorizacao;
 use PainelDLX\Application\Middlewares\Exceptions\UsuarioNaoPossuiPermissaoException;
 use PainelDLX\Testes\Domain\Usuarios\Entities\UsuarioTest;
 use PainelDLX\Testes\PainelDLXTests;
-use PHPUnit\Framework\TestCase;
 use SechianeX\Contracts\SessionInterface;
 use SechianeX\Factories\SessionFactory;
 
