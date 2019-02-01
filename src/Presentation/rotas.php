@@ -376,6 +376,14 @@ $router->get(
 );
 
 // TODO: Teste de email é GET ou POST?
+$router->get(
+    '/painel-dlx/config-smtp/testar',
+    [ConfigSmtpController::class, 'testarConfigSmtp']
+)->middlewares(
+    new VerificarLogon($session),
+    new Autorizacao('VER_CONFIGURACOES_SMTP')
+);
+
 $router->post(
     '/painel-dlx/config-smtp/testar',
     [ConfigSmtpController::class, 'testarConfigSmtp']

@@ -31,10 +31,13 @@ use League\Tactician\Container\ContainerLocator;
 use League\Tactician\Handler\CommandHandlerMiddleware;
 use League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor;
 use League\Tactician\Handler\MethodNameInflector\HandleInflector;
+use PainelDLX\Domain\Usuarios\Entities\Usuario;
 use PainelDLX\Presentation\Site\Emails\Controllers\ConfigSmtpController;
 use PainelDLX\Testes\Application\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpHandlerTests;
 use PainelDLX\Testes\PainelDLXTests;
 use Psr\Http\Message\ServerRequestInterface;
+use SechianeX\Contracts\SessionInterface;
+use SechianeX\Factories\SessionFactory;
 use Vilex\VileX;
 use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Diactoros\Response\JsonResponse;
@@ -44,17 +47,33 @@ class ConfigSmtpControllerTests extends PainelDLXTests
     /** @var ConfigSmtpController */
     private $controller;
 
+    /**
+     * @throws \DLX\Core\Exceptions\ArquivoConfiguracaoNaoEncontradoException
+     * @throws \DLX\Core\Exceptions\ArquivoConfiguracaoNaoInformadoException
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \PainelDLX\Application\Services\Exceptions\AmbienteNaoInformadoException
+     * @throws \SechianeX\Exceptions\SessionAdapterInterfaceInvalidaException
+     * @throws \SechianeX\Exceptions\SessionAdapterNaoEncontradoException
+     */
     protected function setUp()
     {
         parent::setUp();
 
+        $session = $this->createMock(SessionInterface::class);
+        $session
+            ->method('get')
+            ->with('usuario-logado')
+            ->willReturn((new Usuario('Diego Lepera', 'dlepera88@gmail.com')));
+
+        /** @var SessionInterface $session */
         $this->controller = new ConfigSmtpController(
             new VileX(),
             CommandBusAdapter::create(new CommandHandlerMiddleware(
                 new ClassNameExtractor,
                 new ContainerLocator($this->container, Configure::get('app', 'mapping')),
                 new HandleInflector
-            ))
+            )),
+            $session
         );
     }
 
@@ -125,5 +144,32 @@ class ConfigSmtpControllerTests extends PainelDLXTests
         $response = $this->controller->detalheConfigSmtp($request);
 
         $this->assertInstanceOf(HtmlResponse::class, $response);
+    }
+
+    public function test_testarConfigSmtp_deve_retornar_um_JsonResponse_sucesso()
+    {
+        $server_request = $this->createMock(ServerRequestInterface::class);
+        $server_request
+            ->method('getParsedBody')
+            ->willReturn([
+                'servidor' => 'smtp.gmail.com',
+                'porta' => 587,
+                'requer_autent' => true,
+                'conta' => 'dlepera88.emails@gmail.com',
+                'senha' => 'oxswveitoainkmbu',
+                'cripto' => 'tls',
+                'de_nome' => null,
+                'responder_para' => null,
+                'corpo_html' => true
+            ]);
+
+        /** @var ServerRequestInterface $server_request */
+        $response = $this->controller->testarConfigSmtp($server_request);
+
+        $this->assertInstanceOf(JsonResponse::class, $response);
+
+        $json = json_decode((string)$response->getBody());
+
+        $this->assertEquals('sucesso', $json->retorno);
     }
 }

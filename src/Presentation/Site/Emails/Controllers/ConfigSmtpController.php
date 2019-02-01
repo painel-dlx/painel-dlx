@@ -31,6 +31,7 @@ use League\Tactician\CommandBus;
 use PainelDLX\Application\UseCases\Emails\ExcluirConfigSmtp\ExcluirConfigSmtpCommand;
 use PainelDLX\Application\UseCases\Emails\ExcluirConfigSmtp\ExcluirConfigSmtpHandler;
 use PainelDLX\Application\UseCases\Emails\GetConfigSmtpPorId\GetConfigSmtpPorIdCommand;
+use PainelDLX\Application\UseCases\Emails\GetConfigSmtpPorId\GetConfigSmtpPorIdHandler;
 use PainelDLX\Application\UseCases\Emails\GetListaConfigSmtp\GetListaConfigSmtpCommand;
 use PainelDLX\Application\UseCases\Emails\TestarConfigSmtp\TestarConfigSmtpCommand;
 use PainelDLX\Application\UseCases\Emails\TestarConfigSmtp\TestarConfigSmtpHandler;
@@ -161,6 +162,7 @@ class ConfigSmtpController extends SiteController
      */
     public function testarConfigSmtp(ServerRequestInterface $request): ResponseInterface
     {
+        $get = filter_var_array($request->getQueryParams(), ['config_smtp_id' => FILTER_VALIDATE_INT]);
         $post = filter_var_array($request->getParsedBody(), [
             'servidor' => FILTER_SANITIZE_STRING,
             'porta' => FILTER_VALIDATE_INT,
@@ -177,21 +179,29 @@ class ConfigSmtpController extends SiteController
             /** @var Usuario $usuario */
             $usuario = $this->session->get('usuario-logado');
 
-            $config_smtp = new ConfigSmtp($post['servidor'], $post['porta']);
-            $config_smtp
-                ->setRequerAutent($post['requer_autent'])
-                ->setConta($post['conta'])
-                ->setSenha($post['senha'])
-                ->setCripto($post['cripto'])
-                ->setDeNome($post['de_nome'])
-                ->setResponderPara($post['responder_para'])
-                ->setCorpoHtml($post['corpo_html']);
+            /**
+             * @var ConfigSmtp|null $config_smtp
+             * @covers GetConfigSmtpPorIdHandler
+             */
+            $config_smtp = $this->command_bus->handle(new GetConfigSmtpPorIdCommand($get['config_smtp_id']));
+
+            if (is_null($config_smtp)) {
+                $config_smtp = new ConfigSmtp($post['servidor'], $post['porta']);
+                $config_smtp
+                    ->setRequerAutent($post['requer_autent'])
+                    ->setConta($post['conta'])
+                    ->setSenha($post['senha'])
+                    ->setCripto($post['cripto'])
+                    ->setDeNome($post['de_nome'])
+                    ->setResponderPara($post['responder_para'])
+                    ->setCorpoHtml($post['corpo_html']);
+            }
 
             /** @covers TestarConfigSmtpHandler */
             $this->command_bus->handle(new TestarConfigSmtpCommand($config_smtp, $usuario->getEmail()));
 
             $json['retorno'] = 'sucesso';
-            $json['mensagem'] = 'Configuração SMTP excluída com sucesso!';
+            $json['mensagem'] = 'Email de teste enviado com sucesso!';
         } catch (UserException $e) {
             $json['retorno'] = 'erro';
             $json['mensagem'] = $e->getMessage();

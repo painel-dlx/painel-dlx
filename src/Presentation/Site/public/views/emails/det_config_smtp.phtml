@@ -95,4 +95,8 @@ $config_smtp = $this->getAtributo('config-smtp');
         <?php echo $config_smtp->isCorpoHtml() ? 'Sim' : 'Não' ?>
     </p>
 </details>
+
+<button type="button" onclick="testarConfigSmtp(<?php echo $config_smtp->getConfigSmtpId() ?>)" class="botao-testar-email" title="Testar essa configuração SMTP">
+    Testar
+</button>
 [/CORPO]

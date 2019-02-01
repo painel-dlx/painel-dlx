@@ -74,6 +74,8 @@ use PainelDLX\Application\UseCases\Usuarios\SolicitarResetSenha\SolicitarResetSe
 use PainelDLX\Application\UseCases\Usuarios\SolicitarResetSenha\SolicitarResetSenhaHandler;
 use PainelDLX\Application\UseCases\Usuarios\UtilizarResetSenha\UtilizarResetSenhaCommand;
 use PainelDLX\Application\UseCases\Usuarios\UtilizarResetSenha\UtilizarResetSenhaHandler;
+use PainelDLX\Application\UseCases\Emails\TestarConfigSmtp\TestarConfigSmtpCommand;
+use PainelDLX\Application\UseCases\Emails\TestarConfigSmtp\TestarConfigSmtpHandler;
 
 return [
     NovoUsuarioCommand::class => NovoUsuarioHandler::class,
@@ -101,4 +103,5 @@ return [
     ConfigurarPermissoesCommand::class => ConfigurarPermissoesHandler::class,
     GetListaPermissaoUsuarioCommand::class => GetListaPermissaoUsuarioHandler::class,
     GetUsuarioPeloIdCommand::class => GetUsuarioPeloIdHandler::class,
+    TestarConfigSmtpCommand::class => TestarConfigSmtpHandler::class,
 ];

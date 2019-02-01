@@ -109,13 +109,16 @@ $config_smtp = $this->getAtributo('config-smtp') ?? new ConfigSmtp()
 
     <p class="form-botoes">
         <button type="submit" class="botao-salvar">Salvar</button>
+        <button type="button" id="botao-testar-email" class="botao-testar-email" title="Testar a configuração SMTP">
+            Testar
+        </button>
     </p>
 </form>
 [/CORPO]
 
 [SCRIPTS]
 <script>
-    $('#form-config-smtp').formAjax({
+    var $form_config_smtp = $('#form-config-smtp').formAjax({
         func_depois: function(retorno) {
             alert(retorno.mensagem);
 
@@ -123,6 +126,12 @@ $config_smtp = $this->getAtributo('config-smtp') ?? new ConfigSmtp()
                 window.location = '/painel-dlx/config-smtp'
             }
         }
+    });
+
+    $('#botao-testar-email').on('click', function () {
+        $form_config_smtp.formAjax('submit-alternativo', {
+            'acao': '/painel-dlx/config-smtp/testar'
+        });
     });
 
     $('#chk-requer-autent').on('change', function () {

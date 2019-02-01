@@ -1,0 +1,19 @@
+.botao-comum {
+    /*/ Visual
+    background: #8b8ac1;
+    border-bottom-color: #6a6a96;
+
+    &:hover {
+        // Visual
+        background: #7f7fb4;
+    }*/
+
+    // Visual
+    background: #AAA;
+    border-bottom-color: #888;
+
+    &:hover {
+        // Visual
+        background: #999;
+    }
+}

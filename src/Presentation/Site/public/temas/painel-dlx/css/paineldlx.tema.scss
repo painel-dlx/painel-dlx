@@ -64,11 +64,13 @@ body {
 // Botões
 @import "componentes/botoes/botao";
 @import "componentes/botoes/botao-submit";
+@import "componentes/botoes/botao-comum";
 @import "componentes/botoes/botao-salvar";
 @import "componentes/botoes/botao-alterar-senha";
 @import "componentes/botoes/botao-reset-senha";
 @import "componentes/botoes/botao-gerenciar-permissoes";
 @import "componentes/botoes/botao-voltar";
+@import "componentes/botoes/botao-testar-email";
 
 // Lista
 @import "componentes/lista-registros";
