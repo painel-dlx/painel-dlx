@@ -1,0 +1,23 @@
+PainelDLX\Domain\Modulos\Entities\Menu:
+    type: entity
+    table: dlx_menu
+    repositoryClass: PainelDLX\Infra\ORM\Doctrine\Repositories\MenuRepository
+    id:
+        menu_id:
+            type: integer
+            id: true
+            nullable: false
+            generator:
+                strategy: auto
+    fields:
+        nome:
+            type: string
+            nullable: false
+            length: 30
+    oneToMany:
+        itens:
+            targetEntity: MenuItem
+            mappedBy: menu
+            joinColumns:
+                idMenu:
+                    referencedColumnName: idMenu
