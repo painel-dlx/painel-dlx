@@ -26,6 +26,7 @@
 use PainelDLX\Application\Middlewares\Autorizacao;
 use PainelDLX\Application\Middlewares\CriptografarSenhas;
 use PainelDLX\Application\Middlewares\DefinePaginaMestra;
+use PainelDLX\Application\Middlewares\LimparQueryString;
 use PainelDLX\Application\Middlewares\VerificarLogon;
 use PainelDLX\Presentation\Site\Emails\Controllers\ConfigSmtpController;
 use PainelDLX\Presentation\Site\Emails\Controllers\EditarConfigSmtpController;
@@ -56,7 +57,8 @@ $router->get(
 )->middlewares(
     new VerificarLogon($session),
     new Autorizacao('ACESSAR_CADASTRO_USUARIOS'),
-    new DefinePaginaMestra($this->getServerRequest(), $session)
+    new DefinePaginaMestra($this->getServerRequest(), $session),
+    new LimparQueryString($this)
 );
 
 // Cadastro de Usuários --------------------------------------------------------------------------------------------- //
@@ -66,7 +68,8 @@ $router->get(
 )->middlewares(
     new VerificarLogon($session),
     new Autorizacao('ACESSAR_CADASTRO_USUARIOS'),
-    new DefinePaginaMestra($this->getServerRequest(), $session)
+    new DefinePaginaMestra($this->getServerRequest(), $session),
+    new LimparQueryString($this)
 );
 
 $router->get(
@@ -129,7 +132,8 @@ $router->get(
 )->middlewares(
     new VerificarLogon($session),
     new Autorizacao('VISUALIZAR_GRUPOS_USUARIOS'),
-    new DefinePaginaMestra($this->getServerRequest(), $session)
+    new DefinePaginaMestra($this->getServerRequest(), $session),
+    new LimparQueryString($this)
 );
 
 $router->get(
@@ -225,7 +229,8 @@ $router->get(
 )->middlewares(
     new VerificarLogon($session),
     new Autorizacao('CRIAR_PERMISSOES_USUARIO'),
-    new DefinePaginaMestra($this->getServerRequest(), $session)
+    new DefinePaginaMestra($this->getServerRequest(), $session),
+    new LimparQueryString($this)
 );
 
 $router->get(
@@ -352,7 +357,8 @@ $router->get(
 )->middlewares(
     new VerificarLogon($session),
     new Autorizacao('VER_CONFIGURACOES_SMTP'),
-    new DefinePaginaMestra($this->getServerRequest(), $session)
+    new DefinePaginaMestra($this->getServerRequest(), $session),
+    new LimparQueryString($this)
 );
 
 $router->get(

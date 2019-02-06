@@ -37,7 +37,10 @@ class DefinePaginaMestra implements MiddlewareInterface
 
     public function executar()
     {
-        $pagina_mestra = filter_var($this->request->getQueryParams()['pg-mestra'], FILTER_DEFAULT) ?: 'painel-dlx-master';
+        $qp = $this->request->getQueryParams();
+        $pagina_mestra = array_key_exists('pg-mestra', $qp)
+            ? filter_var($qp['pg-mestra'], FILTER_DEFAULT)
+            : 'painel-dlx-master';
         $this->session->set('vilex:pagina-mestra', $pagina_mestra);
     }
 }

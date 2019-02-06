@@ -26,11 +26,15 @@
 namespace PainelDLX\Presentation\Site\Usuarios\Controllers;
 
 use DLX\Core\Exceptions\UserException;
+use Exception;
 use League\Tactician\CommandBus;
 use PainelDLX\Application\UseCases\Usuarios\EditarUsuario\EditarUsuarioCommand;
 use PainelDLX\Application\UseCases\Usuarios\EditarUsuario\EditarUsuarioHandler;
 use PainelDLX\Application\UseCases\Usuarios\ExcluirUsuario\ExcluirUsuarioCommand;
 use PainelDLX\Application\UseCases\Usuarios\ExcluirUsuario\ExcluirUsuarioHandler;
+use PainelDLX\Application\UseCases\Usuarios\GetListaUsuarios\GetListaUsuariosCommand;
+use PainelDLX\Application\UseCases\Usuarios\GetUsuarioPeloId\GetUsuarioPeloIdCommand;
+use PainelDLX\Application\UseCases\Usuarios\GetUsuarioPeloId\GetUsuarioPeloIdHandler;
 use PainelDLX\Application\UseCases\Usuarios\NovoUsuario\NovoUsuarioCommand;
 use PainelDLX\Application\UseCases\Usuarios\NovoUsuario\NovoUsuarioHandler;
 use PainelDLX\Domain\GruposUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
@@ -71,7 +75,6 @@ class CadastroUsuarioController extends SiteController
     public function __construct(
         VileX $view,
         CommandBus $commandBus,
-        UsuarioRepositoryInterface $usuario_repository,
         GrupoUsuarioRepositoryInterface $grupo_usuario_repository,
         SessionInterface $session
     ) {
@@ -80,7 +83,6 @@ class CadastroUsuarioController extends SiteController
         $this->view->setPaginaMestra("src/Presentation/Site/public/views/paginas-mestras/{$session->get('vilex:pagina-mestra')}.phtml");
         $this->view->setViewRoot('src/Presentation/Site/public/views/usuarios');
 
-        $this->repository = $usuario_repository;
         $this->grupo_usuario_repository = $grupo_usuario_repository;
         $this->session = $session;
     }
@@ -90,12 +92,12 @@ class CadastroUsuarioController extends SiteController
      * @param ServerRequestInterface $request
      * @return ResponseInterface
      * @throws \Vilex\Exceptions\PaginaMestraNaoEncontradaException
-     * @throws \Exception
+     * @throws Exception
      */
     public function listaUsuarios(ServerRequestInterface $request): ResponseInterface
     {
         try {
-            $lista_usuarios = $this->repository->findBy($request->getParsedBody());
+            $lista_usuarios = $this->command_bus->handle(new GetListaUsuariosCommand($request->getQueryParams()));
 
             // Atributos
             $this->view->setAtributo('titulo-pagina', 'Usuários');
@@ -116,7 +118,7 @@ class CadastroUsuarioController extends SiteController
 
     /**
      * @return ResponseInterface
-     * @throws \Exception
+     * @throws Exception
      */
     public function formNovoUsuario(): ResponseInterface
     {
@@ -171,7 +173,7 @@ class CadastroUsuarioController extends SiteController
             $msg['retorno'] = 'sucesso';
             $msg['mensagem'] = 'Usuário cadastrado com sucesso!';
             $msg['usuario'] = $usuario->getUsuarioId();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $msg['retorno'] = 'erro';
             $msg['mensagem'] = $e->getMessage();
         }
@@ -184,17 +186,18 @@ class CadastroUsuarioController extends SiteController
      * @param ServerRequestInterface $request
      * @return ResponseInterface
      * @throws \Vilex\Exceptions\PaginaMestraNaoEncontradaException
-     * @throws \Exception
+     * @throws Exception
      */
     public function formAlterarUsuario(ServerRequestInterface $request): ResponseInterface
     {
-        $get = filter_var_array($request->getQueryParams(), [
-            'usuario_id' => FILTER_VALIDATE_INT
-        ]);
+        $get = filter_var_array($request->getQueryParams(), ['usuario_id' => FILTER_VALIDATE_INT]);
 
         try {
-            /** @var Usuario $usuario */
-            $usuario = $this->repository->find($get['usuario_id']);
+            /**
+             * @var Usuario|null $usuario
+             * @covers GetUsuarioPeloIdHandler
+             */
+            $usuario = $this->command_bus->handle(new GetUsuarioPeloIdCommand($get['usuario_id']));
             $lista_grupos = $this->grupo_usuario_repository->findAtivos();
 
             // Atributos
@@ -250,7 +253,7 @@ class CadastroUsuarioController extends SiteController
             $msg['retorno'] = 'sucesso';
             $msg['mensagem'] = 'Usuário atualizado com sucesso!';
             $msg['usuario'] = $usuario_atualizado->getUsuarioId();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $msg['retorno'] = 'erro';
             $msg['mensagem'] = $e->getMessage();
         }
@@ -260,20 +263,21 @@ class CadastroUsuarioController extends SiteController
 
     public function excluirUsuario(ServerRequestInterface $request): ResponseInterface
     {
-        $post = filter_var_array($request->getParsedBody(), [
-            'usuario_id' => FILTER_VALIDATE_INT
-        ]);
+        $post = filter_var_array($request->getParsedBody(), ['usuario_id' => FILTER_VALIDATE_INT]);
 
         try {
-            /** @var Usuario $usuario */
-            $usuario = $this->repository->find($post['usuario_id']);
+            /**
+             * @var Usuario|null $usuario
+             * @covers GetUsuarioPeloIdHandler
+             */
+            $usuario = $this->command_bus->handle(new GetUsuarioPeloIdCommand($post['usuario_id']));
 
             /** @covers ExcluirUsuarioHandler */
             $this->command_bus->handle(new ExcluirUsuarioCommand($usuario));
 
             $msg['retorno'] = 'sucesso';
             $msg['mensagem'] = 'Usuário excluído com sucesso!';
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $msg['retorno'] = 'erro';
             $msg['mensagem'] = $e->getMessage();
         }
@@ -290,14 +294,14 @@ class CadastroUsuarioController extends SiteController
      */
     public function detalheUsuario(ServerRequestInterface $request): ResponseInterface
     {
-        /**
-         * @var int $usuario_id
-         */
-        extract($request->getQueryParams());
+        $get = filter_var_array($request->getQueryParams(), ['usuario_id' => FILTER_VALIDATE_INT]);
 
         try {
-            /** @var Usuario $usuario */
-            $usuario = $this->repository->find($usuario_id);
+            /**
+             * @var Usuario|null $usuario
+             * @covers GetUsuarioPeloIdHandler
+             */
+            $usuario = $this->command_bus->handle(new GetUsuarioPeloIdCommand($get['usuario_id']));
 
             // Atributos
             $this->view->setAtributo('titulo-pagina', $usuario->getNome());
