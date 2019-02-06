@@ -39,6 +39,7 @@ use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
 use PainelDLX\Presentation\Site\Controllers\SiteController;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use SechianeX\Contracts\SessionInterface;
 use Vilex\VileX;
 use Zend\Diactoros\Response\JsonResponse;
 
@@ -48,20 +49,30 @@ class ConfigurarPermissoesController extends SiteController
      * @var TransacaoInterface
      */
     private $transacao;
+    /**
+     * @var SessionInterface
+     */
+    private $session;
 
     /**
      * ConfigurarPermissoesController constructor.
      * @param VileX $view
      * @param CommandBus $commandBus
      * @param TransacaoInterface $transacao
+     * @param SessionInterface $session
      */
-    public function __construct(VileX $view, CommandBus $commandBus, TransacaoInterface $transacao)
-    {
+    public function __construct(
+        VileX $view,
+        CommandBus $commandBus,
+        TransacaoInterface $transacao,
+        SessionInterface $session
+    ) {
         parent::__construct($view, $commandBus);
 
-        $this->view->setPaginaMestra('src/Presentation/Site/public/views/paginas-mestras/painel-dlx-master.phtml');
+        $this->view->setPaginaMestra("src/Presentation/Site/public/views/paginas-mestras/{$session->get('vilex:pagina-mestra')}.phtml");
         $this->view->setViewRoot('src/Presentation/Site/public/views/grupos-usuarios');
         $this->transacao = $transacao;
+        $this->session = $session;
     }
 
     /**
@@ -102,7 +113,7 @@ class ConfigurarPermissoesController extends SiteController
             $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js');
 
             // Página mestra
-            $this->view->setPaginaMestra('src/Presentation/Site/public/views/paginas-mestras/conteudo-master.phtml');
+            //$this->view->setPaginaMestra('src/Presentation/Site/public/views/paginas-mestras/conteudo-master.phtml');
         } catch (UserException $e) {
             $this->view->addTemplate('../mensagem_usuario');
             $this->view->setAtributo('mensagem', [

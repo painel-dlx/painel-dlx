@@ -40,6 +40,7 @@ use PainelDLX\Infra\ORM\Doctrine\Repositories\GrupoUsuarioRepository;
 use PainelDLX\Presentation\Site\Controllers\SiteController;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use SechianeX\Contracts\SessionInterface;
 use Vilex\VileX;
 use Zend\Diactoros\Response\JsonResponse;
 
@@ -51,20 +52,30 @@ use Zend\Diactoros\Response\JsonResponse;
 class GrupoUsuarioController extends SiteController
 {
     /**
+     * @var SessionInterface
+     */
+    private $session;
+
+    /**
      * GrupoUsuarioController constructor.
-     * @throws \Doctrine\ORM\ORMException
+     * @param VileX $view
+     * @param CommandBus $command_bus
+     * @param GrupoUsuarioRepositoryInterface $grupo_usuario_repository
+     * @param SessionInterface $session
      */
     public function __construct(
         VileX $view,
         CommandBus $command_bus,
-        GrupoUsuarioRepositoryInterface $grupo_usuario_repository
+        GrupoUsuarioRepositoryInterface $grupo_usuario_repository,
+        SessionInterface $session
     ) {
         parent::__construct($view, $command_bus);
 
-        $this->view->setPaginaMestra('src/Presentation/Site/public/views/paginas-mestras/painel-dlx-master.phtml');
+        $this->view->setPaginaMestra("src/Presentation/Site/public/views/paginas-mestras/{$session->get('vilex:pagina-mestra')}.phtml");
         $this->view->setViewRoot('src/Presentation/Site/public/views/grupos-usuarios');
 
         $this->repository = $grupo_usuario_repository;
+        $this->session = $session;
     }
 
     /**

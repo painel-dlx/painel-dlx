@@ -779,6 +779,7 @@ body {
 
 .detalhe-registro-rotulo {
   text-transform: uppercase;
+  font-weight: bold;
   display: block; }
 
 .detalhe-usuario #acesso-sistema,

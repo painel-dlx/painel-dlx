@@ -25,6 +25,7 @@
 
 use PainelDLX\Application\Middlewares\Autorizacao;
 use PainelDLX\Application\Middlewares\CriptografarSenhas;
+use PainelDLX\Application\Middlewares\DefinePaginaMestra;
 use PainelDLX\Application\Middlewares\VerificarLogon;
 use PainelDLX\Presentation\Site\Emails\Controllers\ConfigSmtpController;
 use PainelDLX\Presentation\Site\Emails\Controllers\EditarConfigSmtpController;
@@ -41,7 +42,10 @@ use PainelDLX\Presentation\Site\Usuarios\Controllers\ResetSenhaController;
 use SechianeX\Factories\SessionFactory;
 
 
-/** @var \RautereX\RautereX $router */
+/**
+ * @var \PainelDLX\Application\Services\IniciarPainelDLX $this
+ * @var \RautereX\RautereX $router
+ */
 
 $session = SessionFactory::createPHPSession();
 
@@ -51,7 +55,8 @@ $router->get(
     [CadastroUsuarioController::class, 'listaUsuarios']
 )->middlewares(
     new VerificarLogon($session),
-    new Autorizacao('ACESSAR_CADASTRO_USUARIOS')
+    new Autorizacao('ACESSAR_CADASTRO_USUARIOS'),
+    new DefinePaginaMestra($this->getServerRequest(), $session)
 );
 
 // Cadastro de Usuários --------------------------------------------------------------------------------------------- //
@@ -60,7 +65,8 @@ $router->get(
     [CadastroUsuarioController::class, 'listaUsuarios']
 )->middlewares(
     new VerificarLogon($session),
-    new Autorizacao('ACESSAR_CADASTRO_USUARIOS')
+    new Autorizacao('ACESSAR_CADASTRO_USUARIOS'),
+    new DefinePaginaMestra($this->getServerRequest(), $session)
 );
 
 $router->get(
@@ -68,7 +74,8 @@ $router->get(
     [CadastroUsuarioController::class, 'formNovoUsuario']
 )->middlewares(
     new VerificarLogon($session),
-    new Autorizacao('CADASTRAR_NOVO_USUARIO')
+    new Autorizacao('CADASTRAR_NOVO_USUARIO'),
+    new DefinePaginaMestra($this->getServerRequest(), $session)
 );
 
 $router->get(
@@ -76,7 +83,8 @@ $router->get(
     [CadastroUsuarioController::class, 'formAlterarUsuario']
 )->middlewares(
     new VerificarLogon($session),
-    new Autorizacao('EDITAR_CADASTRO_USUARIO')
+    new Autorizacao('EDITAR_CADASTRO_USUARIO'),
+    new DefinePaginaMestra($this->getServerRequest(), $session)
 );
 
 $router->get(
@@ -84,7 +92,8 @@ $router->get(
     [CadastroUsuarioController::class, 'detalheUsuario']
 )->middlewares(
     new VerificarLogon($session),
-    new Autorizacao('ACESSAR_CADASTRO_USUARIOS')
+    new Autorizacao('ACESSAR_CADASTRO_USUARIOS'),
+    new DefinePaginaMestra($this->getServerRequest(), $session)
 );
 
 $router->post(
@@ -119,7 +128,8 @@ $router->get(
     [GrupoUsuarioController::class, 'listaGruposUsuarios']
 )->middlewares(
     new VerificarLogon($session),
-    new Autorizacao('VISUALIZAR_GRUPOS_USUARIOS')
+    new Autorizacao('VISUALIZAR_GRUPOS_USUARIOS'),
+    new DefinePaginaMestra($this->getServerRequest(), $session)
 );
 
 $router->get(
@@ -127,7 +137,8 @@ $router->get(
     [GrupoUsuarioController::class, 'formNovoGrupoUsuario']
 )->middlewares(
     new VerificarLogon($session),
-    new Autorizacao('CADASTRAR_GRUPO_USUARIO')
+    new Autorizacao('CADASTRAR_GRUPO_USUARIO'),
+    new DefinePaginaMestra($this->getServerRequest(), $session)
 );
 
 $router->get(
@@ -135,7 +146,8 @@ $router->get(
     [GrupoUsuarioController::class, 'formAlterarGrupoUsuario']
 )->middlewares(
     new VerificarLogon($session),
-    new Autorizacao('EDITAR_GRUPO_USUARIO')
+    new Autorizacao('EDITAR_GRUPO_USUARIO'),
+    new DefinePaginaMestra($this->getServerRequest(), $session)
 );
 
 $router->get(
@@ -143,7 +155,8 @@ $router->get(
     [GrupoUsuarioController::class, 'detalheGrupoUsuario']
 )->middlewares(
     new VerificarLogon($session),
-    new Autorizacao('VISUALIZAR_GRUPOS_USUARIOS')
+    new Autorizacao('VISUALIZAR_GRUPOS_USUARIOS'),
+    new DefinePaginaMestra($this->getServerRequest(), $session)
 );
 
 $router->post(
@@ -175,7 +188,8 @@ $router->get(
     [ConfigurarPermissoesController::class, 'formConfigurarPermissao']
 )->middlewares(
     new VerificarLogon($session),
-    new Autorizacao('GERENCIAR_PERMISSOES_GRUPOS')
+    new Autorizacao('GERENCIAR_PERMISSOES_GRUPOS'),
+    new DefinePaginaMestra($this->getServerRequest(), $session)
 );
 
 $router->post(
@@ -210,7 +224,8 @@ $router->get(
     [CadastroPermissaoController::class, 'listaPermissoesUsuarios']
 )->middlewares(
     new VerificarLogon($session),
-    new Autorizacao('CRIAR_PERMISSOES_USUARIO')
+    new Autorizacao('CRIAR_PERMISSOES_USUARIO'),
+    new DefinePaginaMestra($this->getServerRequest(), $session)
 );
 
 $router->get(
@@ -218,7 +233,8 @@ $router->get(
     [CadastroPermissaoController::class, 'formNovaPermissaoUsuario']
 )->middlewares(
     new VerificarLogon($session),
-    new Autorizacao('CRIAR_PERMISSOES_USUARIO')
+    new Autorizacao('CRIAR_PERMISSOES_USUARIO'),
+    new DefinePaginaMestra($this->getServerRequest(), $session)
 );
 
 $router->post(
@@ -234,7 +250,8 @@ $router->get(
     [CadastroPermissaoController::class, 'formEditarPermissaoUsuario']
 )->middlewares(
     new VerificarLogon($session),
-    new Autorizacao('EDITAR_PERMISSOES_USUARIO')
+    new Autorizacao('EDITAR_PERMISSOES_USUARIO'),
+    new DefinePaginaMestra($this->getServerRequest(), $session)
 );
 
 $router->post(
@@ -250,7 +267,8 @@ $router->get(
     [CadastroPermissaoController::class, 'detalhePermissaoUsuario']
 )->middlewares(
     new VerificarLogon($session),
-    new Autorizacao('CRIAR_PERMISSOES_USUARIO')
+    new Autorizacao('CRIAR_PERMISSOES_USUARIO'),
+    new DefinePaginaMestra($this->getServerRequest(), $session)
 );
 
 $router->post(
@@ -265,6 +283,8 @@ $router->post(
 $router->get(
     '/painel-dlx/login',
     [LoginController::class, 'formLogin']
+)->middlewares(
+    new DefinePaginaMestra($this->getServerRequest(), $session)
 );
 
 $router->post(
@@ -280,6 +300,8 @@ $router->get(
 $router->get(
     '/painel-dlx/recuperar-senha',
     [ResetSenhaController::class, 'formSolicitarResetSenha']
+)->middlewares(
+    new DefinePaginaMestra($this->getServerRequest(), $session)
 );
 
 $router->post(
@@ -290,12 +312,16 @@ $router->post(
 $router->get(
     '/painel-dlx/recuperar-minha-senha',
     [ResetSenhaController::class, 'formResetSenha']
+)->middlewares(
+    new DefinePaginaMestra($this->getServerRequest(), $session)
 );
 
 $router->post(
     '/painel-dlx/recuperar-minha-senha',
     [ResetSenhaController::class, 'resetarSenha']
-)->middlewares(new CriptografarSenhas('senha_nova', 'senha_confirm'));
+)->middlewares(
+    new CriptografarSenhas('senha_nova', 'senha_confirm')
+);
 
 // Minha conta ------------------------------------------------------------------------------------------------------ //
 $router->get(
@@ -307,7 +333,8 @@ $router->get(
     '/painel-dlx/alterar-minha-senha',
     [MinhaContaController::class, 'formAlterarMinhaSenha']
 )->middlewares(
-    new VerificarLogon($session)
+    new VerificarLogon($session),
+    new DefinePaginaMestra($this->getServerRequest(), $session)
 );
 
 $router->post(
@@ -324,7 +351,8 @@ $router->get(
     [ConfigSmtpController::class, 'listaConfigSmtp']
 )->middlewares(
     new VerificarLogon($session),
-    new Autorizacao('VER_CONFIGURACOES_SMTP')
+    new Autorizacao('VER_CONFIGURACOES_SMTP'),
+    new DefinePaginaMestra($this->getServerRequest(), $session)
 );
 
 $router->get(
@@ -332,7 +360,8 @@ $router->get(
     [NovaConfigSmtpController::class, 'formNovaConfigSmtp']
 )->middlewares(
     new VerificarLogon($session),
-    new Autorizacao('CRIAR_CONFIGURACAO_SMTP')
+    new Autorizacao('CRIAR_CONFIGURACAO_SMTP'),
+    new DefinePaginaMestra($this->getServerRequest(), $session)
 );
 
 $router->post(
@@ -348,7 +377,8 @@ $router->get(
     [EditarConfigSmtpController::class, 'formEditarConfigSmtp']
 )->middlewares(
     new VerificarLogon($session),
-    new Autorizacao('EDITAR_CONFIGURACAO_SMTP')
+    new Autorizacao('EDITAR_CONFIGURACAO_SMTP'),
+    new DefinePaginaMestra($this->getServerRequest(), $session)
 );
 
 $router->post(
@@ -372,7 +402,8 @@ $router->get(
     [ConfigSmtpController::class, 'detalheConfigSmtp']
 )->middlewares(
     new VerificarLogon($session),
-    new Autorizacao('VER_CONFIGURACOES_SMTP')
+    new Autorizacao('VER_CONFIGURACOES_SMTP'),
+    new DefinePaginaMestra($this->getServerRequest(), $session)
 );
 
 // TODO: Teste de email é GET ou POST?
@@ -396,4 +427,4 @@ $router->post(
 $router->get(
     '/painel-dlx/erro-http',
     [ErroHttp::class, 'exibirPaginaErro']
-);
+)->middlewares(new DefinePaginaMestra($this->getServerRequest(), $session));

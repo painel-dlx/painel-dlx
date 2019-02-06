@@ -61,7 +61,7 @@ class ConfigSmtpController extends SiteController
     {
         parent::__construct($view, $commandBus);
 
-        $this->view->setPaginaMestra('src/Presentation/Site/public/views/paginas-mestras/painel-dlx-master.phtml');
+        $this->view->setPaginaMestra("src/Presentation/Site/public/views/paginas-mestras/{$session->get('vilex:pagina-mestra')}.phtml");
         $this->view->setViewRoot('src/Presentation/Site/public/views/emails');
         $this->session = $session;
     }
