@@ -27,8 +27,13 @@ namespace PainelDLX\Domain\Modulos\Repositories;
 
 
 use DLX\Domain\Repositories\EntityRepositoryInterface;
+use PainelDLX\Domain\Usuarios\Entities\Usuario;
 
 interface MenuRepositoryInterface extends EntityRepositoryInterface
 {
-
+    /**
+     * Lista de itens para gerar o menu
+     * @return array
+     */
+    public function getListaMenu(Usuario $usuario);
 }

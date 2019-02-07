@@ -27,9 +27,26 @@ namespace PainelDLX\Infra\ORM\Doctrine\Repositories;
 
 
 use DLX\Infra\ORM\Doctrine\Repositories\EntityRepository;
+use PainelDLX\Domain\Modulos\Entities\Menu;
+use PainelDLX\Domain\Modulos\Entities\MenuItem;
 use PainelDLX\Domain\Modulos\Repositories\MenuRepositoryInterface;
+use PainelDLX\Domain\Usuarios\Entities\Usuario;
 
 class MenuRepository extends EntityRepository implements MenuRepositoryInterface
 {
 
+    /**
+     * Lista de itens para gerar o menu
+     * @return array
+     */
+    public function getListaMenu(Usuario $usuario)
+    {
+        $qb = $this->_em->createQueryBuilder();
+        $qb->select('partial a.{nome}, i.{nome, link}')
+            ->from(Menu::class, 'm')
+            ->innerJoin(MenuItem::class, 'i', 'i.menu_id = m.menu_id and i.deletado = 0')
+            ->where('m.deletado = 0');
+
+        return  $qb->getQuery()->getResult();
+    }
 }

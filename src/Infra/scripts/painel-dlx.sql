@@ -80,3 +80,29 @@ CREATE TABLE dlx_envio_email_log (
     constraint FK_dlx_envio_email_log_config_smtp_id foreign key (config_smtp_id)
         references dlx_config_smtp (config_email_id)
 ) ENGINE=INNODB;
+
+-- Menu
+CREATE TABLE dlx_menu (
+    menu_id int not null primary key auto_increment,
+    nome varchar(50) not null,
+    deletado bool not null default 0
+) ENGINE=INNODB;
+
+CREATE TABLE dlx_menu_item (
+    menu_item_id int not null primary key auto_increment,
+    menu_id int not null,
+    nome varchar(50) not null,
+    link varchar(50) not null,
+    deletado bool not null default 1
+) ENGINE=INNODB;
+
+-- DECLARE menu_id INT;
+INSERT INTO dlx_menu (nome) VALUES ('Admin');
+
+SET @menu_id = LAST_INSERT_ID()
+
+INSERT INTO dlx_menu_item (menu_id, nome, link) VALUES
+    (@menu_id, 'Usuários', '/painel-dlx/usuarios'),
+    (@menu_id, 'Grupos de Usuários', '/painel-dlx/grupos-de-usuarios'),
+    (@menu_id, 'Permissões', '/painel-dlx/permissoes'),
+    (@menu_id, 'Configurações SMTP', '/painel-dlx/config-smtp');

@@ -29,6 +29,7 @@ namespace PainelDLX\Domain\Modulos\Entities;
 use DLX\Domain\Entities\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use function foo\func;
 
 class Menu extends Entity
 {

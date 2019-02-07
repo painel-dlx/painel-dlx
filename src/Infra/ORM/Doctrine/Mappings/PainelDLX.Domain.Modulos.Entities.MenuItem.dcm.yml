@@ -1,7 +1,7 @@
-PainelDLX\Domain\Modulos\Entities\MenuItem:
+PainelDLX\Domain\Modulos\Entities\Menu:
     type: entity
-    table: dlx_menu
-    repositoryClass: PainelDLX\Infra\ORM\Doctrine\Repositories\MenuItemRepository
+    table: dlx_config_smtp
+    repositoryClass: PainelDLX\Infra\ORM\Doctrine\Repositories\MenuRepository
     id:
         menu_item_id:
             type: integer
@@ -13,11 +13,11 @@ PainelDLX\Domain\Modulos\Entities\MenuItem:
         nome:
             type: string
             nullable: false
-            length: 30
+            length: 50
         link:
             type: string
             nullable: false
-            length: 30
+            length: 50
     manyToOne:
         menu:
             targetEntity: Menu
