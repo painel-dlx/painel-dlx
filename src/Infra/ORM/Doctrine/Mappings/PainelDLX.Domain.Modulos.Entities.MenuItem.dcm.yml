@@ -1,7 +1,7 @@
-PainelDLX\Domain\Modulos\Entities\Menu:
+PainelDLX\Domain\Modulos\Entities\MenuItem:
     type: entity
-    table: dlx_config_smtp
-    repositoryClass: PainelDLX\Infra\ORM\Doctrine\Repositories\MenuRepository
+    table: dlx_menu_item
+    repositoryClass: PainelDLX\Infra\ORM\Doctrine\Repositories\MenuItemRepository
     id:
         menu_item_id:
             type: integer

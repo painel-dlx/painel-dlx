@@ -96,10 +96,17 @@ CREATE TABLE dlx_menu_item (
     deletado bool not null default 1
 ) ENGINE=INNODB;
 
+CREATE TABLE dlx_menu_item_x_permissao (
+    menu_item_id int not null,
+    permissao_usuario_id int not null,
+    constraint FK_dlx_menu_item_x_permissao_menu_item_id foreign key (menu_item_id) references dlx_menu_item (menu_item_id) on delete cascade,
+    constraint FK_dlx_menu_item_x_permissao_permissao_usuario_id foreign key (permissao_usuario_id) references dlx_permissoes_usuario (permissao_usuario_id) on delete cascade
+) ENGINE=INNODB;
+
 -- DECLARE menu_id INT;
 INSERT INTO dlx_menu (nome) VALUES ('Admin');
 
-SET @menu_id = LAST_INSERT_ID()
+SET @menu_id = LAST_INSERT_ID();
 
 INSERT INTO dlx_menu_item (menu_id, nome, link) VALUES
     (@menu_id, 'Usuários', '/painel-dlx/usuarios'),

@@ -1,6 +1,6 @@
 PainelDLX\Domain\Modulos\Entities\Menu:
     type: entity
-    table: dlx_config_smtp
+    table: dlx_menu
     repositoryClass: PainelDLX\Infra\ORM\Doctrine\Repositories\MenuRepository
     id:
         menu_id:
