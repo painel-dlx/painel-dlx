@@ -44,15 +44,16 @@ class MenuRepository extends EntityRepository implements MenuRepositoryInterface
     public function getListaMenu(Usuario $usuario)
     {
         $qb = $this->_em->createQueryBuilder();
-        $qb->select('partial a.{nome}, i.{nome, link}')
+        $qb->select('partial a.{nome}, partial i.{nome, link}')
             ->from(Menu::class, 'm')
-            ->innerJoin(MenuItem::class, 'i', Join::ON, 'i.menu_id = m.menu_id and i.deletado = 0')
-            ->innerJoin(MenuItemPermissao::class, 'p', Join::ON, 'p.menu_item = i.menu_item_id')
-            ->innerJoin('dlx_permissao_x_grupos', 'pxg', Join::ON, 'p.permissao = pxg.permissao_usuario_id')
-            ->innerJoin('dlx_grupos_x_usuarios', 'gxu', Join::ON, 'gxu.permissao_usuario_id = pxg.permissao_usuario_id')
+            ->innerJoin(MenuItem::class, 'i', Join::WITH, 'i.menu_id = m.menu_id and i.deletado = 0')
+            ->innerJoin(MenuItemPermissao::class, 'p', Join::WITH, 'p.menu_item = i.menu_item_id')
+            ->innerJoin('dlx_permissao_x_grupos', 'pxg', Join::WITH, 'p.permissao = pxg.permissao_usuario_id')
+            ->innerJoin('dlx_grupos_x_usuarios', 'gxu', Join::WITH, 'gxu.permissao_usuario_id = pxg.permissao_usuario_id')
             ->where('m.deletado = 0')
             ->andWhere('i.deletado = 0')
-            ->andWhere("gxu.usuario_id = {$usuario->getUsuarioId()}");
+            ->andWhere('gxu.usuario_id = :usuario_id')
+            ->setParameter(':usuario_id', $usuario->getUsuarioId());
 
         return  $qb->getQuery()->getResult();
     }

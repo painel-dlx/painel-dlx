@@ -23,29 +23,31 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Testes\Presentation\Site\GruposUsuarios\Controllers;
+namespace PainelDLX\Testes\Presentation\Site\Usuarios\Controllers;
 
 use DLX\Core\CommandBus\CommandBusAdapter;
 use DLX\Core\Configure;
-use DLX\Infra\EntityManagerX;
-use DLX\Infra\ORM\Doctrine\Services\TransacaoDoctrine;
 use League\Tactician\Container\ContainerLocator;
 use League\Tactician\Handler\CommandHandlerMiddleware;
 use League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor;
 use League\Tactician\Handler\MethodNameInflector\HandleInflector;
-use PainelDLX\Presentation\Site\GruposUsuarios\Controllers\ConfigurarPermissoesController;
+use PainelDLX\Presentation\Site\Usuarios\Controllers\LoginController;
 use PainelDLX\Testes\Application\UseCases\GruposUsuarios\NovoGrupoUsuario\NovoGrupoUsuarioHandlerTest;
+use PainelDLX\Testes\Application\UseCases\Usuarios\NovoUsuario\NovoUsuarioHandlerTest;
 use PainelDLX\Testes\PainelDLXTests;
 use Psr\Http\Message\ServerRequestInterface;
+use SechianeX\Contracts\SessionInterface;
 use SechianeX\Factories\SessionFactory;
 use Vilex\VileX;
 use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Diactoros\Response\JsonResponse;
 
-class ConfigurarPermissoesControllerTest extends PainelDLXTests
+class LoginControllerTest extends PainelDLXTests
 {
-    /** @var ConfigurarPermissoesController */
+    /** @var LoginController */
     private $controller;
+    /** @var SessionInterface */
+    private $session;
 
     /**
      * @throws \DLX\Core\Exceptions\ArquivoConfiguracaoNaoEncontradoException
@@ -59,61 +61,60 @@ class ConfigurarPermissoesControllerTest extends PainelDLXTests
     {
         parent::setUp();
 
-        $this->controller = new ConfigurarPermissoesController(
+        $this->session = SessionFactory::createPHPSession();
+
+        $this->controller = new LoginController(
             new VileX(),
             CommandBusAdapter::create(new CommandHandlerMiddleware(
                 new ClassNameExtractor,
                 new ContainerLocator($this->container, Configure::get('app', 'mapping')),
                 new HandleInflector
             )),
-            new TransacaoDoctrine(EntityManagerX::getInstance()),
-            SessionFactory::createPHPSession()
+            $this->session
         );
     }
 
     /**
-     * @throws \Vilex\Exceptions\ContextoInvalidoException
      * @throws \Vilex\Exceptions\PaginaMestraNaoEncontradaException
      * @throws \Vilex\Exceptions\ViewNaoEncontradaException
-     * @throws \Doctrine\ORM\ORMException
      */
-    public function test_FormConfigurarPermissao_deve_retornar_um_HtmlResponse()
+    public function test_FormLogin_deve_retornar_uma_instancia_HtmlResponse()
     {
-        $grupo_usuario = (new NovoGrupoUsuarioHandlerTest())->test_Handle();
-
         $request = $this->createMock(ServerRequestInterface::class);
-        $request
-            ->method('getQueryParams')
-            ->willReturn(['grupo_usuario_id' => $grupo_usuario->getGrupoUsuarioId()]);
 
         /** @var ServerRequestInterface $request */
-        $response = $this->controller->formConfigurarPermissao($request);
+        $response = $this->controller->formLogin($request);
 
         $this->assertInstanceOf(HtmlResponse::class, $response);
     }
 
     /**
-     * @throws \Doctrine\ORM\ORMException
+     * @throws \Exception
      */
-    public function test_SalvarConfiguracaoPermissao_deve_retornar_um_JsonResponse_sucesso()
+    public function test_FazerLogin_deve_retornar_um_JsonResponse_sucesso()
     {
-        $grupo_usuario = (new NovoGrupoUsuarioHandlerTest())->test_Handle();
+        $usuario = (new NovoUsuarioHandlerTest())->test_Handle();
 
         $request = $this->createMock(ServerRequestInterface::class);
         $request
             ->method('getParsedBody')
             ->willReturn([
-                'grupo_usuario_id' => $grupo_usuario->getGrupoUsuarioId(),
-                'permissao_usuario_ids' => range(1, 100)
+                'email' => $usuario->getEmail(),
+                'senha' => $usuario->getSenha()
             ]);
 
         /** @var ServerRequestInterface $request */
-        $response = $this->controller->salvarConfiguracaoPermissao($request);
+        $response = $this->controller->fazerLogin($request);
 
         $this->assertInstanceOf(JsonResponse::class, $response);
 
         $json = json_decode((string)$response->getBody());
 
         $this->assertEquals('sucesso', $json->retorno);
+    }
+
+    public function test_FazerLogout()
+    {
+
     }
 }

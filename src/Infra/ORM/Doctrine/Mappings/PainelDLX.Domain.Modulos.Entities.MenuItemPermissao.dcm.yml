@@ -1,4 +1,4 @@
-PainelDLX\Domain\Modulos\Entities\Menu:
+PainelDLX\Domain\Modulos\Entities\MenuItemPermissao:
     type: entity
     table: dlx_menu_item_x_permissao
     repositoryClass: PainelDLX\Infra\ORM\Doctrine\Repositories\MenuItemPermissaoRepository

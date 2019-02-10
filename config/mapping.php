@@ -48,6 +48,8 @@ use PainelDLX\Application\UseCases\Login\FazerLogin\FazerLoginCommand;
 use PainelDLX\Application\UseCases\Login\FazerLogin\FazerLoginHandler;
 use PainelDLX\Application\UseCases\Login\FazerLogout\FazerLogoutCommand;
 use PainelDLX\Application\UseCases\Login\FazerLogout\FazerLogoutHandler;
+use PainelDLX\Application\UseCases\Modulos\GetListaMenu\GetListaMenuCommand;
+use PainelDLX\Application\UseCases\Modulos\GetListaMenu\GetListaMenuHandler;
 use PainelDLX\Application\UseCases\PermissoesUsuario\CadastrarPermissaoUsuario\CadastrarPermissaoUsuarioCommand;
 use PainelDLX\Application\UseCases\PermissoesUsuario\CadastrarPermissaoUsuario\CadastrarPermissaoUsuarioHandler;
 use PainelDLX\Application\UseCases\PermissoesUsuario\EditarPermissaoUsuario\EditarPermissaoUsuarioCommand;
@@ -107,4 +109,5 @@ return [
     GetUsuarioPeloIdCommand::class => GetUsuarioPeloIdHandler::class,
     TestarConfigSmtpCommand::class => TestarConfigSmtpHandler::class,
     GetListaUsuariosCommand::class => GetListaUsuariosHandler::class,
+    GetListaMenuCommand::class => GetListaMenuHandler::class,
 ];

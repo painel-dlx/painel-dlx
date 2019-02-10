@@ -40,7 +40,7 @@ class GetUsuarioPeloIdHandlerTest extends PainelDLXTests
 
     public function test_Handle_deve_retornar_instancia_Usuario()
     {
-        $command = new GetUsuarioPeloIdCommand(1); // Diego Lepera
+        $command = new GetUsuarioPeloIdCommand(2); // Diego Lepera
         $usuario = $this->handler->handle($command);
 
         $this->assertInstanceOf(Usuario::class, $usuario);

@@ -32,6 +32,8 @@ use PainelDLX\Application\UseCases\Login\FazerLogin\FazerLoginCommand;
 use PainelDLX\Application\UseCases\Login\FazerLogin\FazerLoginHandler;
 use PainelDLX\Application\UseCases\Login\FazerLogout\FazerLogoutCommand;
 use PainelDLX\Application\UseCases\Login\FazerLogout\FazerLogoutHandler;
+use PainelDLX\Application\UseCases\Modulos\GetListaMenu\GetListaMenuCommand;
+use PainelDLX\Application\UseCases\Modulos\GetListaMenu\GetListaMenuHandler;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
 use PainelDLX\Presentation\Site\Controllers\SiteController;
 use Psr\Http\Message\ResponseInterface;
@@ -73,10 +75,9 @@ class LoginController extends SiteController
      */
     public function formLogin(ServerRequestInterface $request): ResponseInterface
     {
-        $get = filter_var_array(
-            $request->getQueryParams(),
-            ['redirect-url' => FILTER_DEFAULT]
-        );
+        $get = filter_var_array($request->getQueryParams(), [
+            'redirect-url' => FILTER_DEFAULT
+        ]);
 
         // JS
         $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js');
@@ -92,24 +93,24 @@ class LoginController extends SiteController
      */
     public function fazerLogin(ServerRequestInterface $request): ResponseInterface
     {
-        $get = filter_var_array($request->getParsedBody(), [
+        $post = filter_var_array($request->getParsedBody(), [
             'email' => FILTER_VALIDATE_EMAIL,
             'senha' => FILTER_DEFAULT,
             'redirect-url' => FILTER_DEFAULT
         ]);
-
-        /**
-         * @var string $email
-         * @var string $senha
-         */
-        extract($get); unset($get);
 
         try {
             /**
              * @covers FazerLoginHandler
              * @var Usuario|null $usuario
              */
-            $usuario = $this->command_bus->handle(new FazerLoginCommand($email, $senha));
+            $usuario = $this->command_bus->handle(new FazerLoginCommand($post['email'], $post['senha']));
+
+            /**
+             * @covers GetListaMenuHandler
+             */
+            $menu = $this->command_bus->handle(new GetListaMenuCommand($usuario));
+            $this->session->set('html:lista-menu', $menu);
 
             $json['retorno'] = 'sucesso';
             $json['mensagem'] = "Seja bem-vindo {$usuario->getNome()}!";

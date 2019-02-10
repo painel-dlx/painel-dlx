@@ -42,6 +42,8 @@ use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
 use PainelDLX\Domain\Emails\Repositories\ConfigSmtpRepositoryInterface;
 use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
 use PainelDLX\Domain\GruposUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
+use PainelDLX\Domain\Modulos\Entities\Menu;
+use PainelDLX\Domain\Modulos\Repositories\MenuRepositoryInterface;
 use PainelDLX\Domain\PermissoesUsuario\Entities\PermissaoUsuario;
 use PainelDLX\Domain\PermissoesUsuario\Repositories\PermissaoUsuarioRepositoryInterface;
 use PainelDLX\Domain\Usuarios\Entities\ResetSenha;
@@ -64,6 +66,7 @@ class PainelDLXServiceProvider extends AbstractServiceProvider
         ConfigSmtpRepositoryInterface::class,
         ResetSenhaRepositoryInterface::class,
         TransacaoInterface::class,
+        MenuRepositoryInterface::class,
     ];
 
     /**
@@ -120,6 +123,11 @@ class PainelDLXServiceProvider extends AbstractServiceProvider
         $container->add(
             TransacaoInterface::class,
             new TransacaoDoctrine(EntityManagerX::getInstance())
+        );
+
+        $container->add(
+            MenuRepositoryInterface::class,
+            EntityManagerX::getRepository(Menu::class)
         );
 
         $container->add(
