@@ -97,7 +97,7 @@ class CadastroUsuarioController extends SiteController
     public function listaUsuarios(ServerRequestInterface $request): ResponseInterface
     {
         try {
-            $lista_usuarios = $this->command_bus->handle(new GetListaUsuariosCommand($request->getQueryParams()));
+            $lista_usuarios = $this->command_bus->handle(new GetListaUsuariosCommand(/*$request->getQueryParams()*/[]));
 
             // Atributos
             $this->view->setAtributo('titulo-pagina', 'Usuários');

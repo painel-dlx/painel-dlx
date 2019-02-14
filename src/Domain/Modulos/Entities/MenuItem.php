@@ -27,6 +27,9 @@ namespace PainelDLX\Domain\Modulos\Entities;
 
 
 use DLX\Domain\Entities\Entity;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use PainelDLX\Domain\PermissoesUsuario\Entities\PermissaoUsuario;
 
 class MenuItem extends Entity
 {
@@ -38,6 +41,8 @@ class MenuItem extends Entity
     private $nome;
     /** @var string */
     private $link;
+    /** @var Collection */
+    private $permissoes;
 
     /**
      * @return int|null
@@ -112,6 +117,23 @@ class MenuItem extends Entity
     }
 
     /**
+     * @return Collection
+     */
+    public function getPermissoes(): Collection
+    {
+        return $this->permissoes;
+    }
+
+    /**
+     * @param MenuItemPermissao
+     */
+    public function addPermissao(MenuItemPermissao $menu_item_permissao): MenuItem
+    {
+        $this->permissoes->add($menu_item_permissao);
+        return $this;
+    }
+
+    /**
      * MenuItem constructor.
      * @param Menu $menu
      * @param string $nome
@@ -122,5 +144,6 @@ class MenuItem extends Entity
         $this->menu = $menu;
         $this->nome = $nome;
         $this->link = $link;
+        $this->permissoes = new ArrayCollection();
     }
 }

@@ -107,10 +107,12 @@ class LoginControllerTest extends PainelDLXTests
         $response = $this->controller->fazerLogin($request);
 
         $this->assertInstanceOf(JsonResponse::class, $response);
-
         $json = json_decode((string)$response->getBody());
-
         $this->assertEquals('sucesso', $json->retorno);
+
+        // Verificar na sessão foi adicionado o usuario logado e os itens do menu
+        $this->assertTrue($this->session->has('usuario-logado'));
+        $this->assertTrue($this->session->has('html:lista-menu'));
     }
 
     public function test_FazerLogout()

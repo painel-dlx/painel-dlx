@@ -113,51 +113,23 @@ $usuario = $session->get('usuario-logado');
             </ul>
         </div>
 
-        <?php
-        $has_cadastro_usuario = $usuario->hasPermissao('ACESSAR_CADASTRO_USUARIOS');
-        $has_grupos_usuarios = $usuario->hasPermissao('VISUALIZAR_GRUPOS_USUARIOS');
-        $has_permissoes_usuarios = $usuario->hasPermissao('CRIAR_PERMISSOES_USUARIO');
-        $has_configuracao_smtp = $usuario->hasPermissao('CRIAR_CONFIGURACAO_SMTP');
+        <?php foreach ($session->get('html:lista-menu') as $menu => $itens) :
+            if (count($itens)) : ?>
+            <div class="menu-item">
+                <span class="menu-link"><?php echo $menu ?></span>
 
-        if ($has_cadastro_usuario || $has_grupos_usuarios || $has_permissoes_usuarios || $has_configuracao_smtp) : ?>
-        <div class="menu-item">
-            <span class="menu-link">Admin</span>
-
-            <ul class="sub-menu">
-                <?php if ($has_cadastro_usuario) : ?>
-                    <li class="sub-menu-item">
-                        <a href="/painel-dlx/usuarios" class="sub-menu-link">
-                            Usuários
-                        </a>
-                    </li>
-                <?php endif;
-
-                if ($has_grupos_usuarios) : ?>
-                    <li class="sub-menu-item">
-                        <a href="/painel-dlx/grupos-de-usuarios" class="sub-menu-link">
-                            Grupos de Usuários
-                        </a>
-                    </li>
-                <?php endif;
-
-                if ($has_permissoes_usuarios) : ?>
-                    <li class="sub-menu-item">
-                        <a href="/painel-dlx/permissoes" class="sub-menu-link">
-                            Permissões
-                        </a>
-                    </li>
-                <?php endif;
-
-                if ($has_configuracao_smtp) : ?>
-                    <li class="sub-menu-item">
-                        <a href="/painel-dlx/config-smtp" class="sub-menu-link">
-                            Configurações SMTP
-                        </a>
-                    </li>
-                <?php endif; ?>
-            </ul>
-        </div>
+                <ul class="sub-menu">
+                    <?php foreach ($itens as $item) : ?>
+                        <li class="sub-menu-item">
+                            <a href="<?php echo $item['link'] ?>" class="sub-menu-link">
+                                <?php echo $item['item'] ?>
+                            </a>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
         <?php endif;
+        endforeach;
 
         if ($usuario instanceof Usuario) : ?>
             <div class="menu-item">

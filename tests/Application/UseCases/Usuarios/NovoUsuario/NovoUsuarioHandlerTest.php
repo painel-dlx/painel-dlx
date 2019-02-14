@@ -46,12 +46,15 @@ class NovoUsuarioHandlerTest extends PainelDLXTests
         $usuario_repository = EntityManagerX::getRepository(Usuario::class);
         /** @var GrupoUsuarioRepositoryInterface $grupo_usuario_repository */
         $grupo_usuario_repository = EntityManagerX::getRepository(GrupoUsuario::class);
+        /** @var GrupoUsuario $grupo_usuario */
+        $grupo_usuario = $grupo_usuario_repository->findOneBy(['alias' => 'ADMIN']);
 
         $handler = new NovoUsuarioHandler($usuario_repository, $grupo_usuario_repository);
 
         $senha = '123456';
         $usuario = new Usuario('Teste Unitário', 'teste@teste.com.br');
         $usuario->setSenha($senha);
+        $usuario->addGrupo($grupo_usuario);
 
         $command = new NovoUsuarioCommand($usuario, $senha);
         $handler->handle($command);

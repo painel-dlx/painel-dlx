@@ -93,7 +93,7 @@ CREATE TABLE dlx_menu_item (
     menu_id int not null,
     nome varchar(50) not null,
     link varchar(50) not null,
-    deletado bool not null default 1
+    deletado bool not null default 0
 ) ENGINE=INNODB;
 
 CREATE TABLE dlx_menu_item_x_permissao (
@@ -113,3 +113,12 @@ INSERT INTO dlx_menu_item (menu_id, nome, link) VALUES
     (@menu_id, 'Grupos de Usuários', '/painel-dlx/grupos-de-usuarios'),
     (@menu_id, 'Permissões', '/painel-dlx/permissoes'),
     (@menu_id, 'Configurações SMTP', '/painel-dlx/config-smtp');
+
+INSERT INTO dlx_menu_item_x_permissao
+    SELECT i.menu_item_id, p.permissao_usuario_id FROM dlx_menu_item i, dlx_permissoes_usuario p WHERE i.link = '/painel-dlx/usuarios' AND p.alias = 'ACESSAR_CADASTRO_USUARIOS'
+    UNION
+    SELECT i.menu_item_id, p.permissao_usuario_id FROM dlx_menu_item i, dlx_permissoes_usuario p WHERE i.link = '/painel-dlx/grupos-de-usuarios' AND p.alias = 'VISUALIZAR_GRUPOS_USUARIOS'
+    UNION
+    SELECT i.menu_item_id, p.permissao_usuario_id FROM dlx_menu_item i, dlx_permissoes_usuario p WHERE i.link = '/painel-dlx/permissoes' AND p.alias = 'CRIAR_PERMISSOES_USUARIO'
+    UNION
+    SELECT i.menu_item_id, p.permissao_usuario_id FROM dlx_menu_item i, dlx_permissoes_usuario p WHERE i.link = '/painel-dlx/config-smtp' AND p.alias = 'VER_CONFIGURACOES_SMTP'

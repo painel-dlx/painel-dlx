@@ -40,21 +40,47 @@ class MenuRepository extends EntityRepository implements MenuRepositoryInterface
     /**
      * Lista de itens para gerar o menu
      * @return array
+     * @throws \Doctrine\DBAL\DBALException
      */
     public function getListaMenu(Usuario $usuario)
     {
-        $qb = $this->_em->createQueryBuilder();
-        $qb->select('partial a.{nome}, partial i.{nome, link}')
-            ->from(Menu::class, 'm')
-            ->innerJoin(MenuItem::class, 'i', Join::WITH, 'i.menu_id = m.menu_id and i.deletado = 0')
-            ->innerJoin(MenuItemPermissao::class, 'p', Join::WITH, 'p.menu_item = i.menu_item_id')
-            ->innerJoin('dlx_permissao_x_grupos', 'pxg', Join::WITH, 'p.permissao = pxg.permissao_usuario_id')
-            ->innerJoin('dlx_grupos_x_usuarios', 'gxu', Join::WITH, 'gxu.permissao_usuario_id = pxg.permissao_usuario_id')
-            ->where('m.deletado = 0')
-            ->andWhere('i.deletado = 0')
-            ->andWhere('gxu.usuario_id = :usuario_id')
-            ->setParameter(':usuario_id', $usuario->getUsuarioId());
+        $query = '
+            SELECT DISTINCT 
+                m.nome AS menu,
+                i.nome AS item,
+                i.link AS link
+            FROM
+                dlx_menu m
+            INNER JOIN
+                dlx_menu_item i ON i.menu_id = m.menu_id
+            INNER JOIN
+                dlx_menu_item_x_permissao p ON i.menu_item_id = p.menu_item_id
+            INNER JOIN
+                dlx_permissoes_x_grupos pxg ON pxg.permissao_usuario_id = p.permissao_usuario_id
+            INNER JOIN
+                dlx_grupos_x_usuarios gxu ON gxu.grupo_usuario_id = pxg.grupo_usuario_id
+            WHERE
+                m.deletado = 0
+                AND i.deletado = 0
+                AND gxu.usuario_id = :usuario_id
+        ';
 
-        return  $qb->getQuery()->getResult();
+
+        $conn = $this->_em->getConnection();
+
+        $sql = $conn->prepare($query);
+        $sql->bindValue(':usuario_id', $usuario->getUsuarioId());
+        $sql->execute();
+
+        $lista_menu = $sql->fetchAll();
+        $lista_menu_alterada = [];
+
+        array_map(function ($menu_item) use (&$lista_menu_alterada) {
+            $menu = $menu_item['menu'];
+            unset($menu_item['menu']);
+            $lista_menu_alterada[$menu][] = $menu_item;
+        }, $lista_menu);
+
+        return $lista_menu_alterada;
     }
 }

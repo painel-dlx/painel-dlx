@@ -25,3 +25,9 @@ PainelDLX\Domain\Modulos\Entities\MenuItem:
             joinColumns:
                 idMenu:
                     referencedColumnName: idMenu
+    oneToMany:
+        permissoes:
+            targetEntity: MenuItemPermissao
+            joinColumns:
+                menu_item_id:
+                    referencedColumnName: menu_item_id
