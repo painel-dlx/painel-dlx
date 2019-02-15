@@ -1,14 +1,23 @@
-@mixin gerar-colunas ($id, $qtde-colunas, $tela-tm-min, $tela-tm-max) {
+@mixin gerar-colunas ($id, $qtde-colunas, $tela-tm-min, $tela-tm-max, $mg: 0) {
     @media (min-width: $tela-tm-min) and (max-width: $tela-tm-max) {
         @for $i from 1 through $qtde-colunas {
-            $tm: (100% / $qtde-colunas) * $i;
+            // $tm: (100% / $qtde-colunas) * $i;
+            $qtde-elem: floor($qtde-colunas / $i);
+            $qtde-margens: $qtde-elem - 1;
+            $tm-margens: $mg * $qtde-margens;
+            $tm-conteudo: ((100% - $tm-margens) / $qtde-colunas) * $i;
 
             .flex-box-#{$id}-col-#{$i} {
                 // Flex
-                flex: $tm 0 1;
+                flex: $tm-conteudo 0 1;
 
                 // Tamanho
                 box-sizing: border-box;
+
+                &:not(:nth-child(#{$qtde-elem}n)) {
+                    // Margens
+                    margin-right: $mg;
+                }
             }
         }
     }

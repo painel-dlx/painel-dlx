@@ -1,0 +1,44 @@
+.widget-home {
+    // Visuak
+    background: #FFF;
+    border-radius: 3px;
+    box-shadow: 0 0 3px rgba(black, .3);
+
+    // Margens
+    padding: 5px;
+
+    &-titulo {
+        // Texto
+        color: orange;
+        font-size: 16px;
+
+        // Margens
+        margin-bottom: 5px;
+    }
+
+    &-conteudo {
+        // Tamanho
+        min-height: 100px;
+
+        // Posicionamento
+        position: relative;
+
+        &::before {
+            // Conteúdo
+           content: 'Carregando widget...';
+
+            // Posicionamento
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            z-index: 0;
+
+            // Transformar
+            transform: translate(-50%, -50%);
+
+            // Texto
+            font-size: small;
+            color: #AAA;
+        }
+    }
+}

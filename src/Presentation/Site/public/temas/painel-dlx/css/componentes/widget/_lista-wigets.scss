@@ -1,0 +1,22 @@
+.lista-widgets {
+    // Flex
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+
+    > .widget-home {
+        // Flex
+        flex-shrink: 0;
+        flex-grow: 0;
+
+        // Configurar colunas flexíveis
+        @extend .flex-box-mp-col-3;
+        @extend .flex-box-pq-col-6;
+        @extend .flex-box-md-col-4;
+        @extend .flex-box-gd-col-3;
+        @extend .flex-box-mg-col-3;
+
+        // Margens
+        margin-bottom: 10px;
+    }
+}
