@@ -169,4 +169,28 @@ class MinhaContaController extends SiteController
 
         return new JsonResponse($json);
     }
+
+    /**
+     * @return \Zend\Diactoros\Response\HtmlResponse
+     * @throws \Vilex\Exceptions\ContextoInvalidoException
+     * @throws \Vilex\Exceptions\PaginaMestraNaoEncontradaException
+     * @throws \Vilex\Exceptions\ViewNaoEncontradaException
+     */
+    public function resumoInformacoes(ServerRequestInterface $request): ResponseInterface
+    {
+        try {
+            // Visão
+            $this->view->addTemplate('resumo_infos', [
+                'usuario' => $this->usuario_logado
+            ]);
+        } catch (UserException $e) {
+            $this->view->addTemplate('../mensagem_usuario');
+            $this->view->setAtributo('mensagem', [
+                'tipo' => 'erro',
+                'texto' => $e->getMessage()
+            ]);
+        }
+
+        return $this->view->render();
+    }
 }

@@ -18,27 +18,29 @@
 
     &-conteudo {
         // Tamanho
-        min-height: 100px;
+        min-height: 120px;
 
         // Posicionamento
         position: relative;
 
-        &::before {
-            // Conteúdo
-           content: 'Carregando widget...';
+        &:empty {
+            &::before {
+                // Conteúdo
+                content: 'Carregando widget...';
 
-            // Posicionamento
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            z-index: 0;
+                // Posicionamento
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                z-index: 0;
 
-            // Transformar
-            transform: translate(-50%, -50%);
+                // Transformar
+                transform: translate(-50%, -50%);
 
-            // Texto
-            font-size: small;
-            color: #AAA;
+                // Texto
+                font-size: small;
+                color: #AAA;
+            }
         }
     }
 }

@@ -349,6 +349,13 @@ $router->post(
     new CriptografarSenhas('senha_atual', 'senha_nova', 'senha_confirm')
 );
 
+$router->get(
+    '/painel-dlx/resumo-usuario-logado',
+    [MinhaContaController::class, 'resumoInformacoes']
+)->middlewares(
+    new VerificarLogon($session)
+);
+
 // Configurações SMTP ----------------------------------------------------------------------------------------------- //
 $router->get(
     '/painel-dlx/config-smtp',

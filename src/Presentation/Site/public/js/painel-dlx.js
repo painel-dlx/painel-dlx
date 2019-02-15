@@ -92,3 +92,15 @@ function testarConfigSmtp(config_smtp_id) {
         'json'
     );
 }
+
+// Carregar conteúdo dos widgets ------------------------------------------------------------------------------------ //
+$(window).on('load.__widgets', function () {
+    $('[data-widget-url]').each(function () {
+        var $this = $(this);
+        var url_conteudo = $this.data('widget-url');
+
+        $.get(url_conteudo, {'pg-mestra': 'conteudo-master'}, function (html) {
+            $this.find('.widget-home-conteudo').html(html);
+        });
+    });
+});

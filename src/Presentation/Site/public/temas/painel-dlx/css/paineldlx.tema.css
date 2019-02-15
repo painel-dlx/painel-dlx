@@ -94,10 +94,10 @@ body {
     .flex-box-pq-col-2:not(:nth-child(3n)) {
       margin-right: 1.25%; }
 
-  .flex-box-pq-col-3, .layout-barra-lateral > .barra-lateral, .layout-barra-lateral > *, .lista-permissoes > .permissao, .erro-http-titulo, .erro-http-descricao {
+  .flex-box-pq-col-3, .layout-barra-lateral > .barra-lateral, .layout-barra-lateral > *, .lista-permissoes > .permissao, .erro-http-titulo, .erro-http-descricao, .lista-widgets > .widget-home {
     flex: 49.375% 0 1;
     box-sizing: border-box; }
-    .flex-box-pq-col-3:not(:nth-child(2n)), .layout-barra-lateral > :not(:nth-child(2n)), .lista-permissoes > .permissao:not(:nth-child(2n)), .erro-http-titulo:not(:nth-child(2n)), .erro-http-descricao:not(:nth-child(2n)) {
+    .flex-box-pq-col-3:not(:nth-child(2n)), .layout-barra-lateral > :not(:nth-child(2n)), .lista-permissoes > .permissao:not(:nth-child(2n)), .erro-http-titulo:not(:nth-child(2n)), .erro-http-descricao:not(:nth-child(2n)), .lista-widgets > .widget-home:not(:nth-child(2n)) {
       margin-right: 1.25%; }
 
   .flex-box-pq-col-4 {
@@ -112,10 +112,10 @@ body {
     .flex-box-pq-col-5:not(:nth-child(1n)) {
       margin-right: 1.25%; }
 
-  .flex-box-pq-col-6, .lista-widgets > .widget-home {
+  .flex-box-pq-col-6 {
     flex: 100% 0 1;
     box-sizing: border-box; }
-    .flex-box-pq-col-6:not(:nth-child(1n)), .lista-widgets > .widget-home:not(:nth-child(1n)) {
+    .flex-box-pq-col-6:not(:nth-child(1n)) {
       margin-right: 1.25%; } }
 @media (min-width: 801px) and (max-width: 1024px) {
   .flex-box-md-col-1 {
@@ -136,10 +136,10 @@ body {
     .flex-box-md-col-3:not(:nth-child(4n)), .layout-barra-lateral > .barra-lateral:not(:nth-child(4n)), .erro-http-titulo:not(:nth-child(4n)) {
       margin-right: 1%; }
 
-  .flex-box-md-col-4, .lista-permissoes > .permissao, .lista-widgets > .widget-home {
+  .flex-box-md-col-4, .lista-permissoes > .permissao {
     flex: 32.6666666667% 0 1;
     box-sizing: border-box; }
-    .flex-box-md-col-4:not(:nth-child(3n)), .lista-permissoes > .permissao:not(:nth-child(3n)), .lista-widgets > .widget-home:not(:nth-child(3n)) {
+    .flex-box-md-col-4:not(:nth-child(3n)), .lista-permissoes > .permissao:not(:nth-child(3n)) {
       margin-right: 1%; }
 
   .flex-box-md-col-5 {
@@ -148,10 +148,10 @@ body {
     .flex-box-md-col-5:not(:nth-child(2n)) {
       margin-right: 1%; }
 
-  .flex-box-md-col-6 {
+  .flex-box-md-col-6, .lista-widgets > .widget-home {
     flex: 49.5% 0 1;
     box-sizing: border-box; }
-    .flex-box-md-col-6:not(:nth-child(2n)) {
+    .flex-box-md-col-6:not(:nth-child(2n)), .lista-widgets > .widget-home:not(:nth-child(2n)) {
       margin-right: 1%; }
 
   .flex-box-md-col-7 {
@@ -202,16 +202,16 @@ body {
     .flex-box-gd-col-2:not(:nth-child(6n)) {
       margin-right: 0.75%; }
 
-  .flex-box-gd-col-3, .layout-barra-lateral > .barra-lateral, .lista-permissoes > .permissao, .erro-http-titulo, .lista-widgets > .widget-home {
+  .flex-box-gd-col-3, .layout-barra-lateral > .barra-lateral, .lista-permissoes > .permissao, .erro-http-titulo {
     flex: 24.4375% 0 1;
     box-sizing: border-box; }
-    .flex-box-gd-col-3:not(:nth-child(4n)), .layout-barra-lateral > .barra-lateral:not(:nth-child(4n)), .lista-permissoes > .permissao:not(:nth-child(4n)), .erro-http-titulo:not(:nth-child(4n)), .lista-widgets > .widget-home:not(:nth-child(4n)) {
+    .flex-box-gd-col-3:not(:nth-child(4n)), .layout-barra-lateral > .barra-lateral:not(:nth-child(4n)), .lista-permissoes > .permissao:not(:nth-child(4n)), .erro-http-titulo:not(:nth-child(4n)) {
       margin-right: 0.75%; }
 
-  .flex-box-gd-col-4 {
+  .flex-box-gd-col-4, .lista-widgets > .widget-home {
     flex: 32.8333333333% 0 1;
     box-sizing: border-box; }
-    .flex-box-gd-col-4:not(:nth-child(3n)) {
+    .flex-box-gd-col-4:not(:nth-child(3n)), .lista-widgets > .widget-home:not(:nth-child(3n)) {
       margin-right: 0.75%; }
 
   .flex-box-gd-col-5 {
@@ -621,7 +621,7 @@ body {
   border-bottom: 4px solid #940500;
   color: #FFF; }
 
-.botao, .botao-salvar, .botao-alterar-senha, .botao-reset-senha, .botao-gerenciar-permissoes, .botao-voltar, .botao-testar-email {
+.botao, .botao-salvar, .botao-alterar-senha, .botao-reset-senha, .botao-gerenciar-permissoes, .botao-voltar, .botao-testar-email, .botao-perfil-usuario {
   display: inline-block;
   border: none;
   border-bottom: 4px solid;
@@ -633,15 +633,15 @@ body {
   text-decoration: none;
   color: #FFF;
   font-size: 11px; }
-  .botao:hover, .botao-salvar:hover, .botao-alterar-senha:hover, .botao-reset-senha:hover, .botao-gerenciar-permissoes:hover, .botao-voltar:hover, .botao-testar-email:hover {
+  .botao:hover, .botao-salvar:hover, .botao-alterar-senha:hover, .botao-reset-senha:hover, .botao-gerenciar-permissoes:hover, .botao-voltar:hover, .botao-testar-email:hover, .botao-perfil-usuario:hover {
     cursor: pointer; }
-  .botao:active, .botao-salvar:active, .botao-alterar-senha:active, .botao-reset-senha:active, .botao-gerenciar-permissoes:active, .botao-voltar:active, .botao-testar-email:active, .botao:focus, .botao-salvar:focus, .botao-alterar-senha:focus, .botao-reset-senha:focus, .botao-gerenciar-permissoes:focus, .botao-voltar:focus, .botao-testar-email:focus {
+  .botao:active, .botao-salvar:active, .botao-alterar-senha:active, .botao-reset-senha:active, .botao-gerenciar-permissoes:active, .botao-voltar:active, .botao-testar-email:active, .botao-perfil-usuario:active, .botao:focus, .botao-salvar:focus, .botao-alterar-senha:focus, .botao-reset-senha:focus, .botao-gerenciar-permissoes:focus, .botao-voltar:focus, .botao-testar-email:focus, .botao-perfil-usuario:focus {
     outline: none; }
 
-.botao-submit, .botao-salvar, .botao-alterar-senha, .botao-reset-senha, .botao-voltar {
+.botao-submit, .botao-salvar, .botao-alterar-senha, .botao-reset-senha, .botao-voltar, .botao-perfil-usuario {
   background: #83c129;
   border-bottom-color: #69ad21; }
-  .botao-submit:hover, .botao-salvar:hover, .botao-alterar-senha:hover, .botao-reset-senha:hover, .botao-voltar:hover {
+  .botao-submit:hover, .botao-salvar:hover, .botao-alterar-senha:hover, .botao-reset-senha:hover, .botao-voltar:hover, .botao-perfil-usuario:hover {
     background: #7bbe20; }
 
 .botao-comum, .botao-testar-email {
@@ -949,9 +949,9 @@ body {
     font-size: 16px;
     margin-bottom: 5px; }
   .widget-home-conteudo {
-    min-height: 100px;
+    min-height: 120px;
     position: relative; }
-    .widget-home-conteudo::before {
+    .widget-home-conteudo:empty::before {
       content: 'Carregando widget...';
       position: absolute;
       top: 50%;
@@ -963,8 +963,7 @@ body {
 
 .lista-widgets {
   display: flex;
-  flex-flow: row wrap;
-  justify-content: space-between; }
+  flex-flow: row wrap; }
   .lista-widgets > .widget-home {
     flex-shrink: 0;
     flex-grow: 0;
