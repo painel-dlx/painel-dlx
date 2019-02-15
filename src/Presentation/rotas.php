@@ -34,6 +34,7 @@ use PainelDLX\Presentation\Site\Emails\Controllers\NovaConfigSmtpController;
 use PainelDLX\Presentation\Site\ErrosHttp\Controllers\ErroHttp;
 use PainelDLX\Presentation\Site\GruposUsuarios\Controllers\ConfigurarPermissoesController;
 use PainelDLX\Presentation\Site\GruposUsuarios\Controllers\GrupoUsuarioController;
+use PainelDLX\Presentation\Site\Home\Controllers\PaginaInicialController;
 use PainelDLX\Presentation\Site\PermissoesUsuario\Controllers\CadastroPermissaoController;
 use PainelDLX\Presentation\Site\Usuarios\Controllers\AlterarSenhaUsuarioController;
 use PainelDLX\Presentation\Site\Usuarios\Controllers\CadastroUsuarioController;
@@ -53,12 +54,10 @@ $session = SessionFactory::createPHPSession();
 //  ----------------------------------------------------------------------------------------------------------------- //
 $router->get(
     '/',
-    [CadastroUsuarioController::class, 'listaUsuarios']
+    [PaginaInicialController::class, 'home']
 )->middlewares(
     new VerificarLogon($session),
-    new Autorizacao('ACESSAR_CADASTRO_USUARIOS'),
-    new DefinePaginaMestra($this->getServerRequest(), $session),
-    new LimparQueryString($this)
+    new DefinePaginaMestra($this->getServerRequest(), $session)
 );
 
 // Cadastro de Usuários --------------------------------------------------------------------------------------------- //

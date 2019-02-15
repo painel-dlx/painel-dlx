@@ -44,6 +44,8 @@ use PainelDLX\Application\UseCases\GruposUsuarios\GetGrupoUsuarioPorId\GetGrupoU
 use PainelDLX\Application\UseCases\GruposUsuarios\GetGrupoUsuarioPorId\GetGrupoUsuarioPorIdHandler;
 use PainelDLX\Application\UseCases\GruposUsuarios\NovoGrupoUsuario\NovoGrupoUsuarioCommand;
 use PainelDLX\Application\UseCases\GruposUsuarios\NovoGrupoUsuario\NovoGrupoUsuarioHandler;
+use PainelDLX\Application\UseCases\Home\GetListaWigets\GetListaWidgetsCommand;
+use PainelDLX\Application\UseCases\Home\GetListaWigets\GetListaWidgetsHandler;
 use PainelDLX\Application\UseCases\Login\FazerLogin\FazerLoginCommand;
 use PainelDLX\Application\UseCases\Login\FazerLogin\FazerLoginHandler;
 use PainelDLX\Application\UseCases\Login\FazerLogout\FazerLogoutCommand;
@@ -110,4 +112,5 @@ return [
     TestarConfigSmtpCommand::class => TestarConfigSmtpHandler::class,
     GetListaUsuariosCommand::class => GetListaUsuariosHandler::class,
     GetListaMenuCommand::class => GetListaMenuHandler::class,
+    GetListaWidgetsCommand::class => GetListaWidgetsHandler::class,
 ];

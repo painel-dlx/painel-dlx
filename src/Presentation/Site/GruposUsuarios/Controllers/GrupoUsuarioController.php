@@ -97,10 +97,10 @@ class GrupoUsuarioController extends SiteController
             // views
             $this->view->addTemplate('lista_grupos_usuarios');
         } catch (UserException $e) {
-            $this->view->addTemplate('mensagem_usuario');
+            $this->view->addTemplate('../mensagem_usuario');
             $this->view->setAtributo('mensagem', [
                 'tipo' => 'erro',
-                'mensagem' => $e->getMessage()
+                'texto' => $e->getMessage()
             ]);
         }
 

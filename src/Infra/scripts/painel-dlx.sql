@@ -122,3 +122,11 @@ INSERT INTO dlx_menu_item_x_permissao
     SELECT i.menu_item_id, p.permissao_usuario_id FROM dlx_menu_item i, dlx_permissoes_usuario p WHERE i.link = '/painel-dlx/permissoes' AND p.alias = 'CRIAR_PERMISSOES_USUARIO'
     UNION
     SELECT i.menu_item_id, p.permissao_usuario_id FROM dlx_menu_item i, dlx_permissoes_usuario p WHERE i.link = '/painel-dlx/config-smtp' AND p.alias = 'VER_CONFIGURACOES_SMTP'
+
+-- Widget para a página inicial
+CREATE TABLE dlx_widgets (
+    widget_id int not null  primary key auto_increment,
+    titulo varchar(30) not null,
+    url_conteudo varchar(50) not null,
+    ativo bool not null default 1
+) ENGINE=INNODB;
