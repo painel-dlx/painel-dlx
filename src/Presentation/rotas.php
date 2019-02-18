@@ -353,7 +353,8 @@ $router->get(
     '/painel-dlx/resumo-usuario-logado',
     [MinhaContaController::class, 'resumoInformacoes']
 )->middlewares(
-    new VerificarLogon($session)
+    new VerificarLogon($session),
+    new DefinePaginaMestra($this->getServerRequest(), $session)
 );
 
 // Configurações SMTP ----------------------------------------------------------------------------------------------- //

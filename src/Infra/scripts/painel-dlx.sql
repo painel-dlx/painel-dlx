@@ -130,3 +130,5 @@ CREATE TABLE dlx_widgets (
     url_conteudo varchar(50) not null,
     ativo bool not null default 1
 ) ENGINE=INNODB;
+
+INSERT INTO dlx_widgets (titulo, url_conteudo) VALUES ('Meus Dados', '/painel-dlx/resumo-usuario-logado');

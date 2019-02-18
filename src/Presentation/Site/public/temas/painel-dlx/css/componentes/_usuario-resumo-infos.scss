@@ -1,0 +1,13 @@
+.usuario-resumo-infos {
+    // Posicionamento
+    position: relative;
+
+    > .botao-perfil-usuario {
+        // Posicionamento
+        position: relative;
+        left: 50%;
+
+        // Transformar
+        transform: translateX(-50%);
+    }
+}

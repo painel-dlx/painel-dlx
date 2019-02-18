@@ -50,9 +50,12 @@ $usuario = $this->getAtributo('usuario');
     <p class="info-usuario">
         <span class="info-usuario-rotulo">Grupos:</span>
         <span class="info-usuario-valor">
-            <?php echo implode(', ', $usuario->getGrupos()->map(function (GrupoUsuario $grupo_usuario) {
+            <?php
+            $todos_grupos_usuarios = $usuario->getGrupos()->map(function (GrupoUsuario $grupo_usuario) {
                 return $grupo_usuario->getNome();
-            })) ?>
+            });
+
+            echo implode(', ', $todos_grupos_usuarios->toArray()) ?>
         </span>
     </p>
 
