@@ -1,8 +1,8 @@
 @mixin gerar-colunas ($id, $qtde-colunas, $tela-tm-min, $tela-tm-max, $mg: 0) {
     @media (min-width: $tela-tm-min) and (max-width: $tela-tm-max) {
         @for $i from 1 through $qtde-colunas {
-            // $tm: (100% / $qtde-colunas) * $i;
-            $qtde-elem: floor($qtde-colunas / $i);
+            $qtde-elem: $qtde-colunas / $i;
+            $qtde-elem-floor: floor($qtde-elem);
             $qtde-margens: $qtde-elem - 1;
             $tm-margens: $mg * $qtde-margens;
             $tm-conteudo: ((100% - $tm-margens) / $qtde-colunas) * $i;
@@ -14,7 +14,7 @@
                 // Tamanho
                 box-sizing: border-box;
 
-                &:not(:nth-child(#{$qtde-elem}n)) {
+                &:not(:nth-child(#{$qtde-elem-floor}n)) {
                     // Margens
                     margin-right: $mg;
                 }

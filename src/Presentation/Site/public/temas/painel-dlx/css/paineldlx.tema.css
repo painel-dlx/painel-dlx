@@ -85,7 +85,7 @@ body.mostrando-menu .menu-principal {
   }
 
   .flex-box-mp-col-2 {
-    flex: 66.6666666667% 0 1;
+    flex: 66.1666666667% 0 1;
     box-sizing: border-box;
   }
   .flex-box-mp-col-2:not(:nth-child(1n)) {
@@ -126,7 +126,7 @@ body.mostrando-menu .menu-principal {
   }
 
   .flex-box-pq-col-4 {
-    flex: 66.6666666667% 0 1;
+    flex: 66.25% 0 1;
     box-sizing: border-box;
   }
   .flex-box-pq-col-4:not(:nth-child(1n)) {
@@ -134,7 +134,7 @@ body.mostrando-menu .menu-principal {
   }
 
   .flex-box-pq-col-5 {
-    flex: 83.3333333333% 0 1;
+    flex: 83.125% 0 1;
     box-sizing: border-box;
   }
   .flex-box-pq-col-5:not(:nth-child(1n)) {
@@ -183,7 +183,7 @@ body.mostrando-menu .menu-principal {
   }
 
   .flex-box-md-col-5 {
-    flex: 41.25% 0 1;
+    flex: 41.0833333333% 0 1;
     box-sizing: border-box;
   }
   .flex-box-md-col-5:not(:nth-child(2n)) {
@@ -199,7 +199,7 @@ body.mostrando-menu .menu-principal {
   }
 
   .flex-box-md-col-7 {
-    flex: 58.3333333333% 0 1;
+    flex: 57.9166666667% 0 1;
     box-sizing: border-box;
   }
   .flex-box-md-col-7:not(:nth-child(1n)) {
@@ -207,7 +207,7 @@ body.mostrando-menu .menu-principal {
   }
 
   .flex-box-md-col-8 {
-    flex: 66.6666666667% 0 1;
+    flex: 66.3333333333% 0 1;
     box-sizing: border-box;
   }
   .flex-box-md-col-8:not(:nth-child(1n)) {
@@ -215,7 +215,7 @@ body.mostrando-menu .menu-principal {
   }
 
   .flex-box-md-col-9, .erro-http-descricao, .layout-barra-lateral > * {
-    flex: 75% 0 1;
+    flex: 74.75% 0 1;
     box-sizing: border-box;
   }
   .flex-box-md-col-9:not(:nth-child(1n)), .erro-http-descricao:not(:nth-child(1n)), .layout-barra-lateral > :not(:nth-child(1n)) {
@@ -223,7 +223,7 @@ body.mostrando-menu .menu-principal {
   }
 
   .flex-box-md-col-10 {
-    flex: 83.3333333333% 0 1;
+    flex: 83.1666666667% 0 1;
     box-sizing: border-box;
   }
   .flex-box-md-col-10:not(:nth-child(1n)) {
@@ -231,7 +231,7 @@ body.mostrando-menu .menu-principal {
   }
 
   .flex-box-md-col-11 {
-    flex: 91.6666666667% 0 1;
+    flex: 91.5833333333% 0 1;
     box-sizing: border-box;
   }
   .flex-box-md-col-11:not(:nth-child(1n)) {
@@ -280,7 +280,7 @@ body.mostrando-menu .menu-principal {
   }
 
   .flex-box-gd-col-5 {
-    flex: 41.3541666667% 0 1;
+    flex: 41.2291666667% 0 1;
     box-sizing: border-box;
   }
   .flex-box-gd-col-5:not(:nth-child(2n)) {
@@ -296,7 +296,7 @@ body.mostrando-menu .menu-principal {
   }
 
   .flex-box-gd-col-7 {
-    flex: 58.3333333333% 0 1;
+    flex: 58.0208333333% 0 1;
     box-sizing: border-box;
   }
   .flex-box-gd-col-7:not(:nth-child(1n)) {
@@ -304,7 +304,7 @@ body.mostrando-menu .menu-principal {
   }
 
   .flex-box-gd-col-8 {
-    flex: 66.6666666667% 0 1;
+    flex: 66.4166666667% 0 1;
     box-sizing: border-box;
   }
   .flex-box-gd-col-8:not(:nth-child(1n)) {
@@ -312,7 +312,7 @@ body.mostrando-menu .menu-principal {
   }
 
   .flex-box-gd-col-9, .erro-http-descricao, .layout-barra-lateral > * {
-    flex: 75% 0 1;
+    flex: 74.8125% 0 1;
     box-sizing: border-box;
   }
   .flex-box-gd-col-9:not(:nth-child(1n)), .erro-http-descricao:not(:nth-child(1n)), .layout-barra-lateral > :not(:nth-child(1n)) {
@@ -320,7 +320,7 @@ body.mostrando-menu .menu-principal {
   }
 
   .flex-box-gd-col-10 {
-    flex: 83.3333333333% 0 1;
+    flex: 83.2083333333% 0 1;
     box-sizing: border-box;
   }
   .flex-box-gd-col-10:not(:nth-child(1n)) {
@@ -328,7 +328,7 @@ body.mostrando-menu .menu-principal {
   }
 
   .flex-box-gd-col-11 {
-    flex: 91.6666666667% 0 1;
+    flex: 91.6041666667% 0 1;
     box-sizing: border-box;
   }
   .flex-box-gd-col-11:not(:nth-child(1n)) {
@@ -353,7 +353,7 @@ body.mostrando-menu .menu-principal {
   }
 
   .flex-box-mg-col-2 {
-    flex: 12.8533333333% 0 1;
+    flex: 12.8133333333% 0 1;
     box-sizing: border-box;
   }
   .flex-box-mg-col-2:not(:nth-child(7n)) {
@@ -369,7 +369,7 @@ body.mostrando-menu .menu-principal {
   }
 
   .flex-box-mg-col-4 {
-    flex: 26.3466666667% 0 1;
+    flex: 26.2266666667% 0 1;
     box-sizing: border-box;
   }
   .flex-box-mg-col-4:not(:nth-child(3n)) {
@@ -385,7 +385,7 @@ body.mostrando-menu .menu-principal {
   }
 
   .flex-box-mg-col-6 {
-    flex: 39.76% 0 1;
+    flex: 39.64% 0 1;
     box-sizing: border-box;
   }
   .flex-box-mg-col-6:not(:nth-child(2n)) {
@@ -393,7 +393,7 @@ body.mostrando-menu .menu-principal {
   }
 
   .flex-box-mg-col-7 {
-    flex: 46.3866666667% 0 1;
+    flex: 46.3466666667% 0 1;
     box-sizing: border-box;
   }
   .flex-box-mg-col-7:not(:nth-child(2n)) {
@@ -401,7 +401,7 @@ body.mostrando-menu .menu-principal {
   }
 
   .flex-box-mg-col-8 {
-    flex: 53.3333333333% 0 1;
+    flex: 53.0533333333% 0 1;
     box-sizing: border-box;
   }
   .flex-box-mg-col-8:not(:nth-child(1n)) {
@@ -409,7 +409,7 @@ body.mostrando-menu .menu-principal {
   }
 
   .flex-box-mg-col-9 {
-    flex: 60% 0 1;
+    flex: 59.76% 0 1;
     box-sizing: border-box;
   }
   .flex-box-mg-col-9:not(:nth-child(1n)) {
@@ -417,7 +417,7 @@ body.mostrando-menu .menu-principal {
   }
 
   .flex-box-mg-col-10, .erro-http-descricao {
-    flex: 66.6666666667% 0 1;
+    flex: 66.4666666667% 0 1;
     box-sizing: border-box;
   }
   .flex-box-mg-col-10:not(:nth-child(1n)), .erro-http-descricao:not(:nth-child(1n)) {
@@ -425,7 +425,7 @@ body.mostrando-menu .menu-principal {
   }
 
   .flex-box-mg-col-11 {
-    flex: 73.3333333333% 0 1;
+    flex: 73.1733333333% 0 1;
     box-sizing: border-box;
   }
   .flex-box-mg-col-11:not(:nth-child(1n)) {
@@ -433,7 +433,7 @@ body.mostrando-menu .menu-principal {
   }
 
   .flex-box-mg-col-12, .layout-barra-lateral > * {
-    flex: 80% 0 1;
+    flex: 79.88% 0 1;
     box-sizing: border-box;
   }
   .flex-box-mg-col-12:not(:nth-child(1n)), .layout-barra-lateral > :not(:nth-child(1n)) {
@@ -441,7 +441,7 @@ body.mostrando-menu .menu-principal {
   }
 
   .flex-box-mg-col-13 {
-    flex: 86.6666666667% 0 1;
+    flex: 86.5866666667% 0 1;
     box-sizing: border-box;
   }
   .flex-box-mg-col-13:not(:nth-child(1n)) {
@@ -449,7 +449,7 @@ body.mostrando-menu .menu-principal {
   }
 
   .flex-box-mg-col-14 {
-    flex: 93.3333333333% 0 1;
+    flex: 93.2933333333% 0 1;
     box-sizing: border-box;
   }
   .flex-box-mg-col-14:not(:nth-child(1n)) {
