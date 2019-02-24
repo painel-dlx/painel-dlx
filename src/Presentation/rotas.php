@@ -331,7 +331,10 @@ $router->post(
 $router->get(
     '/painel-dlx/minha-conta',
     [MinhaContaController::class, 'meusDados']
-)->middlewares(new VerificarLogon($session));
+)->middlewares(
+    new VerificarLogon($session),
+    new DefinePaginaMestra($this->getServerRequest(), $session)
+);
 
 $router->get(
     '/painel-dlx/alterar-minha-senha',
