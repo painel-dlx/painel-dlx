@@ -32,7 +32,6 @@ use League\Tactician\Handler\CommandHandlerMiddleware;
 use League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor;
 use League\Tactician\Handler\MethodNameInflector\HandleInflector;
 use PainelDLX\Presentation\Site\Usuarios\Controllers\LoginController;
-use PainelDLX\Testes\Application\UseCases\GruposUsuarios\NovoGrupoUsuario\NovoGrupoUsuarioHandlerTest;
 use PainelDLX\Testes\Application\UseCases\Usuarios\NovoUsuario\NovoUsuarioHandlerTest;
 use PainelDLX\Testes\PainelDLXTests;
 use Psr\Http\Message\ServerRequestInterface;
@@ -62,6 +61,7 @@ class LoginControllerTest extends PainelDLXTests
         parent::setUp();
 
         $this->session = SessionFactory::createPHPSession();
+        $this->session->set('vilex:pagina-mestra', 'painel-dlx-master');
 
         $this->controller = new LoginController(
             new VileX(),
@@ -81,6 +81,9 @@ class LoginControllerTest extends PainelDLXTests
     public function test_FormLogin_deve_retornar_uma_instancia_HtmlResponse()
     {
         $request = $this->createMock(ServerRequestInterface::class);
+        $request->method('getQueryParams')->willReturn([
+            'redirect-url' => null
+        ]);
 
         /** @var ServerRequestInterface $request */
         $response = $this->controller->formLogin($request);
@@ -113,10 +116,5 @@ class LoginControllerTest extends PainelDLXTests
         // Verificar na sessão foi adicionado o usuario logado e os itens do menu
         $this->assertTrue($this->session->has('usuario-logado'));
         $this->assertTrue($this->session->has('html:lista-menu'));
-    }
-
-    public function test_FazerLogout()
-    {
-
     }
 }

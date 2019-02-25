@@ -1,0 +1,74 @@
+// todo: criar classes para não precisar utilizar as tags
+
+.lista-registros {
+    // Visual
+    background: rgba(#FFF, .5);
+    border-collapse: collapse;
+    box-shadow: 0 0 5px rgba(black, .25);
+    border-radius: 3px;
+
+    // Tamanho
+    width: 100%;
+
+    thead {
+        // Visual
+        background: rgba(60, 181, 201, 0.2);
+
+        // Texto
+        color: #32909F;
+
+        > tr {
+            > th {
+                // Margens
+                padding: 10px 7px;
+
+                // Texto
+                font-weight: 600;
+                text-align: left;
+
+                // ID
+                &:first-child {
+                    // Texto
+                    text-align: center;
+                }
+
+                // Opções
+                &:last-child {
+                    // Texto
+                    text-align: right;
+                }
+            }
+        }
+    }
+
+    tbody {
+        tr {
+            > td {
+                // Margens
+                padding: 8px 7px;
+
+                // ID
+                &:first-child {
+                    // Texto
+                    text-align: center;
+                }
+
+                // Opções
+                &:last-child {
+                    // Texto
+                    text-align: right;
+                }
+            }
+
+            &:not(:last-child) {
+                // Visual
+                border-bottom: 1px solid #EFEFEF;
+            }
+        }
+    }
+
+    &-comentario {
+        // Texto
+        color: #AAA;
+    }
+}

@@ -59,6 +59,9 @@ class ConfigurarPermissoesControllerTest extends PainelDLXTests
     {
         parent::setUp();
 
+        $session = SessionFactory::createPHPSession();
+        $session->set('vilex:pagina-mestra', 'painel-dlx-master');
+
         $this->controller = new ConfigurarPermissoesController(
             new VileX(),
             CommandBusAdapter::create(new CommandHandlerMiddleware(
@@ -67,7 +70,7 @@ class ConfigurarPermissoesControllerTest extends PainelDLXTests
                 new HandleInflector
             )),
             new TransacaoDoctrine(EntityManagerX::getInstance()),
-            SessionFactory::createPHPSession()
+            $session
         );
     }
 

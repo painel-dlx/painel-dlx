@@ -38,6 +38,10 @@ class ResetSenhaControllerTest extends PainelDLXTests
         parent::setUp();
 
         $this->session = $this->createMock(SessionInterface::class);
+        $this->session
+            ->method('get')
+            ->with('vilex:pagina-mestra')
+            ->willReturn('painel-dlx-master');
 
         /** @var SessionInterface $session */
         $this->controller = new ResetSenhaController(
@@ -119,6 +123,7 @@ class ResetSenhaControllerTest extends PainelDLXTests
 
         $this->session
             ->method('get')
+            ->with('hash')
             ->willReturn($reset_senha->getHash());
 
         $request = $this->createMock(ServerRequestInterface::class);
