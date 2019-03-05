@@ -77,6 +77,7 @@ body {
 @import "componentes/botoes/botao-voltar";
 @import "componentes/botoes/botao-testar-email";
 @import "componentes/botoes/botao-perfil-usuario";
+@import "componentes/botoes/botao-buscar";
 
 // Lista
 @import "componentes/lista-registros";
@@ -102,6 +103,7 @@ body {
 @import "componentes/form/form-alterar-senha";
 @import "componentes/form/form-reset-senha";
 @import "componentes/form/form-config-permissoes";
+@import "componentes/form/multi-select";
 
 // Detalhes
 @import "componentes/detalhe-registro";
@@ -117,6 +119,7 @@ body {
 @import "componentes/dica-geral";
 @import "componentes/info-usuario";
 @import "componentes/usuario-resumo-infos";
+@import "componentes/filtro-registros";
 
 // Widgets
 @import "componentes/widget/widget-home";

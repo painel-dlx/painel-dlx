@@ -23,38 +23,24 @@
  * SOFTWARE.
  */
 
-use DLX\Core\Configure;
-use Doctrine\DBAL\Logging\EchoSQLLogger;
-use PainelDLX\Application\PainelDLXServiceProvider;
+namespace PainelDLX\Application\UseCases\ListaRegistros\ConverterFiltro2Criteria;
 
-ini_set('session.save_handler', 'files');
 
-return [
-    'tipo-ambiente' => Configure::DEV,
+class ConverterFiltro2CriteriaCommandHandler
+{
+    /**
+     * Converter o filtro recebido da lista para o padrão utilizado como criteria do ORM
+     * @param ConverterFiltro2CriteriaCommand $command
+     * @return array
+     */
+    public function handle(ConverterFiltro2CriteriaCommand $command): array
+    {
+        $criteria = [];
 
-    'app' => [
-        'nome' => 'painel-dlx',
-        'nome-amigavel' => 'Painel DLX',
-        'rotas' => 'src/Presentation/rotas.php',
-        'service-provider' => PainelDLXServiceProvider::class,
-        'mapping' => include 'mapping.php',
-        'favicon' => '/src/Presentation/Site/public/imgs/favicon.png'
-    ],
+        foreach ($command->getCampos() as $campo) {
+            $criteria[$campo] = $command->getBusca();
+        }
 
-    'bd' => [
-        'orm' => 'doctrine',
-        'mapping' => 'yaml',
-        //'debug' => EchoSQLLogger::class,
-        'dir' => [
-            'src/Infra/ORM/Doctrine/Mappings/',
-            'src/Infra/ORM/Doctrine/Repositories/'
-        ],
-        'conexao' => [
-            'dbname' => 'dlx_dev',
-            'user' => 'root',
-            'password' => '$d5Ro0t',
-            'host' => 'localhost',
-            'driver' => 'pdo_mysql',
-        ]
-    ]
-];
+        return $criteria;
+    }
+}

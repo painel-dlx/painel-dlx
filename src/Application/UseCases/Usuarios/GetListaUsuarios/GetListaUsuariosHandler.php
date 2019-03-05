@@ -32,6 +32,6 @@ class GetListaUsuariosHandler
      */
     public function handle(GetListaUsuariosCommand $command): ?array
     {
-        return $this->usuario_repository->findBy($command->getCriteria(), $command->getOrderBy(), $command->getLimit(), $command->getOffset());
+        return $this->usuario_repository->findByLike($command->getCriteria(), $command->getOrderBy(), $command->getLimit(), $command->getOffset());
     }
 }

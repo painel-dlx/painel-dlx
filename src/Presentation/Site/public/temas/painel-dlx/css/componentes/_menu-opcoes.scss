@@ -2,6 +2,14 @@
     // Margens
     margin-bottom: 20px;
 
-    // Texto
-    text-align: right;
+    // Flex
+    display: flex;
+    align-items: center;
+
+    > * {
+        &:not(:last-child) {
+            // Margens
+            margin-right: 10px;
+        }
+    }
 }

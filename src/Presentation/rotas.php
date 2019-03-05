@@ -131,8 +131,8 @@ $router->get(
 )->middlewares(
     new VerificarLogon($session),
     new Autorizacao('VISUALIZAR_GRUPOS_USUARIOS'),
-    new DefinePaginaMestra($this->getServerRequest(), $session),
-    new LimparQueryString($this)
+    new DefinePaginaMestra($this->getServerRequest(), $session)
+    // // newLimparQueryString($this)
 );
 
 $router->get(
@@ -228,8 +228,8 @@ $router->get(
 )->middlewares(
     new VerificarLogon($session),
     new Autorizacao('CRIAR_PERMISSOES_USUARIO'),
-    new DefinePaginaMestra($this->getServerRequest(), $session),
-    new LimparQueryString($this)
+    new DefinePaginaMestra($this->getServerRequest(), $session)
+    // // newLimparQueryString($this)
 );
 
 $router->get(
@@ -367,8 +367,8 @@ $router->get(
 )->middlewares(
     new VerificarLogon($session),
     new Autorizacao('VER_CONFIGURACOES_SMTP'),
-    new DefinePaginaMestra($this->getServerRequest(), $session),
-    new LimparQueryString($this)
+    new DefinePaginaMestra($this->getServerRequest(), $session)
+    // // newLimparQueryString($this)
 );
 
 $router->get(

@@ -616,7 +616,11 @@ body.mostrando-menu .menu-principal {
 
 .menu-opcoes {
   margin-bottom: 20px;
-  text-align: right;
+  display: flex;
+  align-items: center;
+}
+.menu-opcoes > *:not(:last-child) {
+  margin-right: 10px;
 }
 
 .link-mostrar-menu {
@@ -725,16 +729,16 @@ body.mostrando-menu .menu-principal {
   font-family: icomoon;
 }
 
-.com-icone, .link-inserir, .so-icone, .link-excluir, .link-editar, .link-detalhe, .menu-lateral > .menu-lateral-item {
+.com-icone, .botao-buscar, .link-inserir, .so-icone, .link-excluir, .link-editar, .link-detalhe, .menu-lateral > .menu-lateral-item {
   display: inline-block;
   line-height: 30px;
   white-space: nowrap;
   text-decoration: none;
-  padding-left: 10px;
+  padding-left: 7px;
   padding-right: 15px;
   box-sizing: border-box;
 }
-.com-icone::before, .link-inserir::before, .so-icone::before, .link-excluir::before, .link-editar::before, .link-detalhe::before, .menu-lateral > .menu-lateral-item::before {
+.com-icone::before, .botao-buscar::before, .link-inserir::before, .so-icone::before, .link-excluir::before, .link-editar::before, .link-detalhe::before, .menu-lateral > .menu-lateral-item::before {
   font: 14px icomoon;
   text-align: center;
   line-height: 30px;
@@ -847,6 +851,20 @@ body.mostrando-menu .menu-principal {
   font-size: 15px;
   vertical-align: middle;
   margin-right: 4px;
+}
+
+.botao-buscar {
+  background: #607d8b;
+  border-radius: 4px;
+  border: none;
+  color: #FFF;
+  padding: 0 15px 0 5px;
+}
+.botao-buscar::before {
+  content: "";
+}
+.botao-buscar:focus {
+  outline: none;
 }
 
 .lista-registros {
@@ -1113,6 +1131,45 @@ body.mostrando-menu .menu-principal {
   flex: 100% 1 1;
 }
 
+.multi-select {
+  position: relative;
+  width: auto;
+  height: 33px;
+  box-sizing: border-box;
+  padding-right: 50px;
+  border: 1px solid #DDD;
+  background: #FFF;
+}
+.multi-select:hover .multi-select-itens {
+  display: block;
+}
+.multi-select-item {
+  display: block;
+  line-height: 33px;
+  width: 100%;
+  box-sizing: border-box;
+  padding-left: 8px;
+}
+.multi-select-itens {
+  position: absolute;
+  left: -1px;
+  top: 100%;
+  z-index: 1;
+  width: 100%;
+  background: #FFF;
+  border-left: 1px solid #DDD;
+  border-right: 1px solid #DDD;
+  border-bottom: 1px solid #DDD;
+  display: none;
+}
+.multi-select-itens > .multi-select-item {
+  cursor: pointer;
+}
+.multi-select-itens > .multi-select-item:hover {
+  background: #d2edf3;
+  color: #32909F;
+}
+
 .detalhe-registro-rotulo {
   text-transform: uppercase;
   font-weight: bold;
@@ -1207,6 +1264,50 @@ body.mostrando-menu .menu-principal {
   position: relative;
   left: 50%;
   transform: translateX(-50%);
+}
+
+.filtro-registros {
+  display: flex;
+  background: #FFF;
+  border: 1px solid #DDD;
+  border-radius: 3px;
+  width: 690px;
+  max-width: 100%;
+  margin: 0;
+  position: relative;
+}
+.filtro-registros > .multi-select {
+  border: none;
+  width: 190px;
+}
+.filtro-registros > .multi-select::before {
+  content: "";
+  display: inline-block;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 4px solid #000;
+  vertical-align: middle;
+  margin-right: 10px;
+  width: 0;
+  height: 0;
+  position: absolute;
+  right: 1px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.filtro-registros > .multi-select::after {
+  content: "";
+  width: 1px;
+  height: 20px;
+  background: #ddd;
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+}
+.filtro-registros > .form-controle {
+  background: transparent;
+  border: none;
 }
 
 .widget-home {

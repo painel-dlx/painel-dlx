@@ -23,38 +23,26 @@
  * SOFTWARE.
  */
 
-use DLX\Core\Configure;
-use Doctrine\DBAL\Logging\EchoSQLLogger;
-use PainelDLX\Application\PainelDLXServiceProvider;
+namespace PainelDLX\Testes\Application\UseCases\ListaRegistros\ConverterFiltro2Criteria;
 
-ini_set('session.save_handler', 'files');
+use PainelDLX\Application\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommand;
+use PainelDLX\Application\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommandHandler;
+use PainelDLX\Testes\PainelDLXTests;
 
-return [
-    'tipo-ambiente' => Configure::DEV,
+class ConverterFiltro2CriteriaCommandHandlerTest extends PainelDLXTests
+{
 
-    'app' => [
-        'nome' => 'painel-dlx',
-        'nome-amigavel' => 'Painel DLX',
-        'rotas' => 'src/Presentation/rotas.php',
-        'service-provider' => PainelDLXServiceProvider::class,
-        'mapping' => include 'mapping.php',
-        'favicon' => '/src/Presentation/Site/public/imgs/favicon.png'
-    ],
+    public function test_Handle()
+    {
+        $campos = ['campo1', 'campo2'];
+        $busca = 'busca';
 
-    'bd' => [
-        'orm' => 'doctrine',
-        'mapping' => 'yaml',
-        //'debug' => EchoSQLLogger::class,
-        'dir' => [
-            'src/Infra/ORM/Doctrine/Mappings/',
-            'src/Infra/ORM/Doctrine/Repositories/'
-        ],
-        'conexao' => [
-            'dbname' => 'dlx_dev',
-            'user' => 'root',
-            'password' => '$d5Ro0t',
-            'host' => 'localhost',
-            'driver' => 'pdo_mysql',
-        ]
-    ]
-];
+        $command = new ConverterFiltro2CriteriaCommand($campos, $busca);
+        $criteria = (new ConverterFiltro2CriteriaCommandHandler())->handle($command);
+
+        foreach ($campos as $campo) {
+            $this->assertArrayHasKey($campo, $criteria);
+            $this->assertEquals($busca, $criteria[$campo]);
+        }
+    }
+}

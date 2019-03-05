@@ -31,11 +31,33 @@ use Vilex\VileX;
  */
 
 $lista_usuarios = $this->getAtributo('lista_usuarios');
+$filtro = $this->getAtributo('filtro');
 ?>
 [CORPO]
 <h1 class="titulo-pagina"><?php echo $this->getAtributo('titulo-pagina') ?></h1>
 
 <nav class="menu-opcoes">
+    <form id="filtro-registros" class="filtro-registros">
+        <div class="multi-select">
+            <span class="multi-select-item">2 campos</span>
+
+            <div class="multi-select-itens">
+                <label class="multi-select-item">
+                    <input type="checkbox" name="campos[]" value="nome"<?php echo empty($filtro) || in_array('nome', $filtro['campos']) ? ' checked' : '' ?>>
+                    Nome
+                </label>
+
+                <label class="multi-select-item">
+                    <input type="checkbox" name="campos[]" value="email"<?php echo empty($filtro) || in_array('email', $filtro['campos']) ? ' checked' : '' ?>>
+                    Email
+                </label>
+            </div>
+        </div>
+
+        <input type="search" name="busca" value="<?php echo $filtro['busca'] ?>" placeholder="Encontrar usuários" class="form-controle">
+    </form>
+
+    <button type="submit" form="filtro-registros" class="botao-buscar">Buscar</button>
     <a href="/painel-dlx/usuarios/novo" class="link-inserir">Adicionar usuário</a>
 </nav>
 
@@ -61,7 +83,7 @@ $lista_usuarios = $this->getAtributo('lista_usuarios');
             <td headers="usuario-id"><?php echo $usuario->getUsuarioId() ?></td>
             <td headers="usuario">
                 <?php echo $usuario->getNome() ?><br>
-                <?php echo $usuario->getEmail() ?>
+                <span class="lista-registros-comentario"><?php echo $usuario->getEmail() ?></span>
             </td>
             <td headers="opcoes">
                 <a href="/painel-dlx/usuarios/detalhe?usuario_id=<?php echo $usuario->getUsuarioId() ?>" class="link-detalhe" title="Informações desse usuário">

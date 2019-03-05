@@ -28,11 +28,14 @@ namespace PainelDLX\Presentation\Site\Usuarios\Controllers;
 use DLX\Core\Exceptions\UserException;
 use Exception;
 use League\Tactician\CommandBus;
+use PainelDLX\Application\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommand;
+use PainelDLX\Application\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommandHandler;
 use PainelDLX\Application\UseCases\Usuarios\EditarUsuario\EditarUsuarioCommand;
 use PainelDLX\Application\UseCases\Usuarios\EditarUsuario\EditarUsuarioHandler;
 use PainelDLX\Application\UseCases\Usuarios\ExcluirUsuario\ExcluirUsuarioCommand;
 use PainelDLX\Application\UseCases\Usuarios\ExcluirUsuario\ExcluirUsuarioHandler;
 use PainelDLX\Application\UseCases\Usuarios\GetListaUsuarios\GetListaUsuariosCommand;
+use PainelDLX\Application\UseCases\Usuarios\GetListaUsuarios\GetListaUsuariosHandler;
 use PainelDLX\Application\UseCases\Usuarios\GetUsuarioPeloId\GetUsuarioPeloIdCommand;
 use PainelDLX\Application\UseCases\Usuarios\GetUsuarioPeloId\GetUsuarioPeloIdHandler;
 use PainelDLX\Application\UseCases\Usuarios\NovoUsuario\NovoUsuarioCommand;
@@ -96,12 +99,25 @@ class CadastroUsuarioController extends SiteController
      */
     public function listaUsuarios(ServerRequestInterface $request): ResponseInterface
     {
+        $get = filter_var_array($request->getQueryParams(), [
+            'campos' => ['filter' => FILTER_SANITIZE_STRING, 'flags' => FILTER_REQUIRE_ARRAY],
+            'busca' => FILTER_DEFAULT
+        ]);
+
         try {
-            $lista_usuarios = $this->command_bus->handle(new GetListaUsuariosCommand(/*$request->getQueryParams()*/[]));
+            /**
+             * @var array $criteria
+             * @covers ConverterFiltro2CriteriaCommandHandler
+             */
+            $criteria = $this->command_bus->handle(new ConverterFiltro2CriteriaCommand($get['campos'], $get['busca']));
+
+            /** @covers GetListaUsuariosHandler */
+            $lista_usuarios = $this->command_bus->handle(new GetListaUsuariosCommand($criteria));
 
             // Atributos
             $this->view->setAtributo('titulo-pagina', 'Usuários');
             $this->view->setAtributo('lista_usuarios', $lista_usuarios);
+            $this->view->setAtributo('filtro', $get);
 
             // Views
             $this->view->addTemplate('lista_usuarios');

@@ -46,6 +46,8 @@ use PainelDLX\Application\UseCases\GruposUsuarios\NovoGrupoUsuario\NovoGrupoUsua
 use PainelDLX\Application\UseCases\GruposUsuarios\NovoGrupoUsuario\NovoGrupoUsuarioHandler;
 use PainelDLX\Application\UseCases\Home\GetListaWigets\GetListaWidgetsCommand;
 use PainelDLX\Application\UseCases\Home\GetListaWigets\GetListaWidgetsHandler;
+use PainelDLX\Application\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommand;
+use PainelDLX\Application\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommandHandler;
 use PainelDLX\Application\UseCases\Login\FazerLogin\FazerLoginCommand;
 use PainelDLX\Application\UseCases\Login\FazerLogin\FazerLoginHandler;
 use PainelDLX\Application\UseCases\Login\FazerLogout\FazerLogoutCommand;
@@ -113,4 +115,5 @@ return [
     GetListaUsuariosCommand::class => GetListaUsuariosHandler::class,
     GetListaMenuCommand::class => GetListaMenuHandler::class,
     GetListaWidgetsCommand::class => GetListaWidgetsHandler::class,
+    ConverterFiltro2CriteriaCommand::class => ConverterFiltro2CriteriaCommandHandler::class,
 ];

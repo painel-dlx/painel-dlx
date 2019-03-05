@@ -8,7 +8,6 @@
 
 namespace PainelDLX\Application\UseCases\Usuarios\GetListaUsuarios;
 
-
 use PainelDLX\Application\Contracts\ListaRegistrosCommand;
 
 class GetListaUsuariosCommand extends ListaRegistrosCommand
