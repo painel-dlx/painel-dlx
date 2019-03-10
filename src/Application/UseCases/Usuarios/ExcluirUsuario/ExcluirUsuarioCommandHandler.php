@@ -23,49 +23,29 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Application\UseCases\Usuarios\NovoUsuario;
+namespace PainelDLX\Application\UseCases\Usuarios\ExcluirUsuario;
 
 
-use PainelDLX\Domain\GruposUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
 use PainelDLX\Domain\Usuarios\Repositories\UsuarioRepositoryInterface;
-use PainelDLX\Domain\Usuarios\Services\VerificaEmailJaCadastrado;
-use PainelDLX\Domain\Usuarios\Services\VerificaSenhasIguais;
-use PainelDLX\Domain\Usuarios\ValueObjects\SenhaUsuario;
 
-class NovoUsuarioHandler
+class ExcluirUsuarioCommandHandler
 {
     /** @var UsuarioRepositoryInterface */
     private $usuario_repository;
-    /** @var GrupoUsuarioRepositoryInterface */
-    private $grupo_usuario_repository;
 
-    /**
-     * NovoUsuarioHandler constructor.
-     * @param UsuarioRepositoryInterface $usuario_repository
-     * @param GrupoUsuarioRepositoryInterface $grupo_usuario_repository
-     */
-    public function __construct(
-        UsuarioRepositoryInterface $usuario_repository,
-        GrupoUsuarioRepositoryInterface $grupo_usuario_repository
-    ) {
+    public function __construct(UsuarioRepositoryInterface $usuario_repository)
+    {
         $this->usuario_repository = $usuario_repository;
-        $this->grupo_usuario_repository = $grupo_usuario_repository;
     }
 
     /**
-     * @param NovoUsuarioCommand $command
+     * @param ExcluirUsuarioCommand $command
      * @throws \Exception
      */
-    public function handle(NovoUsuarioCommand $command)
+    public function handle(ExcluirUsuarioCommand $command)
     {
         try {
-            $usuario = $command->getUsuario();
-
-            // Verificar se o email está cadastrado para outro usuário
-            (new VerificaEmailJaCadastrado($this->usuario_repository, $usuario))->executar();
-            // Verificar as senhas informadas
-            (new VerificaSenhasIguais($usuario, new SenhaUsuario($usuario->getSenha(), $command->getSenhaConfirm())))->executar();
-            $this->usuario_repository->create($usuario);
+            $this->usuario_repository->delete($command->getUsuario());
         } catch (\Exception $e) {
             throw $e;
         }

@@ -23,39 +23,34 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Application\UseCases\PermissoesUsuario\EditarPermissaoUsuario;
+namespace PainelDLX\Application\UseCases\Usuarios\GetResetSenhaPorHash;
 
 
-use PainelDLX\Domain\PermissoesUsuario\Entities\PermissaoUsuario;
-use PainelDLX\Domain\PermissoesUsuario\Repositories\PermissaoUsuarioRepositoryInterface;
+use PainelDLX\Domain\Usuarios\Entities\ResetSenha;
+use PainelDLX\Domain\Usuarios\Repositories\ResetSenhaRepositoryInterface;
 
-class EditarPermissaoUsuarioHandler
+class GetResetSenhaPorHashCommandHandler
 {
     /**
-     * @var PermissaoUsuarioRepositoryInterface
+     * @var ResetSenhaRepositoryInterface
      */
-    private $permissao_usuario_repository;
+    private $reset_senha_repository;
 
     /**
-     * EditarPermissaoUsuarioHandler constructor.
-     * @param PermissaoUsuarioRepositoryInterface $permissao_usuario_repository
+     * GetResetSenhaPorHashCommandHandler constructor.
+     * @param ResetSenhaRepositoryInterface $reset_senha_repository
      */
-    public function __construct(PermissaoUsuarioRepositoryInterface $permissao_usuario_repository)
+    public function __construct(ResetSenhaRepositoryInterface $reset_senha_repository)
     {
-        $this->permissao_usuario_repository = $permissao_usuario_repository;
+        $this->reset_senha_repository = $reset_senha_repository;
     }
 
     /**
-     * @param EditarPermissaoUsuarioCommand $command
-     * @return PermissaoUsuario
+     * @param GetResetSenhaPorHashCommand $command
+     * @return ResetSenha|null
      */
-    public function handle(EditarPermissaoUsuarioCommand $command): PermissaoUsuario
+    public function handle(GetResetSenhaPorHashCommand $command): ?ResetSenha
     {
-        /** @var PermissaoUsuario $permissao_usuario */
-        $permissao_usuario = $this->permissao_usuario_repository->find($command->getPermissaoUsuarioId());
-        $permissao_usuario->setDescricao($command->getDescricao());
-
-        $this->permissao_usuario_repository->update($permissao_usuario);
-        return $permissao_usuario;
+        return $this->reset_senha_repository->findResetSenhaAtivoPorHash($command->getHash());
     }
 }

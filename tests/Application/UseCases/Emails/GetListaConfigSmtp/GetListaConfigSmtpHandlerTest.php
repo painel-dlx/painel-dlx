@@ -28,7 +28,7 @@ namespace PainelDLX\Testes\Application\UseCases\Emails\GetListaConfigSmtp;
 use DLX\Infra\EntityManagerX;
 use Doctrine\Common\Collections\ArrayCollection;
 use PainelDLX\Application\UseCases\Emails\GetListaConfigSmtp\GetListaConfigSmtpCommand;
-use PainelDLX\Application\UseCases\Emails\GetListaConfigSmtp\GetListaConfigSmtpHandler;
+use PainelDLX\Application\UseCases\Emails\GetListaConfigSmtp\GetListaConfigSmtpCommandHandler;
 use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
 use PainelDLX\Domain\Emails\Repositories\ConfigSmtpRepositoryInterface;
 use PainelDLX\Testes\PainelDLXTests;
@@ -37,7 +37,7 @@ class GetListaConfigSmtpHandlerTest extends PainelDLXTests
 {
     /** @var ConfigSmtpRepositoryInterface */
     private $usuario_repository;
-    /** @var GetListaConfigSmtpHandler */
+    /** @var GetListaConfigSmtpCommandHandler */
     private $handler;
 
     protected function setUp()
@@ -45,7 +45,7 @@ class GetListaConfigSmtpHandlerTest extends PainelDLXTests
         parent::setUp();
 
         $this->usuario_repository = EntityManagerX::getRepository(ConfigSmtp::class);
-        $this->handler = new GetListaConfigSmtpHandler($this->usuario_repository);
+        $this->handler = new GetListaConfigSmtpCommandHandler($this->usuario_repository);
     }
 
     public function test_Handle_sem_criteria()

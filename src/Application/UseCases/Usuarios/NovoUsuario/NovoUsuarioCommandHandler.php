@@ -23,16 +23,16 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Application\UseCases\Usuarios\EditarUsuario;
+namespace PainelDLX\Application\UseCases\Usuarios\NovoUsuario;
 
-use PainelDLX\Application\UseCases\Usuarios\Exceptions\RegistroEntityNaoEncontradoException;
-use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
+
 use PainelDLX\Domain\GruposUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
-use PainelDLX\Domain\Usuarios\Entities\Usuario;
 use PainelDLX\Domain\Usuarios\Repositories\UsuarioRepositoryInterface;
 use PainelDLX\Domain\Usuarios\Services\VerificaEmailJaCadastrado;
+use PainelDLX\Domain\Usuarios\Services\VerificaSenhasIguais;
+use PainelDLX\Domain\Usuarios\ValueObjects\SenhaUsuario;
 
-class EditarUsuarioHandler
+class NovoUsuarioCommandHandler
 {
     /** @var UsuarioRepositoryInterface */
     private $usuario_repository;
@@ -40,7 +40,7 @@ class EditarUsuarioHandler
     private $grupo_usuario_repository;
 
     /**
-     * NovoUsuarioHandler constructor.
+     * NovoUsuarioCommandHandler constructor.
      * @param UsuarioRepositoryInterface $usuario_repository
      * @param GrupoUsuarioRepositoryInterface $grupo_usuario_repository
      */
@@ -53,36 +53,19 @@ class EditarUsuarioHandler
     }
 
     /**
-     * @param EditarUsuarioCommand $command
+     * @param NovoUsuarioCommand $command
      * @throws \Exception
      */
-    public function handle(EditarUsuarioCommand $command)
+    public function handle(NovoUsuarioCommand $command)
     {
         try {
-            $lista_grupos = $this->grupo_usuario_repository->getListaGruposByIds(...$command->getGrupos());
-            /** @var Usuario $usuario */
-            $usuario = $this->usuario_repository->find($command->getUsuarioId());
+            $usuario = $command->getUsuario();
 
-            if (is_null($usuario)) {
-                throw new RegistroEntityNaoEncontradoException('Usuário');
-            }
-
-            $usuario
-                ->setNome($command->getNome())
-                ->setEmail($command->getEmail());
-
-            /** @var GrupoUsuario $grupo_usuario */
-            foreach ($lista_grupos as $grupo_usuario) {
-                if (!$usuario->hasGrupoUsuario($grupo_usuario)) {
-                    $usuario->addGrupo($grupo_usuario);
-                }
-            }
-
-            // Verifica se o email desse usuário não está sendo usado por outro usuário
+            // Verificar se o email está cadastrado para outro usuário
             (new VerificaEmailJaCadastrado($this->usuario_repository, $usuario))->executar();
-            $this->usuario_repository->update($usuario);
-
-            return $usuario;
+            // Verificar as senhas informadas
+            (new VerificaSenhasIguais($usuario, new SenhaUsuario($usuario->getSenha(), $command->getSenhaConfirm())))->executar();
+            $this->usuario_repository->create($usuario);
         } catch (\Exception $e) {
             throw $e;
         }

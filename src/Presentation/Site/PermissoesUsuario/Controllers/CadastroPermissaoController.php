@@ -30,13 +30,13 @@ use DLX\Core\Exceptions\UserException;
 use League\Tactician\CommandBus;
 use PainelDLX\Application\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommand;
 use PainelDLX\Application\UseCases\PermissoesUsuario\CadastrarPermissaoUsuario\CadastrarPermissaoUsuarioCommand;
-use PainelDLX\Application\UseCases\PermissoesUsuario\CadastrarPermissaoUsuario\CadastrarPermissaoUsuarioHandler;
+use PainelDLX\Application\UseCases\PermissoesUsuario\CadastrarPermissaoUsuario\CadastrarPermissaoUsuarioCommandHandler;
 use PainelDLX\Application\UseCases\PermissoesUsuario\EditarPermissaoUsuario\EditarPermissaoUsuarioCommand;
-use PainelDLX\Application\UseCases\PermissoesUsuario\EditarPermissaoUsuario\EditarPermissaoUsuarioHandler;
+use PainelDLX\Application\UseCases\PermissoesUsuario\EditarPermissaoUsuario\EditarPermissaoUsuarioCommandHandler;
 use PainelDLX\Application\UseCases\PermissoesUsuario\ExcluirPermissaoUsuario\ExcluirPermissaoUsuarioCommand;
-use PainelDLX\Application\UseCases\PermissoesUsuario\ExcluirPermissaoUsuario\ExcluirPermissaoUsuarioHandler;
+use PainelDLX\Application\UseCases\PermissoesUsuario\ExcluirPermissaoUsuario\ExcluirPermissaoUsuarioCommandHandler;
 use PainelDLX\Application\UseCases\PermissoesUsuario\GetListaPermissaoUsuario\GetListaPermissaoUsuarioCommand;
-use PainelDLX\Application\UseCases\PermissoesUsuario\GetListaPermissaoUsuario\GetListaPermissaoUsuarioHandler;
+use PainelDLX\Application\UseCases\PermissoesUsuario\GetListaPermissaoUsuario\GetListaPermissaoUsuarioCommandHandler;
 use PainelDLX\Domain\PermissoesUsuario\Entities\PermissaoUsuario;
 use PainelDLX\Domain\PermissoesUsuario\Repositories\PermissaoUsuarioRepositoryInterface;
 use PainelDLX\Presentation\Site\Controllers\SiteController;
@@ -98,7 +98,7 @@ class CadastroPermissaoController extends SiteController
 
             /**
              * @var array $lista_permissoes
-             * @covers GetListaPermissaoUsuarioHandler
+             * @covers GetListaPermissaoUsuarioCommandHandler
              */
             $lista_permissoes = $this->command_bus->handle(new GetListaPermissaoUsuarioCommand($criteria));
 
@@ -172,7 +172,7 @@ class CadastroPermissaoController extends SiteController
         try {
             /**
              * @var PermissaoUsuario $permissao_usuario
-             * @covers CadastrarPermissaoUsuarioHandler
+             * @covers CadastrarPermissaoUsuarioCommandHandler
              */
             $permissao_usuario = $this->command_bus->handle(new CadastrarPermissaoUsuarioCommand($alias, $descricao));
 
@@ -254,7 +254,7 @@ class CadastroPermissaoController extends SiteController
         try {
             /**
              * @var PermissaoUsuario $permissao_usuario
-             * @covers EditarPermissaoUsuarioHandler
+             * @covers EditarPermissaoUsuarioCommandHandler
              */
             $permissao_usuario = $this->command_bus->handle(new EditarPermissaoUsuarioCommand($permissao_usuario_id, $descricao));
 
@@ -335,7 +335,7 @@ class CadastroPermissaoController extends SiteController
 
         try {
             /**
-             * @covers ExcluirPermissaoUsuarioHandler
+             * @covers ExcluirPermissaoUsuarioCommandHandler
              */
             $this->command_bus->handle(new ExcluirPermissaoUsuarioCommand($permissao_usuario_id));
 

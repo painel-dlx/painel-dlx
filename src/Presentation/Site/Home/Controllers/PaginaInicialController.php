@@ -12,7 +12,7 @@ namespace PainelDLX\Presentation\Site\Home\Controllers;
 use DLX\Core\Exceptions\UserException;
 use League\Tactician\CommandBus;
 use PainelDLX\Application\UseCases\Home\GetListaWigets\GetListaWidgetsCommand;
-use PainelDLX\Application\UseCases\Home\GetListaWigets\GetListaWidgetsHandler;
+use PainelDLX\Application\UseCases\Home\GetListaWigets\GetListaWidgetsCommandHandler;
 use PainelDLX\Presentation\Site\Controllers\SiteController;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -53,7 +53,7 @@ class PaginaInicialController extends SiteController
     {
         try {
             /**
-             * @covers GetListaWidgetsHandler
+             * @covers GetListaWidgetsCommandHandler
              */
             $lista_widgets = $this->command_bus->handle(new GetListaWidgetsCommand());
 

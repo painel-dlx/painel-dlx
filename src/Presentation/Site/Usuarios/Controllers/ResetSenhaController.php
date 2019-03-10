@@ -31,15 +31,15 @@ use DLX\Core\Exceptions\UserException;
 use DLX\Infra\EntityManagerX;
 use League\Tactician\CommandBus;
 use PainelDLX\Application\UseCases\Usuarios\AlterarSenhaUsuario\AlterarSenhaUsuarioCommand;
-use PainelDLX\Application\UseCases\Usuarios\AlterarSenhaUsuario\AlterarSenhaUsuarioHandler;
+use PainelDLX\Application\UseCases\Usuarios\AlterarSenhaUsuario\AlterarSenhaUsuarioCommandHandler;
 use PainelDLX\Application\UseCases\Usuarios\EnviarEmailResetSenha\EnviarEmailResetSenhaCommand;
-use PainelDLX\Application\UseCases\Usuarios\EnviarEmailResetSenha\EnviarEmailResetSenhaHandler;
+use PainelDLX\Application\UseCases\Usuarios\EnviarEmailResetSenha\EnviarEmailResetSenhaCommandHandler;
 use PainelDLX\Application\UseCases\Usuarios\GetResetSenhaPorHash\GetResetSenhaPorHashCommand;
-use PainelDLX\Application\UseCases\Usuarios\GetResetSenhaPorHash\GetResetSenhaPorHashHandler;
+use PainelDLX\Application\UseCases\Usuarios\GetResetSenhaPorHash\GetResetSenhaPorHashCommandHandler;
 use PainelDLX\Application\UseCases\Usuarios\SolicitarResetSenha\SolicitarResetSenhaCommand;
-use PainelDLX\Application\UseCases\Usuarios\SolicitarResetSenha\SolicitarResetSenhaHandler;
+use PainelDLX\Application\UseCases\Usuarios\SolicitarResetSenha\SolicitarResetSenhaCommandHandler;
 use PainelDLX\Application\UseCases\Usuarios\UtilizarResetSenha\UtilizarResetSenhaCommand;
-use PainelDLX\Application\UseCases\Usuarios\UtilizarResetSenha\UtilizarResetSenhaHandler;
+use PainelDLX\Application\UseCases\Usuarios\UtilizarResetSenha\UtilizarResetSenhaCommandHandler;
 use PainelDLX\Domain\Usuarios\Entities\ResetSenha;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
 use PainelDLX\Domain\Usuarios\ValueObjects\SenhaUsuario;
@@ -120,12 +120,12 @@ class ResetSenhaController extends SiteController
 
         try {
             /**
-             * @covers SolicitarResetSenhaHandler
+             * @covers SolicitarResetSenhaCommandHandler
              * @var ResetSenha $reset_senha
              */
             $reset_senha = $this->command_bus->handle(new SolicitarResetSenhaCommand($email));
 
-            /** @covers EnviarEmailResetSenhaHandler */
+            /** @covers EnviarEmailResetSenhaCommandHandler */
             $this->command_bus->handle(new EnviarEmailResetSenhaCommand($reset_senha));
 
             $json['retorno'] = 'sucesso';
@@ -154,7 +154,7 @@ class ResetSenhaController extends SiteController
             // TODO: está dando erro para gerar o proxy do usuário
             EntityManagerX::getRepository(Usuario::class)->find(2);
 
-            /** @covers GetResetSenhaPorHashHandler */
+            /** @covers GetResetSenhaPorHashCommandHandler */
             $reset_senha = $this->command_bus->handle(new GetResetSenhaPorHashCommand($hash));
 
             if (is_null($reset_senha)) {
@@ -207,7 +207,7 @@ class ResetSenhaController extends SiteController
 
             $senha_usuario = new SenhaUsuario($senha_nova, $senha_confirm);
 
-            /** @covers GetResetSenhaPorHashHandler */
+            /** @covers GetResetSenhaPorHashCommandHandler */
             $reset_senha = $this->command_bus->handle(new GetResetSenhaPorHashCommand($hash));
 
             if (is_null($reset_senha)) {
@@ -216,10 +216,10 @@ class ResetSenhaController extends SiteController
 
             $this->transacao->begin();
 
-            /** @covers AlterarSenhaUsuarioHandler */
+            /** @covers AlterarSenhaUsuarioCommandHandler */
             $this->command_bus->handle(new AlterarSenhaUsuarioCommand($reset_senha->getUsuario(), $senha_usuario, true));
 
-            /** @covers UtilizarResetSenhaHandler */
+            /** @covers UtilizarResetSenhaCommandHandler */
             $this->command_bus->handle(new UtilizarResetSenhaCommand($reset_senha));
 
             $this->transacao->commit();

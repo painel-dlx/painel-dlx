@@ -23,44 +23,32 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Application\UseCases\Usuarios\AlterarSenhaUsuario;
+namespace PainelDLX\Application\UseCases\Emails\ExcluirConfigSmtp;
 
 
-use PainelDLX\Domain\Usuarios\Repositories\UsuarioRepositoryInterface;
-use PainelDLX\Domain\Usuarios\Services\VerificaSenhasIguais;
+use PainelDLX\Domain\Emails\Repositories\ConfigSmtpRepositoryInterface;
 
-class AlterarSenhaUsuarioHandler
+class ExcluirConfigSmtpCommandHandler
 {
-    /** @var UsuarioRepositoryInterface */
-    private $usuario_repository;
+    /**
+     * @var ConfigSmtpRepositoryInterface
+     */
+    private $config_smtp_repository;
 
     /**
-     * AlterarSenhaUsuarioHandler constructor.
-     * @param UsuarioRepositoryInterface $usuario_repository
+     * ExcluirConfigSmtpCommandHandler constructor.
+     * @param ConfigSmtpRepositoryInterface $config_smtp_repository
      */
-    public function __construct(UsuarioRepositoryInterface $usuario_repository)
+    public function __construct(ConfigSmtpRepositoryInterface $config_smtp_repository)
     {
-        $this->usuario_repository = $usuario_repository;
+        $this->config_smtp_repository = $config_smtp_repository;
     }
 
     /**
-     * @param AlterarSenhaUsuarioCommand $command
-     * @throws \Exception
+     * @param ExcluirConfigSmtpCommand $command
      */
-    public function handle(AlterarSenhaUsuarioCommand $command)
+    public function handle(ExcluirConfigSmtpCommand $command)
     {
-        try {
-            $usuario = $command->getUsuario();
-            $senha = $command->getSenhaUsuario();
-            $is_reset = $command->isReset();
-
-            // Verificar se as senhas coincidem
-            (new VerificaSenhasIguais($usuario, $senha, $is_reset))->executar();
-
-            $usuario->setSenha($senha->getSenhaInformada());
-            $this->usuario_repository->update($usuario);
-        } catch (\Exception $e) {
-            throw $e;
-        }
+        $this->config_smtp_repository->delete($command->getConfigSmtp());
     }
 }

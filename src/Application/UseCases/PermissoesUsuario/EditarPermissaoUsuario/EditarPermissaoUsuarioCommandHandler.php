@@ -23,37 +23,39 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Application\UseCases\Usuarios\UtilizarResetSenha;
+namespace PainelDLX\Application\UseCases\PermissoesUsuario\EditarPermissaoUsuario;
 
 
-use PainelDLX\Domain\Usuarios\Entities\ResetSenha;
-use PainelDLX\Domain\Usuarios\Repositories\ResetSenhaRepositoryInterface;
+use PainelDLX\Domain\PermissoesUsuario\Entities\PermissaoUsuario;
+use PainelDLX\Domain\PermissoesUsuario\Repositories\PermissaoUsuarioRepositoryInterface;
 
-class UtilizarResetSenhaHandler
+class EditarPermissaoUsuarioCommandHandler
 {
     /**
-     * @var ResetSenhaRepositoryInterface
+     * @var PermissaoUsuarioRepositoryInterface
      */
-    private $reset_senha_repository;
+    private $permissao_usuario_repository;
 
     /**
-     * UtilizarResetSenhaHandler constructor.
-     * @param ResetSenhaRepositoryInterface $reset_senha_repository
+     * EditarPermissaoUsuarioCommandHandler constructor.
+     * @param PermissaoUsuarioRepositoryInterface $permissao_usuario_repository
      */
-    public function __construct(ResetSenhaRepositoryInterface $reset_senha_repository)
+    public function __construct(PermissaoUsuarioRepositoryInterface $permissao_usuario_repository)
     {
-        $this->reset_senha_repository = $reset_senha_repository;
+        $this->permissao_usuario_repository = $permissao_usuario_repository;
     }
 
     /**
-     * @param UtilizarResetSenhaCommand $command
-     * @return ResetSenha
+     * @param EditarPermissaoUsuarioCommand $command
+     * @return PermissaoUsuario
      */
-    public function handle(UtilizarResetSenhaCommand $command): ResetSenha
+    public function handle(EditarPermissaoUsuarioCommand $command): PermissaoUsuario
     {
-        $command->getResetSenha()->setUtilizado(true);
-        $this->reset_senha_repository->update($command->getResetSenha());
+        /** @var PermissaoUsuario $permissao_usuario */
+        $permissao_usuario = $this->permissao_usuario_repository->find($command->getPermissaoUsuarioId());
+        $permissao_usuario->setDescricao($command->getDescricao());
 
-        return $command->getResetSenha();
+        $this->permissao_usuario_repository->update($permissao_usuario);
+        return $permissao_usuario;
     }
 }

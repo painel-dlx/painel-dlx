@@ -27,7 +27,7 @@ namespace PainelDLX\Testes\Application\UseCases\Usuarios\UtilizarResetSenha;
 
 use DLX\Infra\EntityManagerX;
 use PainelDLX\Application\UseCases\Usuarios\UtilizarResetSenha\UtilizarResetSenhaCommand;
-use PainelDLX\Application\UseCases\Usuarios\UtilizarResetSenha\UtilizarResetSenhaHandler;
+use PainelDLX\Application\UseCases\Usuarios\UtilizarResetSenha\UtilizarResetSenhaCommandHandler;
 use PainelDLX\Domain\Usuarios\Entities\ResetSenha;
 use PainelDLX\Domain\Usuarios\Repositories\ResetSenhaRepositoryInterface;
 use PainelDLX\Testes\Application\UseCases\Usuarios\SolicitarResetSenha\SolicitarResetSenhaHandlerTest;
@@ -48,7 +48,7 @@ class UtilizarResetSenhaHandlerTest extends PainelDLXTests
         $reset_senha_repository = EntityManagerX::getRepository(ResetSenha::class);
 
         $command = new UtilizarResetSenhaCommand($reset_senha);
-        $reset_senha = (new UtilizarResetSenhaHandler($reset_senha_repository))->handle($command);
+        $reset_senha = (new UtilizarResetSenhaCommandHandler($reset_senha_repository))->handle($command);
 
         $this->assertTrue($reset_senha->isUtilizado());
     }

@@ -12,7 +12,7 @@ namespace PainelDLX\Application\UseCases\Usuarios\GetUsuarioPeloId;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
 use PainelDLX\Domain\Usuarios\Repositories\UsuarioRepositoryInterface;
 
-class GetUsuarioPeloIdHandler
+class GetUsuarioPeloIdCommandHandler
 {
     /**
      * @var UsuarioRepositoryInterface
@@ -20,7 +20,7 @@ class GetUsuarioPeloIdHandler
     private $usuario_repository;
 
     /**
-     * GetUsuarioPeloIdHandler constructor.
+     * GetUsuarioPeloIdCommandHandler constructor.
      * @param UsuarioRepositoryInterface $usuario_repository
      */
     public function __construct(UsuarioRepositoryInterface $usuario_repository)

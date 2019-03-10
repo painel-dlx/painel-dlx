@@ -23,14 +23,13 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Application\UseCases\Emails\EditarConfigSmtp;
+namespace PainelDLX\Application\UseCases\Emails\GetListaConfigSmtp;
 
 
 use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
 use PainelDLX\Domain\Emails\Repositories\ConfigSmtpRepositoryInterface;
-use PainelDLX\Domain\Emails\Services\Validators\SalvarConfigSmtpValidator;
 
-class EditarConfigSmtpHandler
+class GetListaConfigSmtpCommandHandler
 {
     /**
      * @var ConfigSmtpRepositoryInterface
@@ -38,7 +37,7 @@ class EditarConfigSmtpHandler
     private $config_smtp_repository;
 
     /**
-     * EditarConfigSmtpHandler constructor.
+     * GetListaConfigSmtpCommandHandler constructor.
      * @param ConfigSmtpRepositoryInterface $config_smtp_repository
      */
     public function __construct(ConfigSmtpRepositoryInterface $config_smtp_repository)
@@ -47,17 +46,18 @@ class EditarConfigSmtpHandler
     }
 
     /**
-     * @param EditarConfigSmtpCommand $command
-     * @return ConfigSmtp
-     * @throws \PainelDLX\Domain\Emails\Exceptions\AutentContaNaoInformadaException
-     * @throws \PainelDLX\Domain\Emails\Exceptions\AutentSenhaNaoInformadaException
-     * @throws \PainelDLX\Domain\Emails\Exceptions\NomeSmtpRepetidoException
+     * @param GetListaConfigSmtpCommand $command
+     * @return array
      */
-    public function handle(EditarConfigSmtpCommand $command): ConfigSmtp
+    public function handle(GetListaConfigSmtpCommand $command): array
     {
-        (new SalvarConfigSmtpValidator($command->getConfigSmtp(), $this->config_smtp_repository))->validar();
-        $this->config_smtp_repository->update($command->getConfigSmtp());
+        $lista = $this->config_smtp_repository->findByLike(
+            $command->getCriteria(),
+            $command->getOrderBy(),
+            $command->getLimit(),
+            $command->getOffset()
+        );
 
-        return $command->getConfigSmtp();
+        return array_filter($lista, function (ConfigSmtp $config_smtp) { return !$config_smtp->isDeletado(); });
     }
 }

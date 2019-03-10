@@ -11,7 +11,7 @@ namespace PainelDLX\Application\UseCases\Home\GetListaWigets;
 
 use PainelDLX\Domain\Home\Repositories\WidgetRepositoryInterface;
 
-class GetListaWidgetsHandler
+class GetListaWidgetsCommandHandler
 {
     /**
      * @var WidgetRepositoryInterface
@@ -19,7 +19,7 @@ class GetListaWidgetsHandler
     private $widget_repository;
 
     /**
-     * GetListaWidgetsHandler constructor.
+     * GetListaWidgetsCommandHandler constructor.
      * @param WidgetRepositoryInterface $widget_repository
      */
     public function __construct(WidgetRepositoryInterface $widget_repository)

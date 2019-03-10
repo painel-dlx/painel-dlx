@@ -10,14 +10,14 @@ namespace PainelDLX\Testes\Application\UseCases\Home\GetListaWidgets;
 
 use DLX\Infra\EntityManagerX;
 use PainelDLX\Application\UseCases\Home\GetListaWigets\GetListaWidgetsCommand;
-use PainelDLX\Application\UseCases\Home\GetListaWigets\GetListaWidgetsHandler;
+use PainelDLX\Application\UseCases\Home\GetListaWigets\GetListaWidgetsCommandHandler;
 use PainelDLX\Domain\Home\Entities\Widget;
 use PainelDLX\Domain\Home\Repositories\WidgetRepositoryInterface;
 use PainelDLX\Testes\PainelDLXTests;
 
 class GetListaWidgetsHandlerTest extends PainelDLXTests
 {
-    /** @var GetListaWidgetsHandler */
+    /** @var GetListaWidgetsCommandHandler */
     private $handler;
 
     protected function setUp()
@@ -26,7 +26,7 @@ class GetListaWidgetsHandlerTest extends PainelDLXTests
 
         /** @var WidgetRepositoryInterface $widget_repository */
         $widget_repository = EntityManagerX::getRepository(Widget::class);
-        $this->handler = new GetListaWidgetsHandler($widget_repository);
+        $this->handler = new GetListaWidgetsCommandHandler($widget_repository);
     }
 
     public function test_Handle_deve_retornar_array()

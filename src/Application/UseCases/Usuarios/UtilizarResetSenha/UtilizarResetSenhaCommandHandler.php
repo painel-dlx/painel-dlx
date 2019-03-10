@@ -23,36 +23,37 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Application\UseCases\GruposUsuarios\ExcluirGrupoUsuario;
+namespace PainelDLX\Application\UseCases\Usuarios\UtilizarResetSenha;
 
-use Exception;
-use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
-use PainelDLX\Domain\GruposUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
 
-class ExcluirGrupoUsuarioHandler
+use PainelDLX\Domain\Usuarios\Entities\ResetSenha;
+use PainelDLX\Domain\Usuarios\Repositories\ResetSenhaRepositoryInterface;
+
+class UtilizarResetSenhaCommandHandler
 {
     /**
-     * @var GrupoUsuarioRepositoryInterface
+     * @var ResetSenhaRepositoryInterface
      */
-    private $grupo_usuario_repository;
+    private $reset_senha_repository;
 
-    public function __construct(GrupoUsuarioRepositoryInterface $grupo_usuario_repository)
+    /**
+     * UtilizarResetSenhaCommandHandler constructor.
+     * @param ResetSenhaRepositoryInterface $reset_senha_repository
+     */
+    public function __construct(ResetSenhaRepositoryInterface $reset_senha_repository)
     {
-        $this->grupo_usuario_repository = $grupo_usuario_repository;
+        $this->reset_senha_repository = $reset_senha_repository;
     }
 
     /**
-     * @param ExcluirGrupoUsuarioCommand $command
-     * @throws Exception
+     * @param UtilizarResetSenhaCommand $command
+     * @return ResetSenha
      */
-    public function handle(ExcluirGrupoUsuarioCommand $command)
+    public function handle(UtilizarResetSenhaCommand $command): ResetSenha
     {
-        try {
-            /** @var GrupoUsuario $usuario */
-            $grupo_usuario = $this->grupo_usuario_repository->find($command->getGrupoUsuarioId());
-            $this->grupo_usuario_repository->delete($grupo_usuario);
-        } catch (Exception $e) {
-            throw $e;
-        }
+        $command->getResetSenha()->setUtilizado(true);
+        $this->reset_senha_repository->update($command->getResetSenha());
+
+        return $command->getResetSenha();
     }
 }

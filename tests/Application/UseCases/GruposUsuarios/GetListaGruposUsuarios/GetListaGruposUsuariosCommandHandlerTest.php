@@ -28,7 +28,7 @@ namespace PainelDLX\Testes\Application\UseCases\GruposUsuarios\GetListaGruposUsu
 use DLX\Infra\EntityManagerX;
 use Doctrine\Common\Collections\ArrayCollection;
 use PainelDLX\Application\UseCases\GruposUsuarios\GetListaGruposUsuarios\GetListaGruposUsuariosCommandHandler;
-use PainelDLX\Application\UseCases\GruposUsuarios\GetListaGruposUsuarios\GetListaGrupoUsuariosCommand;
+use PainelDLX\Application\UseCases\GruposUsuarios\GetListaGruposUsuarios\GetListaGruposUsuariosCommand;
 use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
 use PainelDLX\Domain\GruposUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
 use PainelDLX\Testes\PainelDLXTests;
@@ -50,7 +50,7 @@ class GetListaGruposUsuariosCommandHandlerTest extends PainelDLXTests
 
     public function test_Handle_sem_criteria()
     {
-        $command = new GetListaGrupoUsuariosCommand();
+        $command = new GetListaGruposUsuariosCommand();
         $lista_grupos_command = $this->handler->handle($command);
         $lista_grupos_repository = $this->grupo_usuario_repository->findBy(['deletado' => false]);
 
@@ -68,7 +68,7 @@ class GetListaGruposUsuariosCommandHandlerTest extends PainelDLXTests
     {
         $criteria = ['alias' => 'admin'];
 
-        $command = new GetListaGrupoUsuariosCommand($criteria);
+        $command = new GetListaGruposUsuariosCommand($criteria);
         $lista_usuarios_command = $this->handler->handle($command);
         $lista_usuarios_repository = array_filter(
             $this->grupo_usuario_repository->findByLike($criteria),

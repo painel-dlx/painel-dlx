@@ -27,7 +27,7 @@ namespace PainelDLX\Testes\Application\UseCases\Usuarios\NovoUsuario;
 
 use DLX\Infra\EntityManagerX;
 use PainelDLX\Application\UseCases\Usuarios\NovoUsuario\NovoUsuarioCommand;
-use PainelDLX\Application\UseCases\Usuarios\NovoUsuario\NovoUsuarioHandler;
+use PainelDLX\Application\UseCases\Usuarios\NovoUsuario\NovoUsuarioCommandHandler;
 use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
 use PainelDLX\Domain\GruposUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
@@ -49,7 +49,7 @@ class NovoUsuarioHandlerTest extends PainelDLXTests
         /** @var GrupoUsuario $grupo_usuario */
         $grupo_usuario = $grupo_usuario_repository->findOneBy(['alias' => 'ADMIN']);
 
-        $handler = new NovoUsuarioHandler($usuario_repository, $grupo_usuario_repository);
+        $handler = new NovoUsuarioCommandHandler($usuario_repository, $grupo_usuario_repository);
 
         $senha = '123456';
         $usuario = new Usuario('Teste Unitário', 'teste@teste.com.br');

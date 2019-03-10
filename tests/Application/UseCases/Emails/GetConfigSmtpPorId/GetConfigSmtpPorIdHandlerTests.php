@@ -27,7 +27,7 @@ namespace PainelDLX\Testes\Application\UseCases\Emails\GetConfigSmtpPorId;
 
 use DLX\Infra\EntityManagerX;
 use PainelDLX\Application\UseCases\Emails\GetConfigSmtpPorId\GetConfigSmtpPorIdCommand;
-use PainelDLX\Application\UseCases\Emails\GetConfigSmtpPorId\GetConfigSmtpPorIdHandler;
+use PainelDLX\Application\UseCases\Emails\GetConfigSmtpPorId\GetConfigSmtpPorIdCommandHandler;
 use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
 use PainelDLX\Domain\Emails\Repositories\ConfigSmtpRepositoryInterface;
 use PainelDLX\Testes\Application\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpHandlerTests;
@@ -35,7 +35,7 @@ use PainelDLX\Testes\PainelDLXTests;
 
 class GetConfigSmtpPorIdHandlerTests extends PainelDLXTests
 {
-    /** @var GetConfigSmtpPorIdHandler */
+    /** @var GetConfigSmtpPorIdCommandHandler */
     private $handler;
 
     protected function setUp()
@@ -44,7 +44,7 @@ class GetConfigSmtpPorIdHandlerTests extends PainelDLXTests
 
         /** @var ConfigSmtpRepositoryInterface $config_smtp_repository */
         $config_smtp_repository = EntityManagerX::getRepository(ConfigSmtp::class);
-        $this->handler = new GetConfigSmtpPorIdHandler($config_smtp_repository);
+        $this->handler = new GetConfigSmtpPorIdCommandHandler($config_smtp_repository);
     }
 
     /**

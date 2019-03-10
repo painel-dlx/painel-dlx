@@ -23,12 +23,14 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Application\UseCases\Emails\GetConfigSmtpPorId;
+namespace PainelDLX\Application\UseCases\Emails\EditarConfigSmtp;
 
 
+use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
 use PainelDLX\Domain\Emails\Repositories\ConfigSmtpRepositoryInterface;
+use PainelDLX\Domain\Emails\Services\Validators\SalvarConfigSmtpValidator;
 
-class GetConfigSmtpPorIdHandler
+class EditarConfigSmtpCommandHandler
 {
     /**
      * @var ConfigSmtpRepositoryInterface
@@ -36,7 +38,7 @@ class GetConfigSmtpPorIdHandler
     private $config_smtp_repository;
 
     /**
-     * GetConfigSmtpPorIdHandler constructor.
+     * EditarConfigSmtpCommandHandler constructor.
      * @param ConfigSmtpRepositoryInterface $config_smtp_repository
      */
     public function __construct(ConfigSmtpRepositoryInterface $config_smtp_repository)
@@ -45,13 +47,17 @@ class GetConfigSmtpPorIdHandler
     }
 
     /**
-     * @param GetConfigSmtpPorIdCommand $command
-     * @return |null
+     * @param EditarConfigSmtpCommand $command
+     * @return ConfigSmtp
+     * @throws \PainelDLX\Domain\Emails\Exceptions\AutentContaNaoInformadaException
+     * @throws \PainelDLX\Domain\Emails\Exceptions\AutentSenhaNaoInformadaException
+     * @throws \PainelDLX\Domain\Emails\Exceptions\NomeSmtpRepetidoException
      */
-    public function handle(GetConfigSmtpPorIdCommand $command)
+    public function handle(EditarConfigSmtpCommand $command): ConfigSmtp
     {
-        return !empty($command->getConfigSmtpId())
-            ? $this->config_smtp_repository->find($command->getConfigSmtpId())
-            : null;
+        (new SalvarConfigSmtpValidator($command->getConfigSmtp(), $this->config_smtp_repository))->validar();
+        $this->config_smtp_repository->update($command->getConfigSmtp());
+
+        return $command->getConfigSmtp();
     }
 }

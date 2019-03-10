@@ -23,40 +23,37 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Application\UseCases\PermissoesUsuario\GetListaPermissaoUsuario;
+namespace PainelDLX\Application\UseCases\Login\FazerLogout;
 
+use PainelDLX\Application\UseCases\Login\Exceptions\NenhumaSessaoAtivaException;
+use SechianeX\Contracts\SessionInterface;
 
-use PainelDLX\Domain\PermissoesUsuario\Entities\PermissaoUsuario;
-use PainelDLX\Domain\PermissoesUsuario\Repositories\PermissaoUsuarioRepositoryInterface;
-
-class GetListaPermissaoUsuarioHandler
+class FazerLogoutCommandHandler
 {
     /**
-     * @var PermissaoUsuarioRepositoryInterface
+     * @var SessionInterface
      */
-    private $permissao_usuario_repository;
+    private $session;
 
     /**
-     * GetListaPermissaoUsuarioHandler constructor.
-     * @param PermissaoUsuarioRepositoryInterface $permissao_usuario_repository
+     * FazerLogoutCommandHandler constructor.
+     * @param SessionInterface $session
      */
-    public function __construct(PermissaoUsuarioRepositoryInterface $permissao_usuario_repository)
+    public function __construct(SessionInterface $session)
     {
-        $this->permissao_usuario_repository = $permissao_usuario_repository;
+        $this->session = $session;
     }
 
     /**
-     * @param GetListaPermissaoUsuarioCommand $command
-     * @return array
+     * @return bool
+     * @throws NenhumaSessaoAtivaException
      */
-    public function handle(GetListaPermissaoUsuarioCommand $command): array
+    public function handle(): bool
     {
-        $lista = $this->permissao_usuario_repository->findByLike(
-            $command->getCriteria(),
-            $command->getOrderBy(),
-            $command->getLimit(),
-            $command->getOffset()
-        );
-        return array_filter($lista, function (PermissaoUsuario $permissao_usuario) { return !$permissao_usuario->isDeletado(); });
+        if (!$this->session->isAtiva()) {
+            throw new NenhumaSessaoAtivaException();
+        }
+
+        return $this->session->destroy();
     }
 }

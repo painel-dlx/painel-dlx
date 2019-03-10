@@ -13,11 +13,11 @@ use PainelDLX\Domain\Usuarios\Entities\Usuario;
 use PainelDLX\Domain\Usuarios\Repositories\UsuarioRepositoryInterface;
 
 /**
- * Class GetListaUsuariosHandler
+ * Class GetListaUsuariosCommandHandler
  * @package PainelDLX\Application\UseCases\Usuarios\GetListaUsuarios
  * @covers GetListaUsuariosHandlerTest
  */
-class GetListaUsuariosHandler
+class GetListaUsuariosCommandHandler
 {
     /**
      * @var UsuarioRepositoryInterface
@@ -25,7 +25,7 @@ class GetListaUsuariosHandler
     private $usuario_repository;
 
     /**
-     * GetListaUsuariosHandler constructor.
+     * GetListaUsuariosCommandHandler constructor.
      * @param UsuarioRepositoryInterface $usuario_repository
      */
     public function __construct(UsuarioRepositoryInterface $usuario_repository)

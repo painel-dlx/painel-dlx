@@ -23,34 +23,40 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Application\UseCases\GruposUsuarios\GetGrupoUsuarioPorId;
+namespace PainelDLX\Application\UseCases\PermissoesUsuario\GetListaPermissaoUsuario;
 
 
-use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
-use PainelDLX\Domain\GruposUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
+use PainelDLX\Domain\PermissoesUsuario\Entities\PermissaoUsuario;
+use PainelDLX\Domain\PermissoesUsuario\Repositories\PermissaoUsuarioRepositoryInterface;
 
-class GetGrupoUsuarioPorIdHandler
+class GetListaPermissaoUsuarioCommandHandler
 {
     /**
-     * @var GrupoUsuarioRepositoryInterface
+     * @var PermissaoUsuarioRepositoryInterface
      */
-    private $grupo_usuario_repository;
+    private $permissao_usuario_repository;
 
     /**
-     * GetGrupoUsuarioPorIdHandler constructor.
-     * @param GrupoUsuarioRepositoryInterface $grupo_usuario_repository
+     * GetListaPermissaoUsuarioCommandHandler constructor.
+     * @param PermissaoUsuarioRepositoryInterface $permissao_usuario_repository
      */
-    public function __construct(GrupoUsuarioRepositoryInterface $grupo_usuario_repository)
+    public function __construct(PermissaoUsuarioRepositoryInterface $permissao_usuario_repository)
     {
-        $this->grupo_usuario_repository = $grupo_usuario_repository;
+        $this->permissao_usuario_repository = $permissao_usuario_repository;
     }
 
     /**
-     * @param GetGrupoUsuarioPorIdCommand $command
-     * @return GrupoUsuario|null
+     * @param GetListaPermissaoUsuarioCommand $command
+     * @return array
      */
-    public function handle(GetGrupoUsuarioPorIdCommand $command): ?GrupoUsuario
+    public function handle(GetListaPermissaoUsuarioCommand $command): array
     {
-        return $this->grupo_usuario_repository->find($command->getGrupoUsuarioId());
+        $lista = $this->permissao_usuario_repository->findByLike(
+            $command->getCriteria(),
+            $command->getOrderBy(),
+            $command->getLimit(),
+            $command->getOffset()
+        );
+        return array_filter($lista, function (PermissaoUsuario $permissao_usuario) { return !$permissao_usuario->isDeletado(); });
     }
 }

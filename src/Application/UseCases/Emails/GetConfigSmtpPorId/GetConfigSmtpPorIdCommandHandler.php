@@ -23,12 +23,35 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Application\UseCases\GruposUsuarios\GetListaGruposUsuarios;
+namespace PainelDLX\Application\UseCases\Emails\GetConfigSmtpPorId;
 
 
-use PainelDLX\Application\Contracts\ListaRegistrosCommand;
+use PainelDLX\Domain\Emails\Repositories\ConfigSmtpRepositoryInterface;
 
-class GetListaGrupoUsuariosCommand extends ListaRegistrosCommand
+class GetConfigSmtpPorIdCommandHandler
 {
+    /**
+     * @var ConfigSmtpRepositoryInterface
+     */
+    private $config_smtp_repository;
 
+    /**
+     * GetConfigSmtpPorIdCommandHandler constructor.
+     * @param ConfigSmtpRepositoryInterface $config_smtp_repository
+     */
+    public function __construct(ConfigSmtpRepositoryInterface $config_smtp_repository)
+    {
+        $this->config_smtp_repository = $config_smtp_repository;
+    }
+
+    /**
+     * @param GetConfigSmtpPorIdCommand $command
+     * @return |null
+     */
+    public function handle(GetConfigSmtpPorIdCommand $command)
+    {
+        return !empty($command->getConfigSmtpId())
+            ? $this->config_smtp_repository->find($command->getConfigSmtpId())
+            : null;
+    }
 }

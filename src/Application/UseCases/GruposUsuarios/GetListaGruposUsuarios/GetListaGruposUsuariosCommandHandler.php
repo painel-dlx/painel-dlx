@@ -45,7 +45,7 @@ class GetListaGruposUsuariosCommandHandler
         $this->grupo_usuario_repository = $grupo_usuario_repository;
     }
 
-    public function handle(GetListaGrupoUsuariosCommand $command): ?array
+    public function handle(GetListaGruposUsuariosCommand $command): ?array
     {
         $lista = $this->grupo_usuario_repository->findByLike($command->getCriteria(), $command->getOrderBy(), $command->getLimit(), $command->getOffset());
         return array_filter($lista, function (GrupoUsuario $grupo_usuario) { return !$grupo_usuario->isDeletado(); });

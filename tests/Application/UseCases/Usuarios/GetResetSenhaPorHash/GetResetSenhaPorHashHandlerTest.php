@@ -26,9 +26,9 @@
 namespace PainelDLX\Testes\Application\UseCases\Usuarios\GetResetSenhaPorHash;
 
 use DLX\Infra\EntityManagerX;
-use PainelDLX\Application\UseCases\Emails\GetConfigSmtpPorId\GetConfigSmtpPorIdHandler;
+use PainelDLX\Application\UseCases\Emails\GetConfigSmtpPorId\GetConfigSmtpPorIdCommandHandler;
 use PainelDLX\Application\UseCases\Usuarios\GetResetSenhaPorHash\GetResetSenhaPorHashCommand;
-use PainelDLX\Application\UseCases\Usuarios\GetResetSenhaPorHash\GetResetSenhaPorHashHandler;
+use PainelDLX\Application\UseCases\Usuarios\GetResetSenhaPorHash\GetResetSenhaPorHashCommandHandler;
 use PainelDLX\Domain\Usuarios\Entities\ResetSenha;
 use PainelDLX\Domain\Usuarios\Repositories\ResetSenhaRepositoryInterface;
 use PainelDLX\Testes\Application\UseCases\Usuarios\SolicitarResetSenha\SolicitarResetSenhaHandlerTest;
@@ -49,7 +49,7 @@ class GetResetSenhaPorHashHandlerTest extends PainelDLXTests
         $reset_senha = (new SolicitarResetSenhaHandlerTest())->test_Handle();
 
         $command = new GetResetSenhaPorHashCommand($reset_senha->getHash());
-        $reset_senha2 = (new GetResetSenhaPorHashHandler($reset_senha_repository))->handle($command);
+        $reset_senha2 = (new GetResetSenhaPorHashCommandHandler($reset_senha_repository))->handle($command);
 
         $this->assertNotNull($reset_senha2);
         $this->assertEquals($reset_senha, $reset_senha2);
@@ -64,7 +64,7 @@ class GetResetSenhaPorHashHandlerTest extends PainelDLXTests
         $reset_senha_repository = EntityManagerX::getRepository(ResetSenha::class);
 
         $command = new GetResetSenhaPorHashCommand('teste');
-        $reset_senha = (new GetResetSenhaPorHashHandler($reset_senha_repository))->handle($command);
+        $reset_senha = (new GetResetSenhaPorHashCommandHandler($reset_senha_repository))->handle($command);
 
         $this->assertNull($reset_senha);
     }

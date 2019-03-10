@@ -31,15 +31,15 @@ use League\Tactician\CommandBus;
 use PainelDLX\Application\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommand;
 use PainelDLX\Application\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommandHandler;
 use PainelDLX\Application\UseCases\Usuarios\EditarUsuario\EditarUsuarioCommand;
-use PainelDLX\Application\UseCases\Usuarios\EditarUsuario\EditarUsuarioHandler;
+use PainelDLX\Application\UseCases\Usuarios\EditarUsuario\EditarUsuarioCommandHandler;
 use PainelDLX\Application\UseCases\Usuarios\ExcluirUsuario\ExcluirUsuarioCommand;
-use PainelDLX\Application\UseCases\Usuarios\ExcluirUsuario\ExcluirUsuarioHandler;
+use PainelDLX\Application\UseCases\Usuarios\ExcluirUsuario\ExcluirUsuarioCommandHandler;
 use PainelDLX\Application\UseCases\Usuarios\GetListaUsuarios\GetListaUsuariosCommand;
-use PainelDLX\Application\UseCases\Usuarios\GetListaUsuarios\GetListaUsuariosHandler;
+use PainelDLX\Application\UseCases\Usuarios\GetListaUsuarios\GetListaUsuariosCommandHandler;
 use PainelDLX\Application\UseCases\Usuarios\GetUsuarioPeloId\GetUsuarioPeloIdCommand;
-use PainelDLX\Application\UseCases\Usuarios\GetUsuarioPeloId\GetUsuarioPeloIdHandler;
+use PainelDLX\Application\UseCases\Usuarios\GetUsuarioPeloId\GetUsuarioPeloIdCommandHandler;
 use PainelDLX\Application\UseCases\Usuarios\NovoUsuario\NovoUsuarioCommand;
-use PainelDLX\Application\UseCases\Usuarios\NovoUsuario\NovoUsuarioHandler;
+use PainelDLX\Application\UseCases\Usuarios\NovoUsuario\NovoUsuarioCommandHandler;
 use PainelDLX\Domain\GruposUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
 use PainelDLX\Domain\Usuarios\Repositories\UsuarioRepositoryInterface;
@@ -111,7 +111,7 @@ class CadastroUsuarioController extends SiteController
              */
             $criteria = $this->command_bus->handle(new ConverterFiltro2CriteriaCommand($get['campos'], $get['busca']));
 
-            /** @covers GetListaUsuariosHandler */
+            /** @covers GetListaUsuariosCommandHandler */
             $lista_usuarios = $this->command_bus->handle(new GetListaUsuariosCommand($criteria));
 
             // Atributos
@@ -183,7 +183,7 @@ class CadastroUsuarioController extends SiteController
             $usuario = Usuario::create($nome, $email, ...$grupos)
                 ->setSenha($senha);
 
-            /** @covers NovoUsuarioHandler */
+            /** @covers NovoUsuarioCommandHandler */
             $this->command_bus->handle(new NovoUsuarioCommand($usuario, $senha_confirm));
 
             $msg['retorno'] = 'sucesso';
@@ -211,7 +211,7 @@ class CadastroUsuarioController extends SiteController
         try {
             /**
              * @var Usuario|null $usuario
-             * @covers GetUsuarioPeloIdHandler
+             * @covers GetUsuarioPeloIdCommandHandler
              */
             $usuario = $this->command_bus->handle(new GetUsuarioPeloIdCommand($get['usuario_id']));
             $lista_grupos = $this->grupo_usuario_repository->findAtivos();
@@ -262,7 +262,7 @@ class CadastroUsuarioController extends SiteController
         try {
             /**
              * @var Usuario $usuario_atualizado
-             * @covers EditarUsuarioHandler
+             * @covers EditarUsuarioCommandHandler
              */
             $usuario_atualizado = $this->command_bus->handle(new EditarUsuarioCommand($usuario_id, $nome, $email, $grupos));
 
@@ -284,11 +284,11 @@ class CadastroUsuarioController extends SiteController
         try {
             /**
              * @var Usuario|null $usuario
-             * @covers GetUsuarioPeloIdHandler
+             * @covers GetUsuarioPeloIdCommandHandler
              */
             $usuario = $this->command_bus->handle(new GetUsuarioPeloIdCommand($post['usuario_id']));
 
-            /** @covers ExcluirUsuarioHandler */
+            /** @covers ExcluirUsuarioCommandHandler */
             $this->command_bus->handle(new ExcluirUsuarioCommand($usuario));
 
             $msg['retorno'] = 'sucesso';
@@ -315,7 +315,7 @@ class CadastroUsuarioController extends SiteController
         try {
             /**
              * @var Usuario|null $usuario
-             * @covers GetUsuarioPeloIdHandler
+             * @covers GetUsuarioPeloIdCommandHandler
              */
             $usuario = $this->command_bus->handle(new GetUsuarioPeloIdCommand($get['usuario_id']));
 

@@ -31,7 +31,7 @@ use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
 use PainelDLX\Domain\GruposUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
 use PainelDLX\Domain\PermissoesUsuario\Entities\PermissaoUsuario;
 
-class ConfigurarPermissoesHandler
+class ConfigurarPermissoesCommandHandler
 {
     /**
      * @var GrupoUsuarioRepositoryInterface
@@ -39,7 +39,7 @@ class ConfigurarPermissoesHandler
     private $grupo_usuario_repository;
 
     /**
-     * ConfigurarPermissoesHandler constructor.
+     * ConfigurarPermissoesCommandHandler constructor.
      * @param GrupoUsuarioRepositoryInterface $grupo_usuario_repository
      */
     public function __construct(GrupoUsuarioRepositoryInterface $grupo_usuario_repository)

@@ -23,43 +23,42 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Application\UseCases\GruposUsuarios\NovoGrupoUsuario;
+namespace PainelDLX\Application\UseCases\Usuarios\AlterarSenhaUsuario;
 
 
-use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
-use PainelDLX\Domain\GruposUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
-use PainelDLX\Domain\GruposUsuarios\Services\VerificaAliasGrupoUsuarioJaExiste;
+use PainelDLX\Domain\Usuarios\Repositories\UsuarioRepositoryInterface;
+use PainelDLX\Domain\Usuarios\Services\VerificaSenhasIguais;
 
-class NovoGrupoUsuarioHandler
+class AlterarSenhaUsuarioCommandHandler
 {
-    /** @var GrupoUsuarioRepositoryInterface */
-    private $grupo_usuario_repository;
+    /** @var UsuarioRepositoryInterface */
+    private $usuario_repository;
 
     /**
-     * NovoUsuarioHandler constructor.
-     * @param GrupoUsuarioRepositoryInterface $grupo_usuario_repository
+     * AlterarSenhaUsuarioCommandHandler constructor.
+     * @param UsuarioRepositoryInterface $usuario_repository
      */
-    public function __construct(
-        GrupoUsuarioRepositoryInterface $grupo_usuario_repository
-    ) {
-        $this->grupo_usuario_repository = $grupo_usuario_repository;
+    public function __construct(UsuarioRepositoryInterface $usuario_repository)
+    {
+        $this->usuario_repository = $usuario_repository;
     }
 
     /**
-     * @param NovoGrupoUsuarioCommand $command
+     * @param AlterarSenhaUsuarioCommand $command
      * @throws \Exception
      */
-    public function handle(NovoGrupoUsuarioCommand $command)
+    public function handle(AlterarSenhaUsuarioCommand $command)
     {
         try {
-            $grupo_usuario = GrupoUsuario::create($command->getNome());
+            $usuario = $command->getUsuario();
+            $senha = $command->getSenhaUsuario();
+            $is_reset = $command->isReset();
 
-            // Verificar se o alias gerado não está sendo utilizado
-            (new VerificaAliasGrupoUsuarioJaExiste($this->grupo_usuario_repository, $grupo_usuario));
+            // Verificar se as senhas coincidem
+            (new VerificaSenhasIguais($usuario, $senha, $is_reset))->executar();
 
-            $this->grupo_usuario_repository->create($grupo_usuario);
-
-            return $grupo_usuario;
+            $usuario->setSenha($senha->getSenhaInformada());
+            $this->usuario_repository->update($usuario);
         } catch (\Exception $e) {
             throw $e;
         }

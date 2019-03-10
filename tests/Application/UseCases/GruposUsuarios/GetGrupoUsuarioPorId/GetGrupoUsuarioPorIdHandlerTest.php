@@ -27,7 +27,7 @@ namespace PainelDLX\Testes\Application\UseCases\GruposUsuarios\GetGrupoUsuarioPo
 
 use DLX\Infra\EntityManagerX;
 use PainelDLX\Application\UseCases\GruposUsuarios\GetGrupoUsuarioPorId\GetGrupoUsuarioPorIdCommand;
-use PainelDLX\Application\UseCases\GruposUsuarios\GetGrupoUsuarioPorId\GetGrupoUsuarioPorIdHandler;
+use PainelDLX\Application\UseCases\GruposUsuarios\GetGrupoUsuarioPorId\GetGrupoUsuarioPorIdCommandHandler;
 use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
 use PainelDLX\Domain\GruposUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
 use PainelDLX\Testes\Application\UseCases\GruposUsuarios\NovoGrupoUsuario\NovoGrupoUsuarioHandlerTest;
@@ -46,7 +46,7 @@ class GetGrupoUsuarioPorIdHandlerTest extends PainelDLXTests
         $grupo_usuario = (new NovoGrupoUsuarioHandlerTest())->test_Handle();
 
         $command = new GetGrupoUsuarioPorIdCommand($grupo_usuario->getGrupoUsuarioId());
-        $grupo_usuario2 = (new GetGrupoUsuarioPorIdHandler($grupo_usuario_repository))->handle($command);
+        $grupo_usuario2 = (new GetGrupoUsuarioPorIdCommandHandler($grupo_usuario_repository))->handle($command);
 
         $this->assertEquals($grupo_usuario, $grupo_usuario2);
     }

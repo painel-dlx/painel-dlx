@@ -28,7 +28,7 @@ namespace PainelDLX\Testes\Application\UseCases\GruposUsuarios\ConfigurarPermiss
 use DLX\Infra\EntityManagerX;
 use Doctrine\Common\Collections\ArrayCollection;
 use PainelDLX\Application\UseCases\GruposUsuarios\ConfigurarPermissoes\ConfigurarPermissoesCommand;
-use PainelDLX\Application\UseCases\GruposUsuarios\ConfigurarPermissoes\ConfigurarPermissoesHandler;
+use PainelDLX\Application\UseCases\GruposUsuarios\ConfigurarPermissoes\ConfigurarPermissoesCommandHandler;
 use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
 use PainelDLX\Domain\GruposUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
 use PainelDLX\Domain\PermissoesUsuario\Entities\PermissaoUsuario;
@@ -53,7 +53,7 @@ class ConfigurarPermissoesHandlerTest extends PainelDLXTests
         $permissoes->add(PermissaoUsuario::create('TESTE_3', 'Teste 3'));
 
         $command = new ConfigurarPermissoesCommand($grupo_usuario, $permissoes);
-        $grupo_usuario = (new ConfigurarPermissoesHandler($grupo_usuario_repository))->handle($command);
+        $grupo_usuario = (new ConfigurarPermissoesCommandHandler($grupo_usuario_repository))->handle($command);
 
         $this->assertCount($permissoes->count(), $grupo_usuario->getPermissoes());
     }

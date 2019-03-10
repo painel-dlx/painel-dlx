@@ -23,34 +23,34 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Application\UseCases\Usuarios\GetResetSenhaPorHash;
+namespace PainelDLX\Application\UseCases\GruposUsuarios\GetGrupoUsuarioPorId;
 
 
-use PainelDLX\Domain\Usuarios\Entities\ResetSenha;
-use PainelDLX\Domain\Usuarios\Repositories\ResetSenhaRepositoryInterface;
+use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
+use PainelDLX\Domain\GruposUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
 
-class GetResetSenhaPorHashHandler
+class GetGrupoUsuarioPorIdCommandHandler
 {
     /**
-     * @var ResetSenhaRepositoryInterface
+     * @var GrupoUsuarioRepositoryInterface
      */
-    private $reset_senha_repository;
+    private $grupo_usuario_repository;
 
     /**
-     * GetResetSenhaPorHashHandler constructor.
-     * @param ResetSenhaRepositoryInterface $reset_senha_repository
+     * GetGrupoUsuarioPorIdCommandHandler constructor.
+     * @param GrupoUsuarioRepositoryInterface $grupo_usuario_repository
      */
-    public function __construct(ResetSenhaRepositoryInterface $reset_senha_repository)
+    public function __construct(GrupoUsuarioRepositoryInterface $grupo_usuario_repository)
     {
-        $this->reset_senha_repository = $reset_senha_repository;
+        $this->grupo_usuario_repository = $grupo_usuario_repository;
     }
 
     /**
-     * @param GetResetSenhaPorHashCommand $command
-     * @return ResetSenha|null
+     * @param GetGrupoUsuarioPorIdCommand $command
+     * @return GrupoUsuario|null
      */
-    public function handle(GetResetSenhaPorHashCommand $command): ?ResetSenha
+    public function handle(GetGrupoUsuarioPorIdCommand $command): ?GrupoUsuario
     {
-        return $this->reset_senha_repository->findResetSenhaAtivoPorHash($command->getHash());
+        return $this->grupo_usuario_repository->find($command->getGrupoUsuarioId());
     }
 }

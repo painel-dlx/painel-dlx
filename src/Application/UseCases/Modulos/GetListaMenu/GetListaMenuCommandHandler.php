@@ -11,7 +11,7 @@ namespace PainelDLX\Application\UseCases\Modulos\GetListaMenu;
 
 use PainelDLX\Domain\Modulos\Repositories\MenuRepositoryInterface;
 
-class GetListaMenuHandler
+class GetListaMenuCommandHandler
 {
     /**
      * @var MenuRepositoryInterface
@@ -19,7 +19,7 @@ class GetListaMenuHandler
     private $menu_repository;
 
     /**
-     * GetListaMenuHandler constructor.
+     * GetListaMenuCommandHandler constructor.
      * @param MenuRepositoryInterface $menu_repository
      */
     public function __construct(MenuRepositoryInterface $menu_repository)

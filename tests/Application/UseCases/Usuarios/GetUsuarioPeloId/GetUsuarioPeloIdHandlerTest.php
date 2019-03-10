@@ -10,14 +10,14 @@ namespace PainelDLX\Testes\Application\UseCases\Usuarios\GetUsuarioPeloId;
 
 use DLX\Infra\EntityManagerX;
 use PainelDLX\Application\UseCases\Usuarios\GetUsuarioPeloId\GetUsuarioPeloIdCommand;
-use PainelDLX\Application\UseCases\Usuarios\GetUsuarioPeloId\GetUsuarioPeloIdHandler;
+use PainelDLX\Application\UseCases\Usuarios\GetUsuarioPeloId\GetUsuarioPeloIdCommandHandler;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
 use PainelDLX\Domain\Usuarios\Repositories\UsuarioRepositoryInterface;
 use PainelDLX\Testes\PainelDLXTests;
 
 class GetUsuarioPeloIdHandlerTest extends PainelDLXTests
 {
-    /** @var GetUsuarioPeloIdHandler */
+    /** @var GetUsuarioPeloIdCommandHandler */
     private $handler;
 
     protected function setUp()
@@ -26,7 +26,7 @@ class GetUsuarioPeloIdHandlerTest extends PainelDLXTests
 
         /** @var UsuarioRepositoryInterface $usuario_repository */
         $usuario_repository = EntityManagerX::getRepository(Usuario::class);
-        $this->handler = new GetUsuarioPeloIdHandler($usuario_repository);
+        $this->handler = new GetUsuarioPeloIdCommandHandler($usuario_repository);
     }
 
 

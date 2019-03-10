@@ -28,7 +28,7 @@ namespace PainelDLX\Testes\Application\UseCases\PermissoesUsuario\GetListaPermis
 use DLX\Infra\EntityManagerX;
 use Doctrine\Common\Collections\ArrayCollection;
 use PainelDLX\Application\UseCases\PermissoesUsuario\GetListaPermissaoUsuario\GetListaPermissaoUsuarioCommand;
-use PainelDLX\Application\UseCases\PermissoesUsuario\GetListaPermissaoUsuario\GetListaPermissaoUsuarioHandler;
+use PainelDLX\Application\UseCases\PermissoesUsuario\GetListaPermissaoUsuario\GetListaPermissaoUsuarioCommandHandler;
 use PainelDLX\Domain\PermissoesUsuario\Entities\PermissaoUsuario;
 use PainelDLX\Domain\PermissoesUsuario\Repositories\PermissaoUsuarioRepositoryInterface;
 use PainelDLX\Testes\PainelDLXTests;
@@ -38,7 +38,7 @@ class GetListaPermissaoUsuarioHandlerTest extends PainelDLXTests
 
     /** @var PermissaoUsuarioRepositoryInterface */
     private $permissao_usuario_repository;
-    /** @var GetListaPermissaoUsuarioHandler */
+    /** @var GetListaPermissaoUsuarioCommandHandler */
     private $handler;
 
     protected function setUp()
@@ -46,7 +46,7 @@ class GetListaPermissaoUsuarioHandlerTest extends PainelDLXTests
         parent::setUp();
 
         $this->permissao_usuario_repository = EntityManagerX::getRepository(PermissaoUsuario::class);
-        $this->handler = new GetListaPermissaoUsuarioHandler($this->permissao_usuario_repository);
+        $this->handler = new GetListaPermissaoUsuarioCommandHandler($this->permissao_usuario_repository);
     }
 
     public function test_Handle_sem_criteria()

@@ -13,7 +13,7 @@ use PainelDLX\Application\Services\EnviarEmail;
 use PainelDLX\Domain\Emails\Repositories\ConfigSmtpRepositoryInterface;
 use PHPMailer\PHPMailer\PHPMailer;
 
-class EnviarEmailResetSenhaHandler
+class EnviarEmailResetSenhaCommandHandler
 {
     /**
      * @var PHPMailer
@@ -25,7 +25,7 @@ class EnviarEmailResetSenhaHandler
     private $config_smtp_repository;
 
     /**
-     * EnviarEmailResetSenhaHandler constructor.
+     * EnviarEmailResetSenhaCommandHandler constructor.
      * @param PHPMailer $PHP_mailer
      * @param ConfigSmtpRepositoryInterface $config_smtp_repository
      */

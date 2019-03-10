@@ -10,7 +10,7 @@ namespace PainelDLX\Testes\Application\UseCases\Usuarios\SolicitarResetSenha;
 
 use DLX\Infra\EntityManagerX;
 use PainelDLX\Application\UseCases\Usuarios\SolicitarResetSenha\SolicitarResetSenhaCommand;
-use PainelDLX\Application\UseCases\Usuarios\SolicitarResetSenha\SolicitarResetSenhaHandler;
+use PainelDLX\Application\UseCases\Usuarios\SolicitarResetSenha\SolicitarResetSenhaCommandHandler;
 use PainelDLX\Domain\Usuarios\Entities\ResetSenha;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
 use PainelDLX\Domain\Usuarios\Repositories\ResetSenhaRepositoryInterface;
@@ -41,7 +41,7 @@ class SolicitarResetSenhaHandlerTest extends PainelDLXTests
         $command = new SolicitarResetSenhaCommand('dlepera88.emails@gmail.com');
 
         /** @var UsuarioRepositoryInterface $usuario_repository */
-        $handler = new SolicitarResetSenhaHandler($reset_senha_repository, $usuario_repository);
+        $handler = new SolicitarResetSenhaCommandHandler($reset_senha_repository, $usuario_repository);
         $reset_senha = $handler->handle($command);
 
         $this->assertInstanceOf(ResetSenha::class, $reset_senha);
@@ -75,10 +75,10 @@ class SolicitarResetSenhaHandlerTest extends PainelDLXTests
         // Executo 2 vezes o handler abaixo para verificar se foi criado um ResetSenha novo ou não
 
         /** @var UsuarioRepositoryInterface $usuario_repository */
-        $handler = new SolicitarResetSenhaHandler($reset_senha_repository, $usuario_repository);
+        $handler = new SolicitarResetSenhaCommandHandler($reset_senha_repository, $usuario_repository);
         $reset_senha = $handler->handle($command);
 
-        $handler = new SolicitarResetSenhaHandler($reset_senha_repository, $usuario_repository);
+        $handler = new SolicitarResetSenhaCommandHandler($reset_senha_repository, $usuario_repository);
         $reset_senha2 = $handler->handle($command);
 
         $this->assertEquals($reset_senha, $reset_senha2);

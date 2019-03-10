@@ -23,39 +23,45 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Application\UseCases\PermissoesUsuario\CadastrarPermissaoUsuario;
+namespace PainelDLX\Application\UseCases\GruposUsuarios\NovoGrupoUsuario;
 
 
+use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
+use PainelDLX\Domain\GruposUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
+use PainelDLX\Domain\GruposUsuarios\Services\VerificaAliasGrupoUsuarioJaExiste;
 
-use PainelDLX\Domain\PermissoesUsuario\Entities\PermissaoUsuario;
-use PainelDLX\Domain\PermissoesUsuario\Repositories\PermissaoUsuarioRepositoryInterface;
-
-class CadastrarPermissaoUsuarioHandler
+class NovoGrupoUsuarioCommandHandler
 {
-    /**
-     * @var PermissaoUsuarioRepositoryInterface
-     */
-    private $permissao_usuario_repository;
+    /** @var GrupoUsuarioRepositoryInterface */
+    private $grupo_usuario_repository;
 
     /**
-     * CadastrarPermissaoUsuarioHandler constructor.
-     * @param PermissaoUsuario $permissao_usuario
-     * @param PermissaoUsuarioRepositoryInterface $permissao_usuario_repository
+     * NovoUsuarioCommandHandler constructor.
+     * @param GrupoUsuarioRepositoryInterface $grupo_usuario_repository
      */
     public function __construct(
-        PermissaoUsuarioRepositoryInterface $permissao_usuario_repository
+        GrupoUsuarioRepositoryInterface $grupo_usuario_repository
     ) {
-        $this->permissao_usuario_repository = $permissao_usuario_repository;
+        $this->grupo_usuario_repository = $grupo_usuario_repository;
     }
 
     /**
-     * @param CadastrarPermissaoUsuarioCommand $command
+     * @param NovoGrupoUsuarioCommand $command
+     * @throws \Exception
      */
-    public function handle(CadastrarPermissaoUsuarioCommand $command): PermissaoUsuario
+    public function handle(NovoGrupoUsuarioCommand $command)
     {
-        $permissao_usuario = PermissaoUsuario::create($command->getAlias(), $command->getDescricao());
-        $this->permissao_usuario_repository->create($permissao_usuario);
+        try {
+            $grupo_usuario = GrupoUsuario::create($command->getNome());
 
-        return $permissao_usuario;
+            // Verificar se o alias gerado não está sendo utilizado
+            (new VerificaAliasGrupoUsuarioJaExiste($this->grupo_usuario_repository, $grupo_usuario));
+
+            $this->grupo_usuario_repository->create($grupo_usuario);
+
+            return $grupo_usuario;
+        } catch (\Exception $e) {
+            throw $e;
+        }
     }
 }

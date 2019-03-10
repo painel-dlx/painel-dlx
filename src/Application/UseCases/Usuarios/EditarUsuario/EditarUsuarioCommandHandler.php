@@ -23,52 +23,66 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Application\UseCases\GruposUsuarios\EditarGrupoUsuario;
+namespace PainelDLX\Application\UseCases\Usuarios\EditarUsuario;
 
-use PainelDLX\Application\UseCases\CadastroUsuarios\Exceptions\RegistroEntityNaoEncontradoException;
+use PainelDLX\Application\UseCases\Usuarios\Exceptions\RegistroEntityNaoEncontradoException;
 use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
 use PainelDLX\Domain\GruposUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
-use PainelDLX\Domain\GruposUsuarios\Services\VerificaAliasGrupoUsuarioJaExiste;
+use PainelDLX\Domain\Usuarios\Entities\Usuario;
 use PainelDLX\Domain\Usuarios\Repositories\UsuarioRepositoryInterface;
+use PainelDLX\Domain\Usuarios\Services\VerificaEmailJaCadastrado;
 
-class EditarGrupoUsuarioHandler
+class EditarUsuarioCommandHandler
 {
+    /** @var UsuarioRepositoryInterface */
+    private $usuario_repository;
     /** @var GrupoUsuarioRepositoryInterface */
     private $grupo_usuario_repository;
 
     /**
-     * NovoUsuarioHandler constructor.
+     * NovoUsuarioCommandHandler constructor.
      * @param UsuarioRepositoryInterface $usuario_repository
      * @param GrupoUsuarioRepositoryInterface $grupo_usuario_repository
      */
     public function __construct(
+        UsuarioRepositoryInterface $usuario_repository,
         GrupoUsuarioRepositoryInterface $grupo_usuario_repository
     ) {
+        $this->usuario_repository = $usuario_repository;
         $this->grupo_usuario_repository = $grupo_usuario_repository;
     }
 
     /**
-     * @param EditarGrupoUsuarioCommand $command
+     * @param EditarUsuarioCommand $command
      * @throws \Exception
      */
-    public function handle(EditarGrupoUsuarioCommand $command)
+    public function handle(EditarUsuarioCommand $command)
     {
         try {
-            /** @var GrupoUsuario $grupo_usuario */
-            $grupo_usuario = $this->grupo_usuario_repository->find($command->getGrupoUsuarioId());
+            $lista_grupos = $this->grupo_usuario_repository->getListaGruposByIds(...$command->getGrupos());
+            /** @var Usuario $usuario */
+            $usuario = $this->usuario_repository->find($command->getUsuarioId());
 
-            if (!$grupo_usuario instanceof GrupoUsuario) {
-                throw new RegistroEntityNaoEncontradoException('Grupo de Usuário');
+            if (is_null($usuario)) {
+                throw new RegistroEntityNaoEncontradoException('Usuário');
             }
 
-            $grupo_usuario->setNome($command->getNome());
+            $usuario
+                ->setNome($command->getNome())
+                ->setEmail($command->getEmail());
 
-            // Verificar se o alias gerado não está sendo utilizado
-            (new VerificaAliasGrupoUsuarioJaExiste($this->grupo_usuario_repository, $grupo_usuario));
+            /** @var GrupoUsuario $grupo_usuario */
+            foreach ($lista_grupos as $grupo_usuario) {
+                if (!$usuario->hasGrupoUsuario($grupo_usuario)) {
+                    $usuario->addGrupo($grupo_usuario);
+                }
+            }
 
-            $this->grupo_usuario_repository->update($grupo_usuario);
+            // Verifica se o email desse usuário não está sendo usado por outro usuário
+            (new VerificaEmailJaCadastrado($this->usuario_repository, $usuario))->executar();
+            $this->usuario_repository->update($usuario);
 
-            return $grupo_usuario;
+            return $usuario;
         } catch (\Exception $e) {
             throw $e;
         }

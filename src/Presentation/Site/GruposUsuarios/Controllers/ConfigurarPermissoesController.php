@@ -32,9 +32,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use League\Tactician\CommandBus;
 use PainelDLX\Application\UseCases\GruposUsuarios\ConfigurarPermissoes\ConfigurarPermissoesCommand;
 use PainelDLX\Application\UseCases\GruposUsuarios\GetGrupoUsuarioPorId\GetGrupoUsuarioPorIdCommand;
-use PainelDLX\Application\UseCases\GruposUsuarios\GetGrupoUsuarioPorId\GetGrupoUsuarioPorIdHandler;
+use PainelDLX\Application\UseCases\GruposUsuarios\GetGrupoUsuarioPorId\GetGrupoUsuarioPorIdCommandHandler;
+use PainelDLX\Application\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommand;
 use PainelDLX\Application\UseCases\PermissoesUsuario\GetListaPermissaoUsuario\GetListaPermissaoUsuarioCommand;
-use PainelDLX\Application\UseCases\PermissoesUsuario\GetListaPermissaoUsuario\GetListaPermissaoUsuarioHandler;
+use PainelDLX\Application\UseCases\PermissoesUsuario\GetListaPermissaoUsuario\GetListaPermissaoUsuarioCommandHandler;
 use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
 use PainelDLX\Presentation\Site\Controllers\SiteController;
 use Psr\Http\Message\ResponseInterface;
@@ -89,7 +90,7 @@ class ConfigurarPermissoesController extends SiteController
         try {
             /**
              * @var GrupoUsuario $grupo_usuario
-             * @covers GetGrupoUsuarioPorIdHandler
+             * @covers GetGrupoUsuarioPorIdCommandHandler
              */
             $grupo_usuario = $this->command_bus->handle(new GetGrupoUsuarioPorIdCommand($grupo_usuario_id));
 
@@ -148,14 +149,13 @@ class ConfigurarPermissoesController extends SiteController
         try {
             /**
              * @var GrupoUsuario $grupo_usuario
-             * @covers GetListaPermissaoUsuarioHandler
+             * @covers GetListaPermissaoUsuarioCommandHandler
              */
             $grupo_usuario = $this->command_bus->handle(new GetGrupoUsuarioPorIdCommand($grupo_usuario_id));
 
-            /** @covers GetListaPermissaoUsuarioHandler */
+            /** @covers GetListaPermissaoUsuarioCommandHandler */
             $lista_permissoes = new ArrayCollection($this->command_bus->handle(new GetListaPermissaoUsuarioCommand(
-                ['permissao_usuario_id' => $permissao_usuario_ids],
-                []
+                ['permissao_usuario_id' => $permissao_usuario_ids]
             )));
 
             $this->transacao->begin();

@@ -31,9 +31,9 @@ use League\Tactician\CommandBus;
 use PainelDLX\Application\UseCases\Login\FazerLogin\FazerLoginCommand;
 use PainelDLX\Application\UseCases\Login\FazerLogin\FazerLoginCommandHandler;
 use PainelDLX\Application\UseCases\Login\FazerLogout\FazerLogoutCommand;
-use PainelDLX\Application\UseCases\Login\FazerLogout\FazerLogoutHandler;
+use PainelDLX\Application\UseCases\Login\FazerLogout\FazerLogoutCommandHandler;
 use PainelDLX\Application\UseCases\Modulos\GetListaMenu\GetListaMenuCommand;
-use PainelDLX\Application\UseCases\Modulos\GetListaMenu\GetListaMenuHandler;
+use PainelDLX\Application\UseCases\Modulos\GetListaMenu\GetListaMenuCommandHandler;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
 use PainelDLX\Presentation\Site\Controllers\SiteController;
 use Psr\Http\Message\ResponseInterface;
@@ -107,7 +107,7 @@ class LoginController extends SiteController
             $usuario = $this->command_bus->handle(new FazerLoginCommand($post['email'], $post['senha']));
 
             /**
-             * @covers GetListaMenuHandler
+             * @covers GetListaMenuCommandHandler
              */
             $menu = $this->command_bus->handle(new GetListaMenuCommand($usuario));
             $this->session->set('html:lista-menu', $menu);
@@ -129,7 +129,7 @@ class LoginController extends SiteController
     public function fazerLogout(ServerRequestInterface $request): ResponseInterface
     {
         try {
-            /** @covers FazerLogoutHandler */
+            /** @covers FazerLogoutCommandHandler */
             $this->command_bus->handle(new FazerLogoutCommand());
 
             $json['retorno'] = 'sucesso';

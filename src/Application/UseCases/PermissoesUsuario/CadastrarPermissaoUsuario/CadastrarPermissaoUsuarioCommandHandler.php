@@ -23,31 +23,39 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Application\UseCases\Usuarios\ExcluirUsuario;
+namespace PainelDLX\Application\UseCases\PermissoesUsuario\CadastrarPermissaoUsuario;
 
 
-use PainelDLX\Domain\Usuarios\Repositories\UsuarioRepositoryInterface;
 
-class ExcluirUsuarioHandler
+use PainelDLX\Domain\PermissoesUsuario\Entities\PermissaoUsuario;
+use PainelDLX\Domain\PermissoesUsuario\Repositories\PermissaoUsuarioRepositoryInterface;
+
+class CadastrarPermissaoUsuarioCommandHandler
 {
-    /** @var UsuarioRepositoryInterface */
-    private $usuario_repository;
+    /**
+     * @var PermissaoUsuarioRepositoryInterface
+     */
+    private $permissao_usuario_repository;
 
-    public function __construct(UsuarioRepositoryInterface $usuario_repository)
-    {
-        $this->usuario_repository = $usuario_repository;
+    /**
+     * CadastrarPermissaoUsuarioCommandHandler constructor.
+     * @param PermissaoUsuario $permissao_usuario
+     * @param PermissaoUsuarioRepositoryInterface $permissao_usuario_repository
+     */
+    public function __construct(
+        PermissaoUsuarioRepositoryInterface $permissao_usuario_repository
+    ) {
+        $this->permissao_usuario_repository = $permissao_usuario_repository;
     }
 
     /**
-     * @param ExcluirUsuarioCommand $command
-     * @throws \Exception
+     * @param CadastrarPermissaoUsuarioCommand $command
      */
-    public function handle(ExcluirUsuarioCommand $command)
+    public function handle(CadastrarPermissaoUsuarioCommand $command): PermissaoUsuario
     {
-        try {
-            $this->usuario_repository->delete($command->getUsuario());
-        } catch (\Exception $e) {
-            throw $e;
-        }
+        $permissao_usuario = PermissaoUsuario::create($command->getAlias(), $command->getDescricao());
+        $this->permissao_usuario_repository->create($permissao_usuario);
+
+        return $permissao_usuario;
     }
 }

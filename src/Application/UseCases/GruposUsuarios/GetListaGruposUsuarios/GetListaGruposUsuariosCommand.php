@@ -23,37 +23,12 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Application\UseCases\Login\FazerLogout;
+namespace PainelDLX\Application\UseCases\GruposUsuarios\GetListaGruposUsuarios;
 
-use PainelDLX\Application\UseCases\Login\Exceptions\NenhumaSessaoAtivaException;
-use SechianeX\Contracts\SessionInterface;
 
-class FazerLogoutHandler
+use PainelDLX\Application\Contracts\ListaRegistrosCommand;
+
+class GetListaGruposUsuariosCommand extends ListaRegistrosCommand
 {
-    /**
-     * @var SessionInterface
-     */
-    private $session;
 
-    /**
-     * FazerLogoutHandler constructor.
-     * @param SessionInterface $session
-     */
-    public function __construct(SessionInterface $session)
-    {
-        $this->session = $session;
-    }
-
-    /**
-     * @return bool
-     * @throws NenhumaSessaoAtivaException
-     */
-    public function handle(): bool
-    {
-        if (!$this->session->isAtiva()) {
-            throw new NenhumaSessaoAtivaException();
-        }
-
-        return $this->session->destroy();
-    }
 }

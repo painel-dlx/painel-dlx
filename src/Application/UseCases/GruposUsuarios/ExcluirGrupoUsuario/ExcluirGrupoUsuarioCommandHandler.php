@@ -23,32 +23,36 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Application\UseCases\Emails\ExcluirConfigSmtp;
+namespace PainelDLX\Application\UseCases\GruposUsuarios\ExcluirGrupoUsuario;
 
+use Exception;
+use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
+use PainelDLX\Domain\GruposUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
 
-use PainelDLX\Domain\Emails\Repositories\ConfigSmtpRepositoryInterface;
-
-class ExcluirConfigSmtpHandler
+class ExcluirGrupoUsuarioCommandHandler
 {
     /**
-     * @var ConfigSmtpRepositoryInterface
+     * @var GrupoUsuarioRepositoryInterface
      */
-    private $config_smtp_repository;
+    private $grupo_usuario_repository;
 
-    /**
-     * ExcluirConfigSmtpHandler constructor.
-     * @param ConfigSmtpRepositoryInterface $config_smtp_repository
-     */
-    public function __construct(ConfigSmtpRepositoryInterface $config_smtp_repository)
+    public function __construct(GrupoUsuarioRepositoryInterface $grupo_usuario_repository)
     {
-        $this->config_smtp_repository = $config_smtp_repository;
+        $this->grupo_usuario_repository = $grupo_usuario_repository;
     }
 
     /**
-     * @param ExcluirConfigSmtpCommand $command
+     * @param ExcluirGrupoUsuarioCommand $command
+     * @throws Exception
      */
-    public function handle(ExcluirConfigSmtpCommand $command)
+    public function handle(ExcluirGrupoUsuarioCommand $command)
     {
-        $this->config_smtp_repository->delete($command->getConfigSmtp());
+        try {
+            /** @var GrupoUsuario $usuario */
+            $grupo_usuario = $this->grupo_usuario_repository->find($command->getGrupoUsuarioId());
+            $this->grupo_usuario_repository->delete($grupo_usuario);
+        } catch (Exception $e) {
+            throw $e;
+        }
     }
 }

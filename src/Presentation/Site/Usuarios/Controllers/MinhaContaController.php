@@ -30,7 +30,7 @@ use DLX\Core\Exceptions\UserException;
 use League\Tactician\CommandBus;
 use PainelDLX\Application\UseCases\Usuarios\AlterarSenhaUsuario\AlterarSenhaUsuarioCommand;
 use PainelDLX\Application\UseCases\Usuarios\GetUsuarioPeloId\GetUsuarioPeloIdCommand;
-use PainelDLX\Application\UseCases\Usuarios\GetUsuarioPeloId\GetUsuarioPeloIdHandler;
+use PainelDLX\Application\UseCases\Usuarios\GetUsuarioPeloId\GetUsuarioPeloIdCommandHandler;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
 use PainelDLX\Domain\Usuarios\ValueObjects\SenhaUsuario;
 use PainelDLX\Presentation\Site\Controllers\SiteController;
@@ -151,13 +151,13 @@ class MinhaContaController extends SiteController
         try {
             /**
              * @var Usuario $usuario
-             * @covers GetUsuarioPeloIdHandler
+             * @covers GetUsuarioPeloIdCommandHandler
              */
             $usuario = $this->command_bus->handle(new GetUsuarioPeloIdCommand($this->usuario_logado->getUsuarioId()));
 
             $senha_usuario = new SenhaUsuario($senha_nova, $senha_confirm, $senha_atual);
 
-            /** @covers AlterarSenhaUsuarioHandler */
+            /** @covers AlterarSenhaUsuarioCommandHandler */
             $this->command_bus->handle(new AlterarSenhaUsuarioCommand($usuario, $senha_usuario));
 
             $json['retorno'] = 'sucesso';

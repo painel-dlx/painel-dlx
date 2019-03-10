@@ -23,41 +23,35 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Application\UseCases\Emails\GetListaConfigSmtp;
+namespace PainelDLX\Application\UseCases\PermissoesUsuario\ExcluirPermissaoUsuario;
 
 
-use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
-use PainelDLX\Domain\Emails\Repositories\ConfigSmtpRepositoryInterface;
+use PainelDLX\Domain\PermissoesUsuario\Entities\PermissaoUsuario;
+use PainelDLX\Domain\PermissoesUsuario\Repositories\PermissaoUsuarioRepositoryInterface;
 
-class GetListaConfigSmtpHandler
+class ExcluirPermissaoUsuarioCommandHandler
 {
     /**
-     * @var ConfigSmtpRepositoryInterface
+     * @var PermissaoUsuarioRepositoryInterface
      */
-    private $config_smtp_repository;
+    private $permissao_usuario_repository;
 
     /**
-     * GetListaConfigSmtpHandler constructor.
-     * @param ConfigSmtpRepositoryInterface $config_smtp_repository
+     * ExcluirPermissaoUsuarioCommandHandler constructor.
+     * @param PermissaoUsuarioRepositoryInterface $permissao_usuario_repository
      */
-    public function __construct(ConfigSmtpRepositoryInterface $config_smtp_repository)
+    public function __construct(PermissaoUsuarioRepositoryInterface $permissao_usuario_repository)
     {
-        $this->config_smtp_repository = $config_smtp_repository;
+        $this->permissao_usuario_repository = $permissao_usuario_repository;
     }
 
     /**
-     * @param GetListaConfigSmtpCommand $command
-     * @return array
+     * @param ExcluirPermissaoUsuarioCommand $command
      */
-    public function handle(GetListaConfigSmtpCommand $command): array
+    public function handle(ExcluirPermissaoUsuarioCommand $command)
     {
-        $lista = $this->config_smtp_repository->findByLike(
-            $command->getCriteria(),
-            $command->getOrderBy(),
-            $command->getLimit(),
-            $command->getOffset()
-        );
-
-        return array_filter($lista, function (ConfigSmtp $config_smtp) { return !$config_smtp->isDeletado(); });
+        /** @var PermissaoUsuario $permissao_usuario */
+        $permissao_usuario = $this->permissao_usuario_repository->find($command->getPermissaoUsuarioId());
+        $this->permissao_usuario_repository->delete($permissao_usuario);
     }
 }

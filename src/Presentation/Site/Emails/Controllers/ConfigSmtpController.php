@@ -29,11 +29,11 @@ namespace PainelDLX\Presentation\Site\Emails\Controllers;
 use DLX\Core\Exceptions\UserException;
 use League\Tactician\CommandBus;
 use PainelDLX\Application\UseCases\Emails\ExcluirConfigSmtp\ExcluirConfigSmtpCommand;
-use PainelDLX\Application\UseCases\Emails\ExcluirConfigSmtp\ExcluirConfigSmtpHandler;
+use PainelDLX\Application\UseCases\Emails\ExcluirConfigSmtp\ExcluirConfigSmtpCommandHandler;
 use PainelDLX\Application\UseCases\Emails\GetConfigSmtpPorId\GetConfigSmtpPorIdCommand;
-use PainelDLX\Application\UseCases\Emails\GetConfigSmtpPorId\GetConfigSmtpPorIdHandler;
+use PainelDLX\Application\UseCases\Emails\GetConfigSmtpPorId\GetConfigSmtpPorIdCommandHandler;
 use PainelDLX\Application\UseCases\Emails\GetListaConfigSmtp\GetListaConfigSmtpCommand;
-use PainelDLX\Application\UseCases\Emails\GetListaConfigSmtp\GetListaConfigSmtpHandler;
+use PainelDLX\Application\UseCases\Emails\GetListaConfigSmtp\GetListaConfigSmtpCommandHandler;
 use PainelDLX\Application\UseCases\Emails\TestarConfigSmtp\TestarConfigSmtpCommand;
 use PainelDLX\Application\UseCases\Emails\TestarConfigSmtp\TestarConfigSmtpHandler;
 use PainelDLX\Application\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommand;
@@ -122,7 +122,7 @@ class ConfigSmtpController extends SiteController
 
             /**
              * @var array $lista_config_smtp
-             * @covers GetListaConfigSmtpHandler
+             * @covers GetListaConfigSmtpCommandHandler
              */
             $lista_config_smtp = $this->command_bus->handle(new GetListaConfigSmtpCommand($criteria));
 
@@ -158,7 +158,7 @@ class ConfigSmtpController extends SiteController
             /** @var ConfigSmtp $config_smtp */
             $config_smtp = $this->command_bus->handle(new GetConfigSmtpPorIdCommand($config_smtp_id));
 
-            /** @covers ExcluirConfigSmtpHandler */
+            /** @covers ExcluirConfigSmtpCommandHandler */
             $this->command_bus->handle(new ExcluirConfigSmtpCommand($config_smtp));
 
             $json['retorno'] = 'sucesso';
@@ -196,7 +196,7 @@ class ConfigSmtpController extends SiteController
 
             /**
              * @var ConfigSmtp|null $config_smtp
-             * @covers GetConfigSmtpPorIdHandler
+             * @covers GetConfigSmtpPorIdCommandHandler
              */
             $config_smtp = $this->command_bus->handle(new GetConfigSmtpPorIdCommand($get['config_smtp_id']));
 

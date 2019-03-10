@@ -29,13 +29,13 @@ namespace PainelDLX\Presentation\Site\GruposUsuarios\Controllers;
 use DLX\Core\Exceptions\UserException;
 use League\Tactician\CommandBus;
 use PainelDLX\Application\UseCases\GruposUsuarios\EditarGrupoUsuario\EditarGrupoUsuarioCommand;
-use PainelDLX\Application\UseCases\GruposUsuarios\EditarGrupoUsuario\EditarGrupoUsuarioHandler;
+use PainelDLX\Application\UseCases\GruposUsuarios\EditarGrupoUsuario\EditarGrupoUsuarioCommandHandler;
 use PainelDLX\Application\UseCases\GruposUsuarios\ExcluirGrupoUsuario\ExcluirGrupoUsuarioCommand;
-use PainelDLX\Application\UseCases\GruposUsuarios\ExcluirGrupoUsuario\ExcluirGrupoUsuarioHandler;
+use PainelDLX\Application\UseCases\GruposUsuarios\ExcluirGrupoUsuario\ExcluirGrupoUsuarioCommandHandler;
 use PainelDLX\Application\UseCases\GruposUsuarios\GetListaGruposUsuarios\GetListaGruposUsuariosCommandHandler;
-use PainelDLX\Application\UseCases\GruposUsuarios\GetListaGruposUsuarios\GetListaGrupoUsuariosCommand;
+use PainelDLX\Application\UseCases\GruposUsuarios\GetListaGruposUsuarios\GetListaGruposUsuariosCommand;
 use PainelDLX\Application\UseCases\GruposUsuarios\NovoGrupoUsuario\NovoGrupoUsuarioCommand;
-use PainelDLX\Application\UseCases\GruposUsuarios\NovoGrupoUsuario\NovoGrupoUsuarioHandler;
+use PainelDLX\Application\UseCases\GruposUsuarios\NovoGrupoUsuario\NovoGrupoUsuarioCommandHandler;
 use PainelDLX\Application\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommand;
 use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
 use PainelDLX\Domain\GruposUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
@@ -106,7 +106,7 @@ class GrupoUsuarioController extends SiteController
              * @var array $lista_grupos_usuarios
              * @covers GetListaGruposUsuariosCommandHandler
              */
-            $lista_grupos_usuarios = $this->command_bus->handle(new GetListaGrupoUsuariosCommand($criteria));
+            $lista_grupos_usuarios = $this->command_bus->handle(new GetListaGruposUsuariosCommand($criteria));
 
             // Atributos
             $this->view->setAtributo('titulo-pagina', 'Grupos de Usuários');
@@ -167,7 +167,7 @@ class GrupoUsuarioController extends SiteController
         try {
             /**
              * @var GrupoUsuario $grupo_usuario
-             * @covers NovoGrupoUsuarioHandler
+             * @covers NovoGrupoUsuarioCommandHandler
              */
             $grupo_usuario = $this->command_bus->handle(new NovoGrupoUsuarioCommand($nome));
 
@@ -236,7 +236,7 @@ class GrupoUsuarioController extends SiteController
         try {
             /**
              * @var GrupoUsuario $grupo_usuario_atualizado
-             * @covers EditarGrupoUsuarioHandler
+             * @covers EditarGrupoUsuarioCommandHandler
              */
             $grupo_usuario_atualizado = $this->command_bus->handle(
                 new EditarGrupoUsuarioCommand($grupo_usuario_id, $nome)
@@ -266,7 +266,7 @@ class GrupoUsuarioController extends SiteController
         extract($request->getParsedBody());
 
         try {
-            /** @covers ExcluirGrupoUsuarioHandler */
+            /** @covers ExcluirGrupoUsuarioCommandHandler */
             $this->command_bus->handle(new ExcluirGrupoUsuarioCommand($grupo_usuario_id));
 
             $msg['retorno'] = 'sucesso';

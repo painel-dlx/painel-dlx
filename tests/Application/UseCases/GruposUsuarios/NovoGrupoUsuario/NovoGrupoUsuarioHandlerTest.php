@@ -27,7 +27,7 @@ namespace PainelDLX\Testes\Application\UseCases\GruposUsuarios\NovoGrupoUsuario;
 
 use DLX\Infra\EntityManagerX;
 use PainelDLX\Application\UseCases\GruposUsuarios\NovoGrupoUsuario\NovoGrupoUsuarioCommand;
-use PainelDLX\Application\UseCases\GruposUsuarios\NovoGrupoUsuario\NovoGrupoUsuarioHandler;
+use PainelDLX\Application\UseCases\GruposUsuarios\NovoGrupoUsuario\NovoGrupoUsuarioCommandHandler;
 use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
 use PainelDLX\Domain\GruposUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
 use PainelDLX\Testes\PainelDLXTests;
@@ -45,7 +45,7 @@ class NovoGrupoUsuarioHandlerTest extends PainelDLXTests
 
         $nome = 'Teste 123';
         $command = new NovoGrupoUsuarioCommand($nome);
-        $grupo_usuario = (new NovoGrupoUsuarioHandler($grupo_usuario_repository))->handle($command);
+        $grupo_usuario = (new NovoGrupoUsuarioCommandHandler($grupo_usuario_repository))->handle($command);
 
         $this->assertInstanceOf(GrupoUsuario::class, $grupo_usuario);
         $this->assertEquals($nome, $grupo_usuario->getNome());

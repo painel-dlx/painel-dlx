@@ -16,7 +16,7 @@ use PainelDLX\Domain\Usuarios\Exceptions\UsuarioNaoEncontrado;
 use PainelDLX\Domain\Usuarios\Repositories\ResetSenhaRepositoryInterface;
 use PainelDLX\Domain\Usuarios\Repositories\UsuarioRepositoryInterface;
 
-class SolicitarResetSenhaHandler
+class SolicitarResetSenhaCommandHandler
 {
     /**
      * @var ResetSenhaRepositoryInterface
@@ -28,7 +28,7 @@ class SolicitarResetSenhaHandler
     private $usuario_repository;
 
     /**
-     * SolicitarResetSenhaHandler constructor.
+     * SolicitarResetSenhaCommandHandler constructor.
      * @param ResetSenhaRepositoryInterface $reset_senha_repository
      * @param UsuarioRepositoryInterface $usuario_repository
      * @param ConfigSmtpRepositoryInterface $config_smtp_repository

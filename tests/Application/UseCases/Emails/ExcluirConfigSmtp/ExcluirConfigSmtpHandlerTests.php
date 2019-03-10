@@ -27,7 +27,7 @@ namespace PainelDLX\Testes\Application\UseCases\Emails\ExcluirConfigSmtp;
 
 use DLX\Infra\EntityManagerX;
 use PainelDLX\Application\UseCases\Emails\ExcluirConfigSmtp\ExcluirConfigSmtpCommand;
-use PainelDLX\Application\UseCases\Emails\ExcluirConfigSmtp\ExcluirConfigSmtpHandler;
+use PainelDLX\Application\UseCases\Emails\ExcluirConfigSmtp\ExcluirConfigSmtpCommandHandler;
 use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
 use PainelDLX\Domain\Emails\Repositories\ConfigSmtpRepositoryInterface;
 use PainelDLX\Testes\Application\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpHandlerTests;
@@ -35,7 +35,7 @@ use PainelDLX\Testes\PainelDLXTests;
 
 class ExcluirConfigSmtpHandlerTests extends PainelDLXTests
 {
-    /** @var ExcluirConfigSmtpHandler */
+    /** @var ExcluirConfigSmtpCommandHandler */
     private $handler;
 
     /**
@@ -50,7 +50,7 @@ class ExcluirConfigSmtpHandlerTests extends PainelDLXTests
 
         /** @var ConfigSmtpRepositoryInterface $config_smtp_repository */
         $config_smtp_repository = EntityManagerX::getRepository(ConfigSmtp::class);
-        $this->handler = new ExcluirConfigSmtpHandler($config_smtp_repository);
+        $this->handler = new ExcluirConfigSmtpCommandHandler($config_smtp_repository);
     }
 
     /**

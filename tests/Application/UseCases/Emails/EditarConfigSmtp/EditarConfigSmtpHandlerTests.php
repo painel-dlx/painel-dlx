@@ -27,7 +27,7 @@ namespace PainelDLX\Testes\Application\UseCases\Emails\EditarConfigSmtp;
 
 use DLX\Infra\EntityManagerX;
 use PainelDLX\Application\UseCases\Emails\EditarConfigSmtp\EditarConfigSmtpCommand;
-use PainelDLX\Application\UseCases\Emails\EditarConfigSmtp\EditarConfigSmtpHandler;
+use PainelDLX\Application\UseCases\Emails\EditarConfigSmtp\EditarConfigSmtpCommandHandler;
 use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
 use PainelDLX\Domain\Emails\Repositories\ConfigSmtpRepositoryInterface;
 use PainelDLX\Testes\Application\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpHandlerTests;
@@ -35,7 +35,7 @@ use PainelDLX\Testes\PainelDLXTests;
 
 class EditarConfigSmtpHandlerTests extends PainelDLXTests
 {
-    /** @var EditarConfigSmtpHandler */
+    /** @var EditarConfigSmtpCommandHandler */
     private $handler;
 
     /**
@@ -50,7 +50,7 @@ class EditarConfigSmtpHandlerTests extends PainelDLXTests
 
         /** @var ConfigSmtpRepositoryInterface $config_smtp_repository */
         $config_smtp_repository = EntityManagerX::getRepository(ConfigSmtp::class);
-        $this->handler = new EditarConfigSmtpHandler($config_smtp_repository);
+        $this->handler = new EditarConfigSmtpCommandHandler($config_smtp_repository);
     }
 
     /**
