@@ -31,12 +31,34 @@ use Vilex\VileX;
  */
 
 $lista_config_smtp = $this->getAtributo('lista-config-smtp');
+$filtro = $this->getAtributo('filtro');
 ?>
 
 [CORPO]
 <h1 class="titulo-pagina"><?php echo $this->getAtributo('titulo-pagina') ?></h1>
 
 <nav class="menu-opcoes">
+    <form id="filtro-registros" class="filtro-registros">
+        <div class="multi-select">
+            <span class="multi-select-item">Procurar em...</span>
+
+            <div class="multi-select-itens">
+                <label class="multi-select-item">
+                    <input type="checkbox" name="campos[]" value="nome"<?php echo empty($filtro['campos']) || in_array('nome', $filtro['campos']) ? ' checked' : '' ?>>
+                    Nome
+                </label>
+
+                <label class="multi-select-item">
+                    <input type="checkbox" name="campos[]" value="servidor"<?php echo empty($filtro['campos']) || in_array('servidor', $filtro['campos']) ? ' checked' : '' ?>>
+                    Servidor
+                </label>
+            </div>
+        </div>
+
+        <input type="search" name="busca" value="<?php echo $filtro['busca'] ?>" placeholder="Encontrar configurações SMTP" class="form-controle">
+    </form>
+
+    <button type="submit" form="filtro-registros" class="botao-buscar">Buscar</button>
     <a href="/painel-dlx/config-smtp/nova" class="link-inserir">Adicionar configuração SMTP</a>
 </nav>
 
@@ -53,7 +75,7 @@ $lista_config_smtp = $this->getAtributo('lista-config-smtp');
     <tbody>
     <?php if (!count($lista_config_smtp)) : ?>
     <tr>
-        <td colspan="3">Nenhuma configuração SMTP encontrada.</td>
+        <td colspan="4" class="sem-registros">Nenhuma configuração SMTP encontrada.</td>
     </tr>
     <?php endif;
 

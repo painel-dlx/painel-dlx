@@ -9,8 +9,14 @@
 namespace PainelDLX\Application\UseCases\Usuarios\GetListaUsuarios;
 
 
+use PainelDLX\Domain\Usuarios\Entities\Usuario;
 use PainelDLX\Domain\Usuarios\Repositories\UsuarioRepositoryInterface;
 
+/**
+ * Class GetListaUsuariosHandler
+ * @package PainelDLX\Application\UseCases\Usuarios\GetListaUsuarios
+ * @covers GetListaUsuariosHandlerTest
+ */
 class GetListaUsuariosHandler
 {
     /**
@@ -32,6 +38,7 @@ class GetListaUsuariosHandler
      */
     public function handle(GetListaUsuariosCommand $command): ?array
     {
-        return $this->usuario_repository->findByLike($command->getCriteria(), $command->getOrderBy(), $command->getLimit(), $command->getOffset());
+        $lista = $this->usuario_repository->findByLike($command->getCriteria(), $command->getOrderBy(), $command->getLimit(), $command->getOffset());
+        return array_filter($lista, function (Usuario $usuario) { return !$usuario->isDeletado(); });
     }
 }

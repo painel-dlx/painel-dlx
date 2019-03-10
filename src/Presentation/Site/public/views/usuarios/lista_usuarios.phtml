@@ -39,16 +39,16 @@ $filtro = $this->getAtributo('filtro');
 <nav class="menu-opcoes">
     <form id="filtro-registros" class="filtro-registros">
         <div class="multi-select">
-            <span class="multi-select-item">2 campos</span>
+            <span class="multi-select-item">Procurar em...</span>
 
             <div class="multi-select-itens">
                 <label class="multi-select-item">
-                    <input type="checkbox" name="campos[]" value="nome"<?php echo empty($filtro) || in_array('nome', $filtro['campos']) ? ' checked' : '' ?>>
+                    <input type="checkbox" name="campos[]" value="nome"<?php echo empty($filtro['campos']) || in_array('nome', $filtro['campos']) ? ' checked' : '' ?>>
                     Nome
                 </label>
 
                 <label class="multi-select-item">
-                    <input type="checkbox" name="campos[]" value="email"<?php echo empty($filtro) || in_array('email', $filtro['campos']) ? ' checked' : '' ?>>
+                    <input type="checkbox" name="campos[]" value="email"<?php echo empty($filtro['campos']) || in_array('email', $filtro['campos']) ? ' checked' : '' ?>>
                     Email
                 </label>
             </div>
@@ -73,7 +73,7 @@ $filtro = $this->getAtributo('filtro');
     <tbody>
     <?php if (!count($lista_usuarios)) : ?>
     <tr>
-        <td colspan="3">Nenhum usuário encontrado.</td>
+        <td colspan="3" class="sem-registros">Nenhum usuário encontrado.</td>
     </tr>
     <?php endif;
 

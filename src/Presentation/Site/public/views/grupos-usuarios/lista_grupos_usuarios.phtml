@@ -31,12 +31,34 @@ use Vilex\VileX;
  */
 
 $lista_grupos_usuarios = $this->getAtributo('lista_grupos_usuarios');
+$filtro = $this->getAtributo('filtro');
 ?>
 
 [CORPO]
 <h1 class="titulo-pagina"><?php echo $this->getAtributo('titulo-pagina') ?></h1>
 
 <nav class="menu-opcoes">
+    <form id="filtro-registros" class="filtro-registros">
+        <div class="multi-select">
+            <span class="multi-select-item">Procurar em...</span>
+
+            <div class="multi-select-itens">
+                <label class="multi-select-item">
+                    <input type="checkbox" name="campos[]" value="alias"<?php echo empty($filtro['campos']) || in_array('alias', $filtro['campos']) ? ' checked' : '' ?>>
+                    Alias
+                </label>
+
+                <label class="multi-select-item">
+                    <input type="checkbox" name="campos[]" value="nome"<?php echo empty($filtro['campos']) || in_array('nome', $filtro['campos']) ? ' checked' : '' ?>>
+                    Grupo
+                </label>
+            </div>
+        </div>
+
+        <input type="search" name="busca" value="<?php echo $filtro['busca'] ?>" placeholder="Encontrar grupos de usuários" class="form-controle">
+    </form>
+
+    <button type="submit" form="filtro-registros" class="botao-buscar">Buscar</button>
     <a href="/painel-dlx/grupos-de-usuarios/novo" class="link-inserir">Adicionar grupo de usuário</a>
 </nav>
 
@@ -53,7 +75,7 @@ $lista_grupos_usuarios = $this->getAtributo('lista_grupos_usuarios');
     <tbody>
     <?php if (!count($lista_grupos_usuarios)) : ?>
     <tr>
-        <td colspan="3">Nenhum grupo de usuário encontrado.</td>
+        <td colspan="4" class="sem-registros">Nenhum grupo de usuário encontrado.</td>
     </tr>
     <?php endif;
 

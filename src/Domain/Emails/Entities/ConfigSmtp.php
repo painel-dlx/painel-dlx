@@ -35,6 +35,8 @@ class ConfigSmtp extends Entity
     private $responder_para;
     /** @var bool */
     private $corpo_html = false;
+    /** @var bool */
+    private $deletado = false;
 
     /**
      * @return int|null
@@ -238,6 +240,25 @@ class ConfigSmtp extends Entity
         $this->corpo_html = $corpo_html;
         return $this;
     }
+
+    /**
+     * @return bool
+     */
+    public function isDeletado(): bool
+    {
+        return $this->deletado;
+    }
+
+    /**
+     * @param bool $deletado
+     * @return ConfigSmtp
+     */
+    public function setDeletado(bool $deletado): ConfigSmtp
+    {
+        $this->deletado = $deletado;
+        return $this;
+    }
+
     /**
      * ConfigSmtp constructor.
      * @param string $servidor

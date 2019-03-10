@@ -30,7 +30,7 @@ use PainelDLX\Domain\Usuarios\Entities\Usuario;
 use PainelDLX\Domain\Usuarios\Repositories\UsuarioRepositoryInterface;
 use SechianeX\Contracts\SessionInterface;
 
-class FazerLoginHandler
+class FazerLoginCommandHandler
 {
     /**
      * @var UsuarioRepositoryInterface
@@ -42,7 +42,7 @@ class FazerLoginHandler
     private $session;
 
     /**
-     * FazerLoginHandler constructor.
+     * FazerLoginCommandHandler constructor.
      * @param UsuarioRepositoryInterface $usuario_repository
      * @param SessionInterface $session
      */

@@ -26,6 +26,7 @@
 namespace PainelDLX\Application\UseCases\PermissoesUsuario\GetListaPermissaoUsuario;
 
 
+use PainelDLX\Domain\PermissoesUsuario\Entities\PermissaoUsuario;
 use PainelDLX\Domain\PermissoesUsuario\Repositories\PermissaoUsuarioRepositoryInterface;
 
 class GetListaPermissaoUsuarioHandler
@@ -50,11 +51,12 @@ class GetListaPermissaoUsuarioHandler
      */
     public function handle(GetListaPermissaoUsuarioCommand $command): array
     {
-        return $this->permissao_usuario_repository->findBy(
+        $lista = $this->permissao_usuario_repository->findByLike(
             $command->getCriteria(),
             $command->getOrderBy(),
             $command->getLimit(),
             $command->getOffset()
         );
+        return array_filter($lista, function (PermissaoUsuario $permissao_usuario) { return !$permissao_usuario->isDeletado(); });
     }
 }

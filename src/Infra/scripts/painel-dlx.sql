@@ -64,6 +64,7 @@ CREATE TABLE dlx_config_smtp (
     de_nome varchar(100),
     responder_para varchar(100),
     corpo_html bool not null default 0,
+    deletado bool not null default 1,
     unique key (nome),
     constraint CK_dlx_config_smtp_cripto_valido check (cripto in (null, 'tls', 'ssl'))
 ) ENGINE=INNODB;
@@ -78,7 +79,7 @@ CREATE TABLE dlx_envio_email_log (
     assunto varchar(30),
     corpo longtext,
     constraint FK_dlx_envio_email_log_config_smtp_id foreign key (config_smtp_id)
-        references dlx_config_smtp (config_email_id)
+        references dlx_config_smtp (config_smtp_id)
 ) ENGINE=INNODB;
 
 -- Menu

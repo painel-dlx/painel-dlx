@@ -31,11 +31,33 @@ use Vilex\VileX;
  */
 
 $lista_permissoes = $this->getAtributo('lista_permissoes');
+$filtro = $this->getAtributo('filtro');
 ?>
 [CORPO]
 <h1 class="titulo-pagina"><?php echo $this->getAtributo('titulo-pagina') ?></h1>
 
 <nav class="menu-opcoes">
+    <form id="filtro-registros" class="filtro-registros">
+        <div class="multi-select">
+            <span class="multi-select-item">Procurar em...</span>
+
+            <div class="multi-select-itens">
+                <label class="multi-select-item">
+                    <input type="checkbox" name="campos[]" value="alias"<?php echo empty($filtro['campos']) || in_array('alias', $filtro['campos']) ? ' checked' : '' ?>>
+                    Alias
+                </label>
+
+                <label class="multi-select-item">
+                    <input type="checkbox" name="campos[]" value="descricao"<?php echo empty($filtro['campos']) || in_array('descricao', $filtro['campos']) ? ' checked' : '' ?>>
+                    Descrição
+                </label>
+            </div>
+        </div>
+
+        <input type="search" name="busca" value="<?php echo $filtro['busca'] ?>" placeholder="Encontrar permissões" class="form-controle">
+    </form>
+
+    <button type="submit" form="filtro-registros" class="botao-buscar">Buscar</button>
     <a href="/painel-dlx/permissoes/novo" class="link-inserir">Adicionar permissão</a>
 </nav>
 
@@ -51,7 +73,7 @@ $lista_permissoes = $this->getAtributo('lista_permissoes');
     <tbody>
     <?php if (!count($lista_permissoes)) : ?>
     <tr>
-        <td colspan="3">Nenhuma permissão de usuário encontrada.</td>
+        <td colspan="3" class="sem-registros">Nenhuma permissão de usuário encontrada.</td>
     </tr>
     <?php endif;
 
@@ -60,8 +82,8 @@ $lista_permissoes = $this->getAtributo('lista_permissoes');
         <tr>
             <td headers="usuario-id"><?php echo $permissao->getPermissaoUsuarioId() ?></td>
             <td headers="usuario">
-                <?php echo $permissao->getAlias() ?><br>
-                <?php echo $permissao->getDescricao() ?>
+                <?php echo $permissao->getDescricao() ?><br>
+                <span class="lista-registros-comentario"><?php echo $permissao->getAlias() ?></span>
             </td>
             <td headers="opcoes">
                 <a href="permissoes/detalhe?permissao_usuario_id=<?php echo $permissao->getPermissaoUsuarioId() ?>" class="link-detalhe" title="">

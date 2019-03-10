@@ -28,12 +28,15 @@ namespace PainelDLX\Presentation\Site\PermissoesUsuario\Controllers;
 
 use DLX\Core\Exceptions\UserException;
 use League\Tactician\CommandBus;
+use PainelDLX\Application\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommand;
 use PainelDLX\Application\UseCases\PermissoesUsuario\CadastrarPermissaoUsuario\CadastrarPermissaoUsuarioCommand;
 use PainelDLX\Application\UseCases\PermissoesUsuario\CadastrarPermissaoUsuario\CadastrarPermissaoUsuarioHandler;
 use PainelDLX\Application\UseCases\PermissoesUsuario\EditarPermissaoUsuario\EditarPermissaoUsuarioCommand;
 use PainelDLX\Application\UseCases\PermissoesUsuario\EditarPermissaoUsuario\EditarPermissaoUsuarioHandler;
 use PainelDLX\Application\UseCases\PermissoesUsuario\ExcluirPermissaoUsuario\ExcluirPermissaoUsuarioCommand;
 use PainelDLX\Application\UseCases\PermissoesUsuario\ExcluirPermissaoUsuario\ExcluirPermissaoUsuarioHandler;
+use PainelDLX\Application\UseCases\PermissoesUsuario\GetListaPermissaoUsuario\GetListaPermissaoUsuarioCommand;
+use PainelDLX\Application\UseCases\PermissoesUsuario\GetListaPermissaoUsuario\GetListaPermissaoUsuarioHandler;
 use PainelDLX\Domain\PermissoesUsuario\Entities\PermissaoUsuario;
 use PainelDLX\Domain\PermissoesUsuario\Repositories\PermissaoUsuarioRepositoryInterface;
 use PainelDLX\Presentation\Site\Controllers\SiteController;
@@ -81,12 +84,28 @@ class CadastroPermissaoController extends SiteController
      */
     public function listaPermissoesUsuarios(ServerRequestInterface $request): ResponseInterface
     {
+        $get = filter_var_array($request->getQueryParams(), [
+            'campos' => ['filter' => FILTER_SANITIZE_STRING, 'flags' => FILTER_REQUIRE_ARRAY],
+            'busca' => FILTER_DEFAULT
+        ]);
+
         try {
-            $lista_permissoes = $this->repository->findBy($request->getParsedBody());
+            /**
+             * @var array $criteria
+             * @covers ConverterFiltro2CriteriaCommandHandler
+             */
+            $criteria = $this->command_bus->handle(new ConverterFiltro2CriteriaCommand($get['campos'], $get['busca']));
+
+            /**
+             * @var array $lista_permissoes
+             * @covers GetListaPermissaoUsuarioHandler
+             */
+            $lista_permissoes = $this->command_bus->handle(new GetListaPermissaoUsuarioCommand($criteria));
 
             // Atributos
             $this->view->setAtributo('titulo-pagina', 'Permissões');
             $this->view->setAtributo('lista_permissoes', $lista_permissoes);
+            $this->view->setAtributo('filtro', $get);
 
             // Views
             $this->view->addTemplate('lista_permissoes');

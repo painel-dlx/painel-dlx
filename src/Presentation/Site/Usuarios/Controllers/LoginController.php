@@ -29,7 +29,7 @@ namespace PainelDLX\Presentation\Site\Usuarios\Controllers;
 use DLX\Core\Exceptions\UserException;
 use League\Tactician\CommandBus;
 use PainelDLX\Application\UseCases\Login\FazerLogin\FazerLoginCommand;
-use PainelDLX\Application\UseCases\Login\FazerLogin\FazerLoginHandler;
+use PainelDLX\Application\UseCases\Login\FazerLogin\FazerLoginCommandHandler;
 use PainelDLX\Application\UseCases\Login\FazerLogout\FazerLogoutCommand;
 use PainelDLX\Application\UseCases\Login\FazerLogout\FazerLogoutHandler;
 use PainelDLX\Application\UseCases\Modulos\GetListaMenu\GetListaMenuCommand;
@@ -101,7 +101,7 @@ class LoginController extends SiteController
 
         try {
             /**
-             * @covers FazerLoginHandler
+             * @covers FazerLoginCommandHandler
              * @var Usuario|null $usuario
              */
             $usuario = $this->command_bus->handle(new FazerLoginCommand($post['email'], $post['senha']));

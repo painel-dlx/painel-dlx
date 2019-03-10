@@ -33,8 +33,10 @@ use PainelDLX\Application\UseCases\Emails\ExcluirConfigSmtp\ExcluirConfigSmtpHan
 use PainelDLX\Application\UseCases\Emails\GetConfigSmtpPorId\GetConfigSmtpPorIdCommand;
 use PainelDLX\Application\UseCases\Emails\GetConfigSmtpPorId\GetConfigSmtpPorIdHandler;
 use PainelDLX\Application\UseCases\Emails\GetListaConfigSmtp\GetListaConfigSmtpCommand;
+use PainelDLX\Application\UseCases\Emails\GetListaConfigSmtp\GetListaConfigSmtpHandler;
 use PainelDLX\Application\UseCases\Emails\TestarConfigSmtp\TestarConfigSmtpCommand;
 use PainelDLX\Application\UseCases\Emails\TestarConfigSmtp\TestarConfigSmtpHandler;
+use PainelDLX\Application\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommand;
 use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
 use PainelDLX\Presentation\Site\Controllers\SiteController;
@@ -106,16 +108,29 @@ class ConfigSmtpController extends SiteController
      */
     public function listaConfigSmtp(ServerRequestInterface $request): ResponseInterface
     {
-        $param = $request->getQueryParams();
-        unset($param['ambiente'], $param['task']);
+        $get = filter_var_array($request->getQueryParams(), [
+            'campos' => ['filter' => FILTER_SANITIZE_STRING, 'flags' => FILTER_REQUIRE_ARRAY],
+            'busca' => FILTER_DEFAULT
+        ]);
 
         try {
-            $lista_config_smtp = $this->command_bus->handle(new GetListaConfigSmtpCommand($param, []));
+            /**
+             * @var array $criteria
+             * @covers ConverterFiltro2CriteriaCommandHandler
+             */
+            $criteria = $this->command_bus->handle(new ConverterFiltro2CriteriaCommand($get['campos'], $get['busca']));
+
+            /**
+             * @var array $lista_config_smtp
+             * @covers GetListaConfigSmtpHandler
+             */
+            $lista_config_smtp = $this->command_bus->handle(new GetListaConfigSmtpCommand($criteria));
 
             // View
             $this->view->addTemplate('lista_config_smtp', [
                 'titulo-pagina' => 'Configurações SMTP',
-                'lista-config-smtp' => $lista_config_smtp
+                'lista-config-smtp' => $lista_config_smtp,
+                'filtro' => $get
             ]);
 
             // JS

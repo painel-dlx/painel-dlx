@@ -47,3 +47,6 @@ PainelDLX\Domain\Emails\Entities\ConfigSmtp:
         corpo_html:
             type: boolean
             nullable: false
+        deletado:
+            type: boolean
+            nullable: false

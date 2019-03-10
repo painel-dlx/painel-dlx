@@ -112,6 +112,10 @@ body {
 // Mansagens ao usuário
 @import "componentes/mensagem-usuario";
 
+// Widgets
+@import "componentes/widget/widget-home";
+@import "componentes/widget/lista-wigets";
+
 // Erros HTTP
 @import "componentes/erro-http";
 
@@ -120,7 +124,4 @@ body {
 @import "componentes/info-usuario";
 @import "componentes/usuario-resumo-infos";
 @import "componentes/filtro-registros";
-
-// Widgets
-@import "componentes/widget/widget-home";
-@import "componentes/widget/lista-wigets";
+@import "componentes/sem-registros";

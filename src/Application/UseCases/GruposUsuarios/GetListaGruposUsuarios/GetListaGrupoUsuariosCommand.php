@@ -23,45 +23,12 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Testes\Application\UseCases\PermissoesUsuario;
+namespace PainelDLX\Application\UseCases\GruposUsuarios\GetListaGruposUsuarios;
 
-use PainelDLX\Application\UseCases\PermissoesUsuario\GetListaPermissaoUsuario\GetListaPermissaoUsuarioCommand;
-use PainelDLX\Testes\PainelDLXTests;
 
-class GetListaPermissaoUsuarioCommandTest extends PainelDLXTests
+use PainelDLX\Application\Contracts\ListaRegistrosCommand;
+
+class GetListaGrupoUsuariosCommand extends ListaRegistrosCommand
 {
-    /** @var GetListaPermissaoUsuarioCommand */
-    private $command;
 
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->command = new GetListaPermissaoUsuarioCommand(
-            ['teste' => 'teste'],
-            [],
-            2,
-            1
-        );
-    }
-
-    public function test_GetOffset()
-    {
-        $this->assertEquals(2, $this->command->getOffset());
-    }
-
-    public function test_GetOrderBy()
-    {
-        $this->assertCount(0, $this->command->getOrderBy());
-    }
-
-    public function test_GetLimit()
-    {
-        $this->assertEquals(1, $this->command->getLimit());
-    }
-
-    public function test_GetCriteria()
-    {
-        $this->assertEquals(['teste' => 'teste'], $this->command->getCriteria());
-    }
 }

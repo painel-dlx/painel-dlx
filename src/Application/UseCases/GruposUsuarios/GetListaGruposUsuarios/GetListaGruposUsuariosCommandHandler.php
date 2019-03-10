@@ -23,26 +23,31 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Testes\Application\UseCases\PermissoesUsuario;
+namespace PainelDLX\Application\UseCases\GruposUsuarios\GetListaGruposUsuarios;
 
-use DLX\Infra\EntityManagerX;
-use PainelDLX\Application\UseCases\PermissoesUsuario\GetListaPermissaoUsuario\GetListaPermissaoUsuarioCommand;
-use PainelDLX\Application\UseCases\PermissoesUsuario\GetListaPermissaoUsuario\GetListaPermissaoUsuarioHandler;
-use PainelDLX\Domain\PermissoesUsuario\Entities\PermissaoUsuario;
-use PainelDLX\Domain\PermissoesUsuario\Repositories\PermissaoUsuarioRepositoryInterface;
-use PainelDLX\Testes\PainelDLXTests;
 
-class GetListaPermissaoUsuarioHandlerTest extends PainelDLXTests
+use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
+use PainelDLX\Domain\GruposUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
+
+class GetListaGruposUsuariosCommandHandler
 {
+    /**
+     * @var GrupoUsuarioRepositoryInterface
+     */
+    private $grupo_usuario_repository;
 
-    public function test_Handle()
+    /**
+     * GetListaGruposUsuariosCommandHandler constructor.
+     * @param GrupoUsuarioRepositoryInterface $grupo_usuario_repository
+     */
+    public function __construct(GrupoUsuarioRepositoryInterface $grupo_usuario_repository)
     {
-        /** @var PermissaoUsuarioRepositoryInterface $permissao_usuario_repository */
-        $permissao_usuario_repository = EntityManagerX::getRepository(PermissaoUsuario::class);
+        $this->grupo_usuario_repository = $grupo_usuario_repository;
+    }
 
-        $command = new GetListaPermissaoUsuarioCommand([], []);
-        $lista_permissoes = (new GetListaPermissaoUsuarioHandler($permissao_usuario_repository))->handle($command);
-
-        $this->assertNotEmpty($lista_permissoes);
+    public function handle(GetListaGrupoUsuariosCommand $command): ?array
+    {
+        $lista = $this->grupo_usuario_repository->findByLike($command->getCriteria(), $command->getOrderBy(), $command->getLimit(), $command->getOffset());
+        return array_filter($lista, function (GrupoUsuario $grupo_usuario) { return !$grupo_usuario->isDeletado(); });
     }
 }

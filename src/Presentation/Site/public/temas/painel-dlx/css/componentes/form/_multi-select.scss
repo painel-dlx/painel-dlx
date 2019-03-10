@@ -1,4 +1,7 @@
 .multi-select {
+    $cor-fundo: rgba(#E9E9E9, .3);
+    $border-radius: 3px;
+
     // Posicionamento
     position: relative;
 
@@ -12,7 +15,10 @@
 
     // Visual
     border: 1px solid #DDD;
-    background: #FFF;
+    background: $cor-fundo;
+
+    // Texto
+    color: #888;
 
     &:hover {
         .multi-select-itens {
@@ -51,6 +57,8 @@
         border-left: 1px solid #DDD;
         border-right: 1px solid #DDD;
         border-bottom: 1px solid #DDD;
+        border-bottom-left-radius: $border-radius;
+        border-bottom-right-radius: $border-radius;
 
         // Visual
         display: none;
@@ -61,10 +69,10 @@
 
             &:hover {
                 // Visual
-                background: #d2edf3;
+                background: $cor-fundo;
 
                 // Texto
-                color: #32909F;
+                color: orange;
             }
         }
     }

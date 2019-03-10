@@ -42,6 +42,8 @@ use PainelDLX\Application\UseCases\GruposUsuarios\ExcluirGrupoUsuario\ExcluirGru
 use PainelDLX\Application\UseCases\GruposUsuarios\ExcluirGrupoUsuario\ExcluirGrupoUsuarioHandler;
 use PainelDLX\Application\UseCases\GruposUsuarios\GetGrupoUsuarioPorId\GetGrupoUsuarioPorIdCommand;
 use PainelDLX\Application\UseCases\GruposUsuarios\GetGrupoUsuarioPorId\GetGrupoUsuarioPorIdHandler;
+use PainelDLX\Application\UseCases\GruposUsuarios\GetListaGruposUsuarios\GetListaGruposUsuariosCommandHandler;
+use PainelDLX\Application\UseCases\GruposUsuarios\GetListaGruposUsuarios\GetListaGrupoUsuariosCommand;
 use PainelDLX\Application\UseCases\GruposUsuarios\NovoGrupoUsuario\NovoGrupoUsuarioCommand;
 use PainelDLX\Application\UseCases\GruposUsuarios\NovoGrupoUsuario\NovoGrupoUsuarioHandler;
 use PainelDLX\Application\UseCases\Home\GetListaWigets\GetListaWidgetsCommand;
@@ -49,7 +51,7 @@ use PainelDLX\Application\UseCases\Home\GetListaWigets\GetListaWidgetsHandler;
 use PainelDLX\Application\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommand;
 use PainelDLX\Application\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommandHandler;
 use PainelDLX\Application\UseCases\Login\FazerLogin\FazerLoginCommand;
-use PainelDLX\Application\UseCases\Login\FazerLogin\FazerLoginHandler;
+use PainelDLX\Application\UseCases\Login\FazerLogin\FazerLoginCommandHandler;
 use PainelDLX\Application\UseCases\Login\FazerLogout\FazerLogoutCommand;
 use PainelDLX\Application\UseCases\Login\FazerLogout\FazerLogoutHandler;
 use PainelDLX\Application\UseCases\Modulos\GetListaMenu\GetListaMenuCommand;
@@ -96,7 +98,7 @@ return [
     CadastrarPermissaoUsuarioCommand::class => CadastrarPermissaoUsuarioHandler::class,
     EditarPermissaoUsuarioCommand::class => EditarPermissaoUsuarioHandler::class,
     ExcluirPermissaoUsuarioCommand::class => ExcluirPermissaoUsuarioHandler::class,
-    FazerLoginCommand::class => FazerLoginHandler::class,
+    FazerLoginCommand::class => FazerLoginCommandHandler::class,
     FazerLogoutCommand::class => FazerLogoutHandler::class,
     NovaConfigSmtpCommand::class => NovaConfigSmtpHandler::class,
     GetConfigSmtpPorIdCommand::class => GetConfigSmtpPorIdHandler::class,
@@ -113,6 +115,7 @@ return [
     GetUsuarioPeloIdCommand::class => GetUsuarioPeloIdHandler::class,
     TestarConfigSmtpCommand::class => TestarConfigSmtpHandler::class,
     GetListaUsuariosCommand::class => GetListaUsuariosHandler::class,
+    GetListaGrupoUsuariosCommand::class => GetListaGruposUsuariosCommandHandler::class,
     GetListaMenuCommand::class => GetListaMenuHandler::class,
     GetListaWidgetsCommand::class => GetListaWidgetsHandler::class,
     ConverterFiltro2CriteriaCommand::class => ConverterFiltro2CriteriaCommandHandler::class,

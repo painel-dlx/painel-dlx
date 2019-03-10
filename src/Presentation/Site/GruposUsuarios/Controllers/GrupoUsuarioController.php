@@ -32,8 +32,11 @@ use PainelDLX\Application\UseCases\GruposUsuarios\EditarGrupoUsuario\EditarGrupo
 use PainelDLX\Application\UseCases\GruposUsuarios\EditarGrupoUsuario\EditarGrupoUsuarioHandler;
 use PainelDLX\Application\UseCases\GruposUsuarios\ExcluirGrupoUsuario\ExcluirGrupoUsuarioCommand;
 use PainelDLX\Application\UseCases\GruposUsuarios\ExcluirGrupoUsuario\ExcluirGrupoUsuarioHandler;
+use PainelDLX\Application\UseCases\GruposUsuarios\GetListaGruposUsuarios\GetListaGruposUsuariosCommandHandler;
+use PainelDLX\Application\UseCases\GruposUsuarios\GetListaGruposUsuarios\GetListaGrupoUsuariosCommand;
 use PainelDLX\Application\UseCases\GruposUsuarios\NovoGrupoUsuario\NovoGrupoUsuarioCommand;
 use PainelDLX\Application\UseCases\GruposUsuarios\NovoGrupoUsuario\NovoGrupoUsuarioHandler;
+use PainelDLX\Application\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommand;
 use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
 use PainelDLX\Domain\GruposUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
 use PainelDLX\Infra\ORM\Doctrine\Repositories\GrupoUsuarioRepository;
@@ -87,14 +90,30 @@ class GrupoUsuarioController extends SiteController
      */
     public function listaGruposUsuarios(ServerRequestInterface $request): ResponseInterface
     {
+        $get = filter_var_array($request->getQueryParams(), [
+            'campos' => ['filter' => FILTER_SANITIZE_STRING, 'flags' => FILTER_REQUIRE_ARRAY],
+            'busca' => FILTER_DEFAULT
+        ]);
+
         try {
-            $lista_grupos_usuarios = $this->repository->findAtivos($request->getParsedBody());
+            /**
+             * @var array $criteria
+             * @covers ConverterFiltro2CriteriaCommandHandler
+             */
+            $criteria = $this->command_bus->handle(new ConverterFiltro2CriteriaCommand($get['campos'], $get['busca']));
+
+            /**
+             * @var array $lista_grupos_usuarios
+             * @covers GetListaGruposUsuariosCommandHandler
+             */
+            $lista_grupos_usuarios = $this->command_bus->handle(new GetListaGrupoUsuariosCommand($criteria));
 
             // Atributos
             $this->view->setAtributo('titulo-pagina', 'Grupos de Usuários');
             $this->view->setAtributo('lista_grupos_usuarios', $lista_grupos_usuarios);
+            $this->view->setAtributo('filtro', $get);
 
-            // views
+            // Views
             $this->view->addTemplate('lista_grupos_usuarios');
         } catch (UserException $e) {
             $this->view->addTemplate('../mensagem_usuario');

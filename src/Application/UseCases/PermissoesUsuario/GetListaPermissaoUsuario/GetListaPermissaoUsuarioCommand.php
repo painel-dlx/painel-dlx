@@ -26,69 +26,8 @@
 namespace PainelDLX\Application\UseCases\PermissoesUsuario\GetListaPermissaoUsuario;
 
 
-class GetListaPermissaoUsuarioCommand
+use PainelDLX\Application\Contracts\ListaRegistrosCommand;
+
+class GetListaPermissaoUsuarioCommand extends ListaRegistrosCommand
 {
-    /**
-     * @var array
-     */
-    private $criteria;
-    /**
-     * @var array
-     */
-    private $order_by;
-    /**
-     * @var int|null
-     */
-    private $offset;
-    /**
-     * @var int|null
-     */
-    private $limit;
-
-    /**
-     * @return array
-     */
-    public function getCriteria(): array
-    {
-        return $this->criteria;
-    }
-
-    /**
-     * @return array
-     */
-    public function getOrderBy(): array
-    {
-        return $this->order_by;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getOffset(): ?int
-    {
-        return $this->offset;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getLimit(): ?int
-    {
-        return $this->limit;
-    }
-
-    /**
-     * GetListaConfigSmtpCommand constructor.
-     * @param array $criteria
-     * @param array $order_by
-     * @param int|null $offset
-     * @param int|null $qtde
-     */
-    public function __construct(array $criteria, array $order_by, ?int $offset = null, ?int $qtde = null)
-    {
-        $this->criteria = $criteria;
-        $this->order_by = $order_by;
-        $this->offset = $offset;
-        $this->limit = $qtde;
-    }
 }
