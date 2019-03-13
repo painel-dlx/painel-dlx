@@ -1,0 +1,26 @@
+.dlx-menu {
+    $pd-vertical: 7.5px;
+
+    // Posicionamento
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 2;
+
+    // Tamanho
+    width: 100%;
+    height: 55px;
+    box-sizing: border-box;
+
+    // Margens
+    margin: 0;
+    padding: $pd-vertical 15px;
+    background: #33909F;
+
+    // Visual
+    display: flex;
+    box-shadow: 0 0 5px rgba(black , .5);
+
+    // Flex
+    align-items: center;
+}

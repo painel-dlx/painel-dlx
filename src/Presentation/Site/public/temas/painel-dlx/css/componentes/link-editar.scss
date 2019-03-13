@@ -1,0 +1,16 @@
+.link-editar {
+    $cor-fundo: #FCA502;
+
+    @extend .so-icone;
+
+    &::before {
+        // Conteúdo
+        content: '\e905';
+
+        // Visual
+        background: $cor-fundo;
+
+        // Texto
+        color: #FFF;
+    }
+}

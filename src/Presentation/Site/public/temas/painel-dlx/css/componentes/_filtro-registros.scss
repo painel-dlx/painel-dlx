@@ -1,0 +1,82 @@
+.filtro-registros {
+    // Visual
+    display: flex;
+    background: #FFF;
+    border: 1px solid #DDD;
+    border-radius: 3px;
+
+    // Tamanho
+    width: 690px;
+    max-width: 100%;
+
+    // Margens
+    margin: 0;
+
+    // Posicionamento
+    position: relative;
+
+    > .multi-select {
+        // Visual
+        border: none;
+
+        // Tamanho
+        width: 190px;
+
+        &::before {
+            $tm: 4px;
+
+            // Conteúdo
+            content: '';
+
+            // Visual
+            display: inline-block;
+            border-left: $tm solid transparent;
+            border-right: $tm solid transparent;
+            border-top: $tm solid #000;
+
+            // Alinhamento
+            vertical-align: middle;
+
+            // Margens
+            margin-right: 10px;
+
+            // Tamanho
+            width: 0;
+            height: 0;
+
+            // Posicionamento
+            position: absolute;
+            right: 1px;
+            top: 50%;
+
+            // Transformar
+            transform: translateY(-50%);
+        }
+
+        &::after {
+            // Conteúdo
+            content: '';
+
+            // Tamanho
+            width: 1px;
+            height: 20px;
+
+            // Visual
+            background: #ddd;
+
+            // Posicionamento
+            position: absolute;
+            top: 50%;
+            right: 0;
+
+            // Transformar
+            transform: translateY(-50%);
+        }
+    }
+
+    > .form-controle {
+        // Visual
+        background: transparent;
+        border: none;
+    }
+}

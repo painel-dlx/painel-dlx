@@ -1,0 +1,12 @@
+.info-usuario {
+    &-rotulo {
+        // Texto
+        text-transform: uppercase;
+        font-weight: bold;
+    }
+
+    &-valor {
+        // Texto
+        color: #555;
+    }
+}

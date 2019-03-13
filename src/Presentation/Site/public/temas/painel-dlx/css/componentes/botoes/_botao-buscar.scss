@@ -1,0 +1,26 @@
+.botao-buscar {
+    $cor-fundo: #607d8b;
+
+    @extend .com-icone;
+
+    // Visual
+    background: $cor-fundo;
+    border-radius: 4px;
+    border: none;
+
+    // Texto
+    color: #FFF;
+
+    // Margens
+    padding: 0 15px 0 5px;
+
+    &::before {
+        // Conteúdo
+        content: '\e986';
+    }
+
+    &:focus {
+        // Visual
+        outline: none;
+    }
+}

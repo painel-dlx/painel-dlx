@@ -1,0 +1,9 @@
+.icone-sistema {
+    &::before {
+        // Conteúdo
+        content: '\ea13';
+
+        // Texto
+        font-family: icomoon;
+    }
+}

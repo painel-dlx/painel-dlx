@@ -1,0 +1,33 @@
+.link-mostrar-menu {
+    $tm: 28px;
+    $mg-hr: 10px;
+    $pd-hr: $mg-hr;
+
+    // Texto
+    text-decoration: none;
+    color: transparent;
+
+    // Tamanho
+    width: $tm;
+    height: $tm;
+
+    // Visual
+    display: inline-block;
+    border-right: 1px solid #39a1b2;
+
+    // Margens
+    padding-right: $pd-hr;
+    margin-right: $mg-hr;
+
+    &::before {
+        // Conteúdo
+        content: '\e9bd';
+
+        // Texto
+        color: #FFF;
+        font: 28px icomoon;
+
+        // Alinhamento
+        vertical-align: middle;
+    }
+}

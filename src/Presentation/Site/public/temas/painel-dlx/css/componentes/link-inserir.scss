@@ -1,0 +1,17 @@
+.link-inserir {
+    $cor-fundo: #66CDAA;
+
+    @extend .com-icone;
+
+    // Visual
+    background: $cor-fundo;
+    border-radius: 4px;
+
+    // Texto
+    color: #FFF;
+
+    &::before {
+        // Conteúdo
+        content: '\ea0a';
+    }
+}

@@ -1,0 +1,39 @@
+.lista-gerenciar-permissoes {
+    // Tamanho
+    max-height: 300px;
+
+    // Visual
+    overflow-y: auto;
+    display: block;
+
+    tbody {
+        // Visual
+        display: block;
+
+        // Tamanho
+        width: 99%;
+
+        tr {
+            // Visual
+            cursor: pointer;
+
+            &:hover {
+                // Visual
+                background: rgba(102, 205, 170, 0.16);
+
+                // Texto
+                color: #32909F;
+            }
+
+            [type="checkbox"] {
+                // Visual
+                visibility: hidden;
+
+                // Posicionamento
+                position: fixed;
+                top: -9999px;
+                left: -9999px;
+            }
+        }
+    }
+}

@@ -1,0 +1,16 @@
+.link-detalhe {
+    $cor-fundo: #1F8B8C;
+
+    @extend .so-icone;
+
+    &::before {
+        // Conteúdo
+        content: '\e91f';
+
+        // Visual
+        background: $cor-fundo;
+
+        // Texto
+        color: #FFF;
+    }
+}

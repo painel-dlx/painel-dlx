@@ -1,0 +1,28 @@
+.link-fechar-menu {
+    $tm: 35px;
+
+    // Texto
+    color: #FFF;
+    font-size: 25px;
+    text-align: center;
+    text-decoration: none;
+    line-height: $tm;
+
+    // Visual
+    display: inline-block;
+    border-radius: 50%;
+
+    // Tamanho
+    width: $tm;
+    height: $tm;
+
+    // Posicionamento
+    position: fixed;
+    top: 7.5px;
+    right: 2%;
+
+    &:hover {
+        // Visual
+        background: rgba(white, .1);
+    }
+}

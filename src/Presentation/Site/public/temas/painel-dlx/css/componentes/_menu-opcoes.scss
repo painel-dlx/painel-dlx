@@ -1,0 +1,15 @@
+.menu-opcoes {
+    // Margens
+    margin-bottom: 20px;
+
+    // Flex
+    display: flex;
+    align-items: center;
+
+    > * {
+        &:not(:last-child) {
+            // Margens
+            margin-right: 10px;
+        }
+    }
+}

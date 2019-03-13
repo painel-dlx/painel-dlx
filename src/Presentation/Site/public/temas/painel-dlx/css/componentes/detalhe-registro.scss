@@ -1,0 +1,14 @@
+.detalhe-registro {
+    &-titulo {
+        @extend .form-titulo;
+    }
+
+    &-rotulo {
+        // Texto
+        text-transform: uppercase;
+        font-weight: bold;
+
+        // Visual
+        display: block;
+    }
+}

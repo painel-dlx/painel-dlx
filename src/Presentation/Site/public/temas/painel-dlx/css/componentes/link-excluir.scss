@@ -1,0 +1,17 @@
+.link-excluir {
+    $cor-fundo: #990500;
+
+    @extend .so-icone;
+
+    &::before {
+        // Conteúdo
+        content: '\e9ac';
+
+        // Visual
+        background: lighten($cor-fundo, .9);
+        border-bottom: 4px solid darken($cor-fundo, .9);
+
+        // Texto
+        color: #FFF;
+    }
+}

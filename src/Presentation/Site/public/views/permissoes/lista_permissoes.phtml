@@ -1,0 +1,126 @@
+<?php
+/**
+ * MIT License
+ *
+ * Copyright (c) 2018 PHP DLX
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+use PainelDLX\Domain\PermissoesUsuario\Entities\PermissaoUsuario;
+use Vilex\VileX;
+
+/**
+ * @var VileX $this
+ */
+
+$lista_permissoes = $this->getAtributo('lista_permissoes');
+$filtro = $this->getAtributo('filtro');
+?>
+[CORPO]
+<h1 class="titulo-pagina"><?php echo $this->getAtributo('titulo-pagina') ?></h1>
+
+<nav class="menu-opcoes">
+    <form id="filtro-registros" class="filtro-registros">
+        <div class="multi-select">
+            <span class="multi-select-item">Procurar em...</span>
+
+            <div class="multi-select-itens">
+                <label class="multi-select-item">
+                    <input type="checkbox" name="campos[]" value="alias"<?php echo empty($filtro['campos']) || in_array('alias', $filtro['campos']) ? ' checked' : '' ?>>
+                    Alias
+                </label>
+
+                <label class="multi-select-item">
+                    <input type="checkbox" name="campos[]" value="descricao"<?php echo empty($filtro['campos']) || in_array('descricao', $filtro['campos']) ? ' checked' : '' ?>>
+                    Descrição
+                </label>
+            </div>
+        </div>
+
+        <input type="search" name="busca" value="<?php echo $filtro['busca'] ?>" placeholder="Encontrar permissões" class="form-controle">
+    </form>
+
+    <button type="submit" form="filtro-registros" class="botao-buscar">Buscar</button>
+    <a href="/painel-dlx/permissoes/novo" class="link-inserir">Adicionar permissão</a>
+</nav>
+
+<table id="lista-usuarios" class="lista-registros">
+    <thead>
+    <tr>
+        <th id="usuario-id">ID</th>
+        <th id="nome">Nome</th>
+        <th id="opcoes">Opções</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <?php if (!count($lista_permissoes)) : ?>
+    <tr>
+        <td colspan="3" class="sem-registros">Nenhuma permissão de usuário encontrada.</td>
+    </tr>
+    <?php endif;
+
+    /** @var PermissaoUsuario $permissao */
+    foreach ($lista_permissoes as $permissao) : ?>
+        <tr>
+            <td headers="usuario-id"><?php echo $permissao->getPermissaoUsuarioId() ?></td>
+            <td headers="usuario">
+                <?php echo $permissao->getDescricao() ?><br>
+                <span class="lista-registros-comentario"><?php echo $permissao->getAlias() ?></span>
+            </td>
+            <td headers="opcoes">
+                <a href="permissoes/detalhe?permissao_usuario_id=<?php echo $permissao->getPermissaoUsuarioId() ?>" class="link-detalhe" title="">
+                    Detalhe
+                </a>
+
+                <a href="permissoes/editar?permissao_usuario_id=<?php echo $permissao->getPermissaoUsuarioId() ?>" class="link-editar" title="Editar essa permissão">
+                    Editar
+                </a>
+
+                <a href="javascript:" class="link-excluir" onclick="excluirPermissaoUsuario(<?php echo $permissao->getPermissaoUsuarioId() ?>)" title="Excluir essa permissão">
+                    Excluir
+                </a>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+    </tbody>
+</table>
+[/CORPO]
+
+[SCRIPTS]
+<script>
+    function excluirPermissaoUsuario(permissao_usuario_id) {
+        if (confirm('Deseja realmente excluir essa permissão?')) {
+            $.ajax({
+                url: '/painel-dlx/permissoes/excluir-permissao',
+                type: 'post', //delete
+                data: 'permissao_usuario_id=' + permissao_usuario_id,
+                dataType: 'json',
+                success: function (retorno) {
+                    alert(retorno.mensagem);
+                    window.location.reload();
+                }
+            })
+        }
+
+        return false;
+    }
+</script>
+[/SCRIPTS]

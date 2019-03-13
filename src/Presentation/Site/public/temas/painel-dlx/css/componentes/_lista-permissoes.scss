@@ -1,0 +1,33 @@
+.lista-permissoes {
+    @extend .flex-box;
+
+    // Visual
+    list-style: none;
+
+    // Margens
+    padding: 0;
+
+    > .permissao {
+        $mg-v: 8px;
+
+        // Texto
+        color: #999;
+
+        // Margens
+        margin-top: $mg-v;
+        margin-bottom: $mg-v;
+
+        // Configurar colunas flexíveis
+        @extend .flex-box-mp-col-3;
+        @extend .flex-box-pq-col-3;
+        @extend .flex-box-md-col-4;
+        @extend .flex-box-gd-col-3;
+        @extend .flex-box-mg-col-3;
+
+        &::first-line {
+            // Texto
+            font-weight: bold;
+            color: black;
+        }
+    }
+}

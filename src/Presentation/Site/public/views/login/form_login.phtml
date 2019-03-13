@@ -1,0 +1,71 @@
+<?php
+/**
+ * MIT License
+ *
+ * Copyright (c) 2018 PHP DLX
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+use Vilex\VileX;
+
+/**
+ * @var VileX $this
+ */
+?>
+
+[CORPO]
+<form id="form-login" method="post" action="/painel-dlx/login/fazer-login" class="form-login">
+    <h1 class="titulo-pagina"></h1>
+
+    <p class="form-paragr">
+        <label for="email" class="form-rotulo form-controle-usuario">Email</label>
+        <input type="email" name="email" id="email" class="form-controle" required>
+    </p>
+
+    <p class="form-paragr">
+        <label for="senha" class="form-rotulo form-controle-senha">Senha</label>
+        <input type="password" name="senha" id="senha" class="form-controle" required>
+    </p>
+
+    <p class="form-paragr">
+        <a href="/painel-dlx/recuperar-senha">
+            Esqueci minha senha
+        </a>
+    </p>
+
+    <p class="form-botoes">
+        <button type="submit" class="botao-alterar-senha">Acessar sistema</button>
+    </p>
+</form>
+[/CORPO]
+
+[SCRIPTS]
+<script>
+    $('#form-login').formAjax({
+        func_depois: function(retorno) {
+            if (retorno.retorno === 'sucesso') {
+                window.location = '<?php echo $this->getAtributo('redirect-url') ?>'
+            } else {
+                alert(retorno.mensagem);
+            }
+        }
+    });
+</script>
+[/SCRIPTS]

@@ -1,0 +1,9 @@
+.icone-voltar {
+    &::before {
+        // Conteúdo
+        content: '\e967';
+
+        // Texto
+        font-family: icomoon;
+    }
+}

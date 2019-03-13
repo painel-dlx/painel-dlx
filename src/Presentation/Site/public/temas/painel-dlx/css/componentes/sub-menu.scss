@@ -1,0 +1,39 @@
+.sub-menu {
+    // Margens
+    margin: 10px 0 0 0;
+    padding: 0;
+
+    // Visual
+    list-style: none;
+
+    > .sub-menu-item {
+        &:not(:last-child) {
+            // Visual
+            border-bottom: 1px dashed rgba(white, .3);
+        }
+
+        > .sub-menu-link {
+            // Texto
+            text-transform: uppercase;
+            text-decoration: none;
+            line-height: 30px;
+            color: #FFF;
+
+            // Margens
+            padding: 5px 20px;
+
+            // Tamanho
+            width: 100%;
+            box-sizing: border-box;
+
+            // Visual
+            display: inline-block;
+            border-radius: 3px;
+
+            &:hover {
+                // Visual
+                background: rgba(white, .1);
+            }
+        }
+    }
+}

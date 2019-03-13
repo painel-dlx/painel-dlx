@@ -1,0 +1,111 @@
+<?php
+/**
+ * MIT License
+ *
+ * Copyright (c) 2018 PHP DLX
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
+use PainelDLX\Domain\Usuarios\Entities\Usuario;
+use Vilex\VileX;
+
+/**
+ * @var VileX $this
+ */
+
+/** @var Usuario $usuario */
+$usuario = $this->getAtributo('usuario');
+/** @var GrupoUsuario[] $lista_grupos */
+$lista_grupos = $this->getAtributo('lista_grupos');
+?>
+[CORPO]
+<h1 class="titulo-pagina"><?php echo $this->getAtributo('titulo-pagina') ?></h1>
+
+<div class="layout-barra-lateral">
+    <?php include 'menu_lateral_usuarios.phtml'; ?>
+
+    <form id="form-usuario" method="post" action="salvar-usuario-existente" class="form-alterar-usuario">
+        <input type="hidden" name="usuario_id" value="<?php echo $usuario->getUsuarioId() ?>">
+
+        <fieldset class="form-grupo" id="dados-pessoais">
+            <legend class="form-titulo">Dados Pessoais</legend>
+
+            <p class="form-paragr">
+                <label for="txt-nome" class="form-rotulo form-controle-usuario">Nome</label>
+                <input type="text" name="nome" id="txt-nome" value="<?php echo $usuario->getNome() ?>" class="form-controle form-controle-texto" required>
+            </p>
+
+            <p class="form-paragr">
+                <label for="txt-email" class="form-rotulo form-controle-email">Email</label>
+                <input type="email" name="email" id="txt-email" value="<?php echo $usuario->getEmail() ?>" placeholder="seunome@gmail.com" class="form-controle" required>
+            </p>
+        </fieldset>
+
+
+        <fieldset class="form-grupo" id="acesso-sistema">
+            <legend class="form-titulo">Acesso ao Sistema</legend>
+
+            <a href="alterar-senha?usuario_id=<?php echo $usuario->getUsuarioId() ?>" class="botao-alterar-senha">
+                Alterar senha
+            </a>
+        </fieldset>
+
+        <fieldset class="form-grupo" id="grupos-usuarios">
+            <legend class="form-titulo">Grupos</legend>
+
+            <?php if ($lista_grupos) : ?>
+                <div class="lista-grupos">
+                    <?php
+                    /** @var GrupoUsuario $grupo_usuario */
+                    foreach($lista_grupos as $grupo_usuario) :
+                        $is_check = $usuario->getGrupos()->contains($grupo_usuario) ?>
+                        <p class="form-paragr">
+                            <input type="checkbox" name="grupos[]" id="chk-grupo-usuario-<?php echo $grupo_usuario->getGrupoUsuarioId() ?>" value="<?php echo $grupo_usuario->getGrupoUsuarioId() ?>"<?php echo $is_check ? ' CHECKED' : '' ?> class="form-controle form-controle-checkbox">
+                            <label for="chk-grupo-usuario-<?php echo $grupo_usuario->getGrupoUsuarioId() ?>"><?php echo $grupo_usuario->getNome() ?></label>
+                        </p>
+                    <?php endforeach; ?>
+                </div>
+            <?php else : ?>
+                <p class="sem-registros">Nenhum grupo de usuário encontrado.</p>
+            <?php endif ?>
+        </fieldset>
+
+        <p class="form-botoes">
+            <button type="submit" class="botao-salvar">Salvar</button>
+        </p>
+    </form>
+</div>
+[/CORPO]
+
+[SCRIPTS]
+<script>
+    $('#form-usuario').formAjax({
+        validar_invisiveis: true,
+        func_depois: function(retorno) {
+            alert(retorno.mensagem);
+
+            if (retorno.retorno === 'sucesso') {
+                window.location = '/painel-dlx/usuarios'
+            }
+        }
+    });
+</script>
+[/SCRIPTS]

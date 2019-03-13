@@ -1,0 +1,26 @@
+PainelDLX\Domain\PermissoesUsuario\Entities\PermissaoUsuario:
+    type: entity
+    table: dlx_permissoes_usuario
+    repositoryClass: PainelDLX\Infra\ORM\Doctrine\Repositories\PermissaoUsuarioRepository
+    id:
+        permissao_usuario_id:
+            type: integer
+            id: true
+            nullable: false
+            generator:
+                strategy: auto
+    fields:
+        alias:
+            type: string
+            length: 50
+            nullable: false
+        descricao:
+            type: string
+            length: 150
+            nullable: false
+        deletado:
+            type: integer
+    manyToMany:
+        grupos:
+            targetEntity: PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario
+            mappedBy: permissoes
