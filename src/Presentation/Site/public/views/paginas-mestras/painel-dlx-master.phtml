@@ -71,48 +71,6 @@ $usuario = $session->get('usuario-logado');
 
         <a href="javascript:" class="link-fechar-menu" onclick="ocultarMenu()" title="Fechar menu">X</a>
 
-        <div class="menu-item">
-            <span class="menu-link">Reservas</span>
-
-            <ul class="sub-menu">
-                <li class="sub-menu-item">
-                    <a href="#" class="sub-menu-link">
-                        Disponibilidade
-                    </a>
-                </li>
-
-                <li class="sub-menu-item">
-                    <a href="#" class="sub-menu-link">
-                        Reservas
-                    </a>
-                </li>
-
-                <li class="sub-menu-item">
-                    <a href="#" class="sub-menu-link">
-                        Quartos
-                    </a>
-                </li>
-            </ul>
-        </div>
-
-        <div class="menu-item">
-            <span class="menu-link">Website</span>
-
-            <ul class="sub-menu">
-                <li class="sub-menu-item">
-                    <a href="#" class="sub-menu-link">
-                        Contatos recebidos
-                    </a>
-                </li>
-
-                <li class="sub-menu-item">
-                    <a href="#" class="sub-menu-link">
-                        Redes Sociais
-                    </a>
-                </li>
-            </ul>
-        </div>
-
         <?php foreach ($session->get('html:lista-menu') as $menu => $itens) :
             if (count($itens)) : ?>
             <div class="menu-item">
