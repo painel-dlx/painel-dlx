@@ -3,7 +3,7 @@
   "version": "2.0",
   "license": "MIT",
   "require": {
-    "dlepera88-php/dlx": "1.1.x-dev",
+    "dlepera88-php/dlx": "^1.1",
     "dlepera88-php/vilex": "1.2.0.x-dev",
     "dlepera88-php/rauterex": "1.1.x-dev",
     "components/jquery": "3.3.*",
