@@ -4,12 +4,12 @@
   "license": "MIT",
   "require": {
     "dlepera88-php/dlx": "^1.1",
-    "dlepera88-php/vilex": "1.2.0.x-dev",
-    "dlepera88-php/rauterex": "1.1.x-dev",
+    "dlepera88-php/vilex": "^1.2",
+    "dlepera88-php/rauterex": "^1.1",
     "components/jquery": "3.3.*",
     "league/tactician-container": "dev-master",
-    "dlepera88-php/sechianex": "dev-master",
-    "dlepera88-jquery/jquery-form-ajax": "dev-master",
+    "dlepera88-php/sechianex": "^1.0",
+    "dlepera88-jquery/jquery-form-ajax": "^2.0",
     "ext-json": "*",
     "phpmailer/phpmailer": "^6.0"
   },
