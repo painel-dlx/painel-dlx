@@ -881,6 +881,7 @@ body.mostrando-menu .menu-principal {
 .lista-registros thead > tr > th {
   padding: 10px 7px;
   font-weight: 600;
+  font-size: 15px;
   text-align: left;
 }
 .lista-registros thead > tr > th:first-child {
@@ -891,6 +892,7 @@ body.mostrando-menu .menu-principal {
 }
 .lista-registros tbody tr > td {
   padding: 8px 7px;
+  font-size: 14px;
 }
 .lista-registros tbody tr > td:first-child {
   text-align: center;

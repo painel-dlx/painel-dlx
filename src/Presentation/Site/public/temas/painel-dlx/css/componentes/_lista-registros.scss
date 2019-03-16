@@ -24,6 +24,7 @@
 
                 // Texto
                 font-weight: 600;
+                font-size: 15px;
                 text-align: left;
 
                 // ID
@@ -46,6 +47,9 @@
             > td {
                 // Margens
                 padding: 8px 7px;
+
+                // Texto
+                font-size: 14px;
 
                 // ID
                 &:first-child {
