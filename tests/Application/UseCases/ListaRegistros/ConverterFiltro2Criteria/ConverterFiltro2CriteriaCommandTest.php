@@ -23,44 +23,30 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Application\Contracts;
+namespace PainelDLX\Testes\Application\UseCases\ListaRegistros\ConverterFiltro2Criteria;
 
+use PainelDLX\Application\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommand;
+use PainelDLX\Testes\PainelDLXTests;
 
-abstract class FiltroRegistrosCommand
+class ConverterFiltro2CriteriaCommandTest extends PainelDLXTests
 {
-    /**
-     * @var array|null
-     */
-    private $campos;
-    /**
-     * @var string|null
-     */
-    private $busca;
-
-    /**
-     * @return array|null
-     */
-    public function getCampos(): ?array
+    public function test_GetCampos()
     {
-        return $this->campos;
+        $campos = ['campo1', 'campo2'];
+        $busca = 'teste';
+
+        $command = new ConverterFiltro2CriteriaCommand($campos, $busca);
+        $this->assertIsArray($command->getCampos());
+        $this->assertEquals($campos, $command->getCampos());
     }
 
-    /**
-     * @return string|null
-     */
-    public function getBusca(): ?string
+    public function test_GetBusca()
     {
-        return $this->busca;
-    }
+        $campos = ['campo1', 'campo2'];
+        $busca = 'teste';
 
-    /**
-     * FiltroRegistrosCommand constructor.
-     * @param array $campos
-     * @param string $busca
-     */
-    public function __construct(?array $campos, ?string $busca)
-    {
-        $this->campos = $campos;
-        $this->busca = $busca;
+        $command = new ConverterFiltro2CriteriaCommand($campos, $busca);
+        $this->assertIsString($command->getBusca());
+        $this->assertEquals($busca, $command->getBusca());
     }
 }
