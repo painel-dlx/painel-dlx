@@ -23,44 +23,29 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Application\Contracts;
+namespace PainelDLX\Application\Routes;
 
 
-abstract class FiltroRegistrosCommand
+use PainelDLX\Application\Middlewares\DefinePaginaMestra;
+use PainelDLX\Application\Middlewares\VerificarLogon;
+use PainelDLX\Presentation\Site\Home\Controllers\PaginaInicialController;
+
+class HomeRouter extends PainelDLXRouter
 {
-    /**
-     * @var array|null
-     */
-    private $campos;
-    /**
-     * @var string|null
-     */
-    private $busca;
 
     /**
-     * @return array|null
+     * Registrar todas as rotas
      */
-    public function getCampos(): ?array
+    public function registrar(): void
     {
-        return $this->campos;
-    }
+        $router = $this->getRouter();
 
-    /**
-     * @return string|null
-     */
-    public function getBusca(): ?string
-    {
-        return $this->busca;
-    }
-
-    /**
-     * FiltroRegistrosCommand constructor.
-     * @param array $campos
-     * @param string $busca
-     */
-    public function __construct(?array $campos, ?string $busca)
-    {
-        $this->campos = $campos;
-        $this->busca = $busca;
+        $router->get(
+            '/',
+            [PaginaInicialController::class, 'home']
+        )->middlewares(
+            new VerificarLogon($this->session),
+            new DefinePaginaMestra($this->painel_dlx->getServerRequest(), $this->session)
+        );
     }
 }

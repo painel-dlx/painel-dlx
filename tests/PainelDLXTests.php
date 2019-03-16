@@ -29,7 +29,7 @@ namespace PainelDLX\Testes;
 use DLX\Infra\EntityManagerX;
 use League\Container\Container;
 use League\Container\ReflectionContainer;
-use PainelDLX\Application\PainelDLXServiceProvider;
+use PainelDLX\Application\ServiceProviders\PainelDLXServiceProvider;
 use PainelDLX\Application\Services\IniciarPainelDLX;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;

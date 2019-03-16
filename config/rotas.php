@@ -23,44 +23,20 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Application\UseCases\ListaRegistros\ConverterFiltro2Criteria;
+use PainelDLX\Application\Routes\ConfigSmtpRouter;
+use PainelDLX\Application\Routes\ErrosRouter;
+use PainelDLX\Application\Routes\GruposUsuariosRouter;
+use PainelDLX\Application\Routes\HomeRouter;
+use PainelDLX\Application\Routes\LoginRouter;
+use PainelDLX\Application\Routes\PermissoesRouter;
+use PainelDLX\Application\Routes\UsuariosRouter;
 
-
-class ConverterFiltro2CriteriaCommand
-{
-    /**
-     * @var array|null
-     */
-    private $campos;
-    /**
-     * @var string|null
-     */
-    private $busca;
-
-    /**
-     * @return array|null
-     */
-    public function getCampos(): ?array
-    {
-        return $this->campos;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getBusca(): ?string
-    {
-        return $this->busca;
-    }
-
-    /**
-     * FiltroRegistrosCommand constructor.
-     * @param array $campos
-     * @param string $busca
-     */
-    public function __construct(?array $campos, ?string $busca)
-    {
-        $this->campos = $campos;
-        $this->busca = $busca;
-    }
-}
+return [
+    HomeRouter::class,
+    ErrosRouter::class,
+    UsuariosRouter::class,
+    PermissoesRouter::class,
+    GruposUsuariosRouter::class,
+    LoginRouter::class,
+    ConfigSmtpRouter::class
+];

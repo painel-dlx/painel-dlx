@@ -23,44 +23,27 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Application\UseCases\ListaRegistros\ConverterFiltro2Criteria;
+namespace PainelDLX\Application\Routes;
 
 
-class ConverterFiltro2CriteriaCommand
+use PainelDLX\Application\Middlewares\DefinePaginaMestra;
+use PainelDLX\Presentation\Site\ErrosHttp\Controllers\ErroHttp;
+
+class ErrosRouter extends PainelDLXRouter
 {
-    /**
-     * @var array|null
-     */
-    private $campos;
-    /**
-     * @var string|null
-     */
-    private $busca;
 
     /**
-     * @return array|null
+     * Registrar todas as rotas
      */
-    public function getCampos(): ?array
+    public function registrar(): void
     {
-        return $this->campos;
-    }
+        $router = $this->getRouter();
 
-    /**
-     * @return string|null
-     */
-    public function getBusca(): ?string
-    {
-        return $this->busca;
-    }
-
-    /**
-     * FiltroRegistrosCommand constructor.
-     * @param array $campos
-     * @param string $busca
-     */
-    public function __construct(?array $campos, ?string $busca)
-    {
-        $this->campos = $campos;
-        $this->busca = $busca;
+        $router->get(
+            '/painel-dlx/erro-http',
+            [ErroHttp::class, 'exibirPaginaErro']
+        )->middlewares(
+            new DefinePaginaMestra($this->painel_dlx->getServerRequest(), $this->session)
+        );
     }
 }

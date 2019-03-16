@@ -23,44 +23,8 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Application\UseCases\ListaRegistros\ConverterFiltro2Criteria;
+use PainelDLX\Application\ServiceProviders\PainelDLXServiceProvider;
 
-
-class ConverterFiltro2CriteriaCommand
-{
-    /**
-     * @var array|null
-     */
-    private $campos;
-    /**
-     * @var string|null
-     */
-    private $busca;
-
-    /**
-     * @return array|null
-     */
-    public function getCampos(): ?array
-    {
-        return $this->campos;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getBusca(): ?string
-    {
-        return $this->busca;
-    }
-
-    /**
-     * FiltroRegistrosCommand constructor.
-     * @param array $campos
-     * @param string $busca
-     */
-    public function __construct(?array $campos, ?string $busca)
-    {
-        $this->campos = $campos;
-        $this->busca = $busca;
-    }
-}
+return [
+    PainelDLXServiceProvider::class
+];

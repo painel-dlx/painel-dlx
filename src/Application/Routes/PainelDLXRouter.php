@@ -23,44 +23,55 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Application\UseCases\ListaRegistros\ConverterFiltro2Criteria;
+namespace PainelDLX\Application\Routes;
 
 
-class ConverterFiltro2CriteriaCommand
+use PainelDLX\Application\Services\IniciarPainelDLX;
+use RautereX\RautereX;
+use SechianeX\Contracts\SessionInterface;
+
+abstract class PainelDLXRouter
 {
     /**
-     * @var array|null
+     * @var RautereX
      */
-    private $campos;
+    private $router;
     /**
-     * @var string|null
+     * @var IniciarPainelDLX
      */
-    private $busca;
+    protected $painel_dlx;
+    /**
+     * @var SessionInterface
+     */
+    protected $session;
 
     /**
-     * @return array|null
+     * PainelDLXRouter constructor.
+     * @param RautereX $router
+     * @param IniciarPainelDLX $painel_dlx
+     * @param SessionInterface $session
+     * @todo desacoplar RautereX e SechianeX
      */
-    public function getCampos(): ?array
-    {
-        return $this->campos;
+    public function __construct(
+        RautereX $router,
+        IniciarPainelDLX $painel_dlx,
+        SessionInterface $session
+    ) {
+        $this->router = $router;
+        $this->painel_dlx = $painel_dlx;
+        $this->session = $session;
     }
 
     /**
-     * @return string|null
+     * @return RautereX
      */
-    public function getBusca(): ?string
+    public function getRouter(): RautereX
     {
-        return $this->busca;
+        return $this->router;
     }
 
     /**
-     * FiltroRegistrosCommand constructor.
-     * @param array $campos
-     * @param string $busca
+     * Registrar todas as rotas
      */
-    public function __construct(?array $campos, ?string $busca)
-    {
-        $this->campos = $campos;
-        $this->busca = $busca;
-    }
+    abstract public function registrar(): void;
 }

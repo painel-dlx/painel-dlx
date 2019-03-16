@@ -25,7 +25,6 @@
 
 use DLX\Core\Configure;
 use Doctrine\DBAL\Logging\EchoSQLLogger;
-use PainelDLX\Application\PainelDLXServiceProvider;
 
 ini_set('session.save_handler', 'files');
 
@@ -35,8 +34,8 @@ return [
     'app' => [
         'nome' => 'painel-dlx',
         'nome-amigavel' => 'Painel DLX',
-        'rotas' => 'src/Presentation/rotas.php',
-        'service-provider' => PainelDLXServiceProvider::class,
+        'rotas' => include 'rotas.php',
+        'service-providers' => include 'service_providers.php',
         'mapping' => include 'mapping.php',
         'favicon' => '/src/Presentation/Site/public/imgs/favicon.png'
     ],
