@@ -104,9 +104,7 @@ class IniciarPainelDLX
      */
     public function executar()
     {
-        if (!is_null($this->container)) {
-            $this->container->addServiceProvider(Configure::get('app', 'service-provider'));
-        }
+        $this->registrarServiceProviders(Configure::get('app', 'service-providers'));
 
         // TODO: desacoplar a classe RautereX
         $router = new RautereX($this->container);
@@ -175,6 +173,19 @@ class IniciarPainelDLX
             /** @var PainelDLXRouter $router */
             $router = new $router($rautere_x, $this, SessionFactory::createPHPSession());
             $router->registrar();
+        }
+    }
+
+    /**
+     * Registrar os service providers no container
+     * @param array $service_providers
+     */
+    private function registrarServiceProviders(array $service_providers): void
+    {
+        if (!is_null($this->container)) {
+            foreach ($service_providers as $service_provider) {
+                $this->container->addServiceProvider($service_provider);
+            }
         }
     }
 }

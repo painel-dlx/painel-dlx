@@ -23,37 +23,8 @@
  * SOFTWARE.
  */
 
-use DLX\Core\Configure;
-use Doctrine\DBAL\Logging\EchoSQLLogger;
-
-ini_set('session.save_handler', 'files');
+use PainelDLX\Application\ServiceProviders\PainelDLXServiceProvider;
 
 return [
-    'tipo-ambiente' => Configure::DEV,
-
-    'app' => [
-        'nome' => 'painel-dlx',
-        'nome-amigavel' => 'Painel DLX',
-        'rotas' => include 'rotas.php',
-        'service-providers' => include 'service_providers.php',
-        'mapping' => include 'mapping.php',
-        'favicon' => '/src/Presentation/Site/public/imgs/favicon.png'
-    ],
-
-    'bd' => [
-        'orm' => 'doctrine',
-        'mapping' => 'yaml',
-        //'debug' => EchoSQLLogger::class,
-        'dir' => [
-            'src/Infra/ORM/Doctrine/Mappings/',
-            'src/Infra/ORM/Doctrine/Repositories/'
-        ],
-        'conexao' => [
-            'dbname' => 'dlx_dev',
-            'user' => 'root',
-            'password' => '$d5Ro0t',
-            'host' => 'localhost',
-            'driver' => 'pdo_mysql',
-        ]
-    ]
+    PainelDLXServiceProvider::class
 ];

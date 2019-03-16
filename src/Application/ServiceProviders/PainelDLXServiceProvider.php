@@ -23,7 +23,7 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Application;
+namespace PainelDLX\Application\ServiceProviders;
 
 
 use DLX\Contracts\TransacaoInterface;
