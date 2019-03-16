@@ -23,38 +23,20 @@
  * SOFTWARE.
  */
 
-use DLX\Core\Configure;
-use Doctrine\DBAL\Logging\EchoSQLLogger;
-use PainelDLX\Application\PainelDLXServiceProvider;
-
-ini_set('session.save_handler', 'files');
+use PainelDLX\Application\Routes\ConfigSmtpRouter;
+use PainelDLX\Application\Routes\ErrosRouter;
+use PainelDLX\Application\Routes\GruposUsuariosRouter;
+use PainelDLX\Application\Routes\HomeRouter;
+use PainelDLX\Application\Routes\LoginRouter;
+use PainelDLX\Application\Routes\PermissoesRouter;
+use PainelDLX\Application\Routes\UsuariosRouter;
 
 return [
-    'tipo-ambiente' => Configure::DEV,
-
-    'app' => [
-        'nome' => 'painel-dlx',
-        'nome-amigavel' => 'Painel DLX',
-        'rotas' => include 'rotas.php',
-        'service-provider' => PainelDLXServiceProvider::class,
-        'mapping' => include 'mapping.php',
-        'favicon' => '/src/Presentation/Site/public/imgs/favicon.png'
-    ],
-
-    'bd' => [
-        'orm' => 'doctrine',
-        'mapping' => 'yaml',
-        //'debug' => EchoSQLLogger::class,
-        'dir' => [
-            'src/Infra/ORM/Doctrine/Mappings/',
-            'src/Infra/ORM/Doctrine/Repositories/'
-        ],
-        'conexao' => [
-            'dbname' => 'dlx_dev',
-            'user' => 'root',
-            'password' => '$d5Ro0t',
-            'host' => 'localhost',
-            'driver' => 'pdo_mysql',
-        ]
-    ]
+    HomeRouter::class,
+    ErrosRouter::class,
+    UsuariosRouter::class,
+    PermissoesRouter::class,
+    GruposUsuariosRouter::class,
+    LoginRouter::class,
+    ConfigSmtpRouter::class
 ];

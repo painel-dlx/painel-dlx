@@ -23,38 +23,55 @@
  * SOFTWARE.
  */
 
-use DLX\Core\Configure;
-use Doctrine\DBAL\Logging\EchoSQLLogger;
-use PainelDLX\Application\PainelDLXServiceProvider;
+namespace PainelDLX\Application\Routes;
 
-ini_set('session.save_handler', 'files');
 
-return [
-    'tipo-ambiente' => Configure::DEV,
+use PainelDLX\Application\Services\IniciarPainelDLX;
+use RautereX\RautereX;
+use SechianeX\Contracts\SessionInterface;
 
-    'app' => [
-        'nome' => 'painel-dlx',
-        'nome-amigavel' => 'Painel DLX',
-        'rotas' => include 'rotas.php',
-        'service-provider' => PainelDLXServiceProvider::class,
-        'mapping' => include 'mapping.php',
-        'favicon' => '/src/Presentation/Site/public/imgs/favicon.png'
-    ],
+abstract class PainelDLXRouter
+{
+    /**
+     * @var RautereX
+     */
+    private $router;
+    /**
+     * @var IniciarPainelDLX
+     */
+    protected $painel_dlx;
+    /**
+     * @var SessionInterface
+     */
+    protected $session;
 
-    'bd' => [
-        'orm' => 'doctrine',
-        'mapping' => 'yaml',
-        //'debug' => EchoSQLLogger::class,
-        'dir' => [
-            'src/Infra/ORM/Doctrine/Mappings/',
-            'src/Infra/ORM/Doctrine/Repositories/'
-        ],
-        'conexao' => [
-            'dbname' => 'dlx_dev',
-            'user' => 'root',
-            'password' => '$d5Ro0t',
-            'host' => 'localhost',
-            'driver' => 'pdo_mysql',
-        ]
-    ]
-];
+    /**
+     * PainelDLXRouter constructor.
+     * @param RautereX $router
+     * @param IniciarPainelDLX $painel_dlx
+     * @param SessionInterface $session
+     * @todo desacoplar RautereX e SechianeX
+     */
+    public function __construct(
+        RautereX $router,
+        IniciarPainelDLX $painel_dlx,
+        SessionInterface $session
+    ) {
+        $this->router = $router;
+        $this->painel_dlx = $painel_dlx;
+        $this->session = $session;
+    }
+
+    /**
+     * @return RautereX
+     */
+    public function getRouter(): RautereX
+    {
+        return $this->router;
+    }
+
+    /**
+     * Registrar todas as rotas
+     */
+    abstract public function registrar(): void;
+}

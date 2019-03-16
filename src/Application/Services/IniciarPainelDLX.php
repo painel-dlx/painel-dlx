@@ -27,10 +27,12 @@ namespace PainelDLX\Application\Services;
 
 
 use DLX\Core\Configure;
+use PainelDLX\Application\Routes\PainelDLXRouter;
 use PainelDLX\Application\Services\Exceptions\AmbienteNaoInformadoException;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use RautereX\RautereX;
+use SechianeX\Factories\SessionFactory;
 
 class IniciarPainelDLX
 {
@@ -108,7 +110,7 @@ class IniciarPainelDLX
 
         // TODO: desacoplar a classe RautereX
         $router = new RautereX($this->container);
-        include Configure::get('app', 'rotas');
+        $this->registrarRotas(Configure::get('app', 'rotas'), $router);
 
         $params = $this->server_request->getQueryParams();
 
@@ -160,5 +162,19 @@ class IniciarPainelDLX
 
         $ambiente = $this->server_request->getQueryParams()['ambiente'];
         Configure::init($ambiente, "config/{$ambiente}.php");
+    }
+
+    /**
+     * Registrar rotas no RautereX
+     * @param array $routers
+     * @param RautereX $rautere_x
+     */
+    private function registrarRotas(array $routers, RautereX $rautere_x): void
+    {
+        foreach ($routers as $router) {
+            /** @var PainelDLXRouter $router */
+            $router = new $router($rautere_x, $this, SessionFactory::createPHPSession());
+            $router->registrar();
+        }
     }
 }

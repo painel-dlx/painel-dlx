@@ -23,38 +23,29 @@
  * SOFTWARE.
  */
 
-use DLX\Core\Configure;
-use Doctrine\DBAL\Logging\EchoSQLLogger;
-use PainelDLX\Application\PainelDLXServiceProvider;
+namespace PainelDLX\Application\Routes;
 
-ini_set('session.save_handler', 'files');
 
-return [
-    'tipo-ambiente' => Configure::DEV,
+use PainelDLX\Application\Middlewares\DefinePaginaMestra;
+use PainelDLX\Application\Middlewares\VerificarLogon;
+use PainelDLX\Presentation\Site\Home\Controllers\PaginaInicialController;
 
-    'app' => [
-        'nome' => 'painel-dlx',
-        'nome-amigavel' => 'Painel DLX',
-        'rotas' => include 'rotas.php',
-        'service-provider' => PainelDLXServiceProvider::class,
-        'mapping' => include 'mapping.php',
-        'favicon' => '/src/Presentation/Site/public/imgs/favicon.png'
-    ],
+class HomeRouter extends PainelDLXRouter
+{
 
-    'bd' => [
-        'orm' => 'doctrine',
-        'mapping' => 'yaml',
-        //'debug' => EchoSQLLogger::class,
-        'dir' => [
-            'src/Infra/ORM/Doctrine/Mappings/',
-            'src/Infra/ORM/Doctrine/Repositories/'
-        ],
-        'conexao' => [
-            'dbname' => 'dlx_dev',
-            'user' => 'root',
-            'password' => '$d5Ro0t',
-            'host' => 'localhost',
-            'driver' => 'pdo_mysql',
-        ]
-    ]
-];
+    /**
+     * Registrar todas as rotas
+     */
+    public function registrar(): void
+    {
+        $router = $this->getRouter();
+
+        $router->get(
+            '/',
+            [PaginaInicialController::class, 'home']
+        )->middlewares(
+            new VerificarLogon($this->session),
+            new DefinePaginaMestra($this->painel_dlx->getServerRequest(), $this->session)
+        );
+    }
+}
