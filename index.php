@@ -33,6 +33,9 @@ use Zend\Diactoros\ServerRequestFactory;
 use League\Container\Container;
 use League\Container\ReflectionContainer;
 
+define('BASE_DIR', dirname(__FILE__));
+define('PAINEL_DLX', '');
+
 $server_request = ServerRequestFactory::fromGlobals();
 
 $container = new Container;
@@ -41,7 +44,7 @@ $container->delegate(new ReflectionContainer);
 try {
     $painel_dlx = new IniciarPainelDLX($server_request, $container);
     $painel_dlx
-        ->adicionarDiretorioInclusao(dirname(__FILE__))
+        ->adicionarDiretorioInclusao(BASE_DIR)
         ->init()
         ->executar();
 } catch (UsuarioNaoLogadoException $e) {
