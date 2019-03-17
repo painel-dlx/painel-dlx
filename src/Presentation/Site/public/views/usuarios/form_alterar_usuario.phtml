@@ -42,7 +42,7 @@ $lista_grupos = $this->getAtributo('lista_grupos');
 <div class="layout-barra-lateral">
     <?php include 'menu_lateral_usuarios.phtml'; ?>
 
-    <form id="form-usuario" method="post" action="salvar-usuario-existente" class="form-alterar-usuario">
+    <form id="form-usuario" method="post" action="/painel-dlx/usuarios/salvar-usuario-existente" class="form-alterar-usuario">
         <input type="hidden" name="usuario_id" value="<?php echo $usuario->getUsuarioId() ?>">
 
         <fieldset class="form-grupo" id="dados-pessoais">
@@ -63,7 +63,7 @@ $lista_grupos = $this->getAtributo('lista_grupos');
         <fieldset class="form-grupo" id="acesso-sistema">
             <legend class="form-titulo">Acesso ao Sistema</legend>
 
-            <a href="alterar-senha?usuario_id=<?php echo $usuario->getUsuarioId() ?>" class="botao-alterar-senha">
+            <a href="/painel-dlx/usuarios/alterar-senha?usuario_id=<?php echo $usuario->getUsuarioId() ?>" class="botao-alterar-senha">
                 Alterar senha
             </a>
         </fieldset>
