@@ -81,6 +81,31 @@ class UsuariosRouter extends PainelDLXRouter
             new DefinePaginaMestra($this->painel_dlx->getServerRequest(), $this->session)
         );
 
+        $router->post(
+            '/painel-dlx/usuarios/cadastrar-novo-usuario',
+            [CadastroUsuarioController::class, 'cadastrarNovoUsuario']
+        )->middlewares(
+            new VerificarLogon($this->session),
+            new Autorizacao('CADASTRAR_NOVO_USUARIO'),
+            new CriptografarSenhas('senha', 'senha_confirm')
+        );
+
+        $router->post(
+            '/painel-dlx/usuarios/salvar-usuario-existente',
+            [CadastroUsuarioController::class, 'atualizarUsuarioExistente']
+        )->middlewares(
+            new VerificarLogon($this->session),
+            new Autorizacao('EDITAR_CADASTRO_USUARIO')
+        );
+
+        $router->post(
+            '/painel-dlx/usuarios/excluir-usuario',
+            [CadastroUsuarioController::class, 'excluirUsuario']
+        )->middlewares(
+            new VerificarLogon($this->session),
+            new Autorizacao('EXCLUIR_CADASTRO_USUARIO')
+        );
+
         $router->get(
             '/painel-dlx/usuarios/alterar-senha',
             [AlterarSenhaUsuarioController::class, 'formAlterarSenha']
