@@ -35,6 +35,8 @@ use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
+define ('PAINEL_DLX', '');
+
 class PainelDLXTests extends TestCase
 {
     /** @var ContainerInterface */
