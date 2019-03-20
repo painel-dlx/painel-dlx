@@ -30,12 +30,10 @@ use DLX\Infra\EntityManagerX;
 use League\Container\Container;
 use League\Container\ReflectionContainer;
 use PainelDLX\Application\ServiceProviders\PainelDLXServiceProvider;
-use PainelDLX\Application\Services\IniciarPainelDLX;
+use PainelDLX\Application\Services\PainelDLX;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
-
-define ('PAINEL_DLX', '');
 
 class PainelDLXTests extends TestCase
 {
@@ -71,7 +69,7 @@ class PainelDLXTests extends TestCase
             ->addServiceProvider(PainelDLXServiceProvider::class);
 
         /** @var ServerRequestInterface $request */
-        (new IniciarPainelDLX($request, $this->container))
+        (new PainelDLX($request, $this->container))
             ->adicionarDiretorioInclusao(dirname('.'))
             ->init();
 

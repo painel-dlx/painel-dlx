@@ -34,8 +34,12 @@ use Psr\Http\Message\ServerRequestInterface;
 use RautereX\RautereX;
 use SechianeX\Factories\SessionFactory;
 
-class IniciarPainelDLX
+class PainelDLX
 {
+    /**
+     * @var string
+     */
+    public static $dir = '';
     /**
      * @var ServerRequestInterface
      */
@@ -55,9 +59,9 @@ class IniciarPainelDLX
 
     /**
      * @param ServerRequestInterface $server_request
-     * @return IniciarPainelDLX
+     * @return PainelDLX
      */
-    public function setServerRequest(ServerRequestInterface $server_request): IniciarPainelDLX
+    public function setServerRequest(ServerRequestInterface $server_request): PainelDLX
     {
         $this->server_request = $server_request;
         return $this;
@@ -65,9 +69,9 @@ class IniciarPainelDLX
 
     /**
      * @param ContainerInterface|null $container
-     * @return IniciarPainelDLX
+     * @return PainelDLX
      */
-    public function setContainer(?ContainerInterface $container): IniciarPainelDLX
+    public function setContainer(?ContainerInterface $container): PainelDLX
     {
         $this->container = $container;
         return $this;
@@ -85,6 +89,7 @@ class IniciarPainelDLX
     ) {
         $this->server_request = $server_request;
         $this->container = $container;
+        $this->defineDirPainelDLX();
     }
 
     /**
@@ -92,7 +97,7 @@ class IniciarPainelDLX
      * @throws \DLX\Core\Exceptions\ArquivoConfiguracaoNaoInformadoException
      * @throws AmbienteNaoInformadoException
      */
-    public function init(): IniciarPainelDLX
+    public function init(): PainelDLX
     {
         $this->carregarConfiguracao();
         return $this;
@@ -134,9 +139,9 @@ class IniciarPainelDLX
 
     /**
      * @param string $diretorio
-     * @return IniciarPainelDLX
+     * @return PainelDLX
      */
-    public function adicionarDiretorioInclusao(string $diretorio): IniciarPainelDLX
+    public function adicionarDiretorioInclusao(string $diretorio): PainelDLX
     {
         $include_path = get_include_path();
 
@@ -187,5 +192,20 @@ class IniciarPainelDLX
                 $this->container->addServiceProvider($service_provider);
             }
         }
+    }
+
+    /**
+     * Definir o path do Painel DLX
+     */
+    private function defineDirPainelDLX(): void
+    {
+        $base_dir = dirname(dirname(dirname(__DIR__)));
+        $document_root = $this->server_request->getServerParams()['DOCUMENT_ROOT'];
+
+        // Setar o path do PainelDLX
+        self::$dir = str_replace($document_root,  '', $base_dir);
+
+        // Adicionar o path do PainelDLX no include_path
+        $this->adicionarDiretorioInclusao($base_dir);
     }
 }

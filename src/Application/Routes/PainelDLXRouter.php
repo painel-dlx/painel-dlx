@@ -26,7 +26,7 @@
 namespace PainelDLX\Application\Routes;
 
 
-use PainelDLX\Application\Services\IniciarPainelDLX;
+use PainelDLX\Application\Services\PainelDLX;
 use RautereX\RautereX;
 use SechianeX\Contracts\SessionInterface;
 
@@ -37,7 +37,7 @@ abstract class PainelDLXRouter
      */
     private $router;
     /**
-     * @var IniciarPainelDLX
+     * @var PainelDLX
      */
     protected $painel_dlx;
     /**
@@ -48,13 +48,13 @@ abstract class PainelDLXRouter
     /**
      * PainelDLXRouter constructor.
      * @param RautereX $router
-     * @param IniciarPainelDLX $painel_dlx
+     * @param PainelDLX $painel_dlx
      * @param SessionInterface $session
      * @todo desacoplar RautereX e SechianeX
      */
     public function __construct(
         RautereX $router,
-        IniciarPainelDLX $painel_dlx,
+        PainelDLX $painel_dlx,
         SessionInterface $session
     ) {
         $this->router = $router;
