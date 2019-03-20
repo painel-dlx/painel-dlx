@@ -40,6 +40,8 @@ class PainelDLXTests extends TestCase
 {
     /** @var ContainerInterface */
     protected $container;
+    /** @var PainelDLX */
+    protected $painel_dlx;
 
     /**
      * @throws \DLX\Core\Exceptions\ArquivoConfiguracaoNaoEncontradoException
@@ -68,7 +70,7 @@ class PainelDLXTests extends TestCase
             ->addServiceProvider(PainelDLXServiceProvider::class);
 
         /** @var ServerRequestInterface $request */
-        (new PainelDLX($request, $this->container))
+        $this->painel_dlx = (new PainelDLX($request, $this->container))
             ->adicionarDiretorioInclusao(dirname('.'))
             ->init();
 
