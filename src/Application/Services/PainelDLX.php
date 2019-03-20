@@ -203,7 +203,7 @@ class PainelDLX
         $document_root = $this->server_request->getServerParams()['DOCUMENT_ROOT'];
 
         // Setar o path do PainelDLX
-        self::$dir = str_replace($document_root,  '', $base_dir);
+        self::$dir = trim(str_replace($document_root,  '', $base_dir), '/');
 
         // Adicionar o path do PainelDLX no include_path
         $this->adicionarDiretorioInclusao($base_dir);
