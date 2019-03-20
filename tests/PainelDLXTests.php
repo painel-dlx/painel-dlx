@@ -34,6 +34,7 @@ use PainelDLX\Application\Services\PainelDLX;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Zend\Diactoros\ServerRequestFactory;
 
 class PainelDLXTests extends TestCase
 {
@@ -58,10 +59,8 @@ class PainelDLXTests extends TestCase
             $q++;
         }
 
-        $request = $this->createMock(ServerRequestInterface::class);
-        $request
-            ->method('getQueryParams')
-            ->willReturn(['ambiente' => 'paineldlx-dev']);
+        $request = ServerRequestFactory::fromGlobals();
+        $request = $request->withQueryParams(['ambiente' => 'paineldlx-dev']);
 
         $this->container = new Container;
         $this->container
