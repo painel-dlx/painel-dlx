@@ -100,6 +100,7 @@ class PainelDLX
     public function init(): PainelDLX
     {
         $this->carregarConfiguracao();
+        $this->registrarServiceProviders(Configure::get('app', 'service-providers'));
         return $this;
     }
 
@@ -109,8 +110,6 @@ class PainelDLX
      */
     public function executar()
     {
-        $this->registrarServiceProviders(Configure::get('app', 'service-providers'));
-
         // TODO: desacoplar a classe RautereX
         $router = new RautereX($this->container);
         $this->registrarRotas(Configure::get('app', 'rotas'), $router);
