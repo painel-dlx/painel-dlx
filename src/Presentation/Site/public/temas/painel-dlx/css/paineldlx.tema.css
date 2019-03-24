@@ -729,6 +729,11 @@ body.mostrando-menu .menu-principal {
   font-family: icomoon;
 }
 
+.icone-link::before, .form-controle-link::before {
+  content: "";
+  font-family: icomoon;
+}
+
 .com-icone, .botao-buscar, .link-inserir, .so-icone, .link-excluir, .link-editar, .link-detalhe, .menu-lateral > .menu-lateral-item {
   display: inline-block;
   line-height: 30px;
@@ -969,6 +974,10 @@ body.mostrando-menu .menu-principal {
   vertical-align: middle;
 }
 
+.form-controle-numero {
+  width: auto;
+}
+
 .form-controle-email {
   position: relative;
 }
@@ -1078,6 +1087,37 @@ body.mostrando-menu .menu-principal {
   color: #c6cacd;
 }
 .form-controle-grupo + .form-controle {
+  padding-left: 40px;
+}
+
+.form-controle-moeda {
+  position: relative;
+}
+.form-controle-moeda::before {
+  content: "R$";
+  position: absolute;
+  top: 34px;
+  left: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #c6cacd;
+  line-height: 17px;
+}
+.form-controle-moeda + .form-controle {
+  padding-left: 40px;
+}
+
+.form-controle-link {
+  position: relative;
+}
+.form-controle-link::before {
+  position: absolute;
+  top: 34px;
+  left: 12px;
+  font-size: 16px;
+  color: #c6cacd;
+}
+.form-controle-link + .form-controle {
   padding-left: 40px;
 }
 

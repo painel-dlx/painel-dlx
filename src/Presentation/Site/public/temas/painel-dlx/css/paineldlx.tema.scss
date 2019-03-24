@@ -87,6 +87,7 @@ body {
 // Formulário
 @import "componentes/form/form-rotulo";
 @import "componentes/form/form-controle";
+@import "componentes/form/form-controle-numero";
 @import "componentes/form/form-controle-email";
 @import "componentes/form/form-controle-usuario";
 @import "componentes/form/form-controle-senha";
@@ -95,6 +96,8 @@ body {
 @import "componentes/form/form-controle-alias";
 @import "componentes/form/form-controle-descricao";
 @import "componentes/form/form-controle-grupo";
+@import "componentes/form/form-controle-moeda";
+@import "componentes/form/form-controle-link";
 @import "componentes/form/form-grupo";
 @import "componentes/form/form-titulo";
 @import "componentes/form/form-botoes";
