@@ -50,7 +50,7 @@ $config_smtp = $this->getAtributo('config-smtp') ?? new ConfigSmtp()
         <p class="form-paragr">
             <label for="txt-servidor" class="form-rotulo form-controle-servidor">Servidor</label>
             <input type="text" name="servidor" id="txt-servidor" value="<?php echo $config_smtp->getServidor() ?>" maxlength="30" class="form-controle" required> :
-            <input type="number" name="porta" value="<?php echo $config_smtp->getPorta() ?>" min="25" max="65535" size="5" class="form-controle" required>
+            <input type="number" name="porta" value="<?php echo $config_smtp->getPorta() ?>" min="25" max="65535" size="5" class="form-controle form-controle-numero" required>
         </p>
     </fieldset>
 
