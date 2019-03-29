@@ -52,6 +52,7 @@ use PainelDLX\Domain\Usuarios\Entities\ResetSenha;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
 use PainelDLX\Domain\Usuarios\Repositories\ResetSenhaRepositoryInterface;
 use PainelDLX\Domain\Usuarios\Repositories\UsuarioRepositoryInterface;
+use PainelDLX\Infra\ORM\Doctrine\Services\RepositoryFactory;
 use SechianeX\Contracts\SessionInterface;
 use SechianeX\Factories\SessionFactory;
 use Vilex\VileX;
@@ -89,7 +90,7 @@ class PainelDLXServiceProvider extends AbstractServiceProvider
 
         $container->add(
             GrupoUsuarioRepositoryInterface::class,
-            EntityManagerX::getRepository(GrupoUsuario::class)
+            RepositoryFactory::create(GrupoUsuario::class)
         );
 
         $container->add(
@@ -110,17 +111,17 @@ class PainelDLXServiceProvider extends AbstractServiceProvider
 
         $container->add(
             GrupoUsuarioRepositoryInterface::class,
-            EntityManagerX::getRepository(GrupoUsuario::class)
+            RepositoryFactory::create(GrupoUsuario::class)
         );
 
         $container->add(
             ResetSenhaRepositoryInterface::class,
-            EntityManagerX::getRepository(ResetSenha::class)
+            RepositoryFactory::create(ResetSenha::class)
         );
 
         $container->add(
             UsuarioRepositoryInterface::class,
-            EntityManagerX::getRepository(Usuario::class)
+            RepositoryFactory::create(Usuario::class)
         );
 
         $container->add(
@@ -130,23 +131,23 @@ class PainelDLXServiceProvider extends AbstractServiceProvider
 
         $container->add(
             MenuRepositoryInterface::class,
-            EntityManagerX::getRepository(Menu::class)
+            RepositoryFactory::create(Menu::class)
         );
 
         $container->add(
             PermissaoUsuarioRepositoryInterface::class,
-            EntityManagerX::getRepository(PermissaoUsuario::class)
+            RepositoryFactory::create(PermissaoUsuario::class)
         );
 
         $container->add(
             WidgetRepositoryInterface::class,
-            EntityManagerX::getRepository(Widget::class)
+            RepositoryFactory::create(Widget::class)
         );
 
 
         $container->add(
             ConfigSmtpRepositoryInterface::class,
-            EntityManagerX::getRepository(ConfigSmtp::class)
+            RepositoryFactory::create(ConfigSmtp::class)
         );
 
         $container->add(
