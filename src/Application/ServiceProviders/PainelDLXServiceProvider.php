@@ -38,6 +38,7 @@ use League\Tactician\Container\ContainerLocator;
 use League\Tactician\Handler\CommandHandlerMiddleware;
 use League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor;
 use League\Tactician\Handler\MethodNameInflector\HandleInflector;
+use PainelDLX\Application\Factories\CommandBusFactory;
 use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
 use PainelDLX\Domain\Emails\Repositories\ConfigSmtpRepositoryInterface;
 use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
@@ -95,13 +96,7 @@ class PainelDLXServiceProvider extends AbstractServiceProvider
 
         $container->add(
             CommandBus::class,
-            function () use ($container) {
-                return CommandBusAdapter::create(new CommandHandlerMiddleware(
-                    new ClassNameExtractor,
-                    new ContainerLocator($container, Configure::get('app', 'mapping')),
-                    new HandleInflector
-                ));
-            }
+            CommandBusFactory::create($container, Configure::get('app', 'mapping'))
         );
 
         $container->add(
