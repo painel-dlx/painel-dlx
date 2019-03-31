@@ -28,7 +28,7 @@ namespace PainelDLX\Testes\Presentation\Site\GruposUsuarios\Controllers;
 use DLX\Core\CommandBus\CommandBusAdapter;
 use DLX\Core\Configure;
 use DLX\Infra\EntityManagerX;
-use DLX\Infra\ORM\Doctrine\Services\TransacaoDoctrine;
+use DLX\Infra\ORM\Doctrine\Services\DoctrineTransaction;
 use League\Tactician\Container\ContainerLocator;
 use League\Tactician\Handler\CommandHandlerMiddleware;
 use League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor;
@@ -69,7 +69,7 @@ class ConfigurarPermissoesControllerTest extends PainelDLXTests
                 new ContainerLocator($this->container, Configure::get('app', 'mapping')),
                 new HandleInflector
             )),
-            new TransacaoDoctrine(EntityManagerX::getInstance()),
+            new DoctrineTransaction(EntityManagerX::getInstance()),
             $session
         );
     }

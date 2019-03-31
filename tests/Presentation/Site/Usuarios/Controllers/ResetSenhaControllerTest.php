@@ -11,7 +11,7 @@ namespace PainelDLX\Testes\Presentation\Site\Usuarios\Controllers;
 use DLX\Core\CommandBus\CommandBusAdapter;
 use DLX\Core\Configure;
 use DLX\Infra\EntityManagerX;
-use DLX\Infra\ORM\Doctrine\Services\TransacaoDoctrine;
+use DLX\Infra\ORM\Doctrine\Services\DoctrineTransaction;
 use League\Tactician\Container\ContainerLocator;
 use League\Tactician\Handler\CommandHandlerMiddleware;
 use League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor;
@@ -52,7 +52,7 @@ class ResetSenhaControllerTest extends PainelDLXTests
                 new HandleInflector
             )),
             $this->session,
-            new TransacaoDoctrine(EntityManagerX::getInstance())
+            new DoctrineTransaction(EntityManagerX::getInstance())
         );
     }
 

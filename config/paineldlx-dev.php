@@ -43,6 +43,7 @@ return [
     'bd' => [
         'orm' => 'doctrine',
         'mapping' => 'yaml',
+        'dev-mode' => true,
         //'debug' => EchoSQLLogger::class,
         'dir' => [
             'src/Infra/ORM/Doctrine/Mappings/',

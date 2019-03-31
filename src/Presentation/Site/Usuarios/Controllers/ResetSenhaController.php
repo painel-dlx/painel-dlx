@@ -26,7 +26,7 @@
 namespace PainelDLX\Presentation\Site\Usuarios\Controllers;
 
 
-use DLX\Contracts\TransacaoInterface;
+use DLX\Contracts\TransactionInterface;
 use DLX\Core\Exceptions\UserException;
 use DLX\Infra\EntityManagerX;
 use League\Tactician\CommandBus;
@@ -57,7 +57,7 @@ class ResetSenhaController extends SiteController
      */
     private $session;
     /**
-     * @var TransacaoInterface
+     * @var TransactionInterface
      */
     private $transacao;
 
@@ -66,13 +66,13 @@ class ResetSenhaController extends SiteController
      * @param VileX $view
      * @param CommandBus $commandBus
      * @param SessionInterface $session
-     * @param TransacaoInterface $transacao
+     * @param TransactionInterface $transacao
      */
     public function __construct(
         VileX $view,
         CommandBus $commandBus,
         SessionInterface $session,
-        TransacaoInterface $transacao
+        TransactionInterface $transacao
     ) {
         parent::__construct($view, $commandBus);
 

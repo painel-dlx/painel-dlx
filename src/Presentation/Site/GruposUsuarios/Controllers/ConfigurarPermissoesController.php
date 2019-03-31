@@ -26,7 +26,7 @@
 namespace PainelDLX\Presentation\Site\GruposUsuarios\Controllers;
 
 
-use DLX\Contracts\TransacaoInterface;
+use DLX\Contracts\TransactionInterface;
 use DLX\Core\Exceptions\UserException;
 use Doctrine\Common\Collections\ArrayCollection;
 use League\Tactician\CommandBus;
@@ -47,7 +47,7 @@ use Zend\Diactoros\Response\JsonResponse;
 class ConfigurarPermissoesController extends SiteController
 {
     /**
-     * @var TransacaoInterface
+     * @var TransactionInterface
      */
     private $transacao;
     /**
@@ -59,13 +59,13 @@ class ConfigurarPermissoesController extends SiteController
      * ConfigurarPermissoesController constructor.
      * @param VileX $view
      * @param CommandBus $commandBus
-     * @param TransacaoInterface $transacao
+     * @param TransactionInterface $transacao
      * @param SessionInterface $session
      */
     public function __construct(
         VileX $view,
         CommandBus $commandBus,
-        TransacaoInterface $transacao,
+        TransactionInterface $transacao,
         SessionInterface $session
     ) {
         parent::__construct($view, $commandBus);

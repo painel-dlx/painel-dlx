@@ -26,11 +26,11 @@
 namespace PainelDLX\Application\ServiceProviders;
 
 
-use DLX\Contracts\TransacaoInterface;
+use DLX\Contracts\TransactionInterface;
 use DLX\Core\CommandBus\CommandBusAdapter;
 use DLX\Core\Configure;
 use DLX\Infra\EntityManagerX;
-use DLX\Infra\ORM\Doctrine\Services\TransacaoDoctrine;
+use DLX\Infra\ORM\Doctrine\Services\DoctrineTransaction;
 use League\Container\Container;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 use League\Tactician\CommandBus;
@@ -69,7 +69,7 @@ class PainelDLXServiceProvider extends AbstractServiceProvider
         SessionInterface::class,
         ConfigSmtpRepositoryInterface::class,
         ResetSenhaRepositoryInterface::class,
-        TransacaoInterface::class,
+        TransactionInterface::class,
         MenuRepositoryInterface::class,
         WidgetRepositoryInterface::class,
     ];
@@ -120,8 +120,8 @@ class PainelDLXServiceProvider extends AbstractServiceProvider
         );
 
         $container->add(
-            TransacaoInterface::class,
-            new TransacaoDoctrine(EntityManagerX::getInstance())
+            TransactionInterface::class,
+            new DoctrineTransaction(EntityManagerX::getInstance())
         );
 
         $container->add(
