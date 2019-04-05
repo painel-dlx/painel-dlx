@@ -978,6 +978,18 @@ body.mostrando-menu .menu-principal {
   width: auto;
 }
 
+.form-controle-data {
+  width: auto;
+}
+
+.form-controle-select {
+  background: #FFF;
+}
+
+.form-controle-select {
+  background: #FFF;
+}
+
 .form-controle-email {
   position: relative;
 }
