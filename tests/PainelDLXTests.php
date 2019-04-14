@@ -26,10 +26,15 @@
 namespace PainelDLX\Testes;
 
 
+use DLX\Core\Exceptions\ArquivoConfiguracaoNaoEncontradoException;
+use DLX\Core\Exceptions\ArquivoConfiguracaoNaoInformadoException;
 use DLX\Infra\EntityManagerX;
+use Doctrine\Common\Persistence\Mapping\MappingException;
+use Doctrine\ORM\ORMException;
 use League\Container\Container;
 use League\Container\ReflectionContainer;
 use PainelDLX\Application\ServiceProviders\PainelDLXServiceProvider;
+use PainelDLX\Application\Services\Exceptions\AmbienteNaoInformadoException;
 use PainelDLX\Application\Services\PainelDLX;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
@@ -44,10 +49,10 @@ class PainelDLXTests extends TestCase
     protected $painel_dlx;
 
     /**
-     * @throws \DLX\Core\Exceptions\ArquivoConfiguracaoNaoEncontradoException
-     * @throws \DLX\Core\Exceptions\ArquivoConfiguracaoNaoInformadoException
-     * @throws \PainelDLX\Application\Services\Exceptions\AmbienteNaoInformadoException
-     * @throws \Doctrine\ORM\ORMException
+     * @throws ArquivoConfiguracaoNaoEncontradoException
+     * @throws ArquivoConfiguracaoNaoInformadoException
+     * @throws AmbienteNaoInformadoException
+     * @throws ORMException
      */
     protected function setUp()
     {
@@ -78,14 +83,17 @@ class PainelDLXTests extends TestCase
     }
 
     /**
-     * @throws \Doctrine\Common\Persistence\Mapping\MappingException
-     * @throws \Doctrine\ORM\ORMException
+     * @throws MappingException
+     * @throws ORMException
      */
     protected function tearDown()
     {
         parent::tearDown();
 
-        EntityManagerX::rollback();
+        if (EntityManagerX::getInstance()->getConnection()->isTransactionActive()) {
+            EntityManagerX::rollback();
+        }
+
         EntityManagerX::getInstance()->clear();
     }
 }
