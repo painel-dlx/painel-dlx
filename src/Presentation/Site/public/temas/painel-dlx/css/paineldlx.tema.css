@@ -32,7 +32,7 @@ body.mostrando-menu .menu-principal {
   padding-bottom: 8px;
 }
 
-.box-popup {
+.popup-modal {
   position: fixed;
   left: 0;
   top: 0;
@@ -41,7 +41,7 @@ body.mostrando-menu .menu-principal {
   height: 100%;
   background: rgba(0, 0, 0, 0.7);
 }
-.box-popup > .dlx-conteudo {
+.popup-modal > .dlx-conteudo {
   position: relative;
   top: 50%;
   left: 50%;
@@ -899,11 +899,11 @@ body.mostrando-menu .menu-principal {
   padding: 8px 7px;
   font-size: 14px;
 }
-.lista-registros tbody tr > td:first-child {
-  text-align: center;
-}
 .lista-registros tbody tr > td:last-child {
   text-align: right;
+}
+.lista-registros tbody tr > td:first-child {
+  text-align: center;
 }
 .lista-registros tbody tr:not(:last-child) {
   border-bottom: 1px solid #EFEFEF;
@@ -933,6 +933,9 @@ body.mostrando-menu .menu-principal {
   position: fixed;
   top: -9999px;
   left: -9999px;
+}
+.lista-gerenciar-permissoes tbody tr td {
+  text-align: left !important;
 }
 
 .lista-permissoes {
@@ -980,10 +983,6 @@ body.mostrando-menu .menu-principal {
 
 .form-controle-data {
   width: auto;
-}
-
-.form-controle-select {
-  background: #FFF;
 }
 
 .form-controle-select {

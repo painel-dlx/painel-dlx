@@ -51,16 +51,16 @@
                 // Texto
                 font-size: 14px;
 
-                // ID
-                &:first-child {
-                    // Texto
-                    text-align: center;
-                }
-
                 // Opções
                 &:last-child {
                     // Texto
                     text-align: right;
+                }
+
+                // ID
+                &:first-child {
+                    // Texto
+                    text-align: center;
                 }
             }
 

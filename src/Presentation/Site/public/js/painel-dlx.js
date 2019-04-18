@@ -53,7 +53,7 @@ function popupGerenciarConfiguracoes(grupo_usuario_id) {
             function (html) {
                 $(document.createElement('div'))
                     .attr('id', 'popup-gerenciar-permissoes')
-                    .addClass('box-popup')
+                    .addClass('popup-modal')
                     .html(html)
                     .appendTo($('body'));
 
