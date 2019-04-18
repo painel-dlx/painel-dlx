@@ -981,6 +981,10 @@ body.mostrando-menu .menu-principal {
   width: auto;
 }
 
+.form-controle-textarea {
+  height: 120px;
+}
+
 .form-controle-data {
   width: auto;
 }
