@@ -26,20 +26,22 @@
 namespace PainelDLX\Testes\Application\UseCases\Usuarios\GetResetSenhaPorHash;
 
 use DLX\Infra\EntityManagerX;
+use Doctrine\ORM\ORMException;
 use PainelDLX\Application\UseCases\Emails\GetConfigSmtpPorId\GetConfigSmtpPorIdCommandHandler;
 use PainelDLX\Application\UseCases\Usuarios\GetResetSenhaPorHash\GetResetSenhaPorHashCommand;
 use PainelDLX\Application\UseCases\Usuarios\GetResetSenhaPorHash\GetResetSenhaPorHashCommandHandler;
 use PainelDLX\Domain\Usuarios\Entities\ResetSenha;
+use PainelDLX\Domain\Usuarios\Exceptions\UsuarioNaoEncontrado;
 use PainelDLX\Domain\Usuarios\Repositories\ResetSenhaRepositoryInterface;
 use PainelDLX\Testes\Application\UseCases\Usuarios\SolicitarResetSenha\SolicitarResetSenhaHandlerTest;
-use PainelDLX\Testes\PainelDLXTests;
+use PainelDLX\Testes\TestCase\PainelDLXTestCase;
 
-class GetResetSenhaPorHashHandlerTest extends PainelDLXTests
+class GetResetSenhaPorHashHandlerTest extends PainelDLXTestCase
 {
 
     /**
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \PainelDLX\Domain\Usuarios\Exceptions\UsuarioNaoEncontrado
+     * @throws ORMException
+     * @throws UsuarioNaoEncontrado
      */
     public function test_Handle()
     {
@@ -56,7 +58,7 @@ class GetResetSenhaPorHashHandlerTest extends PainelDLXTests
     }
 
     /**
-     * @throws \Doctrine\ORM\ORMException
+     * @throws ORMException
      */
     public function test_Handle_deve_retornar_null_quando_nao_encontrar()
     {

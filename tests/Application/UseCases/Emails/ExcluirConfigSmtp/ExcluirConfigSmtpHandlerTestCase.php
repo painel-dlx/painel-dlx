@@ -25,24 +25,30 @@
 
 namespace PainelDLX\Testes\Application\UseCases\Emails\ExcluirConfigSmtp;
 
+use DLX\Core\Exceptions\ArquivoConfiguracaoNaoEncontradoException;
+use DLX\Core\Exceptions\ArquivoConfiguracaoNaoInformadoException;
 use DLX\Infra\EntityManagerX;
+use Doctrine\ORM\ORMException;
+use PainelDLX\Application\Services\Exceptions\AmbienteNaoInformadoException;
 use PainelDLX\Application\UseCases\Emails\ExcluirConfigSmtp\ExcluirConfigSmtpCommand;
 use PainelDLX\Application\UseCases\Emails\ExcluirConfigSmtp\ExcluirConfigSmtpCommandHandler;
 use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
+use PainelDLX\Domain\Emails\Exceptions\AutentContaNaoInformadaException;
+use PainelDLX\Domain\Emails\Exceptions\AutentSenhaNaoInformadaException;
 use PainelDLX\Domain\Emails\Repositories\ConfigSmtpRepositoryInterface;
-use PainelDLX\Testes\Application\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpHandlerTests;
-use PainelDLX\Testes\PainelDLXTests;
+use PainelDLX\Testes\Application\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpHandlerTestCase;
+use PainelDLX\Testes\TestCase\PainelDLXTestCase;
 
-class ExcluirConfigSmtpHandlerTests extends PainelDLXTests
+class ExcluirConfigSmtpHandlerTestCase extends PainelDLXTestCase
 {
     /** @var ExcluirConfigSmtpCommandHandler */
     private $handler;
 
     /**
-     * @throws \DLX\Core\Exceptions\ArquivoConfiguracaoNaoEncontradoException
-     * @throws \DLX\Core\Exceptions\ArquivoConfiguracaoNaoInformadoException
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \PainelDLX\Application\Services\Exceptions\AmbienteNaoInformadoException
+     * @throws ArquivoConfiguracaoNaoEncontradoException
+     * @throws ArquivoConfiguracaoNaoInformadoException
+     * @throws ORMException
+     * @throws AmbienteNaoInformadoException
      */
     protected function setUp()
     {
@@ -54,13 +60,13 @@ class ExcluirConfigSmtpHandlerTests extends PainelDLXTests
     }
 
     /**
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \PainelDLX\Domain\Emails\Exceptions\AutentContaNaoInformadaException
-     * @throws \PainelDLX\Domain\Emails\Exceptions\AutentSenhaNaoInformadaException
+     * @throws ORMException
+     * @throws AutentContaNaoInformadaException
+     * @throws AutentSenhaNaoInformadaException
      */
     public function test_Handle()
     {
-        $config_smtp = (new NovaConfigSmtpHandlerTests())->test_Handle();
+        $config_smtp = (new NovaConfigSmtpHandlerTestCase())->test_Handle();
 
         $command = new ExcluirConfigSmtpCommand($config_smtp);
         $this->handler->handle($command);

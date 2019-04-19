@@ -27,58 +27,87 @@ namespace PainelDLX\Testes\Presentation\Site\Usuarios\Controllers;
 
 use DLX\Core\CommandBus\CommandBusAdapter;
 use DLX\Core\Configure;
+use DLX\Core\Exceptions\ArquivoConfiguracaoNaoEncontradoException;
+use DLX\Core\Exceptions\ArquivoConfiguracaoNaoInformadoException;
+use Doctrine\ORM\ORMException;
+use Exception;
 use League\Tactician\Container\ContainerLocator;
 use League\Tactician\Handler\CommandHandlerMiddleware;
 use League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor;
 use League\Tactician\Handler\MethodNameInflector\HandleInflector;
+use PainelDLX\Application\Factories\CommandBusFactory;
+use PainelDLX\Application\Services\Exceptions\AmbienteNaoInformadoException;
 use PainelDLX\Presentation\Site\Usuarios\Controllers\LoginController;
-use PainelDLX\Testes\Application\UseCases\Usuarios\NovoUsuario\NovoUsuarioHandlerTest;
-use PainelDLX\Testes\PainelDLXTests;
+use PainelDLX\Testes\Application\UseCases\Usuarios\NovoUsuario\NovoUsuarioCommandHandlerTest;
+use PainelDLX\Testes\Helpers\UsuarioTesteHelper;
+use PainelDLX\Testes\TestCase\PainelDLXTestCase;
+use PainelDLX\Testes\TestCase\TesteComTransaction;
 use Psr\Http\Message\ServerRequestInterface;
 use SechianeX\Contracts\SessionInterface;
+use SechianeX\Exceptions\SessionAdapterInterfaceInvalidaException;
+use SechianeX\Exceptions\SessionAdapterNaoEncontradoException;
 use SechianeX\Factories\SessionFactory;
+use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
+use Vilex\Exceptions\ViewNaoEncontradaException;
 use Vilex\VileX;
 use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Diactoros\Response\JsonResponse;
 
-class LoginControllerTest extends PainelDLXTests
+/**
+ * Class LoginControllerTest
+ * @package PainelDLX\Testes\Presentation\Site\Usuarios\Controllers
+ * @coversDefaultClass \PainelDLX\Presentation\Site\Usuarios\Controllers\LoginController
+ */
+class LoginControllerTest extends PainelDLXTestCase
 {
-    /** @var LoginController */
-    private $controller;
+    use TesteComTransaction;
+
     /** @var SessionInterface */
     private $session;
 
     /**
-     * @throws \DLX\Core\Exceptions\ArquivoConfiguracaoNaoEncontradoException
-     * @throws \DLX\Core\Exceptions\ArquivoConfiguracaoNaoInformadoException
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \PainelDLX\Application\Services\Exceptions\AmbienteNaoInformadoException
-     * @throws \SechianeX\Exceptions\SessionAdapterInterfaceInvalidaException
-     * @throws \SechianeX\Exceptions\SessionAdapterNaoEncontradoException
+     * @throws SessionAdapterInterfaceInvalidaException
+     * @throws SessionAdapterNaoEncontradoException
+     * @throws ArquivoConfiguracaoNaoEncontradoException
+     * @throws ArquivoConfiguracaoNaoInformadoException
+     * @throws ORMException
+     * @throws AmbienteNaoInformadoException
      */
     protected function setUp()
     {
         parent::setUp();
-
         $this->session = SessionFactory::createPHPSession();
         $this->session->set('vilex:pagina-mestra', 'painel-dlx-master');
-
-        $this->controller = new LoginController(
-            new VileX(),
-            CommandBusAdapter::create(new CommandHandlerMiddleware(
-                new ClassNameExtractor,
-                new ContainerLocator($this->container, Configure::get('app', 'mapping')),
-                new HandleInflector
-            )),
-            $this->session
-        );
     }
 
     /**
-     * @throws \Vilex\Exceptions\PaginaMestraNaoEncontradaException
-     * @throws \Vilex\Exceptions\ViewNaoEncontradaException
+     * @return LoginController
+     * @throws SessionAdapterInterfaceInvalidaException
+     * @throws SessionAdapterNaoEncontradoException
      */
-    public function test_FormLogin_deve_retornar_uma_instancia_HtmlResponse()
+    public function test__construct(): LoginController
+    {
+        $command_bus = CommandBusFactory::create(self::$container, Configure::get('app', 'mapping'));
+
+        $controller = new LoginController(
+            new VileX(),
+            $command_bus(),
+            $this->session
+        );
+
+        $this->assertInstanceOf(LoginController::class, $controller);
+
+        return $controller;
+    }
+
+    /**
+     * @param LoginController $controller
+     * @throws PaginaMestraNaoEncontradaException
+     * @throws ViewNaoEncontradaException
+     * @covers ::formLogin
+     * @depends test__construct
+     */
+    public function test_FormLogin_deve_retornar_uma_instancia_HtmlResponse(LoginController $controller)
     {
         $request = $this->createMock(ServerRequestInterface::class);
         $request->method('getQueryParams')->willReturn([
@@ -86,17 +115,20 @@ class LoginControllerTest extends PainelDLXTests
         ]);
 
         /** @var ServerRequestInterface $request */
-        $response = $this->controller->formLogin($request);
+
+        $response = $controller->formLogin($request);
 
         $this->assertInstanceOf(HtmlResponse::class, $response);
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
+     * @covers ::fazerLogin
+     * @depends test__construct
      */
-    public function test_FazerLogin_deve_retornar_um_JsonResponse_sucesso()
+    public function test_FazerLogin_deve_retornar_um_JsonResponse_sucesso(LoginController $controller)
     {
-        $usuario = (new NovoUsuarioHandlerTest())->test_Handle();
+        $usuario = UsuarioTesteHelper::criarDB('Teste de Usuário', 'teste@unitario.com', '123456');
 
         $request = $this->createMock(ServerRequestInterface::class);
         $request
@@ -107,7 +139,7 @@ class LoginControllerTest extends PainelDLXTests
             ]);
 
         /** @var ServerRequestInterface $request */
-        $response = $this->controller->fazerLogin($request);
+        $response = $controller->fazerLogin($request);
 
         $this->assertInstanceOf(JsonResponse::class, $response);
         $json = json_decode((string)$response->getBody());

@@ -14,13 +14,16 @@ use PainelDLX\Application\Contracts\MiddlewareInterface;
 use PainelDLX\Application\Middlewares\Exceptions\UsuarioNaoPossuiPermissaoException;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
 use SechianeX\Contracts\SessionInterface;
+use SechianeX\Exceptions\SessionAdapterInterfaceInvalidaException;
+use SechianeX\Exceptions\SessionAdapterNaoEncontradoException;
 use SechianeX\Factories\SessionFactory;
 
 class Autorizacao implements MiddlewareInterface
 {
-    /** @var SessionInterface */
+    /**
+     * @var SessionInterface
+     */
     private $session;
-
     /**
      * @var string[]
      */
@@ -29,8 +32,8 @@ class Autorizacao implements MiddlewareInterface
     /**
      * Autorizacao constructor.
      * @param string ...$permissoes
-     * @throws \SechianeX\Exceptions\SessionAdapterInterfaceInvalidaException
-     * @throws \SechianeX\Exceptions\SessionAdapterNaoEncontradoException
+     * @throws SessionAdapterInterfaceInvalidaException
+     * @throws SessionAdapterNaoEncontradoException
      */
     public function __construct(string ...$permissoes)
     {

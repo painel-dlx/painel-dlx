@@ -25,25 +25,33 @@
 
 namespace PainelDLX\Testes\Application\Middlewares;
 
+use DLX\Core\Exceptions\ArquivoConfiguracaoNaoEncontradoException;
+use DLX\Core\Exceptions\ArquivoConfiguracaoNaoInformadoException;
+use Doctrine\ORM\ORMException;
 use PainelDLX\Application\Middlewares\Autorizacao;
 use PainelDLX\Application\Middlewares\Exceptions\UsuarioNaoPossuiPermissaoException;
+use PainelDLX\Application\Services\Exceptions\AmbienteNaoInformadoException;
+use PainelDLX\Domain\GruposUsuarios\Exceptions\GrupoJaPossuiPermissaoException;
+use PainelDLX\Domain\Usuarios\Exceptions\UsuarioJaPossuiGrupoException;
 use PainelDLX\Testes\Domain\Usuarios\Entities\UsuarioTest;
-use PainelDLX\Testes\PainelDLXTests;
+use PainelDLX\Testes\TestCase\PainelDLXTestCase;
 use SechianeX\Contracts\SessionInterface;
+use SechianeX\Exceptions\SessionAdapterInterfaceInvalidaException;
+use SechianeX\Exceptions\SessionAdapterNaoEncontradoException;
 use SechianeX\Factories\SessionFactory;
 
-class AutorizacaoTest extends PainelDLXTests
+class AutorizacaoTest extends PainelDLXTestCase
 {
     /** @var SessionInterface */
     private $session;
 
     /**
-     * @throws \DLX\Core\Exceptions\ArquivoConfiguracaoNaoEncontradoException
-     * @throws \DLX\Core\Exceptions\ArquivoConfiguracaoNaoInformadoException
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \PainelDLX\Application\Services\Exceptions\AmbienteNaoInformadoException
-     * @throws \SechianeX\Exceptions\SessionAdapterInterfaceInvalidaException
-     * @throws \SechianeX\Exceptions\SessionAdapterNaoEncontradoException
+     * @throws ArquivoConfiguracaoNaoEncontradoException
+     * @throws ArquivoConfiguracaoNaoInformadoException
+     * @throws ORMException
+     * @throws AmbienteNaoInformadoException
+     * @throws SessionAdapterInterfaceInvalidaException
+     * @throws SessionAdapterNaoEncontradoException
      */
     protected function setUp()
     {
@@ -52,11 +60,11 @@ class AutorizacaoTest extends PainelDLXTests
     }
 
     /**
-     * @throws \PainelDLX\Domain\GruposUsuarios\Exceptions\GrupoJaPossuiPermissaoException
-     * @throws \PainelDLX\Domain\Usuarios\Exceptions\UsuarioJaPossuiGrupoException
-     * @throws \SechianeX\Exceptions\SessionAdapterInterfaceInvalidaException
-     * @throws \SechianeX\Exceptions\SessionAdapterNaoEncontradoException
-     * @throws \PainelDLX\Application\Middlewares\Exceptions\UsuarioNaoPossuiPermissaoException
+     * @throws GrupoJaPossuiPermissaoException
+     * @throws UsuarioJaPossuiGrupoException
+     * @throws SessionAdapterInterfaceInvalidaException
+     * @throws SessionAdapterNaoEncontradoException
+     * @throws UsuarioNaoPossuiPermissaoException
      */
     public function test_Executar_retorna_true_quando_usuario_possui_permissao()
     {
@@ -68,10 +76,10 @@ class AutorizacaoTest extends PainelDLXTests
     }
 
     /**
-     * @throws \PainelDLX\Domain\GruposUsuarios\Exceptions\GrupoJaPossuiPermissaoException
-     * @throws \PainelDLX\Domain\Usuarios\Exceptions\UsuarioJaPossuiGrupoException
-     * @throws \SechianeX\Exceptions\SessionAdapterInterfaceInvalidaException
-     * @throws \SechianeX\Exceptions\SessionAdapterNaoEncontradoException
+     * @throws GrupoJaPossuiPermissaoException
+     * @throws UsuarioJaPossuiGrupoException
+     * @throws SessionAdapterInterfaceInvalidaException
+     * @throws SessionAdapterNaoEncontradoException
      * @throws UsuarioNaoPossuiPermissaoException
      */
     public function test_Executar_lanca_uma_UsuarioNaoPossuiPermissaoException_quando_usuario_NAO_possui_permissao()

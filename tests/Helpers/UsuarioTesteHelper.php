@@ -23,35 +23,42 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Testes\Application\UseCases\Usuarios\UtilizarResetSenha;
+namespace PainelDLX\Testes\Helpers;
+
 
 use DLX\Infra\EntityManagerX;
+use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\ParameterType;
 use Doctrine\ORM\ORMException;
-use PainelDLX\Application\UseCases\Usuarios\UtilizarResetSenha\UtilizarResetSenhaCommand;
-use PainelDLX\Application\UseCases\Usuarios\UtilizarResetSenha\UtilizarResetSenhaCommandHandler;
-use PainelDLX\Domain\Usuarios\Entities\ResetSenha;
-use PainelDLX\Domain\Usuarios\Exceptions\UsuarioNaoEncontrado;
-use PainelDLX\Domain\Usuarios\Repositories\ResetSenhaRepositoryInterface;
-use PainelDLX\Testes\Application\UseCases\Usuarios\SolicitarResetSenha\SolicitarResetSenhaHandlerTest;
-use PainelDLX\Testes\TestCase\PainelDLXTestCase;
+use PainelDLX\Domain\Usuarios\Entities\Usuario;
 
-class UtilizarResetSenhaHandlerTest extends PainelDLXTestCase
+class UsuarioTesteHelper
 {
     /**
+     * Cria um novo usuário no bd para teste
+     * @param string $nome
+     * @param string $email
+     * @param string $senha
+     * @return Usuario
+     * @throws DBALException
      * @throws ORMException
-     * @throws UsuarioNaoEncontrado
      */
-    public function test_Handle()
+    public static function criarDB(string $nome, string $email, string $senha): Usuario
     {
-        $reset_senha = (new SolicitarResetSenhaHandlerTest())->test_Handle();
-        $this->assertFalse($reset_senha->isUtilizado());
+        $query = 'insert into dlx_usuarios (nome, email, senha) values (:nome, :email, :senha)';
 
-        /** @var ResetSenhaRepositoryInterface $reset_senha_repository */
-        $reset_senha_repository = EntityManagerX::getRepository(ResetSenha::class);
+        $con = EntityManagerX::getInstance()->getConnection();
+        $sql = $con->prepare($query);
+        $sql->bindValue(':nome', $nome, ParameterType::STRING);
+        $sql->bindValue(':email', $email, ParameterType::STRING);
+        $sql->bindValue(':senha', md5(md5($senha)), ParameterType::STRING);
+        $sql->execute();
 
-        $command = new UtilizarResetSenhaCommand($reset_senha);
-        $reset_senha = (new UtilizarResetSenhaCommandHandler($reset_senha_repository))->handle($command);
+        $id = $con->lastInsertId();
 
-        $this->assertTrue($reset_senha->isUtilizado());
+        /** @var Usuario|null $usuario */
+        $usuario = EntityManagerX::getRepository(Usuario::class)->find($id);
+
+        return $usuario;
     }
 }

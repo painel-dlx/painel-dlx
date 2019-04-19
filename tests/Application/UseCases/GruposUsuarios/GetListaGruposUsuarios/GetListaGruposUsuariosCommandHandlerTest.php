@@ -31,9 +31,9 @@ use PainelDLX\Application\UseCases\GruposUsuarios\GetListaGruposUsuarios\GetList
 use PainelDLX\Application\UseCases\GruposUsuarios\GetListaGruposUsuarios\GetListaGruposUsuariosCommand;
 use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
 use PainelDLX\Domain\GruposUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
-use PainelDLX\Testes\PainelDLXTests;
+use PainelDLX\Testes\TestCase\PainelDLXTestCase;
 
-class GetListaGruposUsuariosCommandHandlerTest extends PainelDLXTests
+class GetListaGruposUsuariosCommandHandlerTest extends PainelDLXTestCase
 {
     /** @var GrupoUsuarioRepositoryInterface */
     private $grupo_usuario_repository;

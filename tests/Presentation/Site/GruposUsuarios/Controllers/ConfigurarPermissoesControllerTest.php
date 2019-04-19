@@ -29,58 +29,70 @@ use DLX\Core\CommandBus\CommandBusAdapter;
 use DLX\Core\Configure;
 use DLX\Infra\EntityManagerX;
 use DLX\Infra\ORM\Doctrine\Services\DoctrineTransaction;
+use Doctrine\ORM\ORMException;
 use League\Tactician\Container\ContainerLocator;
 use League\Tactician\Handler\CommandHandlerMiddleware;
 use League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor;
 use League\Tactician\Handler\MethodNameInflector\HandleInflector;
+use PainelDLX\Application\Factories\CommandBusFactory;
 use PainelDLX\Presentation\Site\GruposUsuarios\Controllers\ConfigurarPermissoesController;
 use PainelDLX\Testes\Application\UseCases\GruposUsuarios\NovoGrupoUsuario\NovoGrupoUsuarioHandlerTest;
-use PainelDLX\Testes\PainelDLXTests;
+use PainelDLX\Testes\TestCase\PainelDLXTestCase;
+use PainelDLX\Testes\TestCase\TesteComTransaction;
 use Psr\Http\Message\ServerRequestInterface;
+use SechianeX\Exceptions\SessionAdapterInterfaceInvalidaException;
+use SechianeX\Exceptions\SessionAdapterNaoEncontradoException;
 use SechianeX\Factories\SessionFactory;
+use Vilex\Exceptions\ContextoInvalidoException;
+use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
+use Vilex\Exceptions\ViewNaoEncontradaException;
 use Vilex\VileX;
 use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Diactoros\Response\JsonResponse;
 
-class ConfigurarPermissoesControllerTest extends PainelDLXTests
+/**
+ * Class ConfigurarPermissoesControllerTest
+ * @package PainelDLX\Testes\Presentation\Site\GruposUsuarios\Controllers
+ * @coversDefaultClass \PainelDLX\Presentation\Site\GruposUsuarios\Controllers\ConfigurarPermissoesController
+ */
+class ConfigurarPermissoesControllerTest extends PainelDLXTestCase
 {
-    /** @var ConfigurarPermissoesController */
-    private $controller;
+    use TesteComTransaction;
 
     /**
-     * @throws \DLX\Core\Exceptions\ArquivoConfiguracaoNaoEncontradoException
-     * @throws \DLX\Core\Exceptions\ArquivoConfiguracaoNaoInformadoException
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \PainelDLX\Application\Services\Exceptions\AmbienteNaoInformadoException
-     * @throws \SechianeX\Exceptions\SessionAdapterInterfaceInvalidaException
-     * @throws \SechianeX\Exceptions\SessionAdapterNaoEncontradoException
+     * @return ConfigurarPermissoesController
+     * @throws ORMException
+     * @throws SessionAdapterInterfaceInvalidaException
+     * @throws SessionAdapterNaoEncontradoException
      */
-    protected function setUp()
+    public function test__construct(): ConfigurarPermissoesController
     {
-        parent::setUp();
-
         $session = SessionFactory::createPHPSession();
         $session->set('vilex:pagina-mestra', 'painel-dlx-master');
 
-        $this->controller = new ConfigurarPermissoesController(
+        $command_bus = CommandBusFactory::create(self::$container, Configure::get('app', 'mapping'));
+
+        $controller = new ConfigurarPermissoesController(
             new VileX(),
-            CommandBusAdapter::create(new CommandHandlerMiddleware(
-                new ClassNameExtractor,
-                new ContainerLocator($this->container, Configure::get('app', 'mapping')),
-                new HandleInflector
-            )),
+            $command_bus(),
             new DoctrineTransaction(EntityManagerX::getInstance()),
             $session
         );
+
+        $this->assertInstanceOf(ConfigurarPermissoesController::class, $controller);
+
+        return $controller;
     }
 
     /**
-     * @throws \Vilex\Exceptions\ContextoInvalidoException
-     * @throws \Vilex\Exceptions\PaginaMestraNaoEncontradaException
-     * @throws \Vilex\Exceptions\ViewNaoEncontradaException
-     * @throws \Doctrine\ORM\ORMException
+     * @throws ContextoInvalidoException
+     * @throws PaginaMestraNaoEncontradaException
+     * @throws ViewNaoEncontradaException
+     * @throws ORMException
+     * @covers ::formConfigurarPermissao
+     * @depends test__construct
      */
-    public function test_FormConfigurarPermissao_deve_retornar_um_HtmlResponse()
+    public function test_FormConfigurarPermissao_deve_retornar_um_HtmlResponse(ConfigurarPermissoesController $controller)
     {
         $grupo_usuario = (new NovoGrupoUsuarioHandlerTest())->test_Handle();
 
@@ -90,15 +102,17 @@ class ConfigurarPermissoesControllerTest extends PainelDLXTests
             ->willReturn(['grupo_usuario_id' => $grupo_usuario->getGrupoUsuarioId()]);
 
         /** @var ServerRequestInterface $request */
-        $response = $this->controller->formConfigurarPermissao($request);
+        $response = $controller->formConfigurarPermissao($request);
 
         $this->assertInstanceOf(HtmlResponse::class, $response);
     }
 
     /**
-     * @throws \Doctrine\ORM\ORMException
+     * @throws ORMException
+     * @covers ::salvarConfiguracaoPermissao
+     * @depends test__construct
      */
-    public function test_SalvarConfiguracaoPermissao_deve_retornar_um_JsonResponse_sucesso()
+    public function test_SalvarConfiguracaoPermissao_deve_retornar_um_JsonResponse_sucesso(ConfigurarPermissoesController $controller)
     {
         $grupo_usuario = (new NovoGrupoUsuarioHandlerTest())->test_Handle();
 
@@ -111,12 +125,11 @@ class ConfigurarPermissoesControllerTest extends PainelDLXTests
             ]);
 
         /** @var ServerRequestInterface $request */
-        $response = $this->controller->salvarConfiguracaoPermissao($request);
+        $response = $controller->salvarConfiguracaoPermissao($request);
 
         $this->assertInstanceOf(JsonResponse::class, $response);
 
         $json = json_decode((string)$response->getBody());
-
         $this->assertEquals('sucesso', $json->retorno);
     }
 }

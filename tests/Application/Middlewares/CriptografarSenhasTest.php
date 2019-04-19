@@ -10,12 +10,12 @@ namespace PainelDLX\Testes\Application\Middlewares;
 
 use PainelDLX\Application\Middlewares\CriptografarSenhas;
 use PainelDLX\Application\Services\PainelDLX;
-use PainelDLX\Testes\PainelDLXTests;
+use PainelDLX\Testes\TestCase\PainelDLXTestCase;
 use Zend\Diactoros\ServerRequestFactory;
 
 $painel_dlx = new PainelDLX(ServerRequestFactory::fromGlobals());
 
-class CriptografarSenhasTest extends PainelDLXTests
+class CriptografarSenhasTest extends PainelDLXTestCase
 {
 
     public function test_Executar()

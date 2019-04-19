@@ -10,9 +10,9 @@ namespace PainelDLX\Testes\Application\UseCases\Emails\TestarConfigSmtp;
 
 use PainelDLX\Application\UseCases\Emails\TestarConfigSmtp\TestarConfigSmtpCommand;
 use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
-use PainelDLX\Testes\PainelDLXTests;
+use PainelDLX\Testes\TestCase\PainelDLXTestCase;
 
-class TestarConfigSmtpCommandTest extends PainelDLXTests
+class TestarConfigSmtpCommandTest extends PainelDLXTestCase
 {
     /** @var TestarConfigSmtpCommand */
     private $command;

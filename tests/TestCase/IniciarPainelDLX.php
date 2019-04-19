@@ -23,77 +23,55 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Testes;
+namespace PainelDLX\Testes\TestCase;
 
 
 use DLX\Core\Exceptions\ArquivoConfiguracaoNaoEncontradoException;
 use DLX\Core\Exceptions\ArquivoConfiguracaoNaoInformadoException;
-use DLX\Infra\EntityManagerX;
-use Doctrine\Common\Persistence\Mapping\MappingException;
 use Doctrine\ORM\ORMException;
 use League\Container\Container;
 use League\Container\ReflectionContainer;
-use PainelDLX\Application\ServiceProviders\PainelDLXServiceProvider;
 use PainelDLX\Application\Services\Exceptions\AmbienteNaoInformadoException;
 use PainelDLX\Application\Services\PainelDLX;
-use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Diactoros\ServerRequestFactory;
 
-class PainelDLXTests extends TestCase
+trait IniciarPainelDLX
 {
     /** @var ContainerInterface */
-    protected $container;
+    protected static $container;
     /** @var PainelDLX */
-    protected $painel_dlx;
+    protected static $painel_dlx;
 
     /**
+     * @param string $ambiente
      * @throws ArquivoConfiguracaoNaoEncontradoException
      * @throws ArquivoConfiguracaoNaoInformadoException
      * @throws AmbienteNaoInformadoException
      * @throws ORMException
      */
-    protected function setUp()
+    public static function start(string $ambiente = 'paineldlx')
     {
-        parent::setUp();
+        $ambiente = $ambiente ?: 'paineldlx';
 
         // Chegar até a página index
         $q = 0;
         $t = 10;
-        while (!file_exists('./config/paineldlx-dev.php') && $q < $t) {
+        while (!file_exists("./config/{$ambiente}-dev.php") && $q < $t) {
             chdir('../');
             $q++;
         }
 
         $request = ServerRequestFactory::fromGlobals();
-        $request = $request->withQueryParams(['ambiente' => 'paineldlx-dev']);
+        $request = $request->withQueryParams(['ambiente' => "{$ambiente}-dev"]);
 
-        $this->container = new Container;
-        $this->container
-            ->delegate(new ReflectionContainer)
-            ->addServiceProvider(PainelDLXServiceProvider::class);
+        self::$container = new Container;
+        self::$container->delegate(new ReflectionContainer);
 
         /** @var ServerRequestInterface $request */
-        $this->painel_dlx = (new PainelDLX($request, $this->container))
+        self::$painel_dlx = (new PainelDLX($request, self::$container))
             ->adicionarDiretorioInclusao(dirname('.'))
             ->init();
-
-        EntityManagerX::beginTransaction();
-    }
-
-    /**
-     * @throws MappingException
-     * @throws ORMException
-     */
-    protected function tearDown()
-    {
-        parent::tearDown();
-
-        if (EntityManagerX::getInstance()->getConnection()->isTransactionActive()) {
-            EntityManagerX::rollback();
-        }
-
-        EntityManagerX::getInstance()->clear();
     }
 }

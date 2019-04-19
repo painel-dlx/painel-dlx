@@ -23,26 +23,20 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Testes\Application\UseCases\ListaRegistros\ConverterFiltro2Criteria;
+namespace PainelDLX\Testes\Application\UseCases\Emails\ExcluirConfigSmtp;
 
-use PainelDLX\Application\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommand;
-use PainelDLX\Application\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommandHandler;
+use PainelDLX\Application\UseCases\Emails\ExcluirConfigSmtp\ExcluirConfigSmtpCommand;
+use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
 use PainelDLX\Testes\TestCase\PainelDLXTestCase;
+use PHPUnit\Framework\TestCase;
 
-class ConverterFiltro2CriteriaCommandHandlerTest extends PainelDLXTestCase
+class ExcluirConfigSmtpCommandTestCase extends PainelDLXTestCase
 {
-
-    public function test_Handle()
+    public function testGetConfigSmtp()
     {
-        $campos = ['campo1', 'campo2'];
-        $busca = 'busca';
+        $config_smtp = new ConfigSmtp();
+        $command = new ExcluirConfigSmtpCommand($config_smtp);
 
-        $command = new ConverterFiltro2CriteriaCommand($campos, $busca);
-        $criteria = (new ConverterFiltro2CriteriaCommandHandler())->handle($command);
-
-        foreach ($campos as $campo) {
-            $this->assertArrayHasKey($campo, $criteria);
-            $this->assertEquals($busca, $criteria[$campo]);
-        }
+        $this->assertInstanceOf(ConfigSmtp::class, $command->getConfigSmtp());
     }
 }

@@ -26,8 +26,7 @@
 namespace PainelDLX\Testes\Application\Factories;
 
 use PainelDLX\Application\Factories\CommandBusFactory;
-use PainelDLX\Testes\PainelDLXTests;
-use PHPUnit\Framework\TestCase;
+use PainelDLX\Testes\TestCase\PainelDLXTestCase;
 use Psr\Container\ContainerInterface;
 
 /**
@@ -35,7 +34,7 @@ use Psr\Container\ContainerInterface;
  * @package PainelDLX\Testes\Application\Factories
  * @coversDefaultClass \PainelDLX\Application\Factories\CommandBusFactory
  */
-class CommandBusFactoryTest extends PainelDLXTests
+class CommandBusFactoryTest extends PainelDLXTestCase
 {
     /**
      * @covers ::create

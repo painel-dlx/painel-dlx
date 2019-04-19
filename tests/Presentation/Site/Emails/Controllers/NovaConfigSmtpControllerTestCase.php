@@ -27,29 +27,38 @@ namespace PainelDLX\Testes\Presentation\Site\Emails\Controllers;
 
 use DLX\Core\CommandBus\CommandBusAdapter;
 use DLX\Core\Configure;
+use DLX\Core\Exceptions\ArquivoConfiguracaoNaoEncontradoException;
+use DLX\Core\Exceptions\ArquivoConfiguracaoNaoInformadoException;
+use Doctrine\ORM\ORMException;
 use League\Tactician\Container\ContainerLocator;
 use League\Tactician\Handler\CommandHandlerMiddleware;
 use League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor;
 use League\Tactician\Handler\MethodNameInflector\HandleInflector;
+use PainelDLX\Application\Services\Exceptions\AmbienteNaoInformadoException;
 use PainelDLX\Presentation\Site\Emails\Controllers\NovaConfigSmtpController;
-use PainelDLX\Testes\PainelDLXTests;
+use PainelDLX\Testes\TestCase\PainelDLXTestCase;
 use Psr\Http\Message\ServerRequestInterface;
+use RautereX\Exceptions\RotaNaoEncontradaException;
+use ReflectionException;
+use Vilex\Exceptions\ContextoInvalidoException;
+use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
+use Vilex\Exceptions\ViewNaoEncontradaException;
 use Vilex\VileX;
 use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Diactoros\Response\JsonResponse;
 
-class NovaConfigSmtpControllerTests extends PainelDLXTests
+class NovaConfigSmtpControllerTestCase extends PainelDLXTestCase
 {
     /** @var NovaConfigSmtpController */
     private $controller;
 
     /**
-     * @throws \DLX\Core\Exceptions\ArquivoConfiguracaoNaoEncontradoException
-     * @throws \DLX\Core\Exceptions\ArquivoConfiguracaoNaoInformadoException
-     * @throws \RautereX\Exceptions\RotaNaoEncontradaException
-     * @throws \ReflectionException
-     * @throws \PainelDLX\Application\Services\Exceptions\AmbienteNaoInformadoException
-     * @throws \Doctrine\ORM\ORMException
+     * @throws ArquivoConfiguracaoNaoEncontradoException
+     * @throws ArquivoConfiguracaoNaoInformadoException
+     * @throws RotaNaoEncontradaException
+     * @throws ReflectionException
+     * @throws AmbienteNaoInformadoException
+     * @throws ORMException
      */
     protected function setUp()
     {
@@ -66,9 +75,9 @@ class NovaConfigSmtpControllerTests extends PainelDLXTests
     }
 
     /**
-     * @throws \Vilex\Exceptions\ContextoInvalidoException
-     * @throws \Vilex\Exceptions\PaginaMestraNaoEncontradaException
-     * @throws \Vilex\Exceptions\ViewNaoEncontradaException
+     * @throws ContextoInvalidoException
+     * @throws PaginaMestraNaoEncontradaException
+     * @throws ViewNaoEncontradaException
      */
     public function test_FormNovaConfigSmtp_deve_retornar_instancia_HtmlResponse()
     {

@@ -26,17 +26,19 @@
 namespace PainelDLX\Testes\Application\UseCases\GruposUsuarios\NovoGrupoUsuario;
 
 use DLX\Infra\EntityManagerX;
+use Doctrine\ORM\ORMException;
+use Exception;
 use PainelDLX\Application\UseCases\GruposUsuarios\NovoGrupoUsuario\NovoGrupoUsuarioCommand;
 use PainelDLX\Application\UseCases\GruposUsuarios\NovoGrupoUsuario\NovoGrupoUsuarioCommandHandler;
 use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
 use PainelDLX\Domain\GruposUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
-use PainelDLX\Testes\PainelDLXTests;
+use PainelDLX\Testes\TestCase\PainelDLXTestCase;
 
-class NovoGrupoUsuarioHandlerTest extends PainelDLXTests
+class NovoGrupoUsuarioHandlerTest extends PainelDLXTestCase
 {
     /**
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Exception
+     * @throws ORMException
+     * @throws Exception
      */
     public function test_Handle(): GrupoUsuario
     {

@@ -26,9 +26,9 @@
 namespace PainelDLX\Testes\Application\UseCases\ListaRegistros\ConverterFiltro2Criteria;
 
 use PainelDLX\Application\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommand;
-use PainelDLX\Testes\PainelDLXTests;
+use PainelDLX\Testes\TestCase\PainelDLXTestCase;
 
-class ConverterFiltro2CriteriaCommandTest extends PainelDLXTests
+class ConverterFiltro2CriteriaCommandTest extends PainelDLXTestCase
 {
     public function test_GetCampos()
     {

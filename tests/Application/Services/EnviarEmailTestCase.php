@@ -26,11 +26,13 @@
 namespace PainelDLX\Testes\Application\Services;
 
 use PainelDLX\Application\Services\EnviarEmail;
+use PainelDLX\Application\Services\Exceptions\ErroAoEnviarEmailException;
 use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
-use PainelDLX\Testes\PainelDLXTests;
+use PainelDLX\Testes\TestCase\PainelDLXTestCase;
+use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 
-class EnviarEmailTests extends PainelDLXTests
+class EnviarEmailTestCase extends PainelDLXTestCase
 {
     /** @var EnviarEmail */
     private $enviar_email;
@@ -73,8 +75,8 @@ class EnviarEmailTests extends PainelDLXTests
     }
 
     /**
-     * @throws \PHPMailer\PHPMailer\Exception
-     * @throws \PainelDLX\Application\Services\Exceptions\ErroAoEnviarEmailException
+     * @throws Exception
+     * @throws ErroAoEnviarEmailException
      */
     public function test_EnviarPara()
     {

@@ -14,9 +14,9 @@ use PainelDLX\Application\UseCases\Usuarios\GetListaUsuarios\GetListaUsuariosCom
 use PainelDLX\Application\UseCases\Usuarios\GetListaUsuarios\GetListaUsuariosCommandHandler;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
 use PainelDLX\Domain\Usuarios\Repositories\UsuarioRepositoryInterface;
-use PainelDLX\Testes\PainelDLXTests;
+use PainelDLX\Testes\TestCase\PainelDLXTestCase;
 
-class GetListaUsuariosHandlerTest extends PainelDLXTests
+class GetListaUsuariosHandlerTest extends PainelDLXTestCase
 {
     /** @var UsuarioRepositoryInterface */
     private $usuario_repository;

@@ -27,10 +27,10 @@ namespace PainelDLX\Testes\Application\UseCases\GruposUsuarios\NovoGrupoUsuario;
 
 use PainelDLX\Application\UseCases\GruposUsuarios\NovoGrupoUsuario\NovoGrupoUsuarioCommand;
 use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
-use PainelDLX\Testes\PainelDLXTests;
+use PainelDLX\Testes\TestCase\PainelDLXTestCase;
 use PHPUnit\Framework\TestCase;
 
-class NovoGrupoUsuarioCommandTest extends PainelDLXTests
+class NovoGrupoUsuarioCommandTest extends PainelDLXTestCase
 {
     public function test_GetNome()
     {

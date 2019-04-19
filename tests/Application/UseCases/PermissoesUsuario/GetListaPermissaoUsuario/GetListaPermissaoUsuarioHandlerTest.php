@@ -31,9 +31,9 @@ use PainelDLX\Application\UseCases\PermissoesUsuario\GetListaPermissaoUsuario\Ge
 use PainelDLX\Application\UseCases\PermissoesUsuario\GetListaPermissaoUsuario\GetListaPermissaoUsuarioCommandHandler;
 use PainelDLX\Domain\PermissoesUsuario\Entities\PermissaoUsuario;
 use PainelDLX\Domain\PermissoesUsuario\Repositories\PermissaoUsuarioRepositoryInterface;
-use PainelDLX\Testes\PainelDLXTests;
+use PainelDLX\Testes\TestCase\PainelDLXTestCase;
 
-class GetListaPermissaoUsuarioHandlerTest extends PainelDLXTests
+class GetListaPermissaoUsuarioHandlerTest extends PainelDLXTestCase
 {
 
     /** @var PermissaoUsuarioRepositoryInterface */

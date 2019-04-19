@@ -27,10 +27,10 @@ namespace PainelDLX\Testes\Application\UseCases\Usuarios\NovoUsuario;
 
 use PainelDLX\Application\UseCases\Usuarios\NovoUsuario\NovoUsuarioCommand;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
-use PainelDLX\Testes\PainelDLXTests;
+use PainelDLX\Testes\TestCase\PainelDLXTestCase;
 use PHPUnit\Framework\TestCase;
 
-class NovoUsuarioCommandTest extends PainelDLXTests
+class NovoUsuarioCommandTest extends PainelDLXTestCase
 {
     /** @var NovoUsuarioCommand */
     private $command;

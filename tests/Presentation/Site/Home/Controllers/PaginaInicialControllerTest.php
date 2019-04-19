@@ -10,60 +10,71 @@ namespace PainelDLX\Testes\Presentation\Site\Home\Controllers;
 
 use DLX\Core\CommandBus\CommandBusAdapter;
 use DLX\Core\Configure;
+use DLX\Core\Exceptions\ArquivoConfiguracaoNaoEncontradoException;
+use DLX\Core\Exceptions\ArquivoConfiguracaoNaoInformadoException;
 use DLX\Infra\EntityManagerX;
+use Doctrine\ORM\ORMException;
 use League\Tactician\Container\ContainerLocator;
 use League\Tactician\Handler\CommandHandlerMiddleware;
 use League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor;
 use League\Tactician\Handler\MethodNameInflector\HandleInflector;
+use PainelDLX\Application\Factories\CommandBusFactory;
+use PainelDLX\Application\Services\Exceptions\AmbienteNaoInformadoException;
 use PainelDLX\Presentation\Site\Home\Controllers\PaginaInicialController;
-use PainelDLX\Testes\PainelDLXTests;
+use PainelDLX\Testes\TestCase\PainelDLXTestCase;
 use Psr\Http\Message\ServerRequestInterface;
+use SechianeX\Exceptions\SessionAdapterInterfaceInvalidaException;
+use SechianeX\Exceptions\SessionAdapterNaoEncontradoException;
 use SechianeX\Factories\SessionFactory;
+use Vilex\Exceptions\ContextoInvalidoException;
+use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
+use Vilex\Exceptions\ViewNaoEncontradaException;
 use Vilex\VileX;
 use Zend\Diactoros\Response\HtmlResponse;
 
-class PaginaInicialControllerTest extends PainelDLXTests
+/**
+ * Class PaginaInicialControllerTest
+ * @package PainelDLX\Testes\Presentation\Site\Home\Controllers
+ * @coversDefaultClass \PainelDLX\Presentation\Site\Home\Controllers\PaginaInicialController
+ */
+class PaginaInicialControllerTest extends PainelDLXTestCase
 {
-    /** @var PaginaInicialController */
-    private $controller;
-
     /**
-     * @throws \DLX\Core\Exceptions\ArquivoConfiguracaoNaoEncontradoException
-     * @throws \DLX\Core\Exceptions\ArquivoConfiguracaoNaoInformadoException
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \PainelDLX\Application\Services\Exceptions\AmbienteNaoInformadoException
-     * @throws \SechianeX\Exceptions\SessionAdapterInterfaceInvalidaException
-     * @throws \SechianeX\Exceptions\SessionAdapterNaoEncontradoException
+     * @return PaginaInicialController
+     * @throws SessionAdapterInterfaceInvalidaException
+     * @throws SessionAdapterNaoEncontradoException
      */
-    protected function setUp()
+    public function test__construct(): PaginaInicialController
     {
-        parent::setUp();
-
         $session = SessionFactory::createPHPSession();
         $session->set('vilex:pagina-mestra', 'painel-dlx-master');
 
-        $this->controller = new PaginaInicialController(
+        $command_bus = CommandBusFactory::create(self::$container, Configure::get('app', 'mapping'));
+        $controller = new PaginaInicialController(
             new VileX(),
-            CommandBusAdapter::create(new CommandHandlerMiddleware(
-                new ClassNameExtractor,
-                new ContainerLocator($this->container, Configure::get('app', 'mapping')),
-                new HandleInflector
-            )),
+            $command_bus(),
             $session
         );
+
+        $this->assertInstanceOf(PaginaInicialController::class, $controller);
+
+        return $controller;
     }
 
     /**
-     * @throws \Vilex\Exceptions\ContextoInvalidoException
-     * @throws \Vilex\Exceptions\PaginaMestraNaoEncontradaException
-     * @throws \Vilex\Exceptions\ViewNaoEncontradaException
+     * @param PaginaInicialController $controller
+     * @throws ContextoInvalidoException
+     * @throws PaginaMestraNaoEncontradaException
+     * @throws ViewNaoEncontradaException
+     * @covers ::home
+     * @depends test__construct
      */
-    public function test_Home_deve_retornar_um_HtmlResponse()
+    public function test_Home_deve_retornar_um_HtmlResponse(PaginaInicialController $controller)
     {
         $request = $this->createMock(ServerRequestInterface::class);
 
         /** @var ServerRequestInterface $request */
-        $response = $this->controller->home($request);
+        $response = $controller->home($request);
 
         $this->assertInstanceOf(HtmlResponse::class, $response);
     }

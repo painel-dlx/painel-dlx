@@ -27,30 +27,41 @@ namespace PainelDLX\Testes\Presentation\Site\Emails\Controllers;
 
 use DLX\Core\CommandBus\CommandBusAdapter;
 use DLX\Core\Configure;
+use DLX\Core\Exceptions\ArquivoConfiguracaoNaoEncontradoException;
+use DLX\Core\Exceptions\ArquivoConfiguracaoNaoInformadoException;
+use Doctrine\ORM\ORMException;
 use League\Tactician\Container\ContainerLocator;
 use League\Tactician\Handler\CommandHandlerMiddleware;
 use League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor;
 use League\Tactician\Handler\MethodNameInflector\HandleInflector;
+use PainelDLX\Application\Services\Exceptions\AmbienteNaoInformadoException;
+use PainelDLX\Domain\Emails\Exceptions\AutentContaNaoInformadaException;
+use PainelDLX\Domain\Emails\Exceptions\AutentSenhaNaoInformadaException;
 use PainelDLX\Presentation\Site\Emails\Controllers\EditarConfigSmtpController;
-use PainelDLX\Testes\Application\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpHandlerTests;
-use PainelDLX\Testes\PainelDLXTests;
+use PainelDLX\Testes\Application\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpHandlerTestCase;
+use PainelDLX\Testes\TestCase\PainelDLXTestCase;
 use Psr\Http\Message\ServerRequestInterface;
+use RautereX\Exceptions\RotaNaoEncontradaException;
+use ReflectionException;
+use Vilex\Exceptions\ContextoInvalidoException;
+use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
+use Vilex\Exceptions\ViewNaoEncontradaException;
 use Vilex\VileX;
 use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Diactoros\Response\JsonResponse;
 
-class EditarConfigSmtpControllerTests extends PainelDLXTests
+class EditarConfigSmtpControllerTestCase extends PainelDLXTestCase
 {
     /** @var EditarConfigSmtpController */
     private $controller;
 
     /**
-     * @throws \DLX\Core\Exceptions\ArquivoConfiguracaoNaoEncontradoException
-     * @throws \DLX\Core\Exceptions\ArquivoConfiguracaoNaoInformadoException
-     * @throws \RautereX\Exceptions\RotaNaoEncontradaException
-     * @throws \ReflectionException
-     * @throws \PainelDLX\Application\Services\Exceptions\AmbienteNaoInformadoException
-     * @throws \Doctrine\ORM\ORMException
+     * @throws ArquivoConfiguracaoNaoEncontradoException
+     * @throws ArquivoConfiguracaoNaoInformadoException
+     * @throws RotaNaoEncontradaException
+     * @throws ReflectionException
+     * @throws AmbienteNaoInformadoException
+     * @throws ORMException
      */
     protected function setUp()
     {
@@ -67,9 +78,9 @@ class EditarConfigSmtpControllerTests extends PainelDLXTests
     }
 
     /**
-     * @throws \Vilex\Exceptions\ContextoInvalidoException
-     * @throws \Vilex\Exceptions\PaginaMestraNaoEncontradaException
-     * @throws \Vilex\Exceptions\ViewNaoEncontradaException
+     * @throws ContextoInvalidoException
+     * @throws PaginaMestraNaoEncontradaException
+     * @throws ViewNaoEncontradaException
      */
     public function test_FormEditarConfigSmtp_deve_retornar_HtmlResponse()
     {
@@ -81,13 +92,13 @@ class EditarConfigSmtpControllerTests extends PainelDLXTests
     }
 
     /**
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \PainelDLX\Domain\Emails\Exceptions\AutentContaNaoInformadaException
-     * @throws \PainelDLX\Domain\Emails\Exceptions\AutentSenhaNaoInformadaException
+     * @throws ORMException
+     * @throws AutentContaNaoInformadaException
+     * @throws AutentSenhaNaoInformadaException
      */
     public function test_EditarConfigSmtp()
     {
-        $config_smtp = (new NovaConfigSmtpHandlerTests())->test_Handle();
+        $config_smtp = (new NovaConfigSmtpHandlerTestCase())->test_Handle();
 
         $request = $this->createMock(ServerRequestInterface::class);
         $request

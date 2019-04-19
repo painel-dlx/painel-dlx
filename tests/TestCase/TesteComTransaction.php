@@ -23,20 +23,10 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Testes\Application\UseCases\Emails\ExcluirConfigSmtp;
+namespace PainelDLX\Testes\TestCase;
 
-use PainelDLX\Application\UseCases\Emails\ExcluirConfigSmtp\ExcluirConfigSmtpCommand;
-use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
-use PainelDLX\Testes\PainelDLXTests;
-use PHPUnit\Framework\TestCase;
 
-class ExcluirConfigSmtpCommandTests extends PainelDLXTests
+trait TesteComTransaction
 {
-    public function testGetConfigSmtp()
-    {
-        $config_smtp = new ConfigSmtp();
-        $command = new ExcluirConfigSmtpCommand($config_smtp);
 
-        $this->assertInstanceOf(ConfigSmtp::class, $command->getConfigSmtp());
-    }
 }

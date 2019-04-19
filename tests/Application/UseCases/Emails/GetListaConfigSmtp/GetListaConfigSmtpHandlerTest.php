@@ -31,9 +31,9 @@ use PainelDLX\Application\UseCases\Emails\GetListaConfigSmtp\GetListaConfigSmtpC
 use PainelDLX\Application\UseCases\Emails\GetListaConfigSmtp\GetListaConfigSmtpCommandHandler;
 use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
 use PainelDLX\Domain\Emails\Repositories\ConfigSmtpRepositoryInterface;
-use PainelDLX\Testes\PainelDLXTests;
+use PainelDLX\Testes\TestCase\PainelDLXTestCase;
 
-class GetListaConfigSmtpHandlerTest extends PainelDLXTests
+class GetListaConfigSmtpHandlerTest extends PainelDLXTestCase
 {
     /** @var ConfigSmtpRepositoryInterface */
     private $usuario_repository;

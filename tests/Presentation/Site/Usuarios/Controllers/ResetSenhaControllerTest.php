@@ -12,23 +12,34 @@ use DLX\Core\CommandBus\CommandBusAdapter;
 use DLX\Core\Configure;
 use DLX\Infra\EntityManagerX;
 use DLX\Infra\ORM\Doctrine\Services\DoctrineTransaction;
+use Doctrine\ORM\ORMException;
 use League\Tactician\Container\ContainerLocator;
 use League\Tactician\Handler\CommandHandlerMiddleware;
 use League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor;
 use League\Tactician\Handler\MethodNameInflector\HandleInflector;
+use PainelDLX\Application\Factories\CommandBusFactory;
+use PainelDLX\Domain\Usuarios\Exceptions\UsuarioNaoEncontrado;
 use PainelDLX\Presentation\Site\Usuarios\Controllers\ResetSenhaController;
 use PainelDLX\Testes\Application\UseCases\Usuarios\SolicitarResetSenha\SolicitarResetSenhaHandlerTest;
-use PainelDLX\Testes\PainelDLXTests;
+use PainelDLX\Testes\TestCase\PainelDLXTestCase;
+use PainelDLX\Testes\TestCase\TesteComTransaction;
 use Psr\Http\Message\ServerRequestInterface;
 use SechianeX\Contracts\SessionInterface;
+use Vilex\Exceptions\ContextoInvalidoException;
+use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
+use Vilex\Exceptions\ViewNaoEncontradaException;
 use Vilex\VileX;
 use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Diactoros\Response\JsonResponse;
 
-class ResetSenhaControllerTest extends PainelDLXTests
+/**
+ * Class ResetSenhaControllerTest
+ * @package PainelDLX\Testes\Presentation\Site\Usuarios\Controllers
+ * @coversDefaultClass \PainelDLX\Presentation\Site\Usuarios\Controllers\ResetSenhaController
+ */
+class ResetSenhaControllerTest extends PainelDLXTestCase
 {
-    /** @var ResetSenhaController */
-    private $controller;
+    use TesteComTransaction;
 
     /** @var SessionInterface */
     private $session;
@@ -42,38 +53,51 @@ class ResetSenhaControllerTest extends PainelDLXTests
             ->method('get')
             ->with('vilex:pagina-mestra')
             ->willReturn('painel-dlx-master');
-
-        /** @var SessionInterface $session */
-        $this->controller = new ResetSenhaController(
-            new VileX(),
-            CommandBusAdapter::create(new CommandHandlerMiddleware(
-                new ClassNameExtractor,
-                new ContainerLocator($this->container, Configure::get('app', 'mapping')),
-                new HandleInflector
-            )),
-            $this->session,
-            new DoctrineTransaction(EntityManagerX::getInstance())
-        );
     }
 
     /**
-     * @throws \Vilex\Exceptions\ContextoInvalidoException
-     * @throws \Vilex\Exceptions\PaginaMestraNaoEncontradaException
-     * @throws \Vilex\Exceptions\ViewNaoEncontradaException
+     * @return ResetSenhaController
+     * @throws ORMException
      */
-    public function test_FormSolicitarResetSenha_deve_retornar_HtmlResponse()
+    public function test__construct(): ResetSenhaController
+    {
+        $command_bus = CommandBusFactory::create(self::$container, Configure::get('app', 'mapping'));
+
+        /** @var SessionInterface $session */
+        $controller = new ResetSenhaController(
+            new VileX(),
+            $command_bus(),
+            $this->session,
+            new DoctrineTransaction(EntityManagerX::getInstance())
+        );
+
+        $this->assertInstanceOf(ResetSenhaController::class, $controller);
+
+        return $controller;
+    }
+
+    /**
+     * @throws ContextoInvalidoException
+     * @throws PaginaMestraNaoEncontradaException
+     * @throws ViewNaoEncontradaException
+     * @covers ::formSolicitarResetSenha
+     * @depends test__construct
+     */
+    public function test_FormSolicitarResetSenha_deve_retornar_HtmlResponse(ResetSenhaController $controller)
     {
         /** @var ServerRequestInterface $request */
         $request = $this->createMock(ServerRequestInterface::class);
-        $response = $this->controller->formSolicitarResetSenha($request);
+        $response = $controller->formSolicitarResetSenha($request);
 
         $this->assertInstanceOf(HtmlResponse::class, $response);
     }
 
     /**
-     *
+     * @param ResetSenhaController $controller
+     * @covers ::solicitarResetSenha
+     * @depends test__construct
      */
-    public function test_SolicitarResetSenha_deve_retornar_JsonResponse_sucesso()
+    public function test_SolicitarResetSenha_deve_retornar_JsonResponse_sucesso(ResetSenhaController $controller)
     {
         $request = $this->createMock(ServerRequestInterface::class);
         $request
@@ -81,7 +105,7 @@ class ResetSenhaControllerTest extends PainelDLXTests
             ->willReturn(['email' => 'dlepera88@gmail.com']);
 
         /** @var ServerRequestInterface $request */
-        $response = $this->controller->solicitarResetSenha($request);
+        $response = $controller->solicitarResetSenha($request);
 
         $this->assertInstanceOf(JsonResponse::class, $response);
 
@@ -92,13 +116,16 @@ class ResetSenhaControllerTest extends PainelDLXTests
     }
 
     /**
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \PainelDLX\Domain\Usuarios\Exceptions\UsuarioNaoEncontrado
-     * @throws \Vilex\Exceptions\ContextoInvalidoException
-     * @throws \Vilex\Exceptions\PaginaMestraNaoEncontradaException
-     * @throws \Vilex\Exceptions\ViewNaoEncontradaException
+     * @param ResetSenhaController $controller
+     * @throws ContextoInvalidoException
+     * @throws ORMException
+     * @throws PaginaMestraNaoEncontradaException
+     * @throws UsuarioNaoEncontrado
+     * @throws ViewNaoEncontradaException
+     * @covers ::formResetSenha
+     * @depends test__construct
      */
-    public function test_FormResetSenha_deve_retornar_um_HtmlResponse()
+    public function test_FormResetSenha_deve_retornar_um_HtmlResponse(ResetSenhaController $controller)
     {
         $reset_senha = (new SolicitarResetSenhaHandlerTest())->test_Handle();
 
@@ -108,18 +135,21 @@ class ResetSenhaControllerTest extends PainelDLXTests
             ->willReturn(['hash' => $reset_senha->getHash()]);
 
         /** @var ServerRequestInterface $request */
-        $response = $this->controller->formResetSenha($request);
+        $response = $controller->formResetSenha($request);
 
         $this->assertInstanceOf(HtmlResponse::class, $response);
     }
 
     /**
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \PainelDLX\Domain\Usuarios\Exceptions\UsuarioNaoEncontrado
+     * @param ResetSenhaController $controller
+     * @throws ORMException
+     * @throws UsuarioNaoEncontrado
+     * @covers ::resetarSenha
+     * @depends test__construct
      */
-    public function teste_resetarSenha_deve_retornar_um_JsonResponse_sucesso()
+    public function teste_resetarSenha_deve_retornar_um_JsonResponse_sucesso(ResetSenhaController $controller)
     {
-        $this->markTestSkipped('Está ocorrendo um erro no mock da sessão.');
+        $this->markTestSkipped('Erro no mock da sessão.');
 
         $reset_senha = (new SolicitarResetSenhaHandlerTest())->test_Handle();
 
@@ -137,12 +167,11 @@ class ResetSenhaControllerTest extends PainelDLXTests
             ]);
 
         /** @var ServerRequestInterface $request */
-        $response = $this->controller->resetarSenha($request);
-
-        $this->assertInstanceOf(JsonResponse::class, $response);
+        $response = $controller->resetarSenha($request);
 
         $json = json_decode((string)$response->getBody());
 
+        $this->assertInstanceOf(JsonResponse::class, $response);
         $this->assertEquals('sucesso', $json->retorno);
     }
 }

@@ -1,4 +1,7 @@
-<phpunit
-    stderr="true">
-
+<phpunit stderr="true">
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">src/</directory>
+        </whitelist>
+    </filter>
 </phpunit>

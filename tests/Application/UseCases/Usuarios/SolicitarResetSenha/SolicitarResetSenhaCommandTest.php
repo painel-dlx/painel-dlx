@@ -9,10 +9,10 @@
 namespace PainelDLX\Testes\Application\UseCases\Usuarios\SolicitarResetSenha;
 
 use PainelDLX\Application\UseCases\Usuarios\SolicitarResetSenha\SolicitarResetSenhaCommand;
-use PainelDLX\Testes\PainelDLXTests;
+use PainelDLX\Testes\TestCase\PainelDLXTestCase;
 use PHPUnit\Framework\TestCase;
 
-class SolicitarResetSenhaCommandTest extends PainelDLXTests
+class SolicitarResetSenhaCommandTest extends PainelDLXTestCase
 {
     public function test_getEmail()
     {

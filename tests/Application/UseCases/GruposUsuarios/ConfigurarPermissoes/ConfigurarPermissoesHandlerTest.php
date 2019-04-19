@@ -27,18 +27,19 @@ namespace PainelDLX\Testes\Application\UseCases\GruposUsuarios\ConfigurarPermiss
 
 use DLX\Infra\EntityManagerX;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\ORMException;
 use PainelDLX\Application\UseCases\GruposUsuarios\ConfigurarPermissoes\ConfigurarPermissoesCommand;
 use PainelDLX\Application\UseCases\GruposUsuarios\ConfigurarPermissoes\ConfigurarPermissoesCommandHandler;
 use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
 use PainelDLX\Domain\GruposUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
 use PainelDLX\Domain\PermissoesUsuario\Entities\PermissaoUsuario;
 use PainelDLX\Testes\Application\UseCases\GruposUsuarios\NovoGrupoUsuario\NovoGrupoUsuarioHandlerTest;
-use PainelDLX\Testes\PainelDLXTests;
+use PainelDLX\Testes\TestCase\PainelDLXTestCase;
 
-class ConfigurarPermissoesHandlerTest extends PainelDLXTests
+class ConfigurarPermissoesHandlerTest extends PainelDLXTestCase
 {
     /**
-     * @throws \Doctrine\ORM\ORMException
+     * @throws ORMException
      */
     public function test_Handle()
     {

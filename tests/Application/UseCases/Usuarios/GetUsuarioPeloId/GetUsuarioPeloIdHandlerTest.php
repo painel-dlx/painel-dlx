@@ -13,9 +13,9 @@ use PainelDLX\Application\UseCases\Usuarios\GetUsuarioPeloId\GetUsuarioPeloIdCom
 use PainelDLX\Application\UseCases\Usuarios\GetUsuarioPeloId\GetUsuarioPeloIdCommandHandler;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
 use PainelDLX\Domain\Usuarios\Repositories\UsuarioRepositoryInterface;
-use PainelDLX\Testes\PainelDLXTests;
+use PainelDLX\Testes\TestCase\PainelDLXTestCase;
 
-class GetUsuarioPeloIdHandlerTest extends PainelDLXTests
+class GetUsuarioPeloIdHandlerTest extends PainelDLXTestCase
 {
     /** @var GetUsuarioPeloIdCommandHandler */
     private $handler;

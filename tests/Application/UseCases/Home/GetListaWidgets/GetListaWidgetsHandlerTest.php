@@ -13,9 +13,9 @@ use PainelDLX\Application\UseCases\Home\GetListaWigets\GetListaWidgetsCommand;
 use PainelDLX\Application\UseCases\Home\GetListaWigets\GetListaWidgetsCommandHandler;
 use PainelDLX\Domain\Home\Entities\Widget;
 use PainelDLX\Domain\Home\Repositories\WidgetRepositoryInterface;
-use PainelDLX\Testes\PainelDLXTests;
+use PainelDLX\Testes\TestCase\PainelDLXTestCase;
 
-class GetListaWidgetsHandlerTest extends PainelDLXTests
+class GetListaWidgetsHandlerTest extends PainelDLXTestCase
 {
     /** @var GetListaWidgetsCommandHandler */
     private $handler;

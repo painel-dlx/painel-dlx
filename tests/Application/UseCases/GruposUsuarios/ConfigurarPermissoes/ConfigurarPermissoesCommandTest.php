@@ -28,9 +28,9 @@ namespace PainelDLX\Testes\Application\UseCases\GruposUsuarios\ConfigurarPermiss
 use Doctrine\Common\Collections\ArrayCollection;
 use PainelDLX\Application\UseCases\GruposUsuarios\ConfigurarPermissoes\ConfigurarPermissoesCommand;
 use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
-use PainelDLX\Testes\PainelDLXTests;
+use PainelDLX\Testes\TestCase\PainelDLXTestCase;
 
-class ConfigurarPermissoesCommandTest extends PainelDLXTests
+class ConfigurarPermissoesCommandTest extends PainelDLXTestCase
 {
     /**
      * @var ConfigurarPermissoesCommand

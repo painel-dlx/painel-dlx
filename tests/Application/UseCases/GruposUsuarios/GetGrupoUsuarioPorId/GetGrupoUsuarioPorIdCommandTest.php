@@ -26,9 +26,9 @@
 namespace PainelDLX\Testes\Application\UseCases\GruposUsuarios\GetGrupoUsuarioPorId;
 
 use PainelDLX\Application\UseCases\GruposUsuarios\GetGrupoUsuarioPorId\GetGrupoUsuarioPorIdCommand;
-use PainelDLX\Testes\PainelDLXTests;
+use PainelDLX\Testes\TestCase\PainelDLXTestCase;
 
-class GetGrupoUsuarioPorIdCommandTest extends PainelDLXTests
+class GetGrupoUsuarioPorIdCommandTest extends PainelDLXTestCase
 {
 
     public function test_GetGrupoUsuarioId()

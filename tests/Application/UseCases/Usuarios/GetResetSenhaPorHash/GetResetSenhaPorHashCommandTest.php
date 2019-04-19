@@ -26,9 +26,9 @@
 namespace PainelDLX\Testes\Application\UseCases\Usuarios\GetResetSenhaPorHash;
 
 use PainelDLX\Application\UseCases\Usuarios\GetResetSenhaPorHash\GetResetSenhaPorHashCommand;
-use PainelDLX\Testes\PainelDLXTests;
+use PainelDLX\Testes\TestCase\PainelDLXTestCase;
 
-class GetResetSenhaPorHashCommandTest extends PainelDLXTests
+class GetResetSenhaPorHashCommandTest extends PainelDLXTestCase
 {
 
     public function test_GetHash()

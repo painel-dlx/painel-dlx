@@ -27,14 +27,14 @@ namespace PainelDLX\Testes\Infra\ORM\Doctrine\Services;
 
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
 use PainelDLX\Infra\ORM\Doctrine\Services\RepositoryFactory;
-use PainelDLX\Testes\PainelDLXTests;
+use PainelDLX\Testes\TestCase\PainelDLXTestCase;
 
 /**
  * Class RepositoryFactoryTest
  * @package PainelDLX\Testes\Infra\ORM\Doctrine\Services
  * @coversDefaultClass \PainelDLX\Infra\ORM\Doctrine\Services\RepositoryFactory
  */
-class RepositoryFactoryTest extends PainelDLXTests
+class RepositoryFactoryTest extends PainelDLXTestCase
 {
     /**
      * @covers ::create
