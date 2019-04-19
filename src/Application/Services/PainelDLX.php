@@ -27,11 +27,15 @@ namespace PainelDLX\Application\Services;
 
 
 use DLX\Core\Configure;
+use DLX\Core\Exceptions\ArquivoConfiguracaoNaoEncontradoException;
+use DLX\Core\Exceptions\ArquivoConfiguracaoNaoInformadoException;
 use PainelDLX\Application\Routes\PainelDLXRouter;
 use PainelDLX\Application\Services\Exceptions\AmbienteNaoInformadoException;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use RautereX\Exceptions\RotaNaoEncontradaException;
 use RautereX\RautereX;
+use ReflectionException;
 use SechianeX\Factories\SessionFactory;
 
 class PainelDLX
@@ -93,8 +97,8 @@ class PainelDLX
     }
 
     /**
-     * @throws \DLX\Core\Exceptions\ArquivoConfiguracaoNaoEncontradoException
-     * @throws \DLX\Core\Exceptions\ArquivoConfiguracaoNaoInformadoException
+     * @throws ArquivoConfiguracaoNaoEncontradoException
+     * @throws ArquivoConfiguracaoNaoInformadoException
      * @throws AmbienteNaoInformadoException
      */
     public function init(): PainelDLX
@@ -105,8 +109,8 @@ class PainelDLX
     }
 
     /**
-     * @throws \RautereX\Exceptions\RotaNaoEncontradaException
-     * @throws \ReflectionException
+     * @throws RotaNaoEncontradaException
+     * @throws ReflectionException
      */
     public function executar()
     {
@@ -127,8 +131,8 @@ class PainelDLX
     /**
      * Redirecionar para outra ação.
      * @param ServerRequestInterface $request
-     * @throws \RautereX\Exceptions\RotaNaoEncontradaException
-     * @throws \ReflectionException
+     * @throws RotaNaoEncontradaException
+     * @throws ReflectionException
      */
     public function redirect(ServerRequestInterface $request)
     {
@@ -152,8 +156,8 @@ class PainelDLX
     }
 
     /**
-     * @throws \DLX\Core\Exceptions\ArquivoConfiguracaoNaoEncontradoException
-     * @throws \DLX\Core\Exceptions\ArquivoConfiguracaoNaoInformadoException
+     * @throws ArquivoConfiguracaoNaoEncontradoException
+     * @throws ArquivoConfiguracaoNaoInformadoException
      * @throws AmbienteNaoInformadoException
      */
     private function carregarConfiguracao(): void
@@ -198,13 +202,16 @@ class PainelDLX
      */
     private function defineDirPainelDLX(): void
     {
-        $base_dir = dirname(dirname(dirname(__DIR__)));
-        $document_root = $this->server_request->getServerParams()['DOCUMENT_ROOT'];
+        // Previnir que o diretório seja alterado caso alguém tenha setado ele manualmente
+        if (empty(self::$dir)) {
+            $base_dir = dirname(dirname(dirname(__DIR__)));
+            $document_root = $this->server_request->getServerParams()['DOCUMENT_ROOT'];
 
-        // Setar o path do PainelDLX
-        self::$dir = trim(str_replace($document_root,  '', $base_dir), '/');
+            // Setar o path do PainelDLX
+            self::$dir = trim(str_replace($document_root, '', $base_dir), '/');
 
-        // Adicionar o path do PainelDLX no include_path
-        $this->adicionarDiretorioInclusao($base_dir);
+            // Adicionar o path do PainelDLX no include_path
+            $this->adicionarDiretorioInclusao($base_dir);
+        }
     }
 }
