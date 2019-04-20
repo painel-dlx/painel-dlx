@@ -1144,6 +1144,7 @@ body.mostrando-menu .menu-principal {
 
 .form-grupo {
   border: none;
+  margin: 0;
   padding: 0;
 }
 .form-grupo:not(:last-of-type) {
