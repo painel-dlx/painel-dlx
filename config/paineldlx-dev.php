@@ -33,6 +33,7 @@ return [
 
     'app' => [
         'nome' => 'painel-dlx',
+        'base-html' => '/',
         'nome-amigavel' => 'Painel DLX',
         'rotas' => include 'rotas.php',
         'service-providers' => include 'service_providers.php',

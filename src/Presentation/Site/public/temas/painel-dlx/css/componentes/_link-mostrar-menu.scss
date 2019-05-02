@@ -10,6 +10,7 @@
     // Tamanho
     width: $tm;
     height: $tm;
+    box-sizing: content-box;
 
     // Visual
     display: inline-block;

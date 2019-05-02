@@ -633,6 +633,7 @@ body.mostrando-menu .menu-principal {
   color: transparent;
   width: 28px;
   height: 28px;
+  box-sizing: content-box;
   display: inline-block;
   border-right: 1px solid #39a1b2;
   padding-right: 10px;

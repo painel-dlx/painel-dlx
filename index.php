@@ -40,9 +40,7 @@ $container->delegate(new ReflectionContainer);
 
 try {
     $painel_dlx = new PainelDLX($server_request, $container);
-    $painel_dlx
-        ->init()
-        ->executar();
+    $painel_dlx->init()->executar();
 } catch (UsuarioNaoLogadoException $e) {
     $query_param = $server_request->getQueryParams();
     $query_param['task'] = '/painel-dlx/login';
