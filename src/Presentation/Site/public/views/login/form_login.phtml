@@ -61,7 +61,7 @@ use Vilex\VileX;
     $('#form-login').formAjax({
         func_depois: function(retorno) {
             if (retorno.retorno === 'sucesso') {
-                window.location = '<?php echo $this->getAtributo('redirect-url') ?>'
+                window.location.reload();
             } else {
                 alert(retorno.mensagem);
             }
