@@ -26,10 +26,12 @@
 namespace PainelDLX\Application\Routes;
 
 
+use Exception;
 use PainelDLX\Application\Middlewares\Autorizacao;
 use PainelDLX\Application\Middlewares\DefinePaginaMestra;
 use PainelDLX\Application\Middlewares\VerificarLogon;
 use PainelDLX\Presentation\Site\Emails\Controllers\ConfigSmtpController;
+use PainelDLX\Presentation\Site\Emails\Controllers\EditarConfigSmtpController;
 use PainelDLX\Presentation\Site\Emails\Controllers\NovaConfigSmtpController;
 
 class ConfigSmtpRouter extends PainelDLXRouter
@@ -37,7 +39,7 @@ class ConfigSmtpRouter extends PainelDLXRouter
 
     /**
      * Registrar todas as rotas
-     * @throws \Exception
+     * @throws Exception
      */
     public function registrar(): void
     {
