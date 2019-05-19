@@ -28,8 +28,8 @@ namespace PainelDLX\Testes\Application\UseCases\Usuarios\NovoUsuario;
 use DLX\Infra\EntityManagerX;
 use Doctrine\ORM\ORMException;
 use Exception;
-use PainelDLX\Application\UseCases\Usuarios\NovoUsuario\NovoUsuarioCommand;
-use PainelDLX\Application\UseCases\Usuarios\NovoUsuario\NovoUsuarioCommandHandler;
+use PainelDLX\UseCases\Usuarios\NovoUsuario\NovoUsuarioCommand;
+use PainelDLX\UseCases\Usuarios\NovoUsuario\NovoUsuarioCommandHandler;
 use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
 use PainelDLX\Domain\GruposUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
@@ -40,7 +40,7 @@ use PainelDLX\Testes\TestCase\TesteComTransaction;
 /**
  * Class NovoUsuarioCommandHandlerTest
  * @package PainelDLX\Testes\Application\UseCases\Usuarios\NovoUsuario
- * @coversDefaultClass \PainelDLX\Application\UseCases\Usuarios\NovoUsuario\NovoUsuarioCommandHandler
+ * @coversDefaultClass NovoUsuarioCommandHandler
  */
 class NovoUsuarioCommandHandlerTest extends PainelDLXTestCase
 {

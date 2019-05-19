@@ -29,17 +29,20 @@ namespace PainelDLX\Presentation\Site\Emails\Controllers;
 use DLX\Core\Exceptions\UserException;
 use League\Tactician\CommandBus;
 use mysql_xdevapi\Session;
-use PainelDLX\Application\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpCommand;
-use PainelDLX\Application\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpHandler;
+use PainelDLX\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpCommand;
+use PainelDLX\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpHandler;
 use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
-use PainelDLX\Presentation\Site\Controllers\SiteController;
+use PainelDLX\Presentation\Site\Common\Controllers\PainelDLXController;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use SechianeX\Contracts\SessionInterface;
+use Vilex\Exceptions\ContextoInvalidoException;
+use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
+use Vilex\Exceptions\ViewNaoEncontradaException;
 use Vilex\VileX;
 use Zend\Diactoros\Response\JsonResponse;
 
-class NovaConfigSmtpController extends SiteController
+class NovaConfigSmtpController extends PainelDLXController
 {
     /**
      * @var SessionInterface
@@ -56,25 +59,26 @@ class NovaConfigSmtpController extends SiteController
     {
         parent::__construct($view, $commandBus);
 
-        $this->view->setPaginaMestra("src/Presentation/Site/public/views/paginas-mestras/{$session->get('vilex:pagina-mestra')}.phtml");
-        $this->view->setViewRoot('src/Presentation/Site/public/views/emails');
+        $this->view->setPaginaMestra("public/views/paginas-mestras/{$session->get('vilex:pagina-mestra')}.phtml");
+        $this->view->setViewRoot('public/views/');
         $this->session = $session;
     }
 
     /**
      * @param ServerRequestInterface $request
      * @return ResponseInterface
-     * @throws \Vilex\Exceptions\PaginaMestraNaoEncontradaException
-     * @throws \Vilex\Exceptions\ViewNaoEncontradaException
-     * @throws \Vilex\Exceptions\ContextoInvalidoException
+     * @throws PaginaMestraNaoEncontradaException
+     * @throws ViewNaoEncontradaException
+     * @throws ContextoInvalidoException
      */
     public function formNovaConfigSmtp(ServerRequestInterface $request): ResponseInterface
     {
         try {
             // View
-            $this->view->addTemplate('form_config_smtp', [
-                'titulo-pagina' => 'Nova configuração SMTP'
-            ]);
+            $this->view->addTemplate('emails/form_config_smtp');
+
+            // Parâmetros
+            $this->view->setAtributo('titulo-pagina', 'Nova configuração SMTP');
 
             // JS
             $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js');
@@ -121,7 +125,7 @@ class NovaConfigSmtpController extends SiteController
                 ->setResponderPara($responder_para)
                 ->setCorpoHtml($corpo_html);
 
-            /** @covers NovaConfigSmtpHandler */
+            /* @see \PainelDLX\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpHandler */
             $this->command_bus->handle(new NovaConfigSmtpCommand($config_smtp));
 
             $json['retorno'] = 'sucesso';

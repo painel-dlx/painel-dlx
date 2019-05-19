@@ -1,0 +1,144 @@
+<?php
+/**
+ * MIT License
+ *
+ * Copyright (c) 2018 PHP DLX
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+use DLX\Core\Configure;
+use PainelDLX\Domain\Usuarios\Entities\Usuario;
+use SechianeX\Factories\SessionFactory;
+use Vilex\PaginaMestra;
+use Vilex\VileX;
+
+/**
+ * @var PaginaMestra $this
+ */
+
+// TODO: pegar a sessão por atributo
+$session = SessionFactory::createPHPSession();
+
+/** @var Usuario|null $usuario */
+$usuario = $session->get('usuario-logado');
+?>
+
+<html lang="pt">
+<head>
+    <base href="<?php echo Configure::get('app', 'base-html') ?>">
+    <meta name="Content-type" content="text-html">
+    <meta name="charset" content="UTF-8">
+    <link rel="shortcut icon" type="image/png" href="<?php echo Configure::get('app', 'favicon') ?>">
+    <title><?php echo Configure::get('app', 'nome-amigavel') ?></title>
+
+    [ARQUIVOS-CSS/]
+    [HTML-HEAD/]
+</head>
+
+<body>
+
+<nav class="dlx-menu">
+    <?php if ($session->get('logado')) : ?>
+    <a href="javascript:" class="link-mostrar-menu" onclick="mostrarOuOcultarMenu()" title="CTRL + ALT + M para abrir o menu">
+        Mostrar Menu
+    </a>
+    <?php endif; ?>
+
+    <a href="/" class="logo-site">Painel-DLX</a>
+
+    <?php if ($session->get('logado')) : ?>
+    <div class="menu-principal">
+        <div class="menu-filtro">
+            <label>
+                <input type="search" id="filtrar-menu" class="form-controle">
+            </label>
+        </div>
+
+        <a href="javascript:" class="link-fechar-menu" onclick="ocultarMenu()" title="Fechar menu">X</a>
+
+        <?php foreach ($session->get('html:lista-menu') as $menu => $itens) :
+            if (count($itens)) : ?>
+            <div class="menu-item">
+                <span class="menu-link"><?php echo $menu ?></span>
+
+                <ul class="sub-menu">
+                    <?php foreach ($itens as $item) : ?>
+                        <li class="sub-menu-item">
+                            <a href="<?php echo $item['link'] ?>" class="sub-menu-link">
+                                <?php echo $item['item'] ?>
+                            </a>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+        <?php endif;
+        endforeach;
+
+        if ($usuario instanceof Usuario) : ?>
+            <div class="menu-item">
+                <span class="menu-link">Minha Conta</span>
+
+                <ul class="sub-menu">
+                    <li class="sub-menu-item">
+                        <a href="/painel-dlx/minha-conta" class="sub-menu-link">
+                            Meus dados
+                        </a>
+                    </li>
+
+                    <li class="sub-menu-item">
+                        <a href="/painel-dlx/alterar-minha-senha" class="sub-menu-link">
+                            Alterar minha senha
+                        </a>
+                    </li>
+
+                    <li class="sub-menu-item">
+                        <a href="javascript:" class="sub-menu-link" onclick="encerrarSessao()">
+                            Encerrar sessão
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        <?php endif ?>
+    </div>
+    <?php endif ?>
+</nav>
+
+<div class="wrapper">
+    <header class="dlx-topo">
+        [TOPO/]
+    </header>
+
+    <div class="dlx-conteudo">
+        [MENSAGEM-USUARIO/]
+        [CORPO/]
+    </div>
+
+    <footer class="dlx-rodape">
+        [RODAPE/]
+    </footer>
+</div>
+
+<div id="status-ajax"></div>
+
+<script src="/vendor/components/jquery/jquery.min.js"></script>
+[ARQUIVOS-JAVASCRIPT/]
+[SCRIPTS/]
+</body>
+</html>

@@ -26,6 +26,7 @@
 namespace PainelDLX\Application\Routes;
 
 
+use Exception;
 use PainelDLX\Application\Middlewares\Autorizacao;
 use PainelDLX\Application\Middlewares\DefinePaginaMestra;
 use PainelDLX\Application\Middlewares\VerificarLogon;
@@ -37,7 +38,7 @@ class GruposUsuariosRouter extends PainelDLXRouter
 
     /**
      * Registrar todas as rotas
-     * @throws \Exception
+     * @throws Exception
      */
     public function registrar(): void
     {

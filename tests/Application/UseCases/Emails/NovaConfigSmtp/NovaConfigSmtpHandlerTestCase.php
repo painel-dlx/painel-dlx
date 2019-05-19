@@ -27,8 +27,8 @@ namespace PainelDLX\Testes\Application\UseCases\Emails\NovaConfigSmtp;
 
 use DLX\Infra\EntityManagerX;
 use Doctrine\ORM\ORMException;
-use PainelDLX\Application\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpCommand;
-use PainelDLX\Application\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpHandler;
+use PainelDLX\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpCommand;
+use PainelDLX\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpHandler;
 use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
 use PainelDLX\Domain\Emails\Exceptions\AutentContaNaoInformadaException;
 use PainelDLX\Domain\Emails\Exceptions\AutentSenhaNaoInformadaException;

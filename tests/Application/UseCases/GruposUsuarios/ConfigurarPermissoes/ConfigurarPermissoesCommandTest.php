@@ -26,7 +26,7 @@
 namespace PainelDLX\Testes\Application\UseCases\GruposUsuarios\ConfigurarPermissoes;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use PainelDLX\Application\UseCases\GruposUsuarios\ConfigurarPermissoes\ConfigurarPermissoesCommand;
+use PainelDLX\UseCases\GruposUsuarios\ConfigurarPermissoes\ConfigurarPermissoesCommand;
 use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
 use PainelDLX\Testes\TestCase\PainelDLXTestCase;
 

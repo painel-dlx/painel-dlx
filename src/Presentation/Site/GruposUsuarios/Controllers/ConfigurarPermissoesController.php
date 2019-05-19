@@ -30,26 +30,30 @@ use DLX\Contracts\TransactionInterface;
 use DLX\Core\Exceptions\UserException;
 use Doctrine\Common\Collections\ArrayCollection;
 use League\Tactician\CommandBus;
-use PainelDLX\Application\UseCases\GruposUsuarios\ConfigurarPermissoes\ConfigurarPermissoesCommand;
-use PainelDLX\Application\UseCases\GruposUsuarios\GetGrupoUsuarioPorId\GetGrupoUsuarioPorIdCommand;
-use PainelDLX\Application\UseCases\GruposUsuarios\GetGrupoUsuarioPorId\GetGrupoUsuarioPorIdCommandHandler;
-use PainelDLX\Application\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommand;
-use PainelDLX\Application\UseCases\PermissoesUsuario\GetListaPermissaoUsuario\GetListaPermissaoUsuarioCommand;
-use PainelDLX\Application\UseCases\PermissoesUsuario\GetListaPermissaoUsuario\GetListaPermissaoUsuarioCommandHandler;
+use PainelDLX\UseCases\GruposUsuarios\ConfigurarPermissoes\ConfigurarPermissoesCommand;
+use PainelDLX\UseCases\GruposUsuarios\GetGrupoUsuarioPorId\GetGrupoUsuarioPorIdCommand;
+use PainelDLX\UseCases\GruposUsuarios\GetGrupoUsuarioPorId\GetGrupoUsuarioPorIdCommandHandler;
+use PainelDLX\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommand;
+use PainelDLX\UseCases\GruposUsuarios\ConfigurarPermissoes\ConfigurarPermissoesCommandHandler;
+use PainelDLX\UseCases\PermissoesUsuario\GetListaPermissaoUsuario\GetListaPermissaoUsuarioCommand;
+use PainelDLX\UseCases\PermissoesUsuario\GetListaPermissaoUsuario\GetListaPermissaoUsuarioCommandHandler;
 use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
-use PainelDLX\Presentation\Site\Controllers\SiteController;
+use PainelDLX\Presentation\Site\Common\Controllers\PainelDLXController;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use SechianeX\Contracts\SessionInterface;
+use Vilex\Exceptions\ContextoInvalidoException;
+use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
+use Vilex\Exceptions\ViewNaoEncontradaException;
 use Vilex\VileX;
 use Zend\Diactoros\Response\JsonResponse;
 
-class ConfigurarPermissoesController extends SiteController
+class ConfigurarPermissoesController extends PainelDLXController
 {
     /**
      * @var TransactionInterface
      */
-    private $transacao;
+    private $transaction;
     /**
      * @var SessionInterface
      */
@@ -70,53 +74,52 @@ class ConfigurarPermissoesController extends SiteController
     ) {
         parent::__construct($view, $commandBus);
 
-        $this->view->setPaginaMestra("src/Presentation/Site/public/views/paginas-mestras/{$session->get('vilex:pagina-mestra')}.phtml");
-        $this->view->setViewRoot('src/Presentation/Site/public/views/grupos-usuarios');
-        $this->transacao = $transacao;
+        $this->view->setPaginaMestra("public/views/paginas-mestras/{$session->get('vilex:pagina-mestra')}.phtml");
+        $this->view->setViewRoot('public/views/');
+        $this->transaction = $transacao;
         $this->session = $session;
     }
 
     /**
      * @param ServerRequestInterface $request
      * @return ResponseInterface
-     * @throws \Vilex\Exceptions\ContextoInvalidoException
-     * @throws \Vilex\Exceptions\PaginaMestraNaoEncontradaException
-     * @throws \Vilex\Exceptions\ViewNaoEncontradaException
+     * @throws ContextoInvalidoException
+     * @throws PaginaMestraNaoEncontradaException
+     * @throws ViewNaoEncontradaException
      */
     public function formConfigurarPermissao(ServerRequestInterface $request): ResponseInterface
     {
-        $grupo_usuario_id = filter_var($request->getQueryParams()['grupo_usuario_id'], FILTER_VALIDATE_INT);
+        $get = filter_var_array($request->getQueryParams(), [
+            'grupo_usuario_id' => FILTER_VALIDATE_INT
+        ]);
 
         try {
-            /**
-             * @var GrupoUsuario $grupo_usuario
-             * @covers GetGrupoUsuarioPorIdCommandHandler
-             */
-            $grupo_usuario = $this->command_bus->handle(new GetGrupoUsuarioPorIdCommand($grupo_usuario_id));
+            /** @var GrupoUsuario $grupo_usuario */
+            /* @see \PainelDLX\UseCases\GruposUsuarios\GetGrupoUsuarioPorId\GetGrupoUsuarioPorIdCommandHandler */
+            $grupo_usuario = $this->command_bus->handle(new GetGrupoUsuarioPorIdCommand($get['grupo_usuario_id']));
 
             if (!$grupo_usuario instanceof GrupoUsuario) {
                 throw new UserException('Grupo de Usuário não identificado.');
             }
 
+            /* @see GetListaPermissaoUsuarioCommandHandler */
             $lista_permissoes = $this->command_bus->handle(new GetListaPermissaoUsuarioCommand(
                 ['deletado' => false],
                 []
             ));
 
             // Views
-            $this->view->addTemplate('form_configurar_permissoes', [
-                'titulo-pagina' => "Gerenciar permissões: {$grupo_usuario->getNome()}",
-                'grupo-usuario' => $grupo_usuario,
-                'lista-permissoes' => $lista_permissoes
-            ]);
+            $this->view->addTemplate('grupos-usuarios/form_configurar_permissoes');
+
+            // Parâmetros
+            $this->view->setAtributo('titulo-pagina', "Gerenciar permissões: {$grupo_usuario->getNome()}");
+            $this->view->setAtributo('grupo-usuario', $grupo_usuario);
+            $this->view->setAtributo('lista-permissoes', $lista_permissoes);
 
             // JS
             $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js');
-
-            // Página mestra
-            //$this->view->setPaginaMestra('src/Presentation/Site/public/views/paginas-mestras/conteudo-master.phtml');
         } catch (UserException $e) {
-            $this->view->addTemplate('../mensagem_usuario');
+            $this->view->addTemplate('common/mensagem_usuario');
             $this->view->setAtributo('mensagem', [
                 'tipo' => 'erro',
                 'texto' => $e->getMessage()
@@ -147,25 +150,24 @@ class ConfigurarPermissoesController extends SiteController
         extract($post); unset($post);
 
         try {
-            /**
-             * @var GrupoUsuario $grupo_usuario
-             * @covers GetListaPermissaoUsuarioCommandHandler
-             */
+            /** @var GrupoUsuario $grupo_usuario */
+            /* @see \PainelDLX\UseCases\PermissoesUsuario\GetListaPermissaoUsuario\GetListaPermissaoUsuarioCommandHandler */
             $grupo_usuario = $this->command_bus->handle(new GetGrupoUsuarioPorIdCommand($grupo_usuario_id));
 
-            /** @covers GetListaPermissaoUsuarioCommandHandler */
+            /* @see GetListaPermissaoUsuarioCommandHandler */
             $lista_permissoes = new ArrayCollection($this->command_bus->handle(new GetListaPermissaoUsuarioCommand(
                 ['permissao_usuario_id' => $permissao_usuario_ids]
             )));
 
-            $this->transacao->begin();
-            $this->command_bus->handle(new ConfigurarPermissoesCommand($grupo_usuario, $lista_permissoes));
-            $this->transacao->commit();
+            $this->transaction->transactional(function () use ($grupo_usuario, $lista_permissoes) {
+                /* @see ConfigurarPermissoesCommandHandler */
+                $this->command_bus->handle(new ConfigurarPermissoesCommand($grupo_usuario, $lista_permissoes));
+            });
 
             $json['retorno'] = 'sucesso';
             $json['mensagem'] = 'Permissões salvas com sucesso!';
         } catch (UserException $e) {
-            $this->transacao->rollback();
+            $this->transaction->rollback();
 
             $json['retorno'] = 'erro';
             $json['mensagem'] = $e->getMessage();

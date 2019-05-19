@@ -28,21 +28,23 @@ namespace PainelDLX\Presentation\Site\Usuarios\Controllers;
 
 use DLX\Core\Exceptions\UserException;
 use League\Tactician\CommandBus;
-use PainelDLX\Application\UseCases\Login\FazerLogin\FazerLoginCommand;
-use PainelDLX\Application\UseCases\Login\FazerLogin\FazerLoginCommandHandler;
-use PainelDLX\Application\UseCases\Login\FazerLogout\FazerLogoutCommand;
-use PainelDLX\Application\UseCases\Login\FazerLogout\FazerLogoutCommandHandler;
-use PainelDLX\Application\UseCases\Modulos\GetListaMenu\GetListaMenuCommand;
-use PainelDLX\Application\UseCases\Modulos\GetListaMenu\GetListaMenuCommandHandler;
+use PainelDLX\UseCases\Login\FazerLogin\FazerLoginCommand;
+use PainelDLX\UseCases\Login\FazerLogin\FazerLoginCommandHandler;
+use PainelDLX\UseCases\Login\FazerLogout\FazerLogoutCommand;
+use PainelDLX\UseCases\Login\FazerLogout\FazerLogoutCommandHandler;
+use PainelDLX\UseCases\Modulos\GetListaMenu\GetListaMenuCommand;
+use PainelDLX\UseCases\Modulos\GetListaMenu\GetListaMenuCommandHandler;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
-use PainelDLX\Presentation\Site\Controllers\SiteController;
+use PainelDLX\Presentation\Site\Common\Controllers\PainelDLXController;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use SechianeX\Contracts\SessionInterface;
+use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
+use Vilex\Exceptions\ViewNaoEncontradaException;
 use Vilex\VileX;
 use Zend\Diactoros\Response\JsonResponse;
 
-class LoginController extends SiteController
+class LoginController extends PainelDLXController
 {
     /**
      * @var SessionInterface
@@ -62,16 +64,16 @@ class LoginController extends SiteController
     ) {
         parent::__construct($view, $commandBus);
 
-        $this->view->setPaginaMestra("src/Presentation/Site/public/views/paginas-mestras/{$session->get('vilex:pagina-mestra')}.phtml");
-        $this->view->setViewRoot('src/Presentation/Site/public/views/login');
+        $this->view->setPaginaMestra("public/views/paginas-mestras/{$session->get('vilex:pagina-mestra')}.phtml");
+        $this->view->setViewRoot('public/views/login');
         $this->session = $session;
     }
 
     /**
      * @param ServerRequestInterface $request
      * @return ResponseInterface
-     * @throws \Vilex\Exceptions\PaginaMestraNaoEncontradaException
-     * @throws \Vilex\Exceptions\ViewNaoEncontradaException
+     * @throws PaginaMestraNaoEncontradaException
+     * @throws ViewNaoEncontradaException
      */
     public function formLogin(ServerRequestInterface $request): ResponseInterface
     {

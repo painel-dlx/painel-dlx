@@ -25,7 +25,7 @@
 
 namespace PainelDLX\Testes\Application\UseCases\Emails\ExcluirConfigSmtp;
 
-use PainelDLX\Application\UseCases\Emails\ExcluirConfigSmtp\ExcluirConfigSmtpCommand;
+use PainelDLX\UseCases\Emails\ExcluirConfigSmtp\ExcluirConfigSmtpCommand;
 use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
 use PainelDLX\Testes\TestCase\PainelDLXTestCase;
 use PHPUnit\Framework\TestCase;

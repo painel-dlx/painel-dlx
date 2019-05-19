@@ -9,8 +9,8 @@
 namespace PainelDLX\Testes\Application\UseCases\Usuarios\GetUsuarioPeloId;
 
 use DLX\Infra\EntityManagerX;
-use PainelDLX\Application\UseCases\Usuarios\GetUsuarioPeloId\GetUsuarioPeloIdCommand;
-use PainelDLX\Application\UseCases\Usuarios\GetUsuarioPeloId\GetUsuarioPeloIdCommandHandler;
+use PainelDLX\UseCases\Usuarios\GetUsuarioPeloId\GetUsuarioPeloIdCommand;
+use PainelDLX\UseCases\Usuarios\GetUsuarioPeloId\GetUsuarioPeloIdCommandHandler;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
 use PainelDLX\Domain\Usuarios\Repositories\UsuarioRepositoryInterface;
 use PainelDLX\Testes\TestCase\PainelDLXTestCase;

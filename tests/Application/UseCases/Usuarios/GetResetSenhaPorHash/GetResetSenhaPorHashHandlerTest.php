@@ -27,9 +27,9 @@ namespace PainelDLX\Testes\Application\UseCases\Usuarios\GetResetSenhaPorHash;
 
 use DLX\Infra\EntityManagerX;
 use Doctrine\ORM\ORMException;
-use PainelDLX\Application\UseCases\Emails\GetConfigSmtpPorId\GetConfigSmtpPorIdCommandHandler;
-use PainelDLX\Application\UseCases\Usuarios\GetResetSenhaPorHash\GetResetSenhaPorHashCommand;
-use PainelDLX\Application\UseCases\Usuarios\GetResetSenhaPorHash\GetResetSenhaPorHashCommandHandler;
+use PainelDLX\UseCases\Emails\GetConfigSmtpPorId\GetConfigSmtpPorIdCommandHandler;
+use PainelDLX\UseCases\Usuarios\GetResetSenhaPorHash\GetResetSenhaPorHashCommand;
+use PainelDLX\UseCases\Usuarios\GetResetSenhaPorHash\GetResetSenhaPorHashCommandHandler;
 use PainelDLX\Domain\Usuarios\Entities\ResetSenha;
 use PainelDLX\Domain\Usuarios\Exceptions\UsuarioNaoEncontrado;
 use PainelDLX\Domain\Usuarios\Repositories\ResetSenhaRepositoryInterface;

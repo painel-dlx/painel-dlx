@@ -28,25 +28,31 @@ namespace PainelDLX\Presentation\Site\PermissoesUsuario\Controllers;
 
 use DLX\Core\Exceptions\UserException;
 use League\Tactician\CommandBus;
-use PainelDLX\Application\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommand;
-use PainelDLX\Application\UseCases\PermissoesUsuario\CadastrarPermissaoUsuario\CadastrarPermissaoUsuarioCommand;
-use PainelDLX\Application\UseCases\PermissoesUsuario\CadastrarPermissaoUsuario\CadastrarPermissaoUsuarioCommandHandler;
-use PainelDLX\Application\UseCases\PermissoesUsuario\EditarPermissaoUsuario\EditarPermissaoUsuarioCommand;
-use PainelDLX\Application\UseCases\PermissoesUsuario\EditarPermissaoUsuario\EditarPermissaoUsuarioCommandHandler;
-use PainelDLX\Application\UseCases\PermissoesUsuario\ExcluirPermissaoUsuario\ExcluirPermissaoUsuarioCommand;
-use PainelDLX\Application\UseCases\PermissoesUsuario\ExcluirPermissaoUsuario\ExcluirPermissaoUsuarioCommandHandler;
-use PainelDLX\Application\UseCases\PermissoesUsuario\GetListaPermissaoUsuario\GetListaPermissaoUsuarioCommand;
-use PainelDLX\Application\UseCases\PermissoesUsuario\GetListaPermissaoUsuario\GetListaPermissaoUsuarioCommandHandler;
+use PainelDLX\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommand;
+use PainelDLX\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommandHandler;
+use PainelDLX\UseCases\PermissoesUsuario\CadastrarPermissaoUsuario\CadastrarPermissaoUsuarioCommand;
+use PainelDLX\UseCases\PermissoesUsuario\CadastrarPermissaoUsuario\CadastrarPermissaoUsuarioCommandHandler;
+use PainelDLX\UseCases\PermissoesUsuario\EditarPermissaoUsuario\EditarPermissaoUsuarioCommand;
+use PainelDLX\UseCases\PermissoesUsuario\EditarPermissaoUsuario\EditarPermissaoUsuarioCommandHandler;
+use PainelDLX\UseCases\PermissoesUsuario\ExcluirPermissaoUsuario\ExcluirPermissaoUsuarioCommand;
+use PainelDLX\UseCases\PermissoesUsuario\ExcluirPermissaoUsuario\ExcluirPermissaoUsuarioCommandHandler;
+use PainelDLX\UseCases\PermissoesUsuario\GetListaPermissaoUsuario\GetListaPermissaoUsuarioCommand;
+use PainelDLX\UseCases\PermissoesUsuario\GetListaPermissaoUsuario\GetListaPermissaoUsuarioCommandHandler;
 use PainelDLX\Domain\PermissoesUsuario\Entities\PermissaoUsuario;
 use PainelDLX\Domain\PermissoesUsuario\Repositories\PermissaoUsuarioRepositoryInterface;
-use PainelDLX\Presentation\Site\Controllers\SiteController;
+use PainelDLX\Presentation\Site\Common\Controllers\PainelDLXController;
+use PainelDLX\UseCases\PermissoesUsuario\GetPermissaoUsuarioPorId\GetPermissaoUsuarioPorIdCommand;
+use PainelDLX\UseCases\PermissoesUsuario\GetPermissaoUsuarioPorId\GetPermissaoUsuarioPorIdCommandHandler;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use SechianeX\Contracts\SessionInterface;
+use Vilex\Exceptions\ContextoInvalidoException;
+use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
+use Vilex\Exceptions\ViewNaoEncontradaException;
 use Vilex\VileX;
 use Zend\Diactoros\Response\JsonResponse;
 
-class CadastroPermissaoController extends SiteController
+class CadastroPermissaoController extends PainelDLXController
 {
     /**
      * @var SessionInterface
@@ -68,8 +74,8 @@ class CadastroPermissaoController extends SiteController
     ) {
         parent::__construct($view, $commandBus);
 
-        $this->view->setPaginaMestra("src/Presentation/Site/public/views/paginas-mestras/{$session->get('vilex:pagina-mestra')}.phtml");
-        $this->view->setViewRoot('src/Presentation/Site/public/views/permissoes');
+        $this->view->setPaginaMestra("public/views/paginas-mestras/{$session->get('vilex:pagina-mestra')}.phtml");
+        $this->view->setViewRoot('public/views/');
 
         $this->repository = $permissao_usuario_repository;
         $this->session = $session;
@@ -78,9 +84,9 @@ class CadastroPermissaoController extends SiteController
     /**
      * @param ServerRequestInterface $request
      * @return ResponseInterface
-     * @throws \Vilex\Exceptions\ContextoInvalidoException
-     * @throws \Vilex\Exceptions\PaginaMestraNaoEncontradaException
-     * @throws \Vilex\Exceptions\ViewNaoEncontradaException
+     * @throws ContextoInvalidoException
+     * @throws PaginaMestraNaoEncontradaException
+     * @throws ViewNaoEncontradaException
      */
     public function listaPermissoesUsuarios(ServerRequestInterface $request): ResponseInterface
     {
@@ -90,16 +96,12 @@ class CadastroPermissaoController extends SiteController
         ]);
 
         try {
-            /**
-             * @var array $criteria
-             * @covers ConverterFiltro2CriteriaCommandHandler
-             */
+            /** @var array $criteria */
+            /* @see ConverterFiltro2CriteriaCommandHandler */
             $criteria = $this->command_bus->handle(new ConverterFiltro2CriteriaCommand($get['campos'], $get['busca']));
 
-            /**
-             * @var array $lista_permissoes
-             * @covers GetListaPermissaoUsuarioCommandHandler
-             */
+            /** @var array $lista_permissoes */
+            /* @see GetListaPermissaoUsuarioCommandHandler */
             $lista_permissoes = $this->command_bus->handle(new GetListaPermissaoUsuarioCommand($criteria));
 
             // Atributos
@@ -108,9 +110,9 @@ class CadastroPermissaoController extends SiteController
             $this->view->setAtributo('filtro', $get);
 
             // Views
-            $this->view->addTemplate('lista_permissoes');
+            $this->view->addTemplate('permissoes/lista_permissoes');
         } catch (UserException $e) {
-            $this->view->addTemplate('mensagem_usuario');
+            $this->view->addTemplate('common/mensagem_usuario');
             $this->view->setAtributo('mensagem', [
                 'tipo' => 'erro',
                 'mensagem' => $e->getMessage()
@@ -123,9 +125,9 @@ class CadastroPermissaoController extends SiteController
     /**
      * @param ServerRequestInterface $request
      * @return ResponseInterface
-     * @throws \Vilex\Exceptions\PaginaMestraNaoEncontradaException
-     * @throws \Vilex\Exceptions\ViewNaoEncontradaException
-     * @throws \Vilex\Exceptions\ContextoInvalidoException
+     * @throws PaginaMestraNaoEncontradaException
+     * @throws ViewNaoEncontradaException
+     * @throws ContextoInvalidoException
      */
     public function formNovaPermissaoUsuario(ServerRequestInterface $request): ResponseInterface
     {
@@ -134,12 +136,12 @@ class CadastroPermissaoController extends SiteController
             $this->view->setAtributo('titulo-pagina', 'Criar nova permissão');
 
             // Views
-            $this->view->addTemplate('form_nova_permissao');
+            $this->view->addTemplate('permissoes/form_nova_permissao');
 
             // JS
             $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js');
         } catch (UserException $e) {
-            $this->view->addTemplate('mensagem_usuario');
+            $this->view->addTemplate('common/mensagem_usuario');
             $this->view->setAtributo('mensagem', [
                 'tipo' => 'erro',
                 'mensagem' => $e->getMessage()
@@ -155,13 +157,10 @@ class CadastroPermissaoController extends SiteController
      */
     public function criarNovaPermissao(ServerRequestInterface $request): ResponseInterface
     {
-        $post = filter_var_array(
-            $request->getParsedBody(),
-            [
-                'alias' => FILTER_SANITIZE_STRING,
-                'descricao' => FILTER_SANITIZE_STRING
-            ]
-        );
+        $post = filter_var_array($request->getParsedBody(), [
+            'alias' => FILTER_SANITIZE_STRING,
+            'descricao' => FILTER_SANITIZE_STRING
+        ]);
 
         /**
          * @var string $alias
@@ -170,10 +169,8 @@ class CadastroPermissaoController extends SiteController
         extract($post); unset($post);
 
         try {
-            /**
-             * @var PermissaoUsuario $permissao_usuario
-             * @covers CadastrarPermissaoUsuarioCommandHandler
-             */
+            /** @var PermissaoUsuario $permissao_usuario */
+            /* @see CadastrarPermissaoUsuarioCommandHandler */
             $permissao_usuario = $this->command_bus->handle(new CadastrarPermissaoUsuarioCommand($alias, $descricao));
 
             $msg['retorno'] = 'sucesso';
@@ -190,16 +187,15 @@ class CadastroPermissaoController extends SiteController
     /**
      * @param ServerRequestInterface $request
      * @return ResponseInterface
-     * @throws \Vilex\Exceptions\ContextoInvalidoException
-     * @throws \Vilex\Exceptions\PaginaMestraNaoEncontradaException
-     * @throws \Vilex\Exceptions\ViewNaoEncontradaException
+     * @throws ContextoInvalidoException
+     * @throws PaginaMestraNaoEncontradaException
+     * @throws ViewNaoEncontradaException
      */
     public function formEditarPermissaoUsuario(ServerRequestInterface $request): ResponseInterface
     {
-        $get = filter_var_array(
-            $request->getQueryParams(),
-            ['permissao_usuario_id' => FILTER_VALIDATE_INT]
-        );
+        $get = filter_var_array($request->getQueryParams(), [
+            'permissao_usuario_id' => FILTER_VALIDATE_INT
+        ]);
 
         /**
          * @var int $permissao_usuario_id
@@ -208,15 +204,15 @@ class CadastroPermissaoController extends SiteController
 
         try {
             /** @var PermissaoUsuario $permissao_usuario */
-            $permissao_usuario = $this->repository->find($permissao_usuario_id);
+            /* @see GetPermissaoUsuarioPorIdCommandHandler */
+            $permissao_usuario = $this->command_bus->handle(new GetPermissaoUsuarioPorIdCommand($permissao_usuario_id));
 
             // Atributos
             $this->view->setAtributo('titulo-pagina', 'Editar permissão');
+            $this->view->setAtributo('permissao-usuario', $permissao_usuario);
 
             // Views
-            $this->view->addTemplate('form_editar_permissao', [
-                'permissao-usuario' => $permissao_usuario
-            ]);
+            $this->view->addTemplate('permissoes/form_editar_permissao');
 
             // JS
             $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js');
@@ -237,13 +233,10 @@ class CadastroPermissaoController extends SiteController
      */
     public function alterarPermissaoUsuario(ServerRequestInterface $request): ResponseInterface
     {
-        $post = filter_var_array(
-            $request->getParsedBody(),
-            [
-                'permissao_usuario_id' => FILTER_VALIDATE_INT,
-                'descricao' => FILTER_SANITIZE_STRING
-            ]
-        );
+        $post = filter_var_array($request->getParsedBody(), [
+            'permissao_usuario_id' => FILTER_VALIDATE_INT,
+            'descricao' => FILTER_SANITIZE_STRING
+        ]);
 
         /**
          * @var int $permissao_usuario_id
@@ -252,10 +245,8 @@ class CadastroPermissaoController extends SiteController
         extract($post); unset($post);
 
         try {
-            /**
-             * @var PermissaoUsuario $permissao_usuario
-             * @covers EditarPermissaoUsuarioCommandHandler
-             */
+            /** @var PermissaoUsuario $permissao_usuario */
+            /* @see EditarPermissaoUsuarioCommandHandler */
             $permissao_usuario = $this->command_bus->handle(new EditarPermissaoUsuarioCommand($permissao_usuario_id, $descricao));
 
             $msg['retorno'] = 'sucesso';
@@ -272,16 +263,15 @@ class CadastroPermissaoController extends SiteController
     /**
      * @param ServerRequestInterface $request
      * @return ResponseInterface
-     * @throws \Vilex\Exceptions\ContextoInvalidoException
-     * @throws \Vilex\Exceptions\PaginaMestraNaoEncontradaException
-     * @throws \Vilex\Exceptions\ViewNaoEncontradaException
+     * @throws ContextoInvalidoException
+     * @throws PaginaMestraNaoEncontradaException
+     * @throws ViewNaoEncontradaException
      */
     public function detalhePermissaoUsuario(ServerRequestInterface $request): ResponseInterface
     {
-        $get = filter_var_array(
-            $request->getQueryParams(),
-            ['permissao_usuario_id' => FILTER_VALIDATE_INT]
-        );
+        $get = filter_var_array($request->getQueryParams(), [
+            'permissao_usuario_id' => FILTER_VALIDATE_INT
+        ]);
 
         /**
          * @var int $permissao_usuario_id
@@ -289,8 +279,9 @@ class CadastroPermissaoController extends SiteController
         extract($get); unset($get);
 
         try {
-            /** @var PermissaoUsuario|null $permissao_usuario */
-            $permissao_usuario = $this->repository->find($permissao_usuario_id);
+            /** @var PermissaoUsuario $permissao_usuario */
+            /* @see GetPermissaoUsuarioPorIdCommandHandler */
+            $permissao_usuario = $this->command_bus->handle(new GetPermissaoUsuarioPorIdCommand($permissao_usuario_id));
 
             if (!$permissao_usuario instanceof PermissaoUsuario) {
                 throw new UserException('Permissão de usuário não encontrada.');
@@ -298,11 +289,10 @@ class CadastroPermissaoController extends SiteController
 
             // Atributos
             $this->view->setAtributo('titulo-pagina', "Permissão: {$permissao_usuario->getDescricao()}");
+            $this->view->setAtributo('permissao-usuario', $permissao_usuario);
 
             // Views
-            $this->view->addTemplate('det_permissao', [
-                'permissao-usuario' => $permissao_usuario
-            ]);
+            $this->view->addTemplate('det_permissao');
 
             // JS
             $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js');
@@ -323,10 +313,9 @@ class CadastroPermissaoController extends SiteController
      */
     public function excluirPermissaoUsuario(ServerRequestInterface $request): ResponseInterface
     {
-        $post = filter_var_array(
-            $request->getParsedBody(),
-            ['permissao_usuario_id' => FILTER_VALIDATE_INT]
-        );
+        $post = filter_var_array($request->getParsedBody(), [
+            'permissao_usuario_id' => FILTER_VALIDATE_INT
+        ]);
 
         /**
          * @var int $permissao_usuario_id
@@ -334,9 +323,7 @@ class CadastroPermissaoController extends SiteController
         extract($post); unset($post);
 
         try {
-            /**
-             * @covers ExcluirPermissaoUsuarioCommandHandler
-             */
+            /** @see ExcluirPermissaoUsuarioCommandHandler */
             $this->command_bus->handle(new ExcluirPermissaoUsuarioCommand($permissao_usuario_id));
 
             $msg['retorno'] = 'sucesso';

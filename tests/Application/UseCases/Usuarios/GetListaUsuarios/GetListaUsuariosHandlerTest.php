@@ -10,8 +10,8 @@ namespace PainelDLX\Testes\Application\UseCases\Usuarios\GetListaUsuarios;
 
 use DLX\Infra\EntityManagerX;
 use Doctrine\Common\Collections\ArrayCollection;
-use PainelDLX\Application\UseCases\Usuarios\GetListaUsuarios\GetListaUsuariosCommand;
-use PainelDLX\Application\UseCases\Usuarios\GetListaUsuarios\GetListaUsuariosCommandHandler;
+use PainelDLX\UseCases\Usuarios\GetListaUsuarios\GetListaUsuariosCommand;
+use PainelDLX\UseCases\Usuarios\GetListaUsuarios\GetListaUsuariosCommandHandler;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
 use PainelDLX\Domain\Usuarios\Repositories\UsuarioRepositoryInterface;
 use PainelDLX\Testes\TestCase\PainelDLXTestCase;

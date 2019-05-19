@@ -9,7 +9,8 @@
 namespace PainelDLX\Testes\Application\UseCases\Usuarios\EnviarEmailResetSenha;
 
 use DateTime;
-use PainelDLX\Application\UseCases\Usuarios\EnviarEmailResetSenha\EnviarEmailResetSenhaCommand;
+use Exception;
+use PainelDLX\UseCases\Usuarios\EnviarEmailResetSenha\EnviarEmailResetSenhaCommand;
 use PainelDLX\Domain\Usuarios\Entities\ResetSenha;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
 use PHPUnit\Framework\TestCase;
@@ -17,7 +18,7 @@ use PHPUnit\Framework\TestCase;
 class EnviarEmailResetSenhaCommandTest extends TestCase
 {
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function test_GetResetSenha()
     {

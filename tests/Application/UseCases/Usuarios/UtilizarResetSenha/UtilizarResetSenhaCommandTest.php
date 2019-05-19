@@ -25,7 +25,7 @@
 
 namespace PainelDLX\Testes\Application\UseCases\Usuarios\UtilizarResetSenha;
 
-use PainelDLX\Application\UseCases\Usuarios\UtilizarResetSenha\UtilizarResetSenhaCommand;
+use PainelDLX\UseCases\Usuarios\UtilizarResetSenha\UtilizarResetSenhaCommand;
 use PainelDLX\Domain\Usuarios\Entities\ResetSenha;
 use PHPUnit\Framework\TestCase;
 

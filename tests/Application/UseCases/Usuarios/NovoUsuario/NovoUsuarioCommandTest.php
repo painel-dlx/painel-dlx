@@ -25,7 +25,7 @@
 
 namespace PainelDLX\Testes\Application\UseCases\Usuarios\NovoUsuario;
 
-use PainelDLX\Application\UseCases\Usuarios\NovoUsuario\NovoUsuarioCommand;
+use PainelDLX\UseCases\Usuarios\NovoUsuario\NovoUsuarioCommand;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
 use PainelDLX\Testes\TestCase\PainelDLXTestCase;
 use PHPUnit\Framework\TestCase;

@@ -25,7 +25,7 @@
 
 namespace PainelDLX\Testes\Application\UseCases\Emails\GetConfigSmtpPorId;
 
-use PainelDLX\Application\UseCases\Emails\GetConfigSmtpPorId\GetConfigSmtpPorIdCommand;
+use PainelDLX\UseCases\Emails\GetConfigSmtpPorId\GetConfigSmtpPorIdCommand;
 use PainelDLX\Testes\TestCase\PainelDLXTestCase;
 
 class GetConfigSmtpPorIdCommandTestCase extends PainelDLXTestCase

@@ -28,26 +28,29 @@ namespace PainelDLX\Presentation\Site\Usuarios\Controllers;
 use DLX\Core\Exceptions\UserException;
 use Exception;
 use League\Tactician\CommandBus;
-use PainelDLX\Application\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommand;
-use PainelDLX\Application\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommandHandler;
-use PainelDLX\Application\UseCases\Usuarios\EditarUsuario\EditarUsuarioCommand;
-use PainelDLX\Application\UseCases\Usuarios\EditarUsuario\EditarUsuarioCommandHandler;
-use PainelDLX\Application\UseCases\Usuarios\ExcluirUsuario\ExcluirUsuarioCommand;
-use PainelDLX\Application\UseCases\Usuarios\ExcluirUsuario\ExcluirUsuarioCommandHandler;
-use PainelDLX\Application\UseCases\Usuarios\GetListaUsuarios\GetListaUsuariosCommand;
-use PainelDLX\Application\UseCases\Usuarios\GetListaUsuarios\GetListaUsuariosCommandHandler;
-use PainelDLX\Application\UseCases\Usuarios\GetUsuarioPeloId\GetUsuarioPeloIdCommand;
-use PainelDLX\Application\UseCases\Usuarios\GetUsuarioPeloId\GetUsuarioPeloIdCommandHandler;
-use PainelDLX\Application\UseCases\Usuarios\NovoUsuario\NovoUsuarioCommand;
-use PainelDLX\Application\UseCases\Usuarios\NovoUsuario\NovoUsuarioCommandHandler;
+use PainelDLX\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommand;
+use PainelDLX\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommandHandler;
+use PainelDLX\UseCases\Usuarios\EditarUsuario\EditarUsuarioCommand;
+use PainelDLX\UseCases\Usuarios\EditarUsuario\EditarUsuarioCommandHandler;
+use PainelDLX\UseCases\Usuarios\ExcluirUsuario\ExcluirUsuarioCommand;
+use PainelDLX\UseCases\Usuarios\ExcluirUsuario\ExcluirUsuarioCommandHandler;
+use PainelDLX\UseCases\Usuarios\GetListaUsuarios\GetListaUsuariosCommand;
+use PainelDLX\UseCases\Usuarios\GetListaUsuarios\GetListaUsuariosCommandHandler;
+use PainelDLX\UseCases\Usuarios\GetUsuarioPeloId\GetUsuarioPeloIdCommand;
+use PainelDLX\UseCases\Usuarios\GetUsuarioPeloId\GetUsuarioPeloIdCommandHandler;
+use PainelDLX\UseCases\Usuarios\NovoUsuario\NovoUsuarioCommand;
+use PainelDLX\UseCases\Usuarios\NovoUsuario\NovoUsuarioCommandHandler;
 use PainelDLX\Domain\GruposUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
 use PainelDLX\Domain\Usuarios\Repositories\UsuarioRepositoryInterface;
 use PainelDLX\Infra\ORM\Doctrine\Repositories\UsuarioRepository;
-use PainelDLX\Presentation\Site\Controllers\SiteController;
+use PainelDLX\Presentation\Site\Common\Controllers\PainelDLXController;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use SechianeX\Contracts\SessionInterface;
+use Vilex\Exceptions\ContextoInvalidoException;
+use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
+use Vilex\Exceptions\ViewNaoEncontradaException;
 use Vilex\VileX;
 use Zend\Diactoros\Response\JsonResponse;
 
@@ -56,7 +59,7 @@ use Zend\Diactoros\Response\JsonResponse;
  * @package PainelDLX\Presentation\Site\Controllers
  * @property UsuarioRepository $repository
  */
-class CadastroUsuarioController extends SiteController
+class CadastroUsuarioController extends PainelDLXController
 {
     /**
      * @var GrupoUsuarioRepositoryInterface
@@ -83,8 +86,8 @@ class CadastroUsuarioController extends SiteController
     ) {
         parent::__construct($view, $commandBus);
 
-        $this->view->setPaginaMestra("src/Presentation/Site/public/views/paginas-mestras/{$session->get('vilex:pagina-mestra')}.phtml");
-        $this->view->setViewRoot('src/Presentation/Site/public/views/usuarios');
+        $this->view->setPaginaMestra("public/views/paginas-mestras/{$session->get('vilex:pagina-mestra')}.phtml");
+        $this->view->setViewRoot('public/views/');
 
         $this->grupo_usuario_repository = $grupo_usuario_repository;
         $this->session = $session;
@@ -94,7 +97,7 @@ class CadastroUsuarioController extends SiteController
      * Listar os usuários existentes no banco de dados
      * @param ServerRequestInterface $request
      * @return ResponseInterface
-     * @throws \Vilex\Exceptions\PaginaMestraNaoEncontradaException
+     * @throws PaginaMestraNaoEncontradaException
      * @throws Exception
      */
     public function listaUsuarios(ServerRequestInterface $request): ResponseInterface
@@ -105,13 +108,11 @@ class CadastroUsuarioController extends SiteController
         ]);
 
         try {
-            /**
-             * @var array $criteria
-             * @covers ConverterFiltro2CriteriaCommandHandler
-             */
+            /** @var array $criteria */
+            /* @see ConverterFiltro2CriteriaCommandHandler */
             $criteria = $this->command_bus->handle(new ConverterFiltro2CriteriaCommand($get['campos'], $get['busca']));
 
-            /** @covers GetListaUsuariosCommandHandler */
+            /* @see GetListaUsuariosCommandHandler */
             $lista_usuarios = $this->command_bus->handle(new GetListaUsuariosCommand($criteria));
 
             // Atributos
@@ -120,9 +121,9 @@ class CadastroUsuarioController extends SiteController
             $this->view->setAtributo('filtro', $get);
 
             // Views
-            $this->view->addTemplate('lista_usuarios');
+            $this->view->addTemplate('usuarios/lista_usuarios');
         } catch (UserException $e) {
-            $this->view->addTemplate('mensagem_usuario');
+            $this->view->addTemplate('common/mensagem_usuario');
             $this->view->setAtributo('mensagem', [
                 'tipo' => 'erro',
                 'mensagem' => $e->getMessage()
@@ -146,12 +147,12 @@ class CadastroUsuarioController extends SiteController
             $this->view->setAtributo('lista_grupos', $lista_grupos);
 
             // Views
-            $this->view->addTemplate('form_novo_usuario');
+            $this->view->addTemplate('usuarios/form_novo_usuario');
 
             // JS
             $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js');
         } catch (UserException $e) {
-            $this->view->addTemplate('mensagem_usuario');
+            $this->view->addTemplate('common/mensagem_usuario');
             $this->view->setAtributo('mensagem', [
                 'tipo' => 'erro',
                 'mensagem' => $e->getMessage()
@@ -165,7 +166,7 @@ class CadastroUsuarioController extends SiteController
      * Cadastrar um novo usuário.
      * @param ServerRequestInterface $request
      * @return ResponseInterface
-     * @throws \Vilex\Exceptions\PaginaMestraNaoEncontradaException
+     * @throws PaginaMestraNaoEncontradaException
      */
     public function cadastrarNovoUsuario(ServerRequestInterface $request): ResponseInterface
     {
@@ -183,7 +184,7 @@ class CadastroUsuarioController extends SiteController
             $usuario = Usuario::create($nome, $email, ...$grupos)
                 ->setSenha($senha);
 
-            /** @covers NovoUsuarioCommandHandler */
+            /* @see NovoUsuarioCommandHandler */
             $this->command_bus->handle(new NovoUsuarioCommand($usuario, $senha_confirm));
 
             $msg['retorno'] = 'sucesso';
@@ -201,7 +202,7 @@ class CadastroUsuarioController extends SiteController
      * Mostrar formulário para alterar informações do usuário.
      * @param ServerRequestInterface $request
      * @return ResponseInterface
-     * @throws \Vilex\Exceptions\PaginaMestraNaoEncontradaException
+     * @throws PaginaMestraNaoEncontradaException
      * @throws Exception
      */
     public function formAlterarUsuario(ServerRequestInterface $request): ResponseInterface
@@ -209,10 +210,8 @@ class CadastroUsuarioController extends SiteController
         $get = filter_var_array($request->getQueryParams(), ['usuario_id' => FILTER_VALIDATE_INT]);
 
         try {
-            /**
-             * @var Usuario|null $usuario
-             * @covers GetUsuarioPeloIdCommandHandler
-             */
+            /** @var Usuario|null $usuario */
+            /* @see GetUsuarioPeloIdCommandHandler */
             $usuario = $this->command_bus->handle(new GetUsuarioPeloIdCommand($get['usuario_id']));
             $lista_grupos = $this->grupo_usuario_repository->findAtivos();
 
@@ -222,12 +221,12 @@ class CadastroUsuarioController extends SiteController
             $this->view->setAtributo('lista_grupos', $lista_grupos);
 
             // views
-            $this->view->addTemplate('form_alterar_usuario');
+            $this->view->addTemplate('usuarios/form_alterar_usuario');
 
             // JS
             $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js');
         } catch (UserException $e) {
-            $this->view->addTemplate('mensagem_usuario');
+            $this->view->addTemplate('common/mensagem_usuario');
             $this->view->setAtributo('mensagem', [
                 'tipo' => 'erro',
                 'mensagem' => $e->getMessage()
@@ -260,10 +259,8 @@ class CadastroUsuarioController extends SiteController
         extract($post); unset($post);
 
         try {
-            /**
-             * @var Usuario $usuario_atualizado
-             * @covers EditarUsuarioCommandHandler
-             */
+            /** @var Usuario $usuario_atualizado */
+            /* @see EditarUsuarioCommandHandler */
             $usuario_atualizado = $this->command_bus->handle(new EditarUsuarioCommand($usuario_id, $nome, $email, $grupos));
 
             $msg['retorno'] = 'sucesso';
@@ -277,18 +274,20 @@ class CadastroUsuarioController extends SiteController
         return new JsonResponse($msg);
     }
 
+    /**
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
+     */
     public function excluirUsuario(ServerRequestInterface $request): ResponseInterface
     {
         $post = filter_var_array($request->getParsedBody(), ['usuario_id' => FILTER_VALIDATE_INT]);
 
         try {
-            /**
-             * @var Usuario|null $usuario
-             * @covers GetUsuarioPeloIdCommandHandler
-             */
+            /** @var Usuario|null $usuario */
+            /* @see GetUsuarioPeloIdCommandHandler */
             $usuario = $this->command_bus->handle(new GetUsuarioPeloIdCommand($post['usuario_id']));
 
-            /** @covers ExcluirUsuarioCommandHandler */
+            /* @see ExcluirUsuarioCommandHandler */
             $this->command_bus->handle(new ExcluirUsuarioCommand($usuario));
 
             $msg['retorno'] = 'sucesso';
@@ -304,19 +303,17 @@ class CadastroUsuarioController extends SiteController
     /**
      * @param ServerRequestInterface $request
      * @return ResponseInterface
-     * @throws \Vilex\Exceptions\ContextoInvalidoException
-     * @throws \Vilex\Exceptions\ViewNaoEncontradaException
-     * @throws \Vilex\Exceptions\PaginaMestraNaoEncontradaException
+     * @throws ContextoInvalidoException
+     * @throws ViewNaoEncontradaException
+     * @throws PaginaMestraNaoEncontradaException
      */
     public function detalheUsuario(ServerRequestInterface $request): ResponseInterface
     {
         $get = filter_var_array($request->getQueryParams(), ['usuario_id' => FILTER_VALIDATE_INT]);
 
         try {
-            /**
-             * @var Usuario|null $usuario
-             * @covers GetUsuarioPeloIdCommandHandler
-             */
+            /** @var Usuario|null $usuario */
+            /* @see GetUsuarioPeloIdCommandHandler */
             $usuario = $this->command_bus->handle(new GetUsuarioPeloIdCommand($get['usuario_id']));
 
             // Atributos
@@ -325,9 +322,9 @@ class CadastroUsuarioController extends SiteController
             $this->view->setAtributo('is-usuario-logado', false);
 
             // views
-            $this->view->addTemplate('det_usuario');
+            $this->view->addTemplate('usuarios/det_usuario');
         } catch (UserException $e) {
-            $this->view->addTemplate('mensagem_usuario');
+            $this->view->addTemplate('common/mensagem_usuario');
             $this->view->setAtributo('mensagem', [
                 'tipo' => 'erro',
                 'mensagem' => $e->getMessage()

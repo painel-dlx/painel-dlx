@@ -38,7 +38,7 @@ return [
         'rotas' => include 'rotas.php',
         'service-providers' => include 'service_providers.php',
         'mapping' => include 'mapping.php',
-        'favicon' => '/src/Presentation/Site/public/imgs/favicon.png'
+        'favicon' => '/public/imgs/favicon.png'
     ],
 
     'bd' => [

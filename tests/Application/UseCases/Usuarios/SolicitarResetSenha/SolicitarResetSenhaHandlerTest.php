@@ -10,8 +10,8 @@ namespace PainelDLX\Testes\Application\UseCases\Usuarios\SolicitarResetSenha;
 
 use DLX\Infra\EntityManagerX;
 use Doctrine\ORM\ORMException;
-use PainelDLX\Application\UseCases\Usuarios\SolicitarResetSenha\SolicitarResetSenhaCommand;
-use PainelDLX\Application\UseCases\Usuarios\SolicitarResetSenha\SolicitarResetSenhaCommandHandler;
+use PainelDLX\UseCases\Usuarios\SolicitarResetSenha\SolicitarResetSenhaCommand;
+use PainelDLX\UseCases\Usuarios\SolicitarResetSenha\SolicitarResetSenhaCommandHandler;
 use PainelDLX\Domain\Usuarios\Entities\ResetSenha;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
 use PainelDLX\Domain\Usuarios\Exceptions\UsuarioNaoEncontrado;

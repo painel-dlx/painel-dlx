@@ -27,8 +27,8 @@ namespace PainelDLX\Testes\Application\UseCases\Usuarios\UtilizarResetSenha;
 
 use DLX\Infra\EntityManagerX;
 use Doctrine\ORM\ORMException;
-use PainelDLX\Application\UseCases\Usuarios\UtilizarResetSenha\UtilizarResetSenhaCommand;
-use PainelDLX\Application\UseCases\Usuarios\UtilizarResetSenha\UtilizarResetSenhaCommandHandler;
+use PainelDLX\UseCases\Usuarios\UtilizarResetSenha\UtilizarResetSenhaCommand;
+use PainelDLX\UseCases\Usuarios\UtilizarResetSenha\UtilizarResetSenhaCommandHandler;
 use PainelDLX\Domain\Usuarios\Entities\ResetSenha;
 use PainelDLX\Domain\Usuarios\Exceptions\UsuarioNaoEncontrado;
 use PainelDLX\Domain\Usuarios\Repositories\ResetSenhaRepositoryInterface;

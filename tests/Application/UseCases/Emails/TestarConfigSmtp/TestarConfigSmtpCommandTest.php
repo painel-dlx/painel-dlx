@@ -8,7 +8,7 @@
 
 namespace PainelDLX\Testes\Application\UseCases\Emails\TestarConfigSmtp;
 
-use PainelDLX\Application\UseCases\Emails\TestarConfigSmtp\TestarConfigSmtpCommand;
+use PainelDLX\UseCases\Emails\TestarConfigSmtp\TestarConfigSmtpCommand;
 use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
 use PainelDLX\Testes\TestCase\PainelDLXTestCase;
 

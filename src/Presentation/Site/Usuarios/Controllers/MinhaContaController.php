@@ -28,19 +28,24 @@ namespace PainelDLX\Presentation\Site\Usuarios\Controllers;
 
 use DLX\Core\Exceptions\UserException;
 use League\Tactician\CommandBus;
-use PainelDLX\Application\UseCases\Usuarios\AlterarSenhaUsuario\AlterarSenhaUsuarioCommand;
-use PainelDLX\Application\UseCases\Usuarios\GetUsuarioPeloId\GetUsuarioPeloIdCommand;
-use PainelDLX\Application\UseCases\Usuarios\GetUsuarioPeloId\GetUsuarioPeloIdCommandHandler;
+use PainelDLX\UseCases\Usuarios\AlterarSenhaUsuario\AlterarSenhaUsuarioCommand;
+use PainelDLX\UseCases\Usuarios\GetUsuarioPeloId\GetUsuarioPeloIdCommand;
+use PainelDLX\UseCases\Usuarios\GetUsuarioPeloId\GetUsuarioPeloIdCommandHandler;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
 use PainelDLX\Domain\Usuarios\ValueObjects\SenhaUsuario;
-use PainelDLX\Presentation\Site\Controllers\SiteController;
+use PainelDLX\Presentation\Site\Common\Controllers\PainelDLXController;
+use PainelDLX\UseCases\Usuarios\AlterarSenhaUsuario\AlterarSenhaUsuarioCommandHandler;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use SechianeX\Contracts\SessionInterface;
+use Vilex\Exceptions\ContextoInvalidoException;
+use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
+use Vilex\Exceptions\ViewNaoEncontradaException;
 use Vilex\VileX;
+use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Diactoros\Response\JsonResponse;
 
-class MinhaContaController extends SiteController
+class MinhaContaController extends PainelDLXController
 {
     /**
      * @var SessionInterface
@@ -64,8 +69,9 @@ class MinhaContaController extends SiteController
     ) {
         parent::__construct($view, $commandBus);
 
-        $this->view->setPaginaMestra("src/Presentation/Site/public/views/paginas-mestras/{$session->get('vilex:pagina-mestra')}.phtml");
-        $this->view->setViewRoot('src/Presentation/Site/public/views/usuarios');
+        $this->view->setPaginaMestra("public/views/paginas-mestras/{$session->get('vilex:pagina-mestra')}.phtml");
+        $this->view->setViewRoot('public/views/');
+
         $this->session = $session;
         $this->usuario_logado = $this->session->get('usuario-logado');
     }
@@ -73,23 +79,22 @@ class MinhaContaController extends SiteController
     /**
      * @param ServerRequestInterface $request
      * @return ResponseInterface
-     * @throws \Vilex\Exceptions\PaginaMestraNaoEncontradaException
-     * @throws \Vilex\Exceptions\ViewNaoEncontradaException
-     * @throws \Vilex\Exceptions\ContextoInvalidoException
+     * @throws PaginaMestraNaoEncontradaException
+     * @throws ViewNaoEncontradaException
+     * @throws ContextoInvalidoException
      */
     public function meusDados(ServerRequestInterface $request): ResponseInterface
     {
         try {
             // Atributos
             $this->view->setAtributo('titulo-pagina', $this->usuario_logado->getNome());
+            $this->view->setAtributo('usuario', $this->usuario_logado);
+            $this->view->setAtributo('is-usuario-logado', true);
 
             // Visão
-            $this->view->addTemplate('det_usuario', [
-                'usuario' => $this->usuario_logado,
-                'is-usuario-logado' => true
-            ]);
+            $this->view->addTemplate('usuarios/det_usuario');
         } catch (UserException $e) {
-            $this->view->addTemplate('../mensagem_usuario');
+            $this->view->addTemplate('common/mensagem_usuario');
             $this->view->setAtributo('mensagem', [
                 'tipo' => 'erro',
                 'texto' => $e->getMessage()
@@ -102,9 +107,9 @@ class MinhaContaController extends SiteController
     /**
      * @param ServerRequestInterface $request
      * @return ResponseInterface
-     * @throws \Vilex\Exceptions\ContextoInvalidoException
-     * @throws \Vilex\Exceptions\PaginaMestraNaoEncontradaException
-     * @throws \Vilex\Exceptions\ViewNaoEncontradaException
+     * @throws ContextoInvalidoException
+     * @throws PaginaMestraNaoEncontradaException
+     * @throws ViewNaoEncontradaException
      */
     public function formAlterarMinhaSenha(ServerRequestInterface $request): ResponseInterface
     {
@@ -114,12 +119,12 @@ class MinhaContaController extends SiteController
             $this->view->setAtributo('usuario', $this->usuario_logado);
 
             // Views
-            $this->view->addTemplate('form_alterar_senha');
+            $this->view->addTemplate('usuarios/form_alterar_senha');
 
             // JS
             $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js');
         } catch (UserException $e) {
-            $this->view->addTemplate('../mensagem_usuario');
+            $this->view->addTemplate('common/mensagem_usuario');
             $this->view->setAtributo('mensagem', [
                 'tipo' => 'erro',
                 'texto' => $e->getMessage()
@@ -149,16 +154,14 @@ class MinhaContaController extends SiteController
         extract($post); unset($post);
 
         try {
-            /**
-             * @var Usuario $usuario
-             * @covers GetUsuarioPeloIdCommandHandler
-             */
-            $usuario = $this->command_bus->handle(new GetUsuarioPeloIdCommand($this->usuario_logado->getUsuarioId()));
+            /** @var Usuario $usuario */
+            /* @see GetUsuarioPeloIdCommandHandler */
+            // $usuario = $this->command_bus->handle(new GetUsuarioPeloIdCommand($this->usuario_logado->getUsuarioId()));
 
             $senha_usuario = new SenhaUsuario($senha_nova, $senha_confirm, $senha_atual);
 
-            /** @covers AlterarSenhaUsuarioCommandHandler */
-            $this->command_bus->handle(new AlterarSenhaUsuarioCommand($usuario, $senha_usuario));
+            /* @see AlterarSenhaUsuarioCommandHandler */
+            $this->command_bus->handle(new AlterarSenhaUsuarioCommand($this->usuario_logado, $senha_usuario));
 
             $json['retorno'] = 'sucesso';
             $json['mensagem'] = 'Senha alterada com sucesso!';
@@ -171,20 +174,21 @@ class MinhaContaController extends SiteController
     }
 
     /**
-     * @return \Zend\Diactoros\Response\HtmlResponse
-     * @throws \Vilex\Exceptions\ContextoInvalidoException
-     * @throws \Vilex\Exceptions\PaginaMestraNaoEncontradaException
-     * @throws \Vilex\Exceptions\ViewNaoEncontradaException
+     * @return HtmlResponse
+     * @throws ContextoInvalidoException
+     * @throws PaginaMestraNaoEncontradaException
+     * @throws ViewNaoEncontradaException
      */
     public function resumoInformacoes(ServerRequestInterface $request): ResponseInterface
     {
         try {
             // Visão
-            $this->view->addTemplate('resumo_infos', [
-                'usuario' => $this->usuario_logado
-            ]);
+            $this->view->addTemplate('usuarios/resumo_infos');
+
+            // Parâmetros
+            $this->view->setAtributo('usuario', $this->usuario_logado);
         } catch (UserException $e) {
-            $this->view->addTemplate('../mensagem_usuario');
+            $this->view->addTemplate('common/mensagem_usuario');
             $this->view->setAtributo('mensagem', [
                 'tipo' => 'erro',
                 'texto' => $e->getMessage()

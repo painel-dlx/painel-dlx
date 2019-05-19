@@ -26,7 +26,7 @@
 namespace PainelDLX\Testes\Application\UseCases\Emails\EditarConfigSmtp;
 
 
-use PainelDLX\Application\UseCases\Emails\EditarConfigSmtp\EditarConfigSmtpCommand;
+use PainelDLX\UseCases\Emails\EditarConfigSmtp\EditarConfigSmtpCommand;
 use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
 use PainelDLX\Testes\TestCase\PainelDLXTestCase;
 

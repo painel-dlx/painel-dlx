@@ -28,17 +28,22 @@ namespace PainelDLX\Presentation\Site\Emails\Controllers;
 
 use DLX\Core\Exceptions\UserException;
 use League\Tactician\CommandBus;
-use PainelDLX\Application\UseCases\Emails\EditarConfigSmtp\EditarConfigSmtpCommand;
-use PainelDLX\Application\UseCases\Emails\GetConfigSmtpPorId\GetConfigSmtpPorIdCommand;
+use PainelDLX\UseCases\Emails\EditarConfigSmtp\EditarConfigSmtpCommand;
+use PainelDLX\UseCases\Emails\GetConfigSmtpPorId\GetConfigSmtpPorIdCommand;
+use PainelDLX\UseCases\Emails\GetConfigSmtpPorId\GetConfigSmtpPorIdCommandHandler;
 use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
-use PainelDLX\Presentation\Site\Controllers\SiteController;
+use PainelDLX\Presentation\Site\Common\Controllers\PainelDLXController;
+use PainelDLX\UseCases\Emails\EditarConfigSmtp\EditarConfigSmtpCommandHandler;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use SechianeX\Contracts\SessionInterface;
+use Vilex\Exceptions\ContextoInvalidoException;
+use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
+use Vilex\Exceptions\ViewNaoEncontradaException;
 use Vilex\VileX;
 use Zend\Diactoros\Response\JsonResponse;
 
-class EditarConfigSmtpController extends SiteController
+class EditarConfigSmtpController extends PainelDLXController
 {
     /**
      * @var SessionInterface
@@ -55,43 +60,44 @@ class EditarConfigSmtpController extends SiteController
     {
         parent::__construct($view, $commandBus);
 
-        $this->view->setPaginaMestra("src/Presentation/Site/public/views/paginas-mestras/{$session->get('vilex:pagina-mestra')}.phtml");
-        $this->view->setViewRoot('src/Presentation/Site/public/views/emails');
+        $this->view->setPaginaMestra("public/views/paginas-mestras/{$session->get('vilex:pagina-mestra')}.phtml");
+        $this->view->setViewRoot('public/views/');
         $this->session = $session;
     }
 
     /**
      * @param ServerRequestInterface $request
      * @return ResponseInterface
-     * @throws \Vilex\Exceptions\ContextoInvalidoException
-     * @throws \Vilex\Exceptions\PaginaMestraNaoEncontradaException
-     * @throws \Vilex\Exceptions\ViewNaoEncontradaException
+     * @throws ContextoInvalidoException
+     * @throws PaginaMestraNaoEncontradaException
+     * @throws ViewNaoEncontradaException
      */
     public function formEditarConfigSmtp(ServerRequestInterface $request): ResponseInterface
     {
-        $config_smtp_id = filter_var(
-            $request->getQueryParams()['config_smtp_id'],
-            FILTER_VALIDATE_INT
-        );
+        $get = filter_var_array($request->getQueryParams(), [
+            'config_smtp_id' => FILTER_VALIDATE_INT
+        ]);
 
         try {
             /** @var ConfigSmtp $config_smtp */
-            $config_smtp = $this->command_bus->handle(new GetConfigSmtpPorIdCommand($config_smtp_id));
+            /* @see GetConfigSmtpPorIdCommandHandler */
+            $config_smtp = $this->command_bus->handle(new GetConfigSmtpPorIdCommand($get['config_smtp_id']));
 
             if (is_null($config_smtp)) {
                 throw new UserException('Configuração SMTP não encontrada!');
             }
 
             // View
-            $this->view->addTemplate('form_config_smtp', [
-                'titulo-pagina' => "Editar configuração SMTP: {$config_smtp->getNome()}",
-                'config-smtp' => $config_smtp
-            ]);
+            $this->view->addTemplate('emails/form_config_smtp');
+
+            // Parâmetros
+            $this->view->setAtributo('titulo-pagina', "Editar configuração SMTP: {$config_smtp->getNome()}");
+            $this->view->setAtributo('config-smtp', $config_smtp);
 
             // JS
             $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js');
         } catch (UserException $e) {
-            $this->view->addTemplate('../mensagem_usuario');
+            $this->view->addTemplate('common/mensagem_usuario');
             $this->view->setAtributo('mensagem', [
                 'tipo' => 'erro',
                 'texto' => $e->getMessage()
@@ -137,6 +143,7 @@ class EditarConfigSmtpController extends SiteController
                 ->setResponderPara($responder_para)
                 ->setCorpoHtml($corpo_html);
 
+            /* @see EditarConfigSmtpCommandHandler */
             $this->command_bus->handle(new EditarConfigSmtpCommand($config_smtp));
 
             $json['retorno'] = 'sucesso';

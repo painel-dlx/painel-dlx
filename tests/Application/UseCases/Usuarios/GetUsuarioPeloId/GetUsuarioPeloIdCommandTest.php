@@ -8,7 +8,7 @@
 
 namespace PainelDLX\Testes\Application\UseCases\Usuarios\GetUsuarioPeloId;
 
-use PainelDLX\Application\UseCases\Usuarios\GetUsuarioPeloId\GetUsuarioPeloIdCommand;
+use PainelDLX\UseCases\Usuarios\GetUsuarioPeloId\GetUsuarioPeloIdCommand;
 use PHPUnit\Framework\TestCase;
 
 class GetUsuarioPeloIdCommandTest extends TestCase

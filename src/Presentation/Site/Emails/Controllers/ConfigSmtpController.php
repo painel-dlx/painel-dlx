@@ -28,25 +28,29 @@ namespace PainelDLX\Presentation\Site\Emails\Controllers;
 
 use DLX\Core\Exceptions\UserException;
 use League\Tactician\CommandBus;
-use PainelDLX\Application\UseCases\Emails\ExcluirConfigSmtp\ExcluirConfigSmtpCommand;
-use PainelDLX\Application\UseCases\Emails\ExcluirConfigSmtp\ExcluirConfigSmtpCommandHandler;
-use PainelDLX\Application\UseCases\Emails\GetConfigSmtpPorId\GetConfigSmtpPorIdCommand;
-use PainelDLX\Application\UseCases\Emails\GetConfigSmtpPorId\GetConfigSmtpPorIdCommandHandler;
-use PainelDLX\Application\UseCases\Emails\GetListaConfigSmtp\GetListaConfigSmtpCommand;
-use PainelDLX\Application\UseCases\Emails\GetListaConfigSmtp\GetListaConfigSmtpCommandHandler;
-use PainelDLX\Application\UseCases\Emails\TestarConfigSmtp\TestarConfigSmtpCommand;
-use PainelDLX\Application\UseCases\Emails\TestarConfigSmtp\TestarConfigSmtpHandler;
-use PainelDLX\Application\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommand;
+use PainelDLX\UseCases\Emails\ExcluirConfigSmtp\ExcluirConfigSmtpCommand;
+use PainelDLX\UseCases\Emails\ExcluirConfigSmtp\ExcluirConfigSmtpCommandHandler;
+use PainelDLX\UseCases\Emails\GetConfigSmtpPorId\GetConfigSmtpPorIdCommand;
+use PainelDLX\UseCases\Emails\GetConfigSmtpPorId\GetConfigSmtpPorIdCommandHandler;
+use PainelDLX\UseCases\Emails\GetListaConfigSmtp\GetListaConfigSmtpCommand;
+use PainelDLX\UseCases\Emails\GetListaConfigSmtp\GetListaConfigSmtpCommandHandler;
+use PainelDLX\UseCases\Emails\TestarConfigSmtp\TestarConfigSmtpCommand;
+use PainelDLX\UseCases\Emails\TestarConfigSmtp\TestarConfigSmtpHandler;
+use PainelDLX\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommand;
 use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
-use PainelDLX\Presentation\Site\Controllers\SiteController;
+use PainelDLX\Presentation\Site\Common\Controllers\PainelDLXController;
+use PainelDLX\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommandHandler;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use SechianeX\Contracts\SessionInterface;
+use Vilex\Exceptions\ContextoInvalidoException;
+use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
+use Vilex\Exceptions\ViewNaoEncontradaException;
 use Vilex\VileX;
 use Zend\Diactoros\Response\JsonResponse;
 
-class ConfigSmtpController extends SiteController
+class ConfigSmtpController extends PainelDLXController
 {
     /**
      * @var SessionInterface
@@ -63,17 +67,17 @@ class ConfigSmtpController extends SiteController
     {
         parent::__construct($view, $commandBus);
 
-        $this->view->setPaginaMestra("src/Presentation/Site/public/views/paginas-mestras/{$session->get('vilex:pagina-mestra')}.phtml");
-        $this->view->setViewRoot('src/Presentation/Site/public/views/emails');
+        $this->view->setPaginaMestra("public/views/paginas-mestras/{$session->get('vilex:pagina-mestra')}.phtml");
+        $this->view->setViewRoot('public/views/');
         $this->session = $session;
     }
 
     /**
      * @param ServerRequestInterface $request
      * @return ResponseInterface
-     * @throws \Vilex\Exceptions\ContextoInvalidoException
-     * @throws \Vilex\Exceptions\PaginaMestraNaoEncontradaException
-     * @throws \Vilex\Exceptions\ViewNaoEncontradaException
+     * @throws ContextoInvalidoException
+     * @throws PaginaMestraNaoEncontradaException
+     * @throws ViewNaoEncontradaException
      */
     public function detalheConfigSmtp(ServerRequestInterface $request): ResponseInterface
     {
@@ -81,15 +85,17 @@ class ConfigSmtpController extends SiteController
 
         try {
             /** @var ConfigSmtp $config_smtp */
+            /* @see \PainelDLX\UseCases\Emails\GetConfigSmtpPorId\GetConfigSmtpPorIdCommandHandler */
             $config_smtp = $this->command_bus->handle(new GetConfigSmtpPorIdCommand($config_smtp_id));
 
             // View
-            $this->view->addTemplate('det_config_smtp', [
-                'titulo-pagina' => "Configuração SMTP: {$config_smtp->getNome()}",
-                'config-smtp' => $config_smtp
-            ]);
+            $this->view->addTemplate('emails/det_config_smtp');
+
+            // Parâmetros
+            $this->view->setAtributo('titulo-pagina', "Configuração SMTP: {$config_smtp->getNome()}");
+            $this->view->setAtributo('config-smtp', $config_smtp);
         } catch (UserException $e) {
-            $this->view->addTemplate('../mensagem_usuario');
+            $this->view->addTemplate('common/mensagem_usuario');
             $this->view->setAtributo('mensagem', [
                 'tipo' => 'erro',
                 'texto' => $e->getMessage()
@@ -102,9 +108,9 @@ class ConfigSmtpController extends SiteController
     /**
      * @param ServerRequestInterface $request
      * @return ResponseInterface
-     * @throws \Vilex\Exceptions\ContextoInvalidoException
-     * @throws \Vilex\Exceptions\PaginaMestraNaoEncontradaException
-     * @throws \Vilex\Exceptions\ViewNaoEncontradaException
+     * @throws ContextoInvalidoException
+     * @throws PaginaMestraNaoEncontradaException
+     * @throws ViewNaoEncontradaException
      */
     public function listaConfigSmtp(ServerRequestInterface $request): ResponseInterface
     {
@@ -114,29 +120,26 @@ class ConfigSmtpController extends SiteController
         ]);
 
         try {
-            /**
-             * @var array $criteria
-             * @covers ConverterFiltro2CriteriaCommandHandler
-             */
+            /** @var array $criteria */
+            /* @see ConverterFiltro2CriteriaCommandHandler */
             $criteria = $this->command_bus->handle(new ConverterFiltro2CriteriaCommand($get['campos'], $get['busca']));
 
-            /**
-             * @var array $lista_config_smtp
-             * @covers GetListaConfigSmtpCommandHandler
-             */
+            /** @var array $lista_config_smtp */
+            /* @see \PainelDLX\UseCases\Emails\GetListaConfigSmtp\GetListaConfigSmtpCommandHandler */
             $lista_config_smtp = $this->command_bus->handle(new GetListaConfigSmtpCommand($criteria));
 
             // View
-            $this->view->addTemplate('lista_config_smtp', [
-                'titulo-pagina' => 'Configurações SMTP',
-                'lista-config-smtp' => $lista_config_smtp,
-                'filtro' => $get
-            ]);
+            $this->view->addTemplate('emails/lista_config_smtp');
+
+            // Parâmetros
+            $this->view->setAtributo('titulo-pagina', 'Configurações SMTP');
+            $this->view->setAtributo('lista-config-smtp', $lista_config_smtp);
+            $this->view->setAtributo('filtro', $get);
 
             // JS
             $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js');
         } catch (UserException $e) {
-            $this->view->addTemplate('../mensagem_usuario');
+            $this->view->addTemplate('common/mensagem_usuario');
             $this->view->setAtributo('mensagem', [
                 'tipo' => 'erro',
                 'texto' => $e->getMessage()
@@ -156,9 +159,10 @@ class ConfigSmtpController extends SiteController
 
         try {
             /** @var ConfigSmtp $config_smtp */
+            /* @see GetConfigSmtpPorIdCommandHandler */
             $config_smtp = $this->command_bus->handle(new GetConfigSmtpPorIdCommand($config_smtp_id));
 
-            /** @covers ExcluirConfigSmtpCommandHandler */
+            /* @see ExcluirConfigSmtpCommandHandler */
             $this->command_bus->handle(new ExcluirConfigSmtpCommand($config_smtp));
 
             $json['retorno'] = 'sucesso';
@@ -194,11 +198,9 @@ class ConfigSmtpController extends SiteController
             /** @var Usuario $usuario */
             $usuario = $this->session->get('usuario-logado');
 
-            /**
-             * @var ConfigSmtp|null $config_smtp
-             * @covers GetConfigSmtpPorIdCommandHandler
-             */
-            $config_smtp = $this->command_bus->handle(new GetConfigSmtpPorIdCommand($get['config_smtp_id']));
+            /** @var ConfigSmtp|null $config_smtp */
+            /* @see \PainelDLX\UseCases\Emails\GetConfigSmtpPorId\GetConfigSmtpPorIdCommandHandler */
+            $config_smtp = $this->command_bus->handle(new GetConfigSmtpPorIdCommand((int)$get['config_smtp_id']));
 
             if (is_null($config_smtp)) {
                 $config_smtp = new ConfigSmtp($post['servidor'], $post['porta']);
@@ -212,7 +214,7 @@ class ConfigSmtpController extends SiteController
                     ->setCorpoHtml($post['corpo_html']);
             }
 
-            /** @covers TestarConfigSmtpHandler */
+            /* @see TestarConfigSmtpHandler */
             $this->command_bus->handle(new TestarConfigSmtpCommand($config_smtp, $usuario->getEmail()));
 
             $json['retorno'] = 'sucesso';

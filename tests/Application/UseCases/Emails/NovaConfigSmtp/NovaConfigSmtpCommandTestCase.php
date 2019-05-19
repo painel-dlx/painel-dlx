@@ -25,7 +25,7 @@
 
 namespace PainelDLX\Testes\Application\UseCases\Emails\NovaConfigSmtp;
 
-use PainelDLX\Application\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpCommand;
+use PainelDLX\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpCommand;
 use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
 use PainelDLX\Testes\TestCase\PainelDLXTestCase;
 use PHPUnit\Framework\TestCase;

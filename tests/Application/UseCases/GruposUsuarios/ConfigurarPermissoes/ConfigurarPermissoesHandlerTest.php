@@ -28,8 +28,8 @@ namespace PainelDLX\Testes\Application\UseCases\GruposUsuarios\ConfigurarPermiss
 use DLX\Infra\EntityManagerX;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\ORMException;
-use PainelDLX\Application\UseCases\GruposUsuarios\ConfigurarPermissoes\ConfigurarPermissoesCommand;
-use PainelDLX\Application\UseCases\GruposUsuarios\ConfigurarPermissoes\ConfigurarPermissoesCommandHandler;
+use PainelDLX\UseCases\GruposUsuarios\ConfigurarPermissoes\ConfigurarPermissoesCommand;
+use PainelDLX\UseCases\GruposUsuarios\ConfigurarPermissoes\ConfigurarPermissoesCommandHandler;
 use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
 use PainelDLX\Domain\GruposUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
 use PainelDLX\Domain\PermissoesUsuario\Entities\PermissaoUsuario;

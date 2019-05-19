@@ -8,17 +8,19 @@
 
 namespace PainelDLX\Testes\Application\UseCases\Emails\TestarConfigSmtp;
 
-use PainelDLX\Application\UseCases\Emails\TestarConfigSmtp\TestarConfigSmtpCommand;
-use PainelDLX\Application\UseCases\Emails\TestarConfigSmtp\TestarConfigSmtpHandler;
+use PainelDLX\Application\Services\Exceptions\ErroAoEnviarEmailException;
+use PainelDLX\UseCases\Emails\TestarConfigSmtp\TestarConfigSmtpCommand;
+use PainelDLX\UseCases\Emails\TestarConfigSmtp\TestarConfigSmtpHandler;
 use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
+use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPUnit\Framework\TestCase;
 
 class TestarConfigSmtpHandlerTest extends TestCase
 {
     /**
-     * @throws \PHPMailer\PHPMailer\Exception
-     * @throws \PainelDLX\Application\Services\Exceptions\ErroAoEnviarEmailException
+     * @throws Exception
+     * @throws ErroAoEnviarEmailException
      */
     public function test_Handle_config_smtp_gmail()
     {

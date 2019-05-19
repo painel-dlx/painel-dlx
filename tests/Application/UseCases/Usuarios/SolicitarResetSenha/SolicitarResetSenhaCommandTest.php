@@ -8,7 +8,7 @@
 
 namespace PainelDLX\Testes\Application\UseCases\Usuarios\SolicitarResetSenha;
 
-use PainelDLX\Application\UseCases\Usuarios\SolicitarResetSenha\SolicitarResetSenhaCommand;
+use PainelDLX\UseCases\Usuarios\SolicitarResetSenha\SolicitarResetSenhaCommand;
 use PainelDLX\Testes\TestCase\PainelDLXTestCase;
 use PHPUnit\Framework\TestCase;
 

@@ -27,23 +27,30 @@ namespace PainelDLX\Presentation\Site\GruposUsuarios\Controllers;
 
 
 use DLX\Core\Exceptions\UserException;
+use Exception;
 use League\Tactician\CommandBus;
-use PainelDLX\Application\UseCases\GruposUsuarios\EditarGrupoUsuario\EditarGrupoUsuarioCommand;
-use PainelDLX\Application\UseCases\GruposUsuarios\EditarGrupoUsuario\EditarGrupoUsuarioCommandHandler;
-use PainelDLX\Application\UseCases\GruposUsuarios\ExcluirGrupoUsuario\ExcluirGrupoUsuarioCommand;
-use PainelDLX\Application\UseCases\GruposUsuarios\ExcluirGrupoUsuario\ExcluirGrupoUsuarioCommandHandler;
-use PainelDLX\Application\UseCases\GruposUsuarios\GetListaGruposUsuarios\GetListaGruposUsuariosCommandHandler;
-use PainelDLX\Application\UseCases\GruposUsuarios\GetListaGruposUsuarios\GetListaGruposUsuariosCommand;
-use PainelDLX\Application\UseCases\GruposUsuarios\NovoGrupoUsuario\NovoGrupoUsuarioCommand;
-use PainelDLX\Application\UseCases\GruposUsuarios\NovoGrupoUsuario\NovoGrupoUsuarioCommandHandler;
-use PainelDLX\Application\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommand;
+use PainelDLX\UseCases\GruposUsuarios\EditarGrupoUsuario\EditarGrupoUsuarioCommand;
+use PainelDLX\UseCases\GruposUsuarios\EditarGrupoUsuario\EditarGrupoUsuarioCommandHandler;
+use PainelDLX\UseCases\GruposUsuarios\ExcluirGrupoUsuario\ExcluirGrupoUsuarioCommand;
+use PainelDLX\UseCases\GruposUsuarios\ExcluirGrupoUsuario\ExcluirGrupoUsuarioCommandHandler;
+use PainelDLX\UseCases\GruposUsuarios\GetGrupoUsuarioPorId\GetGrupoUsuarioPorIdCommand;
+use PainelDLX\UseCases\GruposUsuarios\GetGrupoUsuarioPorId\GetGrupoUsuarioPorIdCommandHandler;
+use PainelDLX\UseCases\GruposUsuarios\GetListaGruposUsuarios\GetListaGruposUsuariosCommandHandler;
+use PainelDLX\UseCases\GruposUsuarios\GetListaGruposUsuarios\GetListaGruposUsuariosCommand;
+use PainelDLX\UseCases\GruposUsuarios\NovoGrupoUsuario\NovoGrupoUsuarioCommand;
+use PainelDLX\UseCases\GruposUsuarios\NovoGrupoUsuario\NovoGrupoUsuarioCommandHandler;
+use PainelDLX\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommand;
 use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
 use PainelDLX\Domain\GruposUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
 use PainelDLX\Infra\ORM\Doctrine\Repositories\GrupoUsuarioRepository;
-use PainelDLX\Presentation\Site\Controllers\SiteController;
+use PainelDLX\Presentation\Site\Common\Controllers\PainelDLXController;
+use PainelDLX\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommandHandler;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use SechianeX\Contracts\SessionInterface;
+use Vilex\Exceptions\ContextoInvalidoException;
+use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
+use Vilex\Exceptions\ViewNaoEncontradaException;
 use Vilex\VileX;
 use Zend\Diactoros\Response\JsonResponse;
 
@@ -52,7 +59,7 @@ use Zend\Diactoros\Response\JsonResponse;
  * @package PainelDLX\Presentation\Site\Controllers
  * @property GrupoUsuarioRepository $repository
  */
-class GrupoUsuarioController extends SiteController
+class GrupoUsuarioController extends PainelDLXController
 {
     /**
      * @var SessionInterface
@@ -69,15 +76,13 @@ class GrupoUsuarioController extends SiteController
     public function __construct(
         VileX $view,
         CommandBus $command_bus,
-        GrupoUsuarioRepositoryInterface $grupo_usuario_repository,
         SessionInterface $session
     ) {
         parent::__construct($view, $command_bus);
 
-        $this->view->setPaginaMestra("src/Presentation/Site/public/views/paginas-mestras/{$session->get('vilex:pagina-mestra')}.phtml");
-        $this->view->setViewRoot('src/Presentation/Site/public/views/grupos-usuarios');
+        $this->view->setPaginaMestra("public/views/paginas-mestras/{$session->get('vilex:pagina-mestra')}.phtml");
+        $this->view->setViewRoot('public/views/');
 
-        $this->repository = $grupo_usuario_repository;
         $this->session = $session;
     }
 
@@ -85,8 +90,8 @@ class GrupoUsuarioController extends SiteController
      * Mostrar a lista com os usuários
      * @param ServerRequestInterface $request
      * @return ResponseInterface
-     * @throws \Vilex\Exceptions\PaginaMestraNaoEncontradaException
-     * @throws \Exception
+     * @throws PaginaMestraNaoEncontradaException
+     * @throws Exception
      */
     public function listaGruposUsuarios(ServerRequestInterface $request): ResponseInterface
     {
@@ -96,16 +101,12 @@ class GrupoUsuarioController extends SiteController
         ]);
 
         try {
-            /**
-             * @var array $criteria
-             * @covers ConverterFiltro2CriteriaCommandHandler
-             */
+            /** @var array $criteria */
+            /* @see ConverterFiltro2CriteriaCommandHandler */
             $criteria = $this->command_bus->handle(new ConverterFiltro2CriteriaCommand($get['campos'], $get['busca']));
 
-            /**
-             * @var array $lista_grupos_usuarios
-             * @covers GetListaGruposUsuariosCommandHandler
-             */
+            /** @var array $lista_grupos_usuarios */
+            /* @see \PainelDLX\UseCases\GruposUsuarios\GetListaGruposUsuarios\GetListaGruposUsuariosCommandHandler */
             $lista_grupos_usuarios = $this->command_bus->handle(new GetListaGruposUsuariosCommand($criteria));
 
             // Atributos
@@ -114,9 +115,9 @@ class GrupoUsuarioController extends SiteController
             $this->view->setAtributo('filtro', $get);
 
             // Views
-            $this->view->addTemplate('lista_grupos_usuarios');
+            $this->view->addTemplate('grupos-usuarios/lista_grupos_usuarios');
         } catch (UserException $e) {
-            $this->view->addTemplate('../mensagem_usuario');
+            $this->view->addTemplate('common/mensagem_usuario');
             $this->view->setAtributo('mensagem', [
                 'tipo' => 'erro',
                 'texto' => $e->getMessage()
@@ -128,7 +129,7 @@ class GrupoUsuarioController extends SiteController
 
     /**
      * @return ResponseInterface
-     * @throws \Exception
+     * @throws Exception
      */
     public function formNovoGrupoUsuario(): ResponseInterface
     {
@@ -137,7 +138,7 @@ class GrupoUsuarioController extends SiteController
             $this->view->setAtributo('titulo-pagina', 'Adicionar novo grupo de usuário');
 
             // Views
-            $this->view->addTemplate('form_novo_grupo_usuario');
+            $this->view->addTemplate('grupos-usuarios/form_novo_grupo_usuario');
 
             // JS
             $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js');
@@ -153,7 +154,7 @@ class GrupoUsuarioController extends SiteController
     }
 
     /**
-     * Cadastrar um novo usuário.
+     * Cadastrar um novo grupo de usuário.
      * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
@@ -165,16 +166,14 @@ class GrupoUsuarioController extends SiteController
         extract($request->getParsedBody());
 
         try {
-            /**
-             * @var GrupoUsuario $grupo_usuario
-             * @covers NovoGrupoUsuarioCommandHandler
-             */
+            /** @var GrupoUsuario $grupo_usuario */
+            /* @see NovoGrupoUsuarioCommandHandler */
             $grupo_usuario = $this->command_bus->handle(new NovoGrupoUsuarioCommand($nome));
 
             $msg['retorno'] = 'sucesso';
             $msg['mensagem'] = 'Grupo de usuário cadastrado com sucesso!';
             $msg['grupo_usuario'] = $grupo_usuario->getGrupoUsuarioId();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $msg['retorno'] = 'erro';
             $msg['mensagem'] = $e->getMessage();
         }
@@ -186,8 +185,8 @@ class GrupoUsuarioController extends SiteController
      * Mostrar o formulário para alterar as informações de um grupo de usuário
      * @param ServerRequestInterface $request
      * @return ResponseInterface
-     * @throws \Vilex\Exceptions\PaginaMestraNaoEncontradaException
-     * @throws \Exception
+     * @throws PaginaMestraNaoEncontradaException
+     * @throws Exception
      */
     public function formAlterarGrupoUsuario(ServerRequestInterface $request): ResponseInterface
     {
@@ -198,14 +197,15 @@ class GrupoUsuarioController extends SiteController
 
         try {
             /** @var GrupoUsuario $grupo_usuario */
-            $grupo_usuario = $this->repository->find($grupo_usuario_id);
+            /* @see GetGrupoUsuarioPorIdCommandHandler */
+            $grupo_usuario = $this->command_bus->handle(new GetGrupoUsuarioPorIdCommand($grupo_usuario_id));
 
             // Atributos
             $this->view->setAtributo('titulo-pagina', 'Atualizar informações do grupo de usuário');
             $this->view->setAtributo('grupo_usuario', $grupo_usuario);
 
-            // views
-            $this->view->addTemplate('form_alterar_grupo_usuario');
+            // Views
+            $this->view->addTemplate('grupos-usuarios/form_alterar_grupo_usuario');
 
             // JS
             $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js');
@@ -234,18 +234,14 @@ class GrupoUsuarioController extends SiteController
         extract($request->getParsedBody());
 
         try {
-            /**
-             * @var GrupoUsuario $grupo_usuario_atualizado
-             * @covers EditarGrupoUsuarioCommandHandler
-             */
-            $grupo_usuario_atualizado = $this->command_bus->handle(
-                new EditarGrupoUsuarioCommand($grupo_usuario_id, $nome)
-            );
+            /** @var GrupoUsuario $grupo_usuario_atualizado */
+            /* @see \PainelDLX\UseCases\GruposUsuarios\EditarGrupoUsuario\EditarGrupoUsuarioCommandHandler */
+            $grupo_usuario_atualizado = $this->command_bus->handle(new EditarGrupoUsuarioCommand($grupo_usuario_id, $nome));
 
             $msg['retorno'] = 'sucesso';
             $msg['mensagem'] = 'Grupo de usuário atualizado com sucesso!';
             $msg['grupo_usuario'] = $grupo_usuario_atualizado->getGrupoUsuarioId();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $msg['retorno'] = 'erro';
             $msg['mensagem'] = $e->getMessage();
         }
@@ -266,12 +262,12 @@ class GrupoUsuarioController extends SiteController
         extract($request->getParsedBody());
 
         try {
-            /** @covers ExcluirGrupoUsuarioCommandHandler */
+            /* @see \PainelDLX\UseCases\GruposUsuarios\ExcluirGrupoUsuario\ExcluirGrupoUsuarioCommandHandler */
             $this->command_bus->handle(new ExcluirGrupoUsuarioCommand($grupo_usuario_id));
 
             $msg['retorno'] = 'sucesso';
             $msg['mensagem'] = 'Grupo de usuário excluído com sucesso!';
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $msg['retorno'] = 'erro';
             $msg['mensagem'] = $e->getMessage();
         }
@@ -282,9 +278,9 @@ class GrupoUsuarioController extends SiteController
     /**
      * @param ServerRequestInterface $request
      * @return ResponseInterface
-     * @throws \Vilex\Exceptions\ContextoInvalidoException
-     * @throws \Vilex\Exceptions\PaginaMestraNaoEncontradaException
-     * @throws \Vilex\Exceptions\ViewNaoEncontradaException
+     * @throws ContextoInvalidoException
+     * @throws PaginaMestraNaoEncontradaException
+     * @throws ViewNaoEncontradaException
      */
     public function detalheGrupoUsuario(ServerRequestInterface $request): ResponseInterface
     {
@@ -295,14 +291,15 @@ class GrupoUsuarioController extends SiteController
 
         try {
             /** @var GrupoUsuario $usuario */
-            $grupo_usuario = $this->repository->find($grupo_usuario_id);
+            /* @see GetGrupoUsuarioPorIdCommandHandler */
+            $grupo_usuario = $this->command_bus->handle(new GetGrupoUsuarioPorIdCommand($grupo_usuario_id));
 
             // Atributos
             $this->view->setAtributo('titulo-pagina', "Grupo de Usuário: {$grupo_usuario->getNome()}");
             $this->view->setAtributo('grupo-usuario', $grupo_usuario);
 
             // views
-            $this->view->addTemplate('det_grupo_usuario');
+            $this->view->addTemplate('grupos-usuarios/det_grupo_usuario');
         } catch (UserException $e) {
             $this->view->addTemplate('mensagem_usuario');
             $this->view->setAtributo('mensagem', [

@@ -25,7 +25,7 @@
 
 namespace PainelDLX\Testes\Application\UseCases\ListaRegistros\ConverterFiltro2Criteria;
 
-use PainelDLX\Application\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommand;
+use PainelDLX\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommand;
 use PainelDLX\Testes\TestCase\PainelDLXTestCase;
 
 class ConverterFiltro2CriteriaCommandTest extends PainelDLXTestCase

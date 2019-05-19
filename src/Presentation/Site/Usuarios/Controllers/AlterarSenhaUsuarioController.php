@@ -28,15 +28,20 @@ namespace PainelDLX\Presentation\Site\Usuarios\Controllers;
 
 use DLX\Core\Exceptions\UserException;
 use League\Tactician\CommandBus;
-use PainelDLX\Application\UseCases\Usuarios\AlterarSenhaUsuario\AlterarSenhaUsuarioCommand;
+use PainelDLX\UseCases\Usuarios\AlterarSenhaUsuario\AlterarSenhaUsuarioCommand;
+use PainelDLX\UseCases\Usuarios\GetUsuarioPeloId\GetUsuarioPeloIdCommand;
+use PainelDLX\UseCases\Usuarios\GetUsuarioPeloId\GetUsuarioPeloIdCommandHandler;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
 use PainelDLX\Domain\Usuarios\Exceptions\UsuarioNaoEncontrado;
 use PainelDLX\Domain\Usuarios\Repositories\UsuarioRepositoryInterface;
 use PainelDLX\Domain\Usuarios\ValueObjects\SenhaUsuario;
-use PainelDLX\Presentation\Site\Controllers\SiteController;
+use PainelDLX\Presentation\Site\Common\Controllers\PainelDLXController;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use SechianeX\Contracts\SessionInterface;
+use Vilex\Exceptions\ContextoInvalidoException;
+use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
+use Vilex\Exceptions\ViewNaoEncontradaException;
 use Vilex\VileX;
 use Zend\Diactoros\Response\JsonResponse;
 
@@ -45,7 +50,7 @@ use Zend\Diactoros\Response\JsonResponse;
  * @package PainelDLX\Presentation\Site\Controllers
  * @property UsuarioRepositoryInterface repository
  */
-class AlterarSenhaUsuarioController extends SiteController
+class AlterarSenhaUsuarioController extends PainelDLXController
 {
     /**
      * @var SessionInterface
@@ -56,30 +61,27 @@ class AlterarSenhaUsuarioController extends SiteController
      * AlterarSenhaUsuarioController constructor.
      * @param VileX $view
      * @param CommandBus $commandBus
-     * @param UsuarioRepositoryInterface $usuario_repository
      * @param SessionInterface $session
      */
     public function __construct(
         VileX $view,
         CommandBus $commandBus,
-        UsuarioRepositoryInterface $usuario_repository,
         SessionInterface $session
     ) {
         parent::__construct($view, $commandBus);
 
-        $this->view->setPaginaMestra("src/Presentation/Site/public/views/paginas-mestras/{$session->get('vilex:pagina-mestra')}.phtml");
-        $this->view->setViewRoot('src/Presentation/Site/public/views');
+        $this->view->setPaginaMestra("public/views/paginas-mestras/{$session->get('vilex:pagina-mestra')}.phtml");
+        $this->view->setViewRoot('public/views/');
 
-        $this->repository = $usuario_repository;
         $this->session = $session;
     }
 
     /**
      * @param ServerRequestInterface $request
      * @return ResponseInterface
-     * @throws \Vilex\Exceptions\ContextoInvalidoException
-     * @throws \Vilex\Exceptions\PaginaMestraNaoEncontradaException
-     * @throws \Vilex\Exceptions\ViewNaoEncontradaException
+     * @throws ContextoInvalidoException
+     * @throws PaginaMestraNaoEncontradaException
+     * @throws ViewNaoEncontradaException
      */
     public function formAlterarSenha(ServerRequestInterface $request): ResponseInterface
     {
@@ -89,19 +91,20 @@ class AlterarSenhaUsuarioController extends SiteController
 
         try {
             /** @var Usuario $usuario */
-            $usuario = $this->repository->find($get['usuario_id']);
+            /* @see GetUsuarioPeloIdCommandHandler */
+            $usuario = $this->command_bus->handle(new GetUsuarioPeloIdCommand($get['usuario_id']));
 
             // Atributos
             $this->view->setAtributo('titulo-pagina', 'Alterar senha');
             $this->view->setAtributo('usuario', $usuario);
 
             // Views
-            $this->view->addTemplate('form_alterar_senha');
+            $this->view->addTemplate('usuarios/form_alterar_senha');
 
             // JS
             $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js');
         } catch (UserException $e) {
-            $this->view->addTemplate('../mensagem_usuario');
+            $this->view->addTemplate('common/mensagem_usuario');
             $this->view->setAtributo('mensagem', [
                 'tipo' => 'erro',
                 'texto' => $e->getMessage()
@@ -134,7 +137,8 @@ class AlterarSenhaUsuarioController extends SiteController
 
         try {
             /** @var Usuario $usuario */
-            $usuario = $this->repository->find($usuario_id);
+            /* @see GetUsuarioPeloIdCommandHandler */
+            $usuario = $this->command_bus->handle(new GetUsuarioPeloIdCommand($post['usuario_id']));
 
             if (!$usuario instanceof Usuario) {
                 throw new UsuarioNaoEncontrado();
