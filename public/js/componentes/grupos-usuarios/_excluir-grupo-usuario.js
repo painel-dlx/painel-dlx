@@ -12,12 +12,12 @@ function excluirGrupoUsuario(grupo_usuario_id) {
             dataType: 'json',
             success: function (json, status, xhr) {
                 if (json.retorno === 'sucesso') {
-                    window.ajaxMsg.add(json.mensagem, json.retorno, xhr.id);
+                    msgUsuario.adicionar(json.mensagem, json.retorno, xhr.id);
                     window.location.reload();
                     return;
                 }
 
-                window.ajaxMsg.mostrarMsgAjax(json.mensagem, json.retorno, xhr.id);
+                msgUsuario.mostrar(json.mensagem, json.retorno, xhr.id);
             }
         });
     }

@@ -7,7 +7,7 @@ function testarConfigSmtp(config_smtp_id) {
         '/painel-dlx/config-smtp/testar',
         {config_smtp_id: config_smtp_id},
         function (json, status, xhr) {
-            window.ajaxMsg.mostrarMsgAjax(json.mensagem, json.retorno, xhr.id);
+            msgUsuario.mostrar(json.mensagem, json.retorno, xhr.id);
         },
         'json'
     );

@@ -103,7 +103,7 @@ $lista_grupos = $this->getAtributo('lista_grupos');
     $('#form-usuario').formAjax({
         validar_invisiveis: true,
         func_depois: function(json, status, xhr) {
-            window.ajaxMsg.mostrarMsgAjax(json.mensagem, json.retorno, xhr.id);
+            msgUsuario.mostrar(json.mensagem, json.retorno, xhr.id);
         }
     });
 </script>

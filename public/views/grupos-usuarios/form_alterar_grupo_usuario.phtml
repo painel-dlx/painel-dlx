@@ -84,7 +84,7 @@ $grupo_usuario = $this->getAtributo('grupo_usuario');
 <script>
     $('#form-grupo-usuario').formAjax({
         func_depois: function (json, form, xhr) {
-            window.ajaxMsg.mostrarMsgAjax(json.mensagem, json.retorno, xhr.id);
+            msgUsuario.mostrar(json.mensagem, json.retorno, xhr.id);
         }
     });
 </script>

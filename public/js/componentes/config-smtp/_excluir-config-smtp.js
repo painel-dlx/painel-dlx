@@ -9,7 +9,7 @@ function excluirConfigSmtp(config_smtp_id) {
             '/painel-dlx/config-smtp/excluir-config-smtp',
             {config_smtp_id: config_smtp_id},
             function(json, status, xhr) {
-                window.ajaxMsg.add(json.mensagem, json.retorno, xhr.id);
+                msgUsuario.adicionar(json.mensagem, json.retorno, xhr.id);
 
                 if (json.retorno === 'sucesso') {
                     window.location.reload();

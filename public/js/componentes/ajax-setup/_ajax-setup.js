@@ -1,5 +1,5 @@
 // Configuração ajax: mostrar mensagem em cada requisição AJAX via jQuery
-window.ajaxMsg = {
+var msgUsuario = {
     msgs: {},
 
     init: function () {
@@ -13,7 +13,7 @@ window.ajaxMsg = {
         return ajax_msg;
     },
 
-    add: function (mensagem, tipo, id) {
+    adicionar: function (mensagem, tipo, id) {
         this.msgs[tipo] = typeof this.msgs[tipo] === 'undefined' ? [] : this.msgs[tipo];
         this.msgs[tipo].push({mensagem: mensagem, id: id});
 
@@ -31,7 +31,7 @@ window.ajaxMsg = {
     exibir: function (tipo, index) {
         var obj_msg = this.msgs[tipo][index];
 
-        this.mostrarMsgAjax(obj_msg.mensagem, tipo, obj_msg.id);
+        this.mostrar(obj_msg.mensagem, tipo, obj_msg.id);
 
         this.msgs[tipo].splice(index, 1);
         this.salvar();
@@ -41,7 +41,7 @@ window.ajaxMsg = {
         window.sessionStorage.setItem('ajax-msg', JSON.stringify(this.msgs));
     },
 
-    mostrarMsgAjax: function (mensagem, tipo, id) {
+    mostrar: function (mensagem, tipo, id) {
         id = id || this.uuid();
         var $ajax_msg = $('#' + id);
 
@@ -91,8 +91,8 @@ window.ajaxMsg = {
     }
 };
 
-window.ajaxMsg.init();
-window.ajaxMsg.exibirTodas();
+msgUsuario.init();
+msgUsuario.exibirTodas();
 
 $.ajaxSetup({
     global: true,
@@ -100,13 +100,13 @@ $.ajaxSetup({
         var $origem = $(document.activeElement);
         var msg = $origem.data('ajax-msg') || 'Carregando, por favor aguarde.';
 
-        xhr.id = window.ajaxMsg.uuid();
-        window.ajaxMsg.mostrarMsgAjax(msg, 'processando', xhr.id);
+        xhr.id = msgUsuario.uuid();
+        msgUsuario.mostrar(msg, 'processando', xhr.id);
     },
 
     error: function (xhr) {
         var msg = 'ERRO ' + xhr.status + ' - ' + xhr.statusText + ': ' + xhr.responseText;
-        window.ajaxMsg.mostrarMsgAjax(msg, 'erro', xhr.id);
+        msgUsuario.mostrar(msg, 'erro', xhr.id);
     },
 
     complete: function (xhr) {

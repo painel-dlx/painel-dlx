@@ -121,11 +121,11 @@ $config_smtp = $this->getAtributo('config-smtp') ?? new ConfigSmtp()
     $('#form-config-smtp').formAjax({
         func_depois: function (json, form, xhr) {
             if (json.retorno === 'sucesso') {
-                window.ajaxMsg.add(json.mensagem, json.retorno, xhr.id);
+                msgUsuario.adicionar(json.mensagem, json.retorno, xhr.id);
                 window.location = '/painel-dlx/config-smtp/editar?config_smtp_id=' + json.config_smtp_id;
             }
 
-            window.ajaxMsg.mostrarMsgAjax(json.mensagem, json.retorno, xhr.id);
+            msgUsuario.mostrar(json.mensagem, json.retorno, xhr.id);
         }
     });
 

@@ -95,12 +95,12 @@ $lista_permissoes = $this->getAtributo('lista-permissoes');
     $('#form-config-permissoes').formAjax({
         func_depois: function (json, form, xhr) {
             if (json.retorno === 'sucesso') {
-                window.ajaxMsg.add(json.mensagem, json.retorno, xhr.id);
+                msgUsuario.adicionar(json.mensagem, json.retorno, xhr.id);
                 window.location.reload();
                 return;
             }
 
-            window.ajaxMsg.mostrarMsgAjax(json.mensagem, json.retorno, xhr.id);
+            msgUsuario.mostrar(json.mensagem, json.retorno, xhr.id);
         }
     });
 </script>

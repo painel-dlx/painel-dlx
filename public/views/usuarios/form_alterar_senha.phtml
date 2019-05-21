@@ -73,12 +73,12 @@ $usuario = $this->getAtributo('usuario');
     $('#form-alterar-senha').formAjax({
         func_depois: function (json, form, xhr) {
             if (json.retorno === 'sucesso') {
-                window.ajaxMsg.add(json.mensagem, json.retorno, xhr.id);
+                msgUsuario.adicionar(json.mensagem, json.retorno, xhr.id);
                 window.location = '/painel-dlx/minha-conta';
                 return;
             }
 
-            window.ajaxMsg.mostrarMsgAjax(json.mensagem, json.retorno, xhr.id);
+            msgUsuario.mostrar(json.mensagem, json.retorno, xhr.id);
         }
     });
 </script>
