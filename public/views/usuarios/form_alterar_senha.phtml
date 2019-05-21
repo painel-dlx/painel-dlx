@@ -61,13 +61,25 @@ $usuario = $this->getAtributo('usuario');
     </p>
 
     <p class="form-botoes">
-        <button type="submit" class="botao-alterar-senha">Alterar senha</button>
+        <button type="submit" class="botao-alterar-senha" data-ajax-msg="Alterando a sua senha.<br>Por favor aguarde...">
+            Alterar senha
+        </button>
     </p>
 </form>
 [/CORPO]
 
 [SCRIPTS]
 <script>
-    $('#form-alterar-senha').formAjax();
+    $('#form-alterar-senha').formAjax({
+        func_depois: function (json, form, xhr) {
+            if (json.retorno === 'sucesso') {
+                window.ajaxMsg.add(json.mensagem, json.retorno, xhr.id);
+                window.location = '/painel-dlx/minha-conta';
+                return;
+            }
+
+            window.ajaxMsg.mostrarMsgAjax(json.mensagem, json.retorno, xhr.id);
+        }
+    });
 </script>
 [/SCRIPTS]

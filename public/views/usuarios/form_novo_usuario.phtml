@@ -89,7 +89,9 @@ $lista_grupos = $this->getAtributo('lista_grupos')
         </fieldset>
 
         <p class="form-botoes">
-            <button type="submit" class="botao-salvar">Salvar</button>
+            <button type="submit" class="botao-salvar" data-ajax-msg="Salvando informações do usuário.<br>Por favor aguarde...">
+                Salvar
+            </button>
         </p>
     </form>
 </div>
@@ -97,6 +99,15 @@ $lista_grupos = $this->getAtributo('lista_grupos')
 
 [SCRIPTS]
 <script>
-    $('#form-usuario').formAjax();
+    $('#form-usuario').formAjax({
+        func_depois: function (json, form, xhr) {
+            if (json.retorno === 'sucesso') {
+                window.ajaxMsg.add(json.mensagem, json.retorno, xhr.id);
+                window.location = '/painel-dlx/usuarios/editar?usuario_id=' + json.usuario_id;
+            }
+
+            window.ajaxMsg.mostrarMsgAjax(json.mensagem, json.retorno, xhr.id);
+        }
+    });
 </script>
 [/SCRIPTS]

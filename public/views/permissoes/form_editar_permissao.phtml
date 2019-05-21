@@ -67,6 +67,10 @@ $permissao_usuario = $this->getAtributo('permissao-usuario');
 
 [SCRIPTS]
 <script>
-    $('#form-permissao').formAjax();
+    $('#form-permissao').formAjax({
+        func_depois: function (json, form, xhr) {
+            window.ajaxMsg.mostrarMsgAjax(json.mensagem, json.retorno, xhr.id);
+        }
+    });
 </script>
 [/SCRIPTS]

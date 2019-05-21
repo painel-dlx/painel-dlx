@@ -172,7 +172,7 @@ class GrupoUsuarioController extends PainelDLXController
 
             $msg['retorno'] = 'sucesso';
             $msg['mensagem'] = 'Grupo de usuário cadastrado com sucesso!';
-            $msg['grupo_usuario'] = $grupo_usuario->getGrupoUsuarioId();
+            $msg['grupo_usuario_id'] = $grupo_usuario->getGrupoUsuarioId();
         } catch (Exception $e) {
             $msg['retorno'] = 'erro';
             $msg['mensagem'] = $e->getMessage();
@@ -240,7 +240,7 @@ class GrupoUsuarioController extends PainelDLXController
 
             $msg['retorno'] = 'sucesso';
             $msg['mensagem'] = 'Grupo de usuário atualizado com sucesso!';
-            $msg['grupo_usuario'] = $grupo_usuario_atualizado->getGrupoUsuarioId();
+            $msg['grupo_usuario_id'] = $grupo_usuario_atualizado->getGrupoUsuarioId();
         } catch (Exception $e) {
             $msg['retorno'] = 'erro';
             $msg['mensagem'] = $e->getMessage();

@@ -1,107 +1,117 @@
 // Configuração ajax: mostrar mensagem em cada requisição AJAX via jQuery
-(function ($) {
-    $.fn.getSelector = function () {
-        var $this = $(this);
-        var jqSelector = '';
+window.ajaxMsg = {
+    msgs: {},
 
-        if (typeof $this.attr('id') !== 'undefined') {
-            jqSelector += '#' + $this.attr('id');
-        } else if (typeof $this.attr('class') !== 'undefined') {
-            jqSelector += '.' + $this.attr('class').replace(/\s+/g, '.');
-        }
+    init: function () {
+        this.msgs = this.parse();
+    },
 
-        return jqSelector;
-    };
+    parse: function () {
+        var ajax_msg = window.sessionStorage.getItem('ajax-msg') || '{}';
+        ajax_msg = JSON.parse(ajax_msg);
 
-    $.getSelector = function (dom) {
-        return $(dom).getSelector();
-    };
+        return ajax_msg;
+    },
 
-    $.ajaxSetup({
-        global: true,
-        beforeSend: function (xhr, options) {
-            if (!/\.(js|css)$/.test(options.url)) {
-                options.context = document.activeElement;
-                var $origem = $(options.context);
-                var msg = $origem.data('ajax-msg') || 'Carregando, por favor aguarde.';
+    add: function (mensagem, tipo, id) {
+        this.msgs[tipo] = typeof this.msgs[tipo] === 'undefined' ? [] : this.msgs[tipo];
+        this.msgs[tipo].push({mensagem: mensagem, id: id});
 
-                var $msg = $(document.createElement('div'))
-                    .addClass('status-ajax-msg')
-                    .addClass('-processando')
-                    .attr('data-ajax-origem', $origem.getSelector())
-                    .appendTo($('#status-ajax'));
+        this.salvar();
+    },
 
-                $(document.createElement('a'))
-                    .addClass('status-ajax-texto')
-                    .html(msg)
-                    .appendTo($msg);
-
-                $(document.createElement('a'))
-                    .addClass('status-ajax-fechar')
-                    .text('x')
-                    .attr({
-                        href: 'javascript:',
-                        title: 'Fechar'
-                    })
-                    .on('click', function () {
-                        $(this).parents('.status-ajax-msg').fadeOut('fast', function () {
-                            $(this).remove();
-                        });
-                    })
-                    .appendTo($msg);
+    exibirTodas: function () {
+        for (var tipo in this.msgs) {
+            for (var i in this.msgs[tipo]) {
+                this.exibir(tipo, i);
             }
         }
-    });
+    },
 
-    $(document).ajaxSuccess(function (event, xhr, options) {
-        var $status_ajax_msg = $('#status-ajax [data-ajax-origem="' + $.getSelector(options.context) + '"]');
-        var json, retorno, mensagem;
+    exibir: function (tipo, index) {
+        var obj_msg = this.msgs[tipo][index];
 
-        if (typeof xhr.responseJSON === 'undefined') {
-            try {
-                json = JSON.parse(xhr.responseText);
-                retorno = json.retorno;
-                mensagem = json.mensagem;
-            } catch (e) {
-                // retorno = 'sucesso';
-                // mensagem = xhr.responseText;
+        this.mostrarMsgAjax(obj_msg.mensagem, tipo, obj_msg.id);
 
-                $status_ajax_msg.fadeOut('fast', function () {
+        this.msgs[tipo].splice(index, 1);
+        this.salvar();
+    },
+
+    salvar: function () {
+        window.sessionStorage.setItem('ajax-msg', JSON.stringify(this.msgs));
+    },
+
+    mostrarMsgAjax: function (mensagem, tipo, id) {
+        id = id || this.uuid();
+        var $ajax_msg = $('#' + id);
+
+        if ($ajax_msg.length > 0) {
+            $ajax_msg
+                .removeClass('-processando')
+                .addClass('-' + tipo)
+                .find('.status-ajax-texto')
+                .html(mensagem);
+            return true;
+        }
+
+        var $msg = $(document.createElement('div'))
+            .addClass('status-ajax-msg')
+            .addClass('-' + tipo)
+            .attr('id', id)
+            .appendTo($('#status-ajax'));
+
+        $(document.createElement('a'))
+            .addClass('status-ajax-texto')
+            .html(mensagem)
+            .appendTo($msg);
+
+        $(document.createElement('a'))
+            .addClass('status-ajax-fechar')
+            .text('x')
+            .attr({
+                href: 'javascript:',
+                title: 'Fechar'
+            })
+            .on('click', function () {
+                $(this).parents('.status-ajax-msg').fadeOut('fast', function () {
                     $(this).remove();
                 });
+            })
+            .appendTo($msg);
 
-                return false;
-            }
-        } else {
-            json = xhr.responseJSON;
-            retorno = json.retorno;
-            mensagem = json.mensagem;
-        }
+        return true;
+    },
 
-        $status_ajax_msg
-            .removeClass('-processando')
-            .addClass('-' + retorno)
-            .find('.status-ajax-texto')
-            .html(mensagem);
-    });
+    /**
+     * Gerar um ID uníco
+     * @returns {string}
+     */
+    uuid: function () {
+        return 'status-ajax-msg-' + Math.random().toString(36).substr(2, 16);
+    }
+};
 
-    $(document).ajaxError(function (event, xhr, options) {
-        var $status_ajax_msg = $('#status-ajax [data-ajax-origem="' + $.getSelector(options.context) + '"]');
+window.ajaxMsg.init();
+window.ajaxMsg.exibirTodas();
 
-        $status_ajax_msg
-            .removeClass('-processando')
-            .addClass('-erro')
-            .find('.status-ajax-texto')
-            .html('ERRO ' + xhr.status + ' - ' + xhr.statusText + ': ' + xhr.responseText);
-    });
+$.ajaxSetup({
+    global: true,
+    beforeSend: function (xhr) {
+        var $origem = $(document.activeElement);
+        var msg = $origem.data('ajax-msg') || 'Carregando, por favor aguarde.';
 
-    $(document).ajaxComplete(function (event, xhr, options) {
-        var $status_ajax_msg = $('#status-ajax [data-ajax-origem="' + $.getSelector(options.context) + '"]');
+        xhr.id = window.ajaxMsg.uuid();
+        window.ajaxMsg.mostrarMsgAjax(msg, 'processando', xhr.id);
+    },
 
+    error: function (xhr) {
+        var msg = 'ERRO ' + xhr.status + ' - ' + xhr.statusText + ': ' + xhr.responseText;
+        window.ajaxMsg.mostrarMsgAjax(msg, 'erro', xhr.id);
+    },
+
+    complete: function (xhr) {
         window.setTimeout(function () {
-            $status_ajax_msg.fadeOut('fast', function () {
-                $(this).remove();
-            });
-        }, 10000);
-    });
-})(jQuery);
+            $('#' + xhr.id).find('.status-ajax-fechar').trigger('click');
+        }, 7000);
+    }
+});

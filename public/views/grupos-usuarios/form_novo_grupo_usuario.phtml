@@ -51,6 +51,16 @@ use Vilex\VileX;
 
 [SCRIPTS]
 <script>
-    $('#form-grupo-usuario').formAjax();
+    $('#form-grupo-usuario').formAjax({
+        func_depois: function (json, form, xhr) {
+            if (json.retorno === 'sucesso') {
+                window.ajaxMsg.add(json.mensagem, json.retorno, xhr.id);
+                window.location = '/painel-dlx/grupos-de-usuarios/editar?grupo_usuario_id=' + json.grupo_usuario_id;
+                return;
+            }
+
+            window.ajaxMsg.mostrarMsgAjax(json.mensagem, json.retorno, xhr.id);
+        }
+    });
 </script>
 [/SCRIPTS]

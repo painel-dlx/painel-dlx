@@ -96,7 +96,7 @@ $filtro = $this->getAtributo('filtro');
                     Editar
                 </a>
 
-                <a href="javascript:" class="link-excluir" onclick="excluirConfigSmtp(<?php echo $config_smtp->getConfigSmtpId() ?>)">
+                <a href="javascript:" class="link-excluir" onclick="excluirConfigSmtp(<?php echo $config_smtp->getConfigSmtpId() ?>)" data-ajax-msg="Excluindo configuração SMTP.<br>Por favor aguarde...">
                     Excluir
                 </a>
             </td>
@@ -105,27 +105,3 @@ $filtro = $this->getAtributo('filtro');
     </tbody>
 </table>
 [/CORPO]
-
-[SCRIPTS]
-<script>
-    function excluirConfigSmtp(config_smtp_id) {
-        if (confirm('Deseja realmente excluir essa configuração SMTP?')) {
-            $.ajax({
-                url: '/painel-dlx/config-smtp/excluir-config-smtp',
-                type: 'post', //delete
-                data: 'config_smtp_id=' + config_smtp_id,
-                dataType: 'json',
-                success: function (retorno) {
-                    alert(retorno.mensagem);
-                    window.location.reload();
-                },
-                error: function (jqXHR, status) {
-                    alert('Eita! Ocorreu um erro na sua requisição!\nTipo de erro: ' + status);
-                }
-            })
-        }
-
-        return false;
-    }
-</script>
-[/SCRIPTS]

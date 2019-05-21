@@ -189,7 +189,7 @@ class CadastroUsuarioController extends PainelDLXController
 
             $msg['retorno'] = 'sucesso';
             $msg['mensagem'] = 'Usuário cadastrado com sucesso!';
-            $msg['usuario'] = $usuario->getUsuarioId();
+            $msg['usuario_id'] = $usuario->getUsuarioId();
         } catch (Exception $e) {
             $msg['retorno'] = 'erro';
             $msg['mensagem'] = $e->getMessage();
@@ -265,7 +265,7 @@ class CadastroUsuarioController extends PainelDLXController
 
             $msg['retorno'] = 'sucesso';
             $msg['mensagem'] = 'Usuário atualizado com sucesso!';
-            $msg['usuario'] = $usuario_atualizado->getUsuarioId();
+            $msg['usuario_id'] = $usuario_atualizado->getUsuarioId();
         } catch (Exception $e) {
             $msg['retorno'] = 'erro';
             $msg['mensagem'] = $e->getMessage();

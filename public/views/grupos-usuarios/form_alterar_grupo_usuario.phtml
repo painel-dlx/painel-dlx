@@ -45,13 +45,17 @@ $grupo_usuario = $this->getAtributo('grupo_usuario');
         <legend class="form-titulo">Geral</legend>
 
         <p class="form-paragr">
-            <span class="Alias">Alias (apelido):</span>
+            <span class="form-rotulo">Alias (apelido):</span>
             <?php echo $grupo_usuario->getAlias() ?>
         </p>
 
         <p class="form-paragr">
             <label for="txt-nome" class="form-rotulo form-controle-grupo">Nome:</label>
             <input type="text" name="nome" id="txt-nome" value="<?php echo $grupo_usuario->getNome() ?>" class="form-controle form-controle-texto" required>
+
+            <button type="submit" class="botao-salvar" data-ajax-msg="Salvando grupo de usuário.<br>Por favor, aguarde...">
+                Salvar
+            </button>
         </p>
     </fieldset>
 
@@ -73,15 +77,15 @@ $grupo_usuario = $this->getAtributo('grupo_usuario');
             <?php endforeach ?>
         </ul>
     </fieldset>
-
-    <p class="form-botoes">
-        <button type="submit" class="botao-salvar" data-ajax-msg="Salvando grupo de usuário.<br>Por favor, aguarde...">Salvar</button>
-    </p>
 </form>
 [/CORPO]
 
 [SCRIPTS]
 <script>
-    $('#form-grupo-usuario').formAjax();
+    $('#form-grupo-usuario').formAjax({
+        func_depois: function (json, form, xhr) {
+            window.ajaxMsg.mostrarMsgAjax(json.mensagem, json.retorno, xhr.id);
+        }
+    });
 </script>
 [/SCRIPTS]

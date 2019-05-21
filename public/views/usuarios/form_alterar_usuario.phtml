@@ -36,6 +36,7 @@ $usuario = $this->getAtributo('usuario');
 /** @var GrupoUsuario[] $lista_grupos */
 $lista_grupos = $this->getAtributo('lista_grupos');
 ?>
+
 [CORPO]
 <h1 class="titulo-pagina"><?php echo $this->getAtributo('titulo-pagina') ?></h1>
 
@@ -89,7 +90,9 @@ $lista_grupos = $this->getAtributo('lista_grupos');
         </fieldset>
 
         <p class="form-botoes">
-            <button type="submit" class="botao-salvar">Salvar</button>
+            <button type="submit" class="botao-salvar" data-ajax-msg="Salvando informações do usuário.<br>Por favor aguarde...">
+                Salvar
+            </button>
         </p>
     </form>
 </div>
@@ -99,12 +102,8 @@ $lista_grupos = $this->getAtributo('lista_grupos');
 <script>
     $('#form-usuario').formAjax({
         validar_invisiveis: true,
-        func_depois: function(retorno) {
-            alert(retorno.mensagem);
-
-            if (retorno.retorno === 'sucesso') {
-                window.location = '/painel-dlx/usuarios'
-            }
+        func_depois: function(json, status, xhr) {
+            window.ajaxMsg.mostrarMsgAjax(json.mensagem, json.retorno, xhr.id);
         }
     });
 </script>
