@@ -38,6 +38,8 @@ $session = SessionFactory::createPHPSession();
 
 /** @var Usuario|null $usuario */
 $usuario = $session->get('usuario-logado');
+
+$tab_index = 0;
 ?>
 
 <html lang="pt">
@@ -67,7 +69,7 @@ $usuario = $session->get('usuario-logado');
     <div class="menu-principal">
         <div class="menu-filtro">
             <label>
-                <input type="search" id="filtrar-menu" class="form-controle">
+                <input type="search" id="filtrar-menu" class="form-controle" tabindex="1">
             </label>
         </div>
 
@@ -81,7 +83,7 @@ $usuario = $session->get('usuario-logado');
                 <ul class="sub-menu">
                     <?php foreach ($itens as $item) : ?>
                         <li class="sub-menu-item">
-                            <a href="<?php echo $item['link'] ?>" class="sub-menu-link">
+                            <a href="<?php echo $item['link'] ?>" class="sub-menu-link" tabindex="<?php echo ++$tab_index ?>">
                                 <?php echo $item['item'] ?>
                             </a>
                         </li>
@@ -97,19 +99,19 @@ $usuario = $session->get('usuario-logado');
 
                 <ul class="sub-menu">
                     <li class="sub-menu-item">
-                        <a href="/painel-dlx/minha-conta" class="sub-menu-link">
+                        <a href="/painel-dlx/minha-conta" class="sub-menu-link" tabindex="<?php echo ++$tab_index ?>">
                             Meus dados
                         </a>
                     </li>
 
                     <li class="sub-menu-item">
-                        <a href="/painel-dlx/alterar-minha-senha" class="sub-menu-link">
+                        <a href="/painel-dlx/alterar-minha-senha" class="sub-menu-link" tabindex="<?php echo ++$tab_index ?>">
                             Alterar minha senha
                         </a>
                     </li>
 
                     <li class="sub-menu-item">
-                        <a href="javascript:" class="sub-menu-link" onclick="encerrarSessao()">
+                        <a href="javascript:" class="sub-menu-link" onclick="encerrarSessao()" tabindex="<?php echo ++$tab_index ?>">
                             Encerrar sessão
                         </a>
                     </li>

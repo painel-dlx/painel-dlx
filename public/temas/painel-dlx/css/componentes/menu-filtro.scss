@@ -9,12 +9,13 @@
     width: 50%;
     height: $tm;
 
-    // Margens
-    margin: 0 auto;
-
     // Posicionamento
     position: absolute;
     top: 7.5px;
+    left: 50%;
+
+    // Transformar
+    transform: translateX(-50%);
 
     .form-controle {
         // Visual

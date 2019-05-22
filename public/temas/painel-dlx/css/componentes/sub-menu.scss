@@ -30,9 +30,10 @@
             display: inline-block;
             border-radius: 3px;
 
-            &:hover {
+            &:hover, &:focus {
                 // Visual
                 background: rgba(white, .1);
+                outline: none;
             }
         }
     }

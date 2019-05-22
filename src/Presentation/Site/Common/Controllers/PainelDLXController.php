@@ -45,7 +45,7 @@ abstract class PainelDLXController
 
         // TODO: retirar a inclusão do tema do controller. Está aqui apenas para agilizar o dev
         $this->view->addArquivoCss(PainelDLX::$dir . '/public/temas/painel-dlx/css/paineldlx.tema.css', true);
-        $this->view->addArquivoJs(PainelDLX::$dir . '/public/temas/painel-dlx/js/paineldlx.tema.js', true);
+        $this->view->addArquivoJs(PainelDLX::$dir . '/public/temas/painel-dlx/js/paineldlx.tema-min.js', true);
         $this->view->addArquivoJs(PainelDLX::$dir . '/public/js/painel-dlx-min.js', true);
     }
 }

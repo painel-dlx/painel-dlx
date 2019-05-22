@@ -1,13 +1,9 @@
+@import "barra-lateral/__barra-lateral";
+
 .menu-lateral {
     $b-radius: 4px;
 
-    // Visual
-    background: #FFF;
-    border-radius: $b-radius;
-
-    // Tamanho
-    width: 100%;
-    box-sizing: border-box;
+    @extend .__barra-lateral;
 
     > .menu-lateral-item {
         @extend .com-icone;

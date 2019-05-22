@@ -1,4 +1,23 @@
 /**
+ * Exibir o menu
+ */
+function exibirMenu() {
+    $('body').addClass('mostrando-menu');
+    $('.menu-principal').find('.menu-filtro .form-controle').focus();
+}
+
+/**
+ * Ocultar o menu
+ */
+function ocultarMenu() {
+    $('body').removeClass('mostrando-menu');
+
+    $('.menu-principal').find('.menu-filtro .form-controle')
+        .val('')
+        .trigger('input');
+}
+
+/**
  * Mostrar ou ocultar o menu
  */
 function mostrarOuOcultarMenu() {
@@ -9,18 +28,6 @@ function mostrarOuOcultarMenu() {
     }
 }
 
-function exibirMenu() {
-    $('body').addClass('mostrando-menu');
-    $('.menu-principal').find('.menu-filtro .form-controle').focus();
-}
-
-function ocultarMenu() {
-    $('body').removeClass('mostrando-menu');
-
-    $('.menu-principal').find('.menu-filtro .form-controle')
-        .val('')
-        .trigger('input');
-}
 
 /**
  * Atalhos
@@ -59,6 +66,6 @@ $('.menu-filtro .form-controle').on('input', function () {
     var $menu_principal = $('.menu-principal');
     var filtro = $this.val();
 
-    $menu_principal.find('.sub-menu-link:contains_ci(' + filtro + ')').show();
-    $menu_principal.find('.sub-menu-link:not(:contains_ci(' + filtro + '))').hide();
+    $menu_principal.find('.sub-menu-link:contains_ci(' + filtro + ')').parents('.sub-menu-item').show();
+    $menu_principal.find('.sub-menu-link:not(:contains_ci(' + filtro + '))').parents('.sub-menu-item').hide();
 });

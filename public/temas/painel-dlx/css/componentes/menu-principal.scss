@@ -25,10 +25,6 @@
     list-style: none;
     display: none;
 
-    // Flex
-    justify-content: space-around;
-    flex-wrap: wrap;
-
     // Margens
     margin: 0;
     padding: 15vh 10vw;
@@ -37,10 +33,12 @@
     animation: aparecer linear .2s;
 
     > .menu-item {
-        &:not(:last-child) {
-            // Margens
-            margin-right: 40px;
-        }
+        // Configurar colunas flexíveis
+        @extend .flex-box-mp-col-3;
+        @extend .flex-box-pq-col-6;
+        @extend .flex-box-md-col-3;
+        @extend .flex-box-gd-col-3;
+        @extend .flex-box-mg-col-3;
 
         > .menu-link {
             // Texto

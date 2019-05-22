@@ -292,12 +292,12 @@ class CadastroPermissaoController extends PainelDLXController
             $this->view->setAtributo('permissao-usuario', $permissao_usuario);
 
             // Views
-            $this->view->addTemplate('det_permissao');
+            $this->view->addTemplate('permissoes/det_permissao');
 
             // JS
             $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js');
         } catch (UserException $e) {
-            $this->view->addTemplate('mensagem_usuario');
+            $this->view->addTemplate('commmon/mensagem_usuario');
             $this->view->setAtributo('mensagem', [
                 'tipo' => 'erro',
                 'mensagem' => $e->getMessage()
@@ -323,7 +323,7 @@ class CadastroPermissaoController extends PainelDLXController
         extract($post); unset($post);
 
         try {
-            /** @see ExcluirPermissaoUsuarioCommandHandler */
+            /* @see ExcluirPermissaoUsuarioCommandHandler */
             $this->command_bus->handle(new ExcluirPermissaoUsuarioCommand($permissao_usuario_id));
 
             $msg['retorno'] = 'sucesso';
