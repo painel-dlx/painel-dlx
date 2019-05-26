@@ -28,6 +28,7 @@ namespace PainelDLX\Presentation\Site\Emails\Controllers;
 
 use DLX\Core\Exceptions\UserException;
 use League\Tactician\CommandBus;
+use PainelDLX\Application\Services\Exceptions\ErroAoEnviarEmailException;
 use PainelDLX\UseCases\Emails\ExcluirConfigSmtp\ExcluirConfigSmtpCommand;
 use PainelDLX\UseCases\Emails\ExcluirConfigSmtp\ExcluirConfigSmtpCommandHandler;
 use PainelDLX\UseCases\Emails\GetConfigSmtpPorId\GetConfigSmtpPorIdCommand;
@@ -85,7 +86,7 @@ class ConfigSmtpController extends PainelDLXController
 
         try {
             /** @var ConfigSmtp $config_smtp */
-            /* @see \PainelDLX\UseCases\Emails\GetConfigSmtpPorId\GetConfigSmtpPorIdCommandHandler */
+            /* @see GetConfigSmtpPorIdCommandHandler */
             $config_smtp = $this->command_bus->handle(new GetConfigSmtpPorIdCommand($config_smtp_id));
 
             // View
@@ -125,7 +126,7 @@ class ConfigSmtpController extends PainelDLXController
             $criteria = $this->command_bus->handle(new ConverterFiltro2CriteriaCommand($get['campos'], $get['busca']));
 
             /** @var array $lista_config_smtp */
-            /* @see \PainelDLX\UseCases\Emails\GetListaConfigSmtp\GetListaConfigSmtpCommandHandler */
+            /* @see GetListaConfigSmtpCommandHandler */
             $lista_config_smtp = $this->command_bus->handle(new GetListaConfigSmtpCommand($criteria));
 
             // View
@@ -176,13 +177,14 @@ class ConfigSmtpController extends PainelDLXController
     }
 
     /**
+     * Enviar email de teste usando uma configuração SMTP específica
      * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function testarConfigSmtp(ServerRequestInterface $request): ResponseInterface
     {
-        $get = filter_var_array($request->getQueryParams(), ['config_smtp_id' => FILTER_VALIDATE_INT]);
         $post = filter_var_array($request->getParsedBody(), [
+            'config_smtp_id' => FILTER_VALIDATE_INT,
             'servidor' => FILTER_SANITIZE_STRING,
             'porta' => FILTER_VALIDATE_INT,
             'requer_autent' => FILTER_VALIDATE_BOOLEAN,
@@ -199,19 +201,19 @@ class ConfigSmtpController extends PainelDLXController
             $usuario = $this->session->get('usuario-logado');
 
             /** @var ConfigSmtp|null $config_smtp */
-            /* @see \PainelDLX\UseCases\Emails\GetConfigSmtpPorId\GetConfigSmtpPorIdCommandHandler */
-            $config_smtp = $this->command_bus->handle(new GetConfigSmtpPorIdCommand((int)$get['config_smtp_id']));
+            /* @see GetConfigSmtpPorIdCommandHandler */
+            $config_smtp = $this->command_bus->handle(new GetConfigSmtpPorIdCommand((int)$post['config_smtp_id']));
 
             if (is_null($config_smtp)) {
                 $config_smtp = new ConfigSmtp($post['servidor'], $post['porta']);
                 $config_smtp
-                    ->setRequerAutent($post['requer_autent'])
+                    ->setRequerAutent((bool)$post['requer_autent'])
                     ->setConta($post['conta'])
                     ->setSenha($post['senha'])
                     ->setCripto($post['cripto'])
                     ->setDeNome($post['de_nome'])
                     ->setResponderPara($post['responder_para'])
-                    ->setCorpoHtml($post['corpo_html']);
+                    ->setCorpoHtml((bool)$post['corpo_html']);
             }
 
             /* @see TestarConfigSmtpHandler */
@@ -219,7 +221,7 @@ class ConfigSmtpController extends PainelDLXController
 
             $json['retorno'] = 'sucesso';
             $json['mensagem'] = 'Email de teste enviado com sucesso!';
-        } catch (UserException $e) {
+        } catch (ErroAoEnviarEmailException | UserException $e) {
             $json['retorno'] = 'erro';
             $json['mensagem'] = $e->getMessage();
         }

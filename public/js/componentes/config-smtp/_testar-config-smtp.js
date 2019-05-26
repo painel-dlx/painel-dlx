@@ -1,12 +1,12 @@
 /**
  * Testar uma configuração SMTP existente
- * @param config_smtp_id
+ * @param {object} config_smtp
  */
-function testarConfigSmtp(config_smtp_id) {
+function testarConfigSmtp(config_smtp) {
     $.ajax({
         url: '/painel-dlx/config-smtp/testar',
-        data: {config_smtp_id: config_smtp_id},
-        type: 'get',
+        data: config_smtp,
+        type: 'post',
         dataType: 'json',
         mensagem: 'Enviando email de teste.<br>Por favor aguarde...',
         success: function (json, status, xhr) {

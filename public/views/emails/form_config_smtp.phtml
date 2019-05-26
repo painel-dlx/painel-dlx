@@ -39,6 +39,8 @@ $config_smtp = $this->getAtributo('config-smtp') ?? new ConfigSmtp()
 <form id="form-config-smtp" method="post" action="<?php echo $config_smtp->getConfigSmtpId() ? '/painel-dlx/config-smtp/atualizar-config-smtp' : '/painel-dlx/config-smtp/salvar-config-smtp' ?>">
     <input type="hidden" name="config_smtp_id" value="<?php echo $config_smtp->getConfigSmtpId() ?>">
 
+    <input type="date" class="form-controle form-controle-data">
+
     <fieldset class="form-grupo">
         <legend class="form-titulo">Geral</legend>
 
@@ -109,7 +111,7 @@ $config_smtp = $this->getAtributo('config-smtp') ?? new ConfigSmtp()
 
     <p class="form-botoes">
         <button type="submit" class="botao-salvar" data-ajax-msg="Salvando a configuração SMTP.<br>Por favor aguarde...">Salvar</button>
-        <button type="button" id="botao-testar-email" class="botao-testar-email" onclick="testarConfigSmtp(<?php echo $config_smtp->getConfigSmtpId() ?>)" title="Testar a configuração SMTP">
+        <button type="button" id="botao-testar-email" class="botao-testar-email" onclick="testarConfigSmtp($('#form-config-smtp').serialize())" title="Testar a configuração SMTP">
             Testar
         </button>
     </p>
