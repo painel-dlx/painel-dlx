@@ -26,6 +26,7 @@
 namespace PainelDLX\Presentation\Site\PermissoesUsuario\Controllers;
 
 
+use DLX\Core\Configure;
 use DLX\Core\Exceptions\UserException;
 use League\Tactician\CommandBus;
 use PainelDLX\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommand;
@@ -139,7 +140,7 @@ class CadastroPermissaoController extends PainelDLXController
             $this->view->addTemplate('permissoes/form_nova_permissao');
 
             // JS
-            $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js');
+            $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js', false, Configure::get('app', 'versao'));
         } catch (UserException $e) {
             $this->view->addTemplate('common/mensagem_usuario');
             $this->view->setAtributo('mensagem', [
@@ -215,7 +216,7 @@ class CadastroPermissaoController extends PainelDLXController
             $this->view->addTemplate('permissoes/form_editar_permissao');
 
             // JS
-            $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js');
+            $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js', false, Configure::get('app', 'versao'));
         } catch (UserException $e) {
             $this->view->addTemplate('mensagem_usuario');
             $this->view->setAtributo('mensagem', [
@@ -295,7 +296,7 @@ class CadastroPermissaoController extends PainelDLXController
             $this->view->addTemplate('permissoes/det_permissao');
 
             // JS
-            $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js');
+            $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js', false, Configure::get('app', 'versao'));
         } catch (UserException $e) {
             $this->view->addTemplate('commmon/mensagem_usuario');
             $this->view->setAtributo('mensagem', [

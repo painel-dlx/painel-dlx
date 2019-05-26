@@ -26,6 +26,7 @@
 namespace PainelDLX\Presentation\Site\Usuarios\Controllers;
 
 
+use DLX\Core\Configure;
 use DLX\Core\Exceptions\UserException;
 use League\Tactician\CommandBus;
 use PainelDLX\UseCases\Usuarios\AlterarSenhaUsuario\AlterarSenhaUsuarioCommand;
@@ -122,7 +123,7 @@ class MinhaContaController extends PainelDLXController
             $this->view->addTemplate('usuarios/form_alterar_senha');
 
             // JS
-            $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js');
+            $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js', false, Configure::get('app', 'versao'));
         } catch (UserException $e) {
             $this->view->addTemplate('common/mensagem_usuario');
             $this->view->setAtributo('mensagem', [

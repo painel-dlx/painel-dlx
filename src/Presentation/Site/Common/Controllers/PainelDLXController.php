@@ -25,6 +25,7 @@
 
 namespace PainelDLX\Presentation\Site\Common\Controllers;
 
+use DLX\Core\Configure;
 use League\Tactician\CommandBus;
 use PainelDLX\Application\Services\PainelDLX;
 use Vilex\VileX;
@@ -44,8 +45,9 @@ abstract class PainelDLXController
         $this->command_bus = $commandBus;
 
         // TODO: retirar a inclusão do tema do controller. Está aqui apenas para agilizar o dev
-        $this->view->addArquivoCss(PainelDLX::$dir . '/public/temas/painel-dlx/css/paineldlx.tema.css', true);
-        $this->view->addArquivoJs(PainelDLX::$dir . '/public/temas/painel-dlx/js/paineldlx.tema-min.js', true);
-        $this->view->addArquivoJs(PainelDLX::$dir . '/public/js/painel-dlx-min.js', true);
+        $versao = Configure::get('app', 'versao');
+        $this->view->addArquivoCss(PainelDLX::$dir . '/public/temas/painel-dlx/css/paineldlx.tema.css', true, $versao);
+        $this->view->addArquivoJs(PainelDLX::$dir . '/public/temas/painel-dlx/js/paineldlx.tema-min.js', true, $versao);
+        $this->view->addArquivoJs(PainelDLX::$dir . '/public/js/painel-dlx-min.js', true, $versao);
     }
 }

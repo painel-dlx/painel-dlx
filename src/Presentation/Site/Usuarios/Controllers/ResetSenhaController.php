@@ -27,6 +27,7 @@ namespace PainelDLX\Presentation\Site\Usuarios\Controllers;
 
 
 use DLX\Contracts\TransactionInterface;
+use DLX\Core\Configure;
 use DLX\Core\Exceptions\UserException;
 use DLX\Infra\EntityManagerX;
 use League\Tactician\CommandBus;
@@ -101,7 +102,7 @@ class ResetSenhaController extends PainelDLXController
             ]);
 
             // JS
-            $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js');
+            $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js', false, Configure::get('app', 'versao'));
         } catch (UserException $e) {
             $this->view->addTemplate('common/mensagem_usuario');
             $this->view->setAtributo('mensagem', [
@@ -122,13 +123,11 @@ class ResetSenhaController extends PainelDLXController
         $email = filter_var($request->getParsedBody()['email'], FILTER_VALIDATE_EMAIL);
 
         try {
-            /**
-             * @covers \PainelDLX\UseCases\Usuarios\SolicitarResetSenha\SolicitarResetSenhaCommandHandler
-             * @var ResetSenha $reset_senha
-             */
+            /** @see SolicitarResetSenhaCommandHandler */
+            /* @var ResetSenha $reset_senha */
             $reset_senha = $this->command_bus->handle(new SolicitarResetSenhaCommand($email));
 
-            /** @covers EnviarEmailResetSenhaCommandHandler */
+            /* @see EnviarEmailResetSenhaCommandHandler */
             $this->command_bus->handle(new EnviarEmailResetSenhaCommand($reset_senha));
 
             $json['retorno'] = 'sucesso';
@@ -173,7 +172,7 @@ class ResetSenhaController extends PainelDLXController
             ]);
 
             // JS
-            $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js');
+            $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js', false, Configure::get('app', 'versao'));
         } catch (UserException $e) {
             $this->view->addTemplate('common/mensagem_usuario');
             $this->view->setAtributo('mensagem', [
@@ -219,10 +218,10 @@ class ResetSenhaController extends PainelDLXController
 
             $this->transacao->begin();
 
-            /** @covers \PainelDLX\UseCases\Usuarios\AlterarSenhaUsuario\AlterarSenhaUsuarioCommandHandler */
+            /* @see AlterarSenhaUsuarioCommandHandler */
             $this->command_bus->handle(new AlterarSenhaUsuarioCommand($reset_senha->getUsuario(), $senha_usuario, true));
 
-            /** @covers \PainelDLX\UseCases\Usuarios\UtilizarResetSenha\UtilizarResetSenhaCommandHandler */
+            /* @see UtilizarResetSenhaCommandHandler */
             $this->command_bus->handle(new UtilizarResetSenhaCommand($reset_senha));
 
             $this->transacao->commit();

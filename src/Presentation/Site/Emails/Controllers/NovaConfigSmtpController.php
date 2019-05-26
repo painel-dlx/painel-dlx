@@ -26,6 +26,7 @@
 namespace PainelDLX\Presentation\Site\Emails\Controllers;
 
 
+use DLX\Core\Configure;
 use DLX\Core\Exceptions\UserException;
 use League\Tactician\CommandBus;
 use mysql_xdevapi\Session;
@@ -81,9 +82,9 @@ class NovaConfigSmtpController extends PainelDLXController
             $this->view->setAtributo('titulo-pagina', 'Nova configuração SMTP');
 
             // JS
-            $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js');
+            $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js', false, Configure::get('app', 'versao'));
         } catch (UserException $e) {
-            $this->view->addTemplate('mensagem_usuario');
+            $this->view->addTemplate('common/mensagem_usuario');
             $this->view->setAtributo('mensagem', [
                 'tipo' => 'erro',
                 'mensagem' => $e->getMessage()
@@ -125,7 +126,7 @@ class NovaConfigSmtpController extends PainelDLXController
                 ->setResponderPara($responder_para)
                 ->setCorpoHtml($corpo_html);
 
-            /* @see \PainelDLX\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpHandler */
+            /* @see NovaConfigSmtpHandler */
             $this->command_bus->handle(new NovaConfigSmtpCommand($config_smtp));
 
             $json['retorno'] = 'sucesso';

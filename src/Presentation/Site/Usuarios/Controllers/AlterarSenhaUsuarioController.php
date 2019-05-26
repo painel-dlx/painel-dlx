@@ -26,6 +26,7 @@
 namespace PainelDLX\Presentation\Site\Usuarios\Controllers;
 
 
+use DLX\Core\Configure;
 use DLX\Core\Exceptions\UserException;
 use League\Tactician\CommandBus;
 use PainelDLX\UseCases\Usuarios\AlterarSenhaUsuario\AlterarSenhaUsuarioCommand;
@@ -102,7 +103,7 @@ class AlterarSenhaUsuarioController extends PainelDLXController
             $this->view->addTemplate('usuarios/form_alterar_senha');
 
             // JS
-            $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js');
+            $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js', false, Configure::get('app', 'versao'));
         } catch (UserException $e) {
             $this->view->addTemplate('common/mensagem_usuario');
             $this->view->setAtributo('mensagem', [
@@ -138,7 +139,7 @@ class AlterarSenhaUsuarioController extends PainelDLXController
         try {
             /** @var Usuario $usuario */
             /* @see GetUsuarioPeloIdCommandHandler */
-            $usuario = $this->command_bus->handle(new GetUsuarioPeloIdCommand($post['usuario_id']));
+            $usuario = $this->command_bus->handle(new GetUsuarioPeloIdCommand($usuario_id));
 
             if (!$usuario instanceof Usuario) {
                 throw new UsuarioNaoEncontrado();

@@ -34,7 +34,7 @@ function encerrarSessao() {
             if (json.retorno === 'sucesso') {
                 window.location = '/';
             } else {
-                alert(json.mensagem);
+                msgUsuario.mostrar(json.mensagem);
             }
         }
     });
@@ -85,14 +85,22 @@ $(window).on('load.__widgets', function () {
         var $this = $(this);
         var url_conteudo = $this.data('widget-url');
 
-        $.get(url_conteudo, {'pg-mestra': 'conteudo-master'}, function (html) {
-            $this.find('.widget-home-conteudo').html(html);
+        $.ajax({
+            url: url_conteudo,
+            data: {'pg-mestra': 'conteudo-master'},
+            type: 'get',
+            dataType: 'html',
+            mensagem: 'Carregando conteúdo do widget...',
+            success: function (html, status, xhr) {
+                $this.find('.widget-home-conteudo').html(html);
+                msgUsuario.fechar(xhr.id);
+            }
         });
     });
 });
 
 // Ajax
-// @codekit-append "componentes/ajax-setup/_ajax-setup.js"
+// @codekit-prepend "componentes/ajax-setup/_ajax-setup.js"
 
 // Configuração SMTP
 // @codekit-append "componentes/config-smtp/_excluir-config-smtp.js"

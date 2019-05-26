@@ -26,6 +26,7 @@
 namespace PainelDLX\Presentation\Site\Emails\Controllers;
 
 
+use DLX\Core\Configure;
 use DLX\Core\Exceptions\UserException;
 use League\Tactician\CommandBus;
 use PainelDLX\Application\Services\Exceptions\ErroAoEnviarEmailException;
@@ -138,7 +139,7 @@ class ConfigSmtpController extends PainelDLXController
             $this->view->setAtributo('filtro', $get);
 
             // JS
-            $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js');
+            $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js', false, Configure::get('app', 'versao'));
         } catch (UserException $e) {
             $this->view->addTemplate('common/mensagem_usuario');
             $this->view->setAtributo('mensagem', [

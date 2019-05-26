@@ -26,6 +26,7 @@
 namespace PainelDLX\Presentation\Site\Usuarios\Controllers;
 
 
+use DLX\Core\Configure;
 use DLX\Core\Exceptions\UserException;
 use League\Tactician\CommandBus;
 use PainelDLX\UseCases\Login\FazerLogin\FazerLoginCommand;
@@ -82,7 +83,7 @@ class LoginController extends PainelDLXController
         ]);
 
         // JS
-        $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js');
+        $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js', false, Configure::get('app', 'versao'));
 
         // View
         $this->view->addTemplate('form_login', $get);
@@ -102,15 +103,11 @@ class LoginController extends PainelDLXController
         ]);
 
         try {
-            /**
-             * @covers FazerLoginCommandHandler
-             * @var Usuario|null $usuario
-             */
+            /** @see FazerLoginCommandHandler */
+            /* @var Usuario|null $usuario */
             $usuario = $this->command_bus->handle(new FazerLoginCommand($post['email'], $post['senha']));
 
-            /**
-             * @covers GetListaMenuCommandHandler
-             */
+            /* @see GetListaMenuCommandHandler */
             $menu = $this->command_bus->handle(new GetListaMenuCommand($usuario));
             $this->session->set('html:lista-menu', $menu);
 
@@ -131,7 +128,7 @@ class LoginController extends PainelDLXController
     public function fazerLogout(ServerRequestInterface $request): ResponseInterface
     {
         try {
-            /** @covers FazerLogoutCommandHandler */
+            /* @see FazerLogoutCommandHandler */
             $this->command_bus->handle(new FazerLogoutCommand());
 
             $json['retorno'] = 'sucesso';

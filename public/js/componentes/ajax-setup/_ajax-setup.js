@@ -82,6 +82,12 @@ var msgUsuario = {
         return true;
     },
 
+    fechar: function (id) {
+        $('#' + id).fadeOut('fast', function () {
+            $(this).remove();
+        });
+    },
+
     /**
      * Gerar um ID uníco
      * @returns {string}
@@ -97,6 +103,10 @@ msgUsuario.exibirTodas();
 $.ajaxSetup({
     global: true,
     beforeSend: function (xhr, options) {
+        if (/.(css|js)$/.test(options.url)) {
+            return;
+        }
+
         var $origem = $(document.activeElement);
         var msg = $origem.data('ajax-msg') || options.mensagem || 'Carregando, por favor aguarde.';
 

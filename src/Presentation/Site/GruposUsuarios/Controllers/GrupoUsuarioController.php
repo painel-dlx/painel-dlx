@@ -26,6 +26,7 @@
 namespace PainelDLX\Presentation\Site\GruposUsuarios\Controllers;
 
 
+use DLX\Core\Configure;
 use DLX\Core\Exceptions\UserException;
 use Exception;
 use League\Tactician\CommandBus;
@@ -106,7 +107,7 @@ class GrupoUsuarioController extends PainelDLXController
             $criteria = $this->command_bus->handle(new ConverterFiltro2CriteriaCommand($get['campos'], $get['busca']));
 
             /** @var array $lista_grupos_usuarios */
-            /* @see \PainelDLX\UseCases\GruposUsuarios\GetListaGruposUsuarios\GetListaGruposUsuariosCommandHandler */
+            /* @see GetListaGruposUsuariosCommandHandler */
             $lista_grupos_usuarios = $this->command_bus->handle(new GetListaGruposUsuariosCommand($criteria));
 
             // Atributos
@@ -141,10 +142,10 @@ class GrupoUsuarioController extends PainelDLXController
             $this->view->addTemplate('grupos-usuarios/form_novo_grupo_usuario');
 
             // JS
-            $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js');
+            $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js', false, Configure::get('app', 'versao'));
         } catch (UserException $e) {
-            $this->view->addTemplate('mensagem_usuario');
-            $this->view->setAtributo('../mensagem', [
+            $this->view->addTemplate('commmon/mensagem_usuario');
+            $this->view->setAtributo('mensagem', [
                 'tipo' => 'erro',
                 'texto' => $e->getMessage()
             ]);
@@ -208,9 +209,9 @@ class GrupoUsuarioController extends PainelDLXController
             $this->view->addTemplate('grupos-usuarios/form_alterar_grupo_usuario');
 
             // JS
-            $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js');
+            $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js', false, Configure::get('app', 'versao'));
         } catch (UserException $e) {
-            $this->view->addTemplate('mensagem_usuario');
+            $this->view->addTemplate('common/mensagem_usuario');
             $this->view->setAtributo('mensagem', [
                 'tipo' => 'erro',
                 'mensagem' => $e->getMessage()
@@ -235,7 +236,7 @@ class GrupoUsuarioController extends PainelDLXController
 
         try {
             /** @var GrupoUsuario $grupo_usuario_atualizado */
-            /* @see \PainelDLX\UseCases\GruposUsuarios\EditarGrupoUsuario\EditarGrupoUsuarioCommandHandler */
+            /* @see EditarGrupoUsuarioCommandHandler */
             $grupo_usuario_atualizado = $this->command_bus->handle(new EditarGrupoUsuarioCommand($grupo_usuario_id, $nome));
 
             $msg['retorno'] = 'sucesso';
@@ -262,7 +263,7 @@ class GrupoUsuarioController extends PainelDLXController
         extract($request->getParsedBody());
 
         try {
-            /* @see \PainelDLX\UseCases\GruposUsuarios\ExcluirGrupoUsuario\ExcluirGrupoUsuarioCommandHandler */
+            /* @see ExcluirGrupoUsuarioCommandHandler */
             $this->command_bus->handle(new ExcluirGrupoUsuarioCommand($grupo_usuario_id));
 
             $msg['retorno'] = 'sucesso';

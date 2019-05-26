@@ -38,7 +38,7 @@ class ErroHttp extends PainelDLXController
         parent::__construct($view, $commandBus);
 
         $this->view->setPaginaMestra("public/views/paginas-mestras/{$session->get('vilex:pagina-mestra')}.phtml");
-        $this->view->setViewRoot('public/views/erros-http');
+        $this->view->setViewRoot('public/views/');
         $this->session = $session;
     }
 
@@ -57,7 +57,7 @@ class ErroHttp extends PainelDLXController
 
         try {
             // Visão
-            $this->view->addTemplate($get['erro']);
+            $this->view->addTemplate("erros-http/{$get['erro']}");
         } catch (UserException $e) {
             $this->view->addTemplate('common/mensagem_usuario');
             $this->view->setAtributo('mensagem', [

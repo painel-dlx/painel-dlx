@@ -39,8 +39,6 @@ $config_smtp = $this->getAtributo('config-smtp') ?? new ConfigSmtp()
 <form id="form-config-smtp" method="post" action="<?php echo $config_smtp->getConfigSmtpId() ? '/painel-dlx/config-smtp/atualizar-config-smtp' : '/painel-dlx/config-smtp/salvar-config-smtp' ?>">
     <input type="hidden" name="config_smtp_id" value="<?php echo $config_smtp->getConfigSmtpId() ?>">
 
-    <input type="date" class="form-controle form-controle-data">
-
     <fieldset class="form-grupo">
         <legend class="form-titulo">Geral</legend>
 
@@ -60,7 +58,7 @@ $config_smtp = $this->getAtributo('config-smtp') ?? new ConfigSmtp()
         <legend class="form-titulo">Autenticação</legend>
 
         <p class="form-paragr">
-            <span class="form-rotulo">Requer autenticação?</span>
+            <label for="chk-requer-autent" class="form-rotulo">Requer autenticação?</label>
             <input type="checkbox" name="requer_autent" id="chk-requer-autent" value="1"<?php echo $config_smtp->isRequerAutent() ? ' CHECKED' : '' ?>>
         </p>
 
@@ -104,8 +102,8 @@ $config_smtp = $this->getAtributo('config-smtp') ?? new ConfigSmtp()
         </p>
 
         <p class="form-paragr">
-            <span class="form-rotulo">Enviar corpo em formato HTML?</span>
-            <input type="checkbox" name="corpo_html" value="1"<?php echo $config_smtp->isCorpoHtml() ? ' CHECKED' : '' ?>>
+            <label for="chk-corpo-html" class="form-rotulo">Enviar corpo em formato HTML?</label>
+            <input type="checkbox" name="corpo_html" id="chk-corpo-html" value="1"<?php echo $config_smtp->isCorpoHtml() ? ' CHECKED' : '' ?>>
         </p>
     </fieldset>
 

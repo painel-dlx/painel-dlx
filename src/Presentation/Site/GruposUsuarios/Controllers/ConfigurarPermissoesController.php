@@ -27,6 +27,7 @@ namespace PainelDLX\Presentation\Site\GruposUsuarios\Controllers;
 
 
 use DLX\Contracts\TransactionInterface;
+use DLX\Core\Configure;
 use DLX\Core\Exceptions\UserException;
 use Doctrine\Common\Collections\ArrayCollection;
 use League\Tactician\CommandBus;
@@ -95,7 +96,7 @@ class ConfigurarPermissoesController extends PainelDLXController
 
         try {
             /** @var GrupoUsuario $grupo_usuario */
-            /* @see \PainelDLX\UseCases\GruposUsuarios\GetGrupoUsuarioPorId\GetGrupoUsuarioPorIdCommandHandler */
+            /* @see GetGrupoUsuarioPorIdCommandHandler */
             $grupo_usuario = $this->command_bus->handle(new GetGrupoUsuarioPorIdCommand($get['grupo_usuario_id']));
 
             if (!$grupo_usuario instanceof GrupoUsuario) {
@@ -117,7 +118,7 @@ class ConfigurarPermissoesController extends PainelDLXController
             $this->view->setAtributo('lista-permissoes', $lista_permissoes);
 
             // JS
-            $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js');
+            $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js', false, Configure::get('app', 'versao'));
         } catch (UserException $e) {
             $this->view->addTemplate('common/mensagem_usuario');
             $this->view->setAtributo('mensagem', [
@@ -151,7 +152,7 @@ class ConfigurarPermissoesController extends PainelDLXController
 
         try {
             /** @var GrupoUsuario $grupo_usuario */
-            /* @see \PainelDLX\UseCases\PermissoesUsuario\GetListaPermissaoUsuario\GetListaPermissaoUsuarioCommandHandler */
+            /* @see GetListaPermissaoUsuarioCommandHandler */
             $grupo_usuario = $this->command_bus->handle(new GetGrupoUsuarioPorIdCommand($grupo_usuario_id));
 
             /* @see GetListaPermissaoUsuarioCommandHandler */
@@ -167,8 +168,6 @@ class ConfigurarPermissoesController extends PainelDLXController
             $json['retorno'] = 'sucesso';
             $json['mensagem'] = 'Permissões salvas com sucesso!';
         } catch (UserException $e) {
-            $this->transaction->rollback();
-
             $json['retorno'] = 'erro';
             $json['mensagem'] = $e->getMessage();
         }
