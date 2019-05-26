@@ -10,6 +10,7 @@ function excluirGrupoUsuario(grupo_usuario_id) {
             type: 'post',
             data: {grupo_usuario_id: grupo_usuario_id},
             dataType: 'json',
+            mensagem: 'Excluindo grupo de usuário.<br>Por favor aguarde...',
             success: function (json, status, xhr) {
                 if (json.retorno === 'sucesso') {
                     msgUsuario.adicionar(json.mensagem, json.retorno, xhr.id);

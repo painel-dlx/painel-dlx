@@ -109,7 +109,7 @@ $config_smtp = $this->getAtributo('config-smtp') ?? new ConfigSmtp()
 
     <p class="form-botoes">
         <button type="submit" class="botao-salvar" data-ajax-msg="Salvando a configuração SMTP.<br>Por favor aguarde...">Salvar</button>
-        <button type="button" id="botao-testar-email" class="botao-testar-email" onclick="testarConfigSmtp(<?php echo $config_smtp->getConfigSmtpId() ?>)" title="Testar a configuração SMTP" data-ajax-msg="Testando configuração SMTP.<br>Por favor aguarde...">
+        <button type="button" id="botao-testar-email" class="botao-testar-email" onclick="testarConfigSmtp(<?php echo $config_smtp->getConfigSmtpId() ?>)" title="Testar a configuração SMTP">
             Testar
         </button>
     </p>

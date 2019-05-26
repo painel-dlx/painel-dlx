@@ -96,9 +96,10 @@ msgUsuario.exibirTodas();
 
 $.ajaxSetup({
     global: true,
-    beforeSend: function (xhr) {
+    beforeSend: function (xhr, options) {
+        console.log(options);
         var $origem = $(document.activeElement);
-        var msg = $origem.data('ajax-msg') || 'Carregando, por favor aguarde.';
+        var msg = $origem.data('ajax-msg') || options.mensagem || 'Carregando, por favor aguarde.';
 
         xhr.id = msgUsuario.uuid();
         msgUsuario.mostrar(msg, 'processando', xhr.id);

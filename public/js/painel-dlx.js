@@ -90,3 +90,21 @@ $(window).on('load.__widgets', function () {
         });
     });
 });
+
+// Ajax
+// @codekit-append "componentes/ajax-setup/_ajax-setup.js"
+
+// Configuração SMTP
+// @codekit-append "componentes/config-smtp/_excluir-config-smtp.js"
+// @codekit-append "componentes/config-smtp/_testar-config-smtp.js"
+
+// Grupos de Usuários
+// @codekit-append "componentes/grupos-usuarios/_excluir-grupo-usuario.js"
+
+// Pemissões de Usuários
+// @codekit-append "componentes/permissoes-usuario/_adicionar-permissao.js"
+// @codekit-append "componentes/permissoes-usuario/_excluir-permissao-usuario.js"
+// @codekit-append "componentes/permissoes-usuario/_retirar-permissao.js"
+
+// Usuários
+// @codekit-append "componentes/usuarios/_excluir-usuario.js"
