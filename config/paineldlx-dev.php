@@ -39,7 +39,7 @@ return [
         'service-providers' => include 'service_providers.php',
         'mapping' => include 'mapping.php',
         'favicon' => '/public/imgs/favicon.png',
-        'versao' => '2.4.4'
+        'versao' => '2.4.5'
     ],
 
     'bd' => [
