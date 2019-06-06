@@ -24,39 +24,11 @@
  */
 
 use DLX\Core\Configure;
-use Doctrine\DBAL\Logging\EchoSQLLogger;
+use Vilex\VileX;
 
-ini_set('session.save_handler', 'files');
+/** @var Vilex $this */
+?>
 
-return [
-    'tipo-ambiente' => Configure::DEV,
-
-    'app' => [
-        'nome' => 'painel-dlx',
-        'base-html' => '/',
-        'nome-amigavel' => 'Painel DLX',
-        'rotas' => include 'rotas.php',
-        'service-providers' => include 'service_providers.php',
-        'mapping' => include 'mapping.php',
-        'favicon' => '/public/imgs/favicon.png',
-        'versao' => '2.4.7'
-    ],
-
-    'bd' => [
-        'orm' => 'doctrine',
-        'mapping' => 'yaml',
-        'dev-mode' => true,
-        //'debug' => EchoSQLLogger::class,
-        'dir' => [
-            'src/Infra/ORM/Doctrine/Mappings/',
-            'src/Infra/ORM/Doctrine/Repositories/'
-        ],
-        'conexao' => [
-            'dbname' => 'dlx_dev',
-            'user' => 'root',
-            'password' => '$d5Ro0t',
-            'host' => 'localhost',
-            'driver' => 'pdo_mysql',
-        ]
-    ]
-];
+[RODAPE]
+<?php echo Configure::get('app', 'nome-amigavel'), ' @ ', date('Y'), ' - v', Configure::get('app', 'versao') ?>
+[/RODAPE]

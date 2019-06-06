@@ -56,6 +56,7 @@ class EditarConfigSmtpController extends PainelDLXController
      * @param VileX $view
      * @param CommandBus $commandBus
      * @param SessionInterface $session
+     * @throws ViewNaoEncontradaException
      */
     public function __construct(VileX $view, CommandBus $commandBus, SessionInterface $session)
     {

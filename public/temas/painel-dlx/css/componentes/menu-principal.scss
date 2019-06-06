@@ -25,6 +25,9 @@
     list-style: none;
     display: none;
 
+    // Flex
+    flex-flow: wrap row;
+
     // Margens
     margin: 0;
     padding: 15vh 10vw;
@@ -35,10 +38,13 @@
     > .menu-item {
         // Configurar colunas flexíveis
         @extend .flex-box-mp-col-3;
-        @extend .flex-box-pq-col-6;
-        @extend .flex-box-md-col-3;
+        @extend .flex-box-pq-col-3;
+        @extend .flex-box-md-col-4;
         @extend .flex-box-gd-col-3;
         @extend .flex-box-mg-col-3;
+
+        // Margens
+        padding-right: 10px;
 
         > .menu-link {
             // Texto

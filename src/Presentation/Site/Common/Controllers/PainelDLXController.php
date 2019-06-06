@@ -28,6 +28,7 @@ namespace PainelDLX\Presentation\Site\Common\Controllers;
 use DLX\Core\Configure;
 use League\Tactician\CommandBus;
 use PainelDLX\Application\Services\PainelDLX;
+use Vilex\Exceptions\ViewNaoEncontradaException;
 use Vilex\VileX;
 
 abstract class PainelDLXController
@@ -37,6 +38,12 @@ abstract class PainelDLXController
     /** @var CommandBus */
     protected $command_bus;
 
+    /**
+     * PainelDLXController constructor.
+     * @param VileX $view
+     * @param CommandBus $commandBus
+     * @throws ViewNaoEncontradaException
+     */
     public function __construct(
         VileX $view,
         CommandBus $commandBus
@@ -49,5 +56,8 @@ abstract class PainelDLXController
         $this->view->addArquivoCss(PainelDLX::$dir . '/public/temas/painel-dlx/css/paineldlx.tema.css', true, $versao);
         $this->view->addArquivoJs(PainelDLX::$dir . '/public/temas/painel-dlx/js/paineldlx.tema-min.js', true, $versao);
         $this->view->addArquivoJs(PainelDLX::$dir . '/public/js/painel-dlx-min.js', true, $versao);
+
+        $this->view->setViewRoot('public/views/');
+        $this->view->addTemplate('common/rodape');
     }
 }

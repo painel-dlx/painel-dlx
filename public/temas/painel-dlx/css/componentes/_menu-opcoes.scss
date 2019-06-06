@@ -5,11 +5,22 @@
     // Flex
     display: flex;
     align-items: center;
+    flex-flow: row wrap;
 
     > * {
         &:not(:last-child) {
             // Margens
             margin-right: 10px;
+        }
+    }
+
+    @media (max-width: 828px) {
+        // Flex
+        justify-content: center;
+
+        > * {
+            // Margens
+            margin-top: 10px;
         }
     }
 }

@@ -103,7 +103,7 @@ msgUsuario.exibirTodas();
 $.ajaxSetup({
     global: true,
     beforeSend: function (xhr, options) {
-        if (/.(css|js)$/.test(options.url)) {
+        if (/.(css|js)(\?.+)?$/.test(options.url)) {
             return;
         }
 
