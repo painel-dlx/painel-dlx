@@ -53,6 +53,9 @@ class PainelDLX
      */
     private $container;
 
+    /** @var self */
+    private static $instance;
+
     /**
      * @return ServerRequestInterface
      */
@@ -69,6 +72,14 @@ class PainelDLX
     {
         $this->server_request = $server_request;
         return $this;
+    }
+
+    /**
+     * @return ContainerInterface|null
+     */
+    public function getContainer(): ?ContainerInterface
+    {
+        return $this->container;
     }
 
     /**
@@ -94,6 +105,16 @@ class PainelDLX
         $this->server_request = $server_request;
         $this->container = $container;
         $this->defineDirPainelDLX();
+
+        self::$instance = $this;
+    }
+
+    /**
+     * @return PainelDLX
+     */
+    public static function getInstance(): self
+    {
+        return self::$instance;
     }
 
     /**
