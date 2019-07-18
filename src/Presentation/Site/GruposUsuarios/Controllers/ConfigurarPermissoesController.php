@@ -34,7 +34,6 @@ use League\Tactician\CommandBus;
 use PainelDLX\UseCases\GruposUsuarios\ConfigurarPermissoes\ConfigurarPermissoesCommand;
 use PainelDLX\UseCases\GruposUsuarios\GetGrupoUsuarioPorId\GetGrupoUsuarioPorIdCommand;
 use PainelDLX\UseCases\GruposUsuarios\GetGrupoUsuarioPorId\GetGrupoUsuarioPorIdCommandHandler;
-use PainelDLX\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommand;
 use PainelDLX\UseCases\GruposUsuarios\ConfigurarPermissoes\ConfigurarPermissoesCommandHandler;
 use PainelDLX\UseCases\PermissoesUsuario\GetListaPermissaoUsuario\GetListaPermissaoUsuarioCommand;
 use PainelDLX\UseCases\PermissoesUsuario\GetListaPermissaoUsuario\GetListaPermissaoUsuarioCommandHandler;
@@ -66,19 +65,16 @@ class ConfigurarPermissoesController extends PainelDLXController
      * @param CommandBus $commandBus
      * @param TransactionInterface $transacao
      * @param SessionInterface $session
+     * @throws ViewNaoEncontradaException
      */
     public function __construct(
         VileX $view,
         CommandBus $commandBus,
-        TransactionInterface $transacao,
-        SessionInterface $session
+        SessionInterface $session,
+        TransactionInterface $transacao
     ) {
-        parent::__construct($view, $commandBus);
-
-        $this->view->setPaginaMestra("public/views/paginas-mestras/{$session->get('vilex:pagina-mestra')}.phtml");
-        $this->view->setViewRoot('public/views/');
+        parent::__construct($view, $commandBus, $session);
         $this->transaction = $transacao;
-        $this->session = $session;
     }
 
     /**

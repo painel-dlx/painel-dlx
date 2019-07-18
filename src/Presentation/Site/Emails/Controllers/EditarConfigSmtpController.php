@@ -47,27 +47,6 @@ use Zend\Diactoros\Response\JsonResponse;
 class EditarConfigSmtpController extends PainelDLXController
 {
     /**
-     * @var SessionInterface
-     */
-    private $session;
-
-    /**
-     * EditarConfigSmtpController constructor.
-     * @param VileX $view
-     * @param CommandBus $commandBus
-     * @param SessionInterface $session
-     * @throws ViewNaoEncontradaException
-     */
-    public function __construct(VileX $view, CommandBus $commandBus, SessionInterface $session)
-    {
-        parent::__construct($view, $commandBus);
-
-        $this->view->setPaginaMestra("public/views/paginas-mestras/{$session->get('vilex:pagina-mestra')}.phtml");
-        $this->view->setViewRoot('public/views/');
-        $this->session = $session;
-    }
-
-    /**
      * @param ServerRequestInterface $request
      * @return ResponseInterface
      * @throws ContextoInvalidoException

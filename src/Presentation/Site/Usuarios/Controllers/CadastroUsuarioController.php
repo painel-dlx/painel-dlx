@@ -43,7 +43,6 @@ use PainelDLX\UseCases\Usuarios\NovoUsuario\NovoUsuarioCommand;
 use PainelDLX\UseCases\Usuarios\NovoUsuario\NovoUsuarioCommandHandler;
 use PainelDLX\Domain\GruposUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
-use PainelDLX\Domain\Usuarios\Repositories\UsuarioRepositoryInterface;
 use PainelDLX\Infrastructure\ORM\Doctrine\Repositories\UsuarioRepository;
 use PainelDLX\Presentation\Site\Common\Controllers\PainelDLXController;
 use Psr\Http\Message\ResponseInterface;
@@ -75,23 +74,18 @@ class CadastroUsuarioController extends PainelDLXController
      * CadastroUsuarioController constructor.
      * @param VileX $view
      * @param CommandBus $commandBus
-     * @param UsuarioRepositoryInterface $usuario_repository
      * @param GrupoUsuarioRepositoryInterface $grupo_usuario_repository
      * @param SessionInterface $session
+     * @throws ViewNaoEncontradaException
      */
     public function __construct(
         VileX $view,
         CommandBus $commandBus,
-        GrupoUsuarioRepositoryInterface $grupo_usuario_repository,
-        SessionInterface $session
+        SessionInterface $session,
+        GrupoUsuarioRepositoryInterface $grupo_usuario_repository
     ) {
-        parent::__construct($view, $commandBus);
-
-        $this->view->setPaginaMestra("public/views/paginas-mestras/{$session->get('vilex:pagina-mestra')}.phtml");
-        $this->view->setViewRoot('public/views/');
-
+        parent::__construct($view, $commandBus, $session);
         $this->grupo_usuario_repository = $grupo_usuario_repository;
-        $this->session = $session;
     }
 
     /**
@@ -167,7 +161,6 @@ class CadastroUsuarioController extends PainelDLXController
      * Cadastrar um novo usuário.
      * @param ServerRequestInterface $request
      * @return ResponseInterface
-     * @throws PaginaMestraNaoEncontradaException
      */
     public function cadastrarNovoUsuario(ServerRequestInterface $request): ResponseInterface
     {

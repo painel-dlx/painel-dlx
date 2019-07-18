@@ -28,43 +28,19 @@ namespace PainelDLX\Presentation\Site\Emails\Controllers;
 
 use DLX\Core\Configure;
 use DLX\Core\Exceptions\UserException;
-use League\Tactician\CommandBus;
-use mysql_xdevapi\Session;
 use PainelDLX\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpCommand;
 use PainelDLX\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpHandler;
 use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
 use PainelDLX\Presentation\Site\Common\Controllers\PainelDLXController;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use SechianeX\Contracts\SessionInterface;
 use Vilex\Exceptions\ContextoInvalidoException;
 use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
 use Vilex\Exceptions\ViewNaoEncontradaException;
-use Vilex\VileX;
 use Zend\Diactoros\Response\JsonResponse;
 
 class NovaConfigSmtpController extends PainelDLXController
 {
-    /**
-     * @var SessionInterface
-     */
-    private $session;
-
-    /**
-     * NovaConfigSmtpController constructor.
-     * @param VileX $view
-     * @param CommandBus $commandBus
-     * @param SessionInterface $session
-     */
-    public function __construct(VileX $view, CommandBus $commandBus, SessionInterface $session)
-    {
-        parent::__construct($view, $commandBus);
-
-        $this->view->setPaginaMestra("public/views/paginas-mestras/{$session->get('vilex:pagina-mestra')}.phtml");
-        $this->view->setViewRoot('public/views/');
-        $this->session = $session;
-    }
-
     /**
      * @param ServerRequestInterface $request
      * @return ResponseInterface

@@ -56,33 +56,6 @@ use Zend\Diactoros\Response\JsonResponse;
 class CadastroPermissaoController extends PainelDLXController
 {
     /**
-     * @var SessionInterface
-     */
-    private $session;
-
-    /**
-     * CadastroPermissaoController constructor.
-     * @param VileX $view
-     * @param CommandBus $commandBus
-     * @param PermissaoUsuarioRepositoryInterface $permissao_usuario_repository
-     * @param SessionInterface $session
-     */
-    public function __construct(
-        VileX $view,
-        CommandBus $commandBus,
-        PermissaoUsuarioRepositoryInterface $permissao_usuario_repository,
-        SessionInterface $session
-    ) {
-        parent::__construct($view, $commandBus);
-
-        $this->view->setPaginaMestra("public/views/paginas-mestras/{$session->get('vilex:pagina-mestra')}.phtml");
-        $this->view->setViewRoot('public/views/');
-
-        $this->repository = $permissao_usuario_repository;
-        $this->session = $session;
-    }
-
-    /**
      * @param ServerRequestInterface $request
      * @return ResponseInterface
      * @throws ContextoInvalidoException

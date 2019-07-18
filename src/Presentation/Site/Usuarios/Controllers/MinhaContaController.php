@@ -30,7 +30,6 @@ use DLX\Core\Configure;
 use DLX\Core\Exceptions\UserException;
 use League\Tactician\CommandBus;
 use PainelDLX\UseCases\Usuarios\AlterarSenhaUsuario\AlterarSenhaUsuarioCommand;
-use PainelDLX\UseCases\Usuarios\GetUsuarioPeloId\GetUsuarioPeloIdCommand;
 use PainelDLX\UseCases\Usuarios\GetUsuarioPeloId\GetUsuarioPeloIdCommandHandler;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
 use PainelDLX\Domain\Usuarios\ValueObjects\SenhaUsuario;
@@ -49,10 +48,6 @@ use Zend\Diactoros\Response\JsonResponse;
 class MinhaContaController extends PainelDLXController
 {
     /**
-     * @var SessionInterface
-     */
-    private $session;
-    /**
      * @var Usuario
      */
     private $usuario_logado;
@@ -62,18 +57,14 @@ class MinhaContaController extends PainelDLXController
      * @param VileX $view
      * @param CommandBus $commandBus
      * @param SessionInterface $session
+     * @throws ViewNaoEncontradaException
      */
     public function __construct(
         VileX $view,
         CommandBus $commandBus,
         SessionInterface $session
     ) {
-        parent::__construct($view, $commandBus);
-
-        $this->view->setPaginaMestra("public/views/paginas-mestras/{$session->get('vilex:pagina-mestra')}.phtml");
-        $this->view->setViewRoot('public/views/');
-
-        $this->session = $session;
+        parent::__construct($view, $commandBus, $session);
         $this->usuario_logado = $this->session->get('usuario-logado');
     }
 
@@ -175,6 +166,7 @@ class MinhaContaController extends PainelDLXController
     }
 
     /**
+     * @param ServerRequestInterface $request
      * @return HtmlResponse
      * @throws ContextoInvalidoException
      * @throws PaginaMestraNaoEncontradaException

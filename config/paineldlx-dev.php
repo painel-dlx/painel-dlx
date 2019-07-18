@@ -23,6 +23,8 @@
  * SOFTWARE.
  */
 
+ini_set('session.save_handler', 'files');
+
 use DLX\Core\Configure;
 use Doctrine\DBAL\Logging\EchoSQLLogger;
 

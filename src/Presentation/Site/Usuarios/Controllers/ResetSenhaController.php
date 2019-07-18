@@ -30,6 +30,7 @@ use DLX\Contracts\TransactionInterface;
 use DLX\Core\Configure;
 use DLX\Core\Exceptions\UserException;
 use DLX\Infra\EntityManagerX;
+use Doctrine\ORM\ORMException;
 use League\Tactician\CommandBus;
 use PainelDLX\UseCases\Usuarios\AlterarSenhaUsuario\AlterarSenhaUsuarioCommand;
 use PainelDLX\UseCases\Usuarios\AlterarSenhaUsuario\AlterarSenhaUsuarioCommandHandler;
@@ -71,6 +72,7 @@ class ResetSenhaController extends PainelDLXController
      * @param CommandBus $commandBus
      * @param SessionInterface $session
      * @param TransactionInterface $transacao
+     * @throws ViewNaoEncontradaException
      */
     public function __construct(
         VileX $view,
@@ -78,11 +80,7 @@ class ResetSenhaController extends PainelDLXController
         SessionInterface $session,
         TransactionInterface $transacao
     ) {
-        parent::__construct($view, $commandBus);
-
-        $this->view->setPaginaMestra("public/views/paginas-mestras/{$session->get('vilex:pagina-mestra')}.phtml");
-        $this->view->setViewRoot('public/views/login');
-        $this->session = $session;
+        parent::__construct($view, $commandBus, $session);
         $this->transacao = $transacao;
     }
 
@@ -147,6 +145,7 @@ class ResetSenhaController extends PainelDLXController
      * @throws ContextoInvalidoException
      * @throws PaginaMestraNaoEncontradaException
      * @throws ViewNaoEncontradaException
+     * @throws ORMException
      */
     public function formResetSenha(ServerRequestInterface $request): ResponseInterface
     {
@@ -187,6 +186,7 @@ class ResetSenhaController extends PainelDLXController
     /**
      * @param ServerRequestInterface $request
      * @return ResponseInterface
+     * @throws ORMException
      */
     public function resetarSenha(ServerRequestInterface $request): ResponseInterface
     {

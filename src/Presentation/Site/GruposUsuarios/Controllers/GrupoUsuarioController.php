@@ -29,7 +29,6 @@ namespace PainelDLX\Presentation\Site\GruposUsuarios\Controllers;
 use DLX\Core\Configure;
 use DLX\Core\Exceptions\UserException;
 use Exception;
-use League\Tactician\CommandBus;
 use PainelDLX\UseCases\GruposUsuarios\EditarGrupoUsuario\EditarGrupoUsuarioCommand;
 use PainelDLX\UseCases\GruposUsuarios\EditarGrupoUsuario\EditarGrupoUsuarioCommandHandler;
 use PainelDLX\UseCases\GruposUsuarios\ExcluirGrupoUsuario\ExcluirGrupoUsuarioCommand;
@@ -42,17 +41,14 @@ use PainelDLX\UseCases\GruposUsuarios\NovoGrupoUsuario\NovoGrupoUsuarioCommand;
 use PainelDLX\UseCases\GruposUsuarios\NovoGrupoUsuario\NovoGrupoUsuarioCommandHandler;
 use PainelDLX\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommand;
 use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
-use PainelDLX\Domain\GruposUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
 use PainelDLX\Infrastructure\ORM\Doctrine\Repositories\GrupoUsuarioRepository;
 use PainelDLX\Presentation\Site\Common\Controllers\PainelDLXController;
 use PainelDLX\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommandHandler;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use SechianeX\Contracts\SessionInterface;
 use Vilex\Exceptions\ContextoInvalidoException;
 use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
 use Vilex\Exceptions\ViewNaoEncontradaException;
-use Vilex\VileX;
 use Zend\Diactoros\Response\JsonResponse;
 
 /**
@@ -62,31 +58,6 @@ use Zend\Diactoros\Response\JsonResponse;
  */
 class GrupoUsuarioController extends PainelDLXController
 {
-    /**
-     * @var SessionInterface
-     */
-    private $session;
-
-    /**
-     * GrupoUsuarioController constructor.
-     * @param VileX $view
-     * @param CommandBus $command_bus
-     * @param GrupoUsuarioRepositoryInterface $grupo_usuario_repository
-     * @param SessionInterface $session
-     */
-    public function __construct(
-        VileX $view,
-        CommandBus $command_bus,
-        SessionInterface $session
-    ) {
-        parent::__construct($view, $command_bus);
-
-        $this->view->setPaginaMestra("public/views/paginas-mestras/{$session->get('vilex:pagina-mestra')}.phtml");
-        $this->view->setViewRoot('public/views/');
-
-        $this->session = $session;
-    }
-
     /**
      * Mostrar a lista com os usuários
      * @param ServerRequestInterface $request

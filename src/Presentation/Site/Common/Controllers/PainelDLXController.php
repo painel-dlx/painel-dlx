@@ -28,28 +28,40 @@ namespace PainelDLX\Presentation\Site\Common\Controllers;
 use DLX\Core\Configure;
 use League\Tactician\CommandBus;
 use PainelDLX\Application\Services\PainelDLX;
+use SechianeX\Contracts\SessionInterface;
 use Vilex\Exceptions\ViewNaoEncontradaException;
 use Vilex\VileX;
 
 abstract class PainelDLXController
 {
-    /** @var VileX */
+    /**
+     * @var VileX
+     */
     protected $view;
-    /** @var CommandBus */
+    /**
+     * @var CommandBus
+     */
     protected $command_bus;
+    /**
+     * @var SessionInterface
+     */
+    protected $session;
 
     /**
      * PainelDLXController constructor.
      * @param VileX $view
      * @param CommandBus $commandBus
+     * @param SessionInterface $session
      * @throws ViewNaoEncontradaException
      */
     public function __construct(
         VileX $view,
-        CommandBus $commandBus
+        CommandBus $commandBus,
+        SessionInterface $session
     ) {
         $this->view = $view;
         $this->command_bus = $commandBus;
+        $this->session = $session;
 
         // TODO: retirar a inclusão do tema do controller. Está aqui apenas para agilizar o dev
         $versao = Configure::get('app', 'versao');
@@ -57,6 +69,7 @@ abstract class PainelDLXController
         $this->view->addArquivoJs(PainelDLX::$dir . '/public/temas/painel-dlx/js/paineldlx.tema-min.js', true, $versao);
         $this->view->addArquivoJs(PainelDLX::$dir . '/public/js/painel-dlx-min.js', true, $versao);
 
+        $this->view->setPaginaMestra("public/views/paginas-mestras/{$session->get('vilex:pagina-mestra')}.phtml");
         $this->view->setViewRoot('public/views/');
         $this->view->addTemplate('common/rodape');
     }
