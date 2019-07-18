@@ -36,7 +36,7 @@ $usuario = $this->getAtributo('usuario');
 
 [CORPO]
 <form id="form-alterar-senha" method="post" action="/painel-dlx/alterar-minha-senha" class="form-alterar-senha">
-    <input type="hidden" name="usuario_id" value="<?php echo $usuario->getUsuarioId() ?>">
+    <input type="hidden" name="usuario_id" value="<?php echo $usuario->getId() ?>">
 
     <h1 class="titulo-pagina"><?php echo $this->getAtributo('titulo-pagina') ?></h1>
 

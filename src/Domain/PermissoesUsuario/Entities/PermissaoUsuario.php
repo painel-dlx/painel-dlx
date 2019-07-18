@@ -35,7 +35,7 @@ use PainelDLX\Domain\PermissoesUsuario\Exceptions\PermissaoUsuarioJaPossuiGrupoE
 class PermissaoUsuario extends Entity
 {
     /** @var int */
-    private $permissao_usuario_id;
+    private $id;
     /** @var string */
     private $alias;
     /** @var string */
@@ -48,18 +48,18 @@ class PermissaoUsuario extends Entity
     /**
      * @return int
      */
-    public function getPermissaoUsuarioId(): int
+    public function getId(): int
     {
-        return $this->permissao_usuario_id;
+        return $this->id;
     }
 
     /**
-     * @param int $permissao_usuario_id
+     * @param int $id
      * @return PermissaoUsuario
      */
-    public function setPermissaoUsuarioId(int $permissao_usuario_id): PermissaoUsuario
+    public function setId(int $id): PermissaoUsuario
     {
-        $this->permissao_usuario_id = $permissao_usuario_id;
+        $this->id = $id;
         return $this;
     }
 

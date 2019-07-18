@@ -16,7 +16,7 @@ use Exception;
 class ResetSenha extends Entity
 {
     /** @var int|null */
-    private $reset_senha_id;
+    private $id;
     /** @var Usuario */
     private $usuario;
     /** @var DateTime */
@@ -29,18 +29,18 @@ class ResetSenha extends Entity
     /**
      * @return int|null
      */
-    public function getResetSenhaId(): ?int
+    public function getId(): ?int
     {
-        return $this->reset_senha_id;
+        return $this->id;
     }
 
     /**
-     * @param int|null $reset_senha_id
+     * @param int|null $id
      * @return ResetSenha
      */
-    public function setResetSenhaId(?int $reset_senha_id): ResetSenha
+    public function setId(?int $id): ResetSenha
     {
-        $this->reset_senha_id = $reset_senha_id;
+        $this->id = $id;
         return $this;
     }
 

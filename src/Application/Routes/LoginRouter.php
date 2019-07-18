@@ -29,6 +29,7 @@ namespace PainelDLX\Application\Routes;
 use PainelDLX\Application\Middlewares\CriptografarSenhas;
 use PainelDLX\Application\Middlewares\DefinePaginaMestra;
 use PainelDLX\Application\Middlewares\VerificarLogon;
+use PainelDLX\Application\Services\PainelDLX;
 use PainelDLX\Presentation\Site\Usuarios\Controllers\LoginController;
 use PainelDLX\Presentation\Site\Usuarios\Controllers\ResetSenhaController;
 
@@ -41,12 +42,18 @@ class LoginRouter extends PainelDLXRouter
     public function registrar(): void
     {
         $router = $this->getRouter();
-        
+        $container = PainelDLX::getInstance()->getContainer();
+
+        /** @var VerificarLogon $verificar_logon */
+        $verificar_logon = $container->get(VerificarLogon::class);
+        /** @var DefinePaginaMestra $define_pagina_mestra */
+        $define_pagina_mestra = $container->get(DefinePaginaMestra::class);
+
         $router->get(
             '/painel-dlx/login',
             [LoginController::class, 'formLogin']
         )->middlewares(
-            new DefinePaginaMestra($this->painel_dlx->getServerRequest(), $this->session)
+            $define_pagina_mestra
         );
 
         $router->post(
@@ -57,13 +64,13 @@ class LoginRouter extends PainelDLXRouter
         $router->get(
             '/painel-dlx/login/encerrar-sessao',
             [LoginController::class, 'fazerLogout']
-        )->middlewares(new VerificarLogon($this->session));
+        )->middlewares($verificar_logon);
 
         $router->get(
             '/painel-dlx/recuperar-senha',
             [ResetSenhaController::class, 'formSolicitarResetSenha']
         )->middlewares(
-            new DefinePaginaMestra($this->painel_dlx->getServerRequest(), $this->session)
+            $define_pagina_mestra
         );
 
         $router->post(
@@ -75,7 +82,7 @@ class LoginRouter extends PainelDLXRouter
             '/painel-dlx/recuperar-minha-senha',
             [ResetSenhaController::class, 'formResetSenha']
         )->middlewares(
-            new DefinePaginaMestra($this->painel_dlx->getServerRequest(), $this->session)
+            $define_pagina_mestra
         );
 
         $router->post(

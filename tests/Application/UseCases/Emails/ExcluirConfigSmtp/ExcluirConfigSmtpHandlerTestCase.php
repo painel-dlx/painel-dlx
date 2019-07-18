@@ -71,6 +71,6 @@ class ExcluirConfigSmtpHandlerTestCase extends PainelDLXTestCase
         $command = new ExcluirConfigSmtpCommand($config_smtp);
         $this->handler->handle($command);
 
-        $this->assertNull($config_smtp->getConfigSmtpId());
+        $this->assertNull($config_smtp->getId());
     }
 }

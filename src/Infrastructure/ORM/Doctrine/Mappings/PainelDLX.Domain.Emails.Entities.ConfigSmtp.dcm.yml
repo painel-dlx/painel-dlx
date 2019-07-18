@@ -1,0 +1,53 @@
+PainelDLX\Domain\Emails\Entities\ConfigSmtp:
+    type: entity
+    table: dlx_config_smtp
+    repositoryClass: PainelDLX\Infrastructure\ORM\Doctrine\Repositories\ConfigSmtpRepository
+    id:
+        id:
+            type: integer
+            id: true
+            nullable: false
+            generator:
+                strategy: auto
+            column: config_smtp_id
+    fields:
+        nome:
+            type: string
+            nullable: false
+            length: 40
+        servidor:
+            type: string
+            nullable: false
+            length: 30
+        porta:
+            type: integer
+            nullable: false
+        cripto:
+            type: string
+            nullable: true
+            length: 3
+        requer_autent:
+            type: boolean
+            nullable: false
+        conta:
+            type: string
+            nullable: true
+            length: 100
+        senha:
+            type: string
+            nullable: true
+            length: 20
+        de_nome:
+            type: string
+            nullable: true
+            length: 50
+        responder_para:
+            type: string
+            nullable: true
+            length: 100
+        corpo_html:
+            type: boolean
+            nullable: false
+        deletado:
+            type: boolean
+            nullable: false

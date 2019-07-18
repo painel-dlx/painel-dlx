@@ -176,7 +176,7 @@ class CadastroPermissaoController extends PainelDLXController
 
             $msg['retorno'] = 'sucesso';
             $msg['mensagem'] = 'Permissão criada com sucesso!';
-            $msg['permissao_usuario_id'] = $permissao_usuario->getPermissaoUsuarioId();
+            $msg['permissao_usuario_id'] = $permissao_usuario->getId();
         } catch (UserException $e) {
             $msg['retorno'] = 'erro';
             $msg['mensagem'] = $e->getMessage();
@@ -252,7 +252,7 @@ class CadastroPermissaoController extends PainelDLXController
 
             $msg['retorno'] = 'sucesso';
             $msg['mensagem'] = 'Permissão alterada com sucesso!';
-            $msg['permissao_usuario_id'] = $permissao_usuario->getPermissaoUsuarioId();
+            $msg['permissao_usuario_id'] = $permissao_usuario->getId();
         } catch (UserException $e) {
             $msg['retorno'] = 'erro';
             $msg['mensagem'] = $e->getMessage();

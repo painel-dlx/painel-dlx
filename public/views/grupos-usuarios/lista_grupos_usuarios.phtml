@@ -82,7 +82,7 @@ $filtro = $this->getAtributo('filtro');
     /** @var GrupoUsuario $grupo_usuario */
     foreach ($lista_grupos_usuarios as $grupo_usuario) : ?>
         <tr>
-            <td headers="grupo-usuario-id"><?php echo $grupo_usuario->getGrupoUsuarioId() ?></td>
+            <td headers="grupo-usuario-id"><?php echo $grupo_usuario->getId() ?></td>
             <td headers="alias"><?php echo $grupo_usuario->getAlias() ?></td>
             <td headers="grupo">
                 <?php echo $grupo_usuario->getNome() ?><br>
@@ -99,15 +99,15 @@ $filtro = $this->getAtributo('filtro');
                 </span>
             </td>
             <td headers="opcoes">
-                <a href="/painel-dlx/grupos-de-usuarios/detalhe?grupo_usuario_id=<?php echo $grupo_usuario->getGrupoUsuarioId() ?>" class="link-detalhe">
+                <a href="/painel-dlx/grupos-de-usuarios/detalhe?grupo_usuario_id=<?php echo $grupo_usuario->getId() ?>" class="link-detalhe">
                     Detalhe
                 </a>
 
-                <a href="/painel-dlx/grupos-de-usuarios/editar?grupo_usuario_id=<?php echo $grupo_usuario->getGrupoUsuarioId() ?>" class="link-editar">
+                <a href="/painel-dlx/grupos-de-usuarios/editar?grupo_usuario_id=<?php echo $grupo_usuario->getId() ?>" class="link-editar">
                     Editar
                 </a>
 
-                <a href="javascript:" class="link-excluir" onclick="excluirGrupoUsuario(<?php echo $grupo_usuario->getGrupoUsuarioId() ?>)">
+                <a href="javascript:" class="link-excluir" onclick="excluirGrupoUsuario(<?php echo $grupo_usuario->getId() ?>)">
                     Excluir
                 </a>
             </td>

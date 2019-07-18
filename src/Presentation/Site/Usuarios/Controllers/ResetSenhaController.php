@@ -132,7 +132,7 @@ class ResetSenhaController extends PainelDLXController
 
             $json['retorno'] = 'sucesso';
             $json['mensagem'] = 'Foi enviado um email com instruções para recuperar sua senha.';
-            $json['reset_senha_id'] = $reset_senha->getResetSenhaId();
+            $json['reset_senha_id'] = $reset_senha->getId();
         } catch (UserException $e) {
             $json['retorno'] = 'erro';
             $json['mensagem'] = $e->getMessage();

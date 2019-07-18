@@ -31,6 +31,7 @@ use PainelDLX\Application\Middlewares\Autorizacao;
 use PainelDLX\Application\Middlewares\CriptografarSenhas;
 use PainelDLX\Application\Middlewares\DefinePaginaMestra;
 use PainelDLX\Application\Middlewares\VerificarLogon;
+use PainelDLX\Application\Services\PainelDLX;
 use PainelDLX\Presentation\Site\Usuarios\Controllers\AlterarSenhaUsuarioController;
 use PainelDLX\Presentation\Site\Usuarios\Controllers\CadastroUsuarioController;
 use PainelDLX\Presentation\Site\Usuarios\Controllers\MinhaContaController;
@@ -44,48 +45,54 @@ class UsuariosRouter extends PainelDLXRouter
     public function registrar(): void
     {
         $router = $this->getRouter();
+        $container = PainelDLX::getInstance()->getContainer();
 
+        /** @var VerificarLogon $verificar_logon */
+        $verificar_logon = $container->get(VerificarLogon::class);
+        /** @var DefinePaginaMestra $define_pagina_mestra */
+        $define_pagina_mestra = $container->get(DefinePaginaMestra::class);
+        
         $router->get(
             '/painel-dlx/usuarios',
             [CadastroUsuarioController::class, 'listaUsuarios']
         )->middlewares(
-            new VerificarLogon($this->session),
+            $verificar_logon,
             new Autorizacao('ACESSAR_CADASTRO_USUARIOS'),
-            new DefinePaginaMestra($this->painel_dlx->getServerRequest(), $this->session)
+            $define_pagina_mestra
         );
 
         $router->get(
             '/painel-dlx/usuarios/novo',
             [CadastroUsuarioController::class, 'formNovoUsuario']
         )->middlewares(
-            new VerificarLogon($this->session),
+            $verificar_logon,
             new Autorizacao('CADASTRAR_NOVO_USUARIO'),
-            new DefinePaginaMestra($this->painel_dlx->getServerRequest(), $this->session)
+            $define_pagina_mestra
         );
 
         $router->get(
             '/painel-dlx/usuarios/editar',
             [CadastroUsuarioController::class, 'formAlterarUsuario']
         )->middlewares(
-            new VerificarLogon($this->session),
+            $verificar_logon,
             new Autorizacao('EDITAR_CADASTRO_USUARIO'),
-            new DefinePaginaMestra($this->painel_dlx->getServerRequest(), $this->session)
+            $define_pagina_mestra
         );
 
         $router->get(
             '/painel-dlx/usuarios/detalhe',
             [CadastroUsuarioController::class, 'detalheUsuario']
         )->middlewares(
-            new VerificarLogon($this->session),
+            $verificar_logon,
             new Autorizacao('ACESSAR_CADASTRO_USUARIOS'),
-            new DefinePaginaMestra($this->painel_dlx->getServerRequest(), $this->session)
+            $define_pagina_mestra
         );
 
         $router->post(
             '/painel-dlx/usuarios/cadastrar-novo-usuario',
             [CadastroUsuarioController::class, 'cadastrarNovoUsuario']
         )->middlewares(
-            new VerificarLogon($this->session),
+            $verificar_logon,
             new Autorizacao('CADASTRAR_NOVO_USUARIO'),
             new CriptografarSenhas('senha', 'senha_confirm')
         );
@@ -94,7 +101,7 @@ class UsuariosRouter extends PainelDLXRouter
             '/painel-dlx/usuarios/salvar-usuario-existente',
             [CadastroUsuarioController::class, 'atualizarUsuarioExistente']
         )->middlewares(
-            new VerificarLogon($this->session),
+            $verificar_logon,
             new Autorizacao('EDITAR_CADASTRO_USUARIO')
         );
 
@@ -102,7 +109,7 @@ class UsuariosRouter extends PainelDLXRouter
             '/painel-dlx/usuarios/excluir-usuario',
             [CadastroUsuarioController::class, 'excluirUsuario']
         )->middlewares(
-            new VerificarLogon($this->session),
+            $verificar_logon,
             new Autorizacao('EXCLUIR_CADASTRO_USUARIO')
         );
 
@@ -110,7 +117,7 @@ class UsuariosRouter extends PainelDLXRouter
             '/painel-dlx/usuarios/alterar-senha',
             [AlterarSenhaUsuarioController::class, 'formAlterarSenha']
         )->middlewares(
-            new VerificarLogon($this->session),
+            $verificar_logon,
             new Autorizacao('ALTERAR_SENHA_USUARIO')
         );
 
@@ -118,7 +125,7 @@ class UsuariosRouter extends PainelDLXRouter
             '/painel-dlx/usuarios/alterar-senha',
             [AlterarSenhaUsuarioController::class, 'alterarSenhaUsuario']
         )->middlewares(
-            new VerificarLogon($this->session),
+            $verificar_logon,
             new Autorizacao('ALTERAR_SENHA_USUARIO'),
             new CriptografarSenhas('senha_atual', 'senha_nova', 'senha_confirm')
         );
@@ -127,23 +134,23 @@ class UsuariosRouter extends PainelDLXRouter
             '/painel-dlx/minha-conta',
             [MinhaContaController::class, 'meusDados']
         )->middlewares(
-            new VerificarLogon($this->session),
-            new DefinePaginaMestra($this->painel_dlx->getServerRequest(), $this->session)
+            $verificar_logon,
+            $define_pagina_mestra
         );
 
         $router->get(
             '/painel-dlx/alterar-minha-senha',
             [MinhaContaController::class, 'formAlterarMinhaSenha']
         )->middlewares(
-            new VerificarLogon($this->session),
-            new DefinePaginaMestra($this->painel_dlx->getServerRequest(), $this->session)
+            $verificar_logon,
+            $define_pagina_mestra
         );
 
         $router->post(
             '/painel-dlx/alterar-minha-senha',
             [MinhaContaController::class, 'alterarMinhaSenha']
         )->middlewares(
-            new VerificarLogon($this->session),
+            $verificar_logon,
             new CriptografarSenhas('senha_atual', 'senha_nova', 'senha_confirm')
         );
 
@@ -151,8 +158,8 @@ class UsuariosRouter extends PainelDLXRouter
             '/painel-dlx/resumo-usuario-logado',
             [MinhaContaController::class, 'resumoInformacoes']
         )->middlewares(
-            new VerificarLogon($this->session),
-            new DefinePaginaMestra($this->painel_dlx->getServerRequest(), $this->session)
+            $verificar_logon,
+            $define_pagina_mestra
         );
     }
 }

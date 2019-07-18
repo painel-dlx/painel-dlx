@@ -80,21 +80,21 @@ $filtro = $this->getAtributo('filtro');
     /** @var PermissaoUsuario $permissao */
     foreach ($lista_permissoes as $permissao) : ?>
         <tr>
-            <td headers="usuario-id"><?php echo $permissao->getPermissaoUsuarioId() ?></td>
+            <td headers="usuario-id"><?php echo $permissao->getId() ?></td>
             <td headers="usuario">
                 <?php echo $permissao->getDescricao() ?><br>
                 <span class="lista-registros-comentario"><?php echo $permissao->getAlias() ?></span>
             </td>
             <td headers="opcoes">
-                <a href="/painel-dlx/permissoes/detalhe?permissao_usuario_id=<?php echo $permissao->getPermissaoUsuarioId() ?>" class="link-detalhe" title="">
+                <a href="/painel-dlx/permissoes/detalhe?permissao_usuario_id=<?php echo $permissao->getId() ?>" class="link-detalhe" title="">
                     Detalhe
                 </a>
 
-                <a href="/painel-dlx/permissoes/editar?permissao_usuario_id=<?php echo $permissao->getPermissaoUsuarioId() ?>" class="link-editar" title="Editar essa permissão">
+                <a href="/painel-dlx/permissoes/editar?permissao_usuario_id=<?php echo $permissao->getId() ?>" class="link-editar" title="Editar essa permissão">
                     Editar
                 </a>
 
-                <a href="javascript:" class="link-excluir" onclick="excluirPermissaoUsuario(<?php echo $permissao->getPermissaoUsuarioId() ?>)" title="Excluir essa permissão">
+                <a href="javascript:" class="link-excluir" onclick="excluirPermissaoUsuario(<?php echo $permissao->getId() ?>)" title="Excluir essa permissão">
                     Excluir
                 </a>
             </td>

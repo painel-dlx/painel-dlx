@@ -30,6 +30,7 @@ use Exception;
 use PainelDLX\Application\Middlewares\Autorizacao;
 use PainelDLX\Application\Middlewares\DefinePaginaMestra;
 use PainelDLX\Application\Middlewares\VerificarLogon;
+use PainelDLX\Application\Services\PainelDLX;
 use PainelDLX\Presentation\Site\Emails\Controllers\ConfigSmtpController;
 use PainelDLX\Presentation\Site\Emails\Controllers\EditarConfigSmtpController;
 use PainelDLX\Presentation\Site\Emails\Controllers\NovaConfigSmtpController;
@@ -44,31 +45,36 @@ class ConfigSmtpRouter extends PainelDLXRouter
     public function registrar(): void
     {
         $router = $this->getRouter();
+        $container = PainelDLX::getInstance()->getContainer();
+
+        /** @var DefinePaginaMestra $define_pagina_mestra */
+        $define_pagina_mestra = $container->get(DefinePaginaMestra::class);
+        /** @var VerificarLogon $verificar_logon */
+        $verificar_logon = $container->get(VerificarLogon::class);
 
         $router->get(
             '/painel-dlx/config-smtp',
             [ConfigSmtpController::class, 'listaConfigSmtp']
         )->middlewares(
-            new VerificarLogon($this->session),
-            new Autorizacao('VER_CONFIGURACOES_SMTP'),
-            new DefinePaginaMestra($this->painel_dlx->getServerRequest(), $this->session)
-            // new LimparQueryString($this)
+            $define_pagina_mestra,
+            $verificar_logon,
+            new Autorizacao('VER_CONFIGURACOES_SMTP')
         );
 
         $router->get(
             '/painel-dlx/config-smtp/nova',
             [NovaConfigSmtpController::class, 'formNovaConfigSmtp']
         )->middlewares(
-            new VerificarLogon($this->session),
-            new Autorizacao('CRIAR_CONFIGURACAO_SMTP'),
-            new DefinePaginaMestra($this->painel_dlx->getServerRequest(), $this->session)
+            $define_pagina_mestra,
+            $verificar_logon,
+            new Autorizacao('CRIAR_CONFIGURACAO_SMTP')
         );
 
         $router->post(
             '/painel-dlx/config-smtp/salvar-config-smtp',
             [NovaConfigSmtpController::class, 'salvarNovaConfigSmtp']
         )->middlewares(
-            new VerificarLogon($this->session),
+            $verificar_logon,
             new Autorizacao('CRIAR_CONFIGURACAO_SMTP')
         );
 
@@ -76,16 +82,16 @@ class ConfigSmtpRouter extends PainelDLXRouter
             '/painel-dlx/config-smtp/editar',
             [EditarConfigSmtpController::class, 'formEditarConfigSmtp']
         )->middlewares(
-            new VerificarLogon($this->session),
-            new Autorizacao('EDITAR_CONFIGURACAO_SMTP'),
-            new DefinePaginaMestra($this->painel_dlx->getServerRequest(), $this->session)
+            $define_pagina_mestra,
+            $verificar_logon,
+            new Autorizacao('EDITAR_CONFIGURACAO_SMTP')
         );
 
         $router->post(
             '/painel-dlx/config-smtp/atualizar-config-smtp',
             [EditarConfigSmtpController::class, 'editarConfigSmtp']
         )->middlewares(
-            new VerificarLogon($this->session),
+            $verificar_logon,
             new Autorizacao('EDITAR_CONFIGURACAO_SMTP')
         );
 
@@ -93,7 +99,7 @@ class ConfigSmtpRouter extends PainelDLXRouter
             '/painel-dlx/config-smtp/excluir-config-smtp',
             [ConfigSmtpController::class, 'excluirConfigSmtp']
         )->middlewares(
-            new VerificarLogon($this->session),
+            $verificar_logon,
             new Autorizacao('EXCLUIR_CONFIGURACAO_SMTP')
         );
 
@@ -101,9 +107,9 @@ class ConfigSmtpRouter extends PainelDLXRouter
             '/painel-dlx/config-smtp/detalhe',
             [ConfigSmtpController::class, 'detalheConfigSmtp']
         )->middlewares(
-            new VerificarLogon($this->session),
-            new Autorizacao('VER_CONFIGURACOES_SMTP'),
-            new DefinePaginaMestra($this->painel_dlx->getServerRequest(), $this->session)
+            $define_pagina_mestra,
+            $verificar_logon,
+            new Autorizacao('VER_CONFIGURACOES_SMTP')
         );
 
         // TODO: Teste de email é GET ou POST?
@@ -111,7 +117,7 @@ class ConfigSmtpRouter extends PainelDLXRouter
             '/painel-dlx/config-smtp/testar',
             [ConfigSmtpController::class, 'testarConfigSmtp']
         )->middlewares(
-            new VerificarLogon($this->session),
+            $verificar_logon,
             new Autorizacao('VER_CONFIGURACOES_SMTP')
         );
 
@@ -119,7 +125,7 @@ class ConfigSmtpRouter extends PainelDLXRouter
             '/painel-dlx/config-smtp/testar',
             [ConfigSmtpController::class, 'testarConfigSmtp']
         )->middlewares(
-            new VerificarLogon($this->session),
+            $verificar_logon,
             new Autorizacao('VER_CONFIGURACOES_SMTP')
         );
     }

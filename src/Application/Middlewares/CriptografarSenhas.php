@@ -8,8 +8,10 @@
 
 namespace PainelDLX\Application\Middlewares;
 
-use PainelDLX\Application\Contracts\MiddlewareInterface;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
 class CriptografarSenhas implements MiddlewareInterface
 {
@@ -34,7 +36,7 @@ class CriptografarSenhas implements MiddlewareInterface
     {
         // TODO: Verirficar se há melhor alternativa para descoplar essa ServerRequestInterface e IniciarPainelDLX
         global $painel_dlx;
-        $server_request = $painel_dlx->getServerRequest();
+        $server_request = $painel_dlx->getRequest();
 
         $dados = $server_request->getMethod() === 'GET' ? $server_request->getQueryParams() : $server_request->getParsedBody();
 
@@ -48,7 +50,31 @@ class CriptografarSenhas implements MiddlewareInterface
             ? $server_request->withQueryParams($dados)
             : $server_request->withParsedBody($dados);
 
-        $painel_dlx->setServerRequest($server_request);
+        $painel_dlx->setRequest($server_request);
+    }
+
+    /**
+     * Process an incoming server request.
+     *
+     * Processes an incoming server request in order to produce a response.
+     * If unable to produce the response itself, it may delegate to the provided
+     * request handler to do so.
+     */
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    {
+        $dados = $request->getMethod() === 'GET' ? $request->getQueryParams() : $request->getParsedBody();
+
+        foreach ($this->senhas as $senha) {
+            if (array_key_exists($senha, $dados)) {
+                $dados[$senha] = $this->criptografar($dados[$senha]);
+            }
+        }
+
+        $request = $request->getMethod() === 'GET'
+            ? $request->withQueryParams($dados)
+            : $request->withParsedBody($dados);
+
+        return $handler->handle($request);
     }
 
     /**

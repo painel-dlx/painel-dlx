@@ -85,7 +85,7 @@ class NovoUsuarioCommandHandlerTest extends PainelDLXTestCase
         $command = new NovoUsuarioCommand($usuario, $senha);
         $handler->handle($command);
 
-        $this->assertNotNull($usuario->getUsuarioId());
+        $this->assertNotNull($usuario->getId());
 
         return $usuario;
     }

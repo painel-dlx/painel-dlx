@@ -25,7 +25,8 @@
 
 namespace PainelDLX\Tests\Application\Services;
 
-use League\Container\Container;
+use PainelDLX\Application\Contracts\Router\ContainerInterface;
+use PainelDLX\Application\Contracts\Router\RouterInterface;
 use PainelDLX\Application\Services\PainelDLX;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
@@ -43,15 +44,18 @@ class PainelDLXTest extends TestCase
     public function test__construct(): PainelDLX
     {
         $request = $this->createMock(ServerRequestInterface::class);
-        $container = $this->createMock(Container::class);
+        $router = $this->createMock(RouterInterface::class);
+        $container = $this->createMock(ContainerInterface::class);
 
         /** @var ServerRequestInterface $request */
-        /** @var Container $container */
+        /** @var RouterInterface $router */
+        /** @var ContainerInterface $container */
 
-        $painel_dlx = new PainelDLX($request, $container);
+        $painel_dlx = new PainelDLX($request, $router, $container);
 
         $this->assertInstanceOf(PainelDLX::class, $painel_dlx);
-        $this->assertEquals($request, $painel_dlx->getServerRequest());
+        $this->assertEquals($request, $painel_dlx->getRequest());
+        $this->assertEquals($router, $painel_dlx->getRouter());
         $this->assertEquals($container, $painel_dlx->getContainer());
 
         return $painel_dlx;

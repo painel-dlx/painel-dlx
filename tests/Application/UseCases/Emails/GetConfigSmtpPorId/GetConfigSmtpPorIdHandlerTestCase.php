@@ -58,7 +58,7 @@ class GetConfigSmtpPorIdHandlerTestCase extends PainelDLXTestCase
     public function test_Handle()
     {
         $config_smtp = (new NovaConfigSmtpHandlerTestCase())->test_Handle();
-        $command = new GetConfigSmtpPorIdCommand($config_smtp->getConfigSmtpId());
+        $command = new GetConfigSmtpPorIdCommand($config_smtp->getId());
 
         $config_smtp2 = $this->handler->handle($command);
 

@@ -99,7 +99,7 @@ class ConfigurarPermissoesControllerTest extends PainelDLXTestCase
         $request = $this->createMock(ServerRequestInterface::class);
         $request
             ->method('getQueryParams')
-            ->willReturn(['grupo_usuario_id' => $grupo_usuario->getGrupoUsuarioId()]);
+            ->willReturn(['grupo_usuario_id' => $grupo_usuario->getId()]);
 
         /** @var ServerRequestInterface $request */
         $response = $controller->formConfigurarPermissao($request);
@@ -120,7 +120,7 @@ class ConfigurarPermissoesControllerTest extends PainelDLXTestCase
         $request
             ->method('getParsedBody')
             ->willReturn([
-                'grupo_usuario_id' => $grupo_usuario->getGrupoUsuarioId(),
+                'grupo_usuario_id' => $grupo_usuario->getId(),
                 'permissao_usuario_ids' => range(1, 100)
             ]);
 

@@ -38,7 +38,7 @@ $permissao_usuario = $this->getAtributo('permissao-usuario');
 <h1 class="titulo-pagina"><?php echo $this->getAtributo('titulo-pagina') ?></h1>
 
 <form id="form-permissao" method="post" action="/painel-dlx/permissoes/editar-permissao">
-    <input type="hidden" name="permissao_usuario_id" value="<?php echo $permissao_usuario->getPermissaoUsuarioId() ?> ">
+    <input type="hidden" name="permissao_usuario_id" value="<?php echo $permissao_usuario->getId() ?> ">
 
     <fieldset class="form-grupo">
         <legend class="form-titulo">Geral</legend>

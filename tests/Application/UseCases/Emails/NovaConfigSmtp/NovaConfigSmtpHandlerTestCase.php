@@ -54,7 +54,7 @@ class NovaConfigSmtpHandlerTestCase extends PainelDLXTestCase
 
         (new NovaConfigSmtpHandler($config_smtp_repository))->handle($command);
 
-        $this->assertNotNull($config_smtp->getConfigSmtpId());
+        $this->assertNotNull($config_smtp->getId());
 
         return $config_smtp;
     }

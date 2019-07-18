@@ -82,21 +82,21 @@ $filtro = $this->getAtributo('filtro');
     /** @var ConfigSmtp $config_smtp */
     foreach ($lista_config_smtp as $config_smtp) : ?>
         <tr>
-            <td headers="config-smtp-id"><?php echo $config_smtp->getConfigSmtpId() ?></td>
+            <td headers="config-smtp-id"><?php echo $config_smtp->getId() ?></td>
             <td headers="nome"><?php echo $config_smtp->getNome() ?></td>
             <td headers="servidor">
                 <?php echo "{$config_smtp->getServidor()}:{$config_smtp->getPorta()}" ?>
             </td>
             <td headers="opcoes">
-                <a href="/painel-dlx/config-smtp/detalhe?config_smtp_id=<?php echo $config_smtp->getConfigSmtpId() ?>" class="link-detalhe">
+                <a href="/painel-dlx/config-smtp/detalhe?config_smtp_id=<?php echo $config_smtp->getId() ?>" class="link-detalhe">
                     Detalhe
                 </a>
 
-                <a href="/painel-dlx/config-smtp/editar?config_smtp_id=<?php echo $config_smtp->getConfigSmtpId() ?>" class="link-editar">
+                <a href="/painel-dlx/config-smtp/editar?config_smtp_id=<?php echo $config_smtp->getId() ?>" class="link-editar">
                     Editar
                 </a>
 
-                <a href="javascript:" class="link-excluir" onclick="excluirConfigSmtp(<?php echo $config_smtp->getConfigSmtpId() ?>)">
+                <a href="javascript:" class="link-excluir" onclick="excluirConfigSmtp(<?php echo $config_smtp->getId() ?>)">
                     Excluir
                 </a>
             </td>

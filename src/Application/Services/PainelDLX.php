@@ -29,15 +29,19 @@ namespace PainelDLX\Application\Services;
 use DLX\Core\Configure;
 use DLX\Core\Exceptions\ArquivoConfiguracaoNaoEncontradoException;
 use DLX\Core\Exceptions\ArquivoConfiguracaoNaoInformadoException;
+use PainelDLX\Application\Contracts\Router\ContainerInterface;
+use PainelDLX\Application\Contracts\Router\RouterInterface;
 use PainelDLX\Application\Routes\PainelDLXRouter;
 use PainelDLX\Application\Services\Exceptions\AmbienteNaoInformadoException;
-use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use RautereX\Exceptions\RotaNaoEncontradaException;
-use RautereX\RautereX;
 use ReflectionException;
-use SechianeX\Factories\SessionFactory;
 
+/**
+ * Class PainelDLX
+ * @package PainelDLX\Application\Services
+ * @covers \PainelDLX\Application\Services\PainelDLX
+ */
 class PainelDLX
 {
     /**
@@ -45,33 +49,46 @@ class PainelDLX
      */
     public static $dir = '';
     /**
+     * @var self
+     */
+    private static $instance;
+    /**
      * @var ServerRequestInterface
      */
-    private $server_request;
+    private $request;
     /**
      * @var ContainerInterface|null
      */
     private $container;
-
-    /** @var self */
-    private static $instance;
+    /**
+     * @var RouterInterface
+     */
+    private $router;
 
     /**
      * @return ServerRequestInterface
      */
-    public function getServerRequest(): ServerRequestInterface
+    public function getRequest(): ServerRequestInterface
     {
-        return $this->server_request;
+        return $this->request;
     }
 
     /**
-     * @param ServerRequestInterface $server_request
+     * @param ServerRequestInterface $request
      * @return PainelDLX
      */
-    public function setServerRequest(ServerRequestInterface $server_request): PainelDLX
+    public function setRequest(ServerRequestInterface $request): PainelDLX
     {
-        $this->server_request = $server_request;
+        $this->request = $request;
         return $this;
+    }
+
+    /**
+     * @return RouterInterface
+     */
+    public function getRouter(): RouterInterface
+    {
+        return $this->router;
     }
 
     /**
@@ -94,15 +111,17 @@ class PainelDLX
 
     /**
      * IniciarPainelDLX constructor.
-     * @param string $ambiente
      * @param ServerRequestInterface $server_request
+     * @param RouterInterface $router
      * @param ContainerInterface|null $container
      */
     public function __construct(
         ServerRequestInterface $server_request,
+        RouterInterface $router,
         ?ContainerInterface $container = null
     ) {
-        $this->server_request = $server_request;
+        $this->request = $server_request;
+        $this->router = $router;
         $this->container = $container;
         $this->defineDirPainelDLX();
 
@@ -118,34 +137,28 @@ class PainelDLX
     }
 
     /**
+     * @return PainelDLX
+     * @throws AmbienteNaoInformadoException
      * @throws ArquivoConfiguracaoNaoEncontradoException
      * @throws ArquivoConfiguracaoNaoInformadoException
-     * @throws AmbienteNaoInformadoException
      */
     public function init(): PainelDLX
     {
         $this->carregarConfiguracao();
+
+        $this->registrarDiretoriosInclusao(Configure::get('app', 'diretorios'));
         $this->registrarServiceProviders(Configure::get('app', 'service-providers'));
+        $this->registrarRotas(Configure::get('app', 'rotas'));
+
         return $this;
     }
 
     /**
-     * @throws RotaNaoEncontradaException
-     * @throws ReflectionException
+     * Executar a task desejada
      */
-    public function executar()
+    public function executar(): void
     {
-        // TODO: desacoplar a classe RautereX
-        $router = new RautereX($this->container);
-        $this->registrarRotas(Configure::get('app', 'rotas'), $router);
-
-        $params = $this->server_request->getQueryParams();
-
-        $response = $router->executarRota(
-            $params['task'],
-            $this->server_request,
-            $this->server_request->getMethod()
-        );
+        $response = $this->router->dispatch($this->request);
         echo $response->getBody();
     }
 
@@ -154,10 +167,11 @@ class PainelDLX
      * @param ServerRequestInterface $request
      * @throws RotaNaoEncontradaException
      * @throws ReflectionException
+     * @deprecated é necessário? está sendo utilizado?
      */
     public function redirect(ServerRequestInterface $request)
     {
-        $this->setServerRequest($request);
+        $this->setRequest($request);
         $this->executar();
     }
 
@@ -183,24 +197,23 @@ class PainelDLX
      */
     private function carregarConfiguracao(): void
     {
-        if (!array_key_exists('ambiente', $this->server_request->getQueryParams())) {
+        if (!array_key_exists('ambiente', $this->request->getQueryParams())) {
             throw new AmbienteNaoInformadoException();
         }
 
-        $ambiente = $this->server_request->getQueryParams()['ambiente'];
+        $ambiente = $this->request->getQueryParams()['ambiente'];
         Configure::init($ambiente, "config/{$ambiente}.php");
     }
 
     /**
      * Registrar rotas no RautereX
      * @param array $routers
-     * @param RautereX $rautere_x
      */
-    private function registrarRotas(array $routers, RautereX $rautere_x): void
+    private function registrarRotas(array $routers): void
     {
         foreach ($routers as $router) {
             /** @var PainelDLXRouter $router */
-            $router = new $router($rautere_x, $this, SessionFactory::createPHPSession());
+            $router = new $router($this->router);
             $router->registrar();
         }
     }
@@ -212,9 +225,7 @@ class PainelDLX
     private function registrarServiceProviders(array $service_providers): void
     {
         if (!is_null($this->container)) {
-            foreach ($service_providers as $service_provider) {
-                $this->container->addServiceProvider($service_provider);
-            }
+            $this->container->registrarServicesProviders(... $service_providers);
         }
     }
 
@@ -226,13 +237,24 @@ class PainelDLX
         // Previnir que o diretório seja alterado caso alguém tenha setado ele manualmente
         if (empty(self::$dir)) {
             $base_dir = dirname(dirname(dirname(__DIR__)));
-            $document_root = $this->server_request->getServerParams()['DOCUMENT_ROOT'];
+            $document_root = $this->request->getServerParams()['DOCUMENT_ROOT'];
 
             // Setar o path do PainelDLX
             self::$dir = trim(str_replace($document_root, '', $base_dir), '/');
 
             // Adicionar o path do PainelDLX no include_path
             $this->adicionarDiretorioInclusao($base_dir);
+        }
+    }
+
+    /**
+     * Registrar os diretórios de inclusão para facilitar os includes do sistema
+     * @param array $diretorios
+     */
+    private function registrarDiretoriosInclusao(array $diretorios): void
+    {
+        foreach ($diretorios as $diretorio) {
+            $this->adicionarDiretorioInclusao($diretorio);
         }
     }
 }

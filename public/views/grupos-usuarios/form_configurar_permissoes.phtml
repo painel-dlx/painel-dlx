@@ -42,7 +42,7 @@ $lista_permissoes = $this->getAtributo('lista-permissoes');
 <h1 class="titulo-pagina"><?php echo $this->getAtributo('titulo-pagina') ?></h1>
 
 <form id="form-config-permissoes" method="post" action="/painel-dlx/grupos-de-usuarios/configurar-permissoes" class="form-config-permissoes">
-    <input type="hidden" name="grupo_usuario_id" value="<?php echo $grupo_usuario->getGrupoUsuarioId() ?>">
+    <input type="hidden" name="grupo_usuario_id" value="<?php echo $grupo_usuario->getId() ?>">
 
     <fieldset class="form-grupo">
         <legend class="form-titulo">Sistema</legend>
@@ -53,9 +53,9 @@ $lista_permissoes = $this->getAtributo('lista-permissoes');
             /** @var PermissaoUsuario $permissao */
             foreach ($lista_permissoes as $permissao) :
                 if (!$grupo_usuario->hasPermissao($permissao)) : ?>
-                <tr data-permissao="<?php echo $permissao->getPermissaoUsuarioId() ?>" onclick="adicionarPermissao(this)">
+                <tr data-permissao="<?php echo $permissao->getId() ?>" onclick="adicionarPermissao(this)">
                     <td>
-                        <input type="checkbox" name="permissao_usuario_ids[]" value="<?php echo $permissao->getPermissaoUsuarioId() ?>">
+                        <input type="checkbox" name="permissao_usuario_ids[]" value="<?php echo $permissao->getId() ?>">
                         <?php echo $permissao->getDescricao() ?>
                     </td>
                 </tr>
@@ -73,7 +73,7 @@ $lista_permissoes = $this->getAtributo('lista-permissoes');
             <?php foreach ($grupo_usuario->getPermissoes() as $permissao) : ?>
                 <tr onclick="retirarPermissao(this)">
                     <td>
-                        <input type="checkbox" name="permissao_usuario_ids[]" value="<?php echo $permissao->getPermissaoUsuarioId() ?>" checked>
+                        <input type="checkbox" name="permissao_usuario_ids[]" value="<?php echo $permissao->getId() ?>" checked>
                         <?php echo $permissao->getDescricao() ?>
                     </td>
                 </tr>

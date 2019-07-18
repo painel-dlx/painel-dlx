@@ -14,7 +14,7 @@ use DLX\Domain\Entities\Entity;
 class ConfigSmtp extends Entity
 {
     /** @var int|null */
-    private $config_smtp_id;
+    private $id;
     /** @var string|null */
     private $nome;
     /** @var string */
@@ -41,18 +41,18 @@ class ConfigSmtp extends Entity
     /**
      * @return int|null
      */
-    public function getConfigSmtpId(): ?int
+    public function getId(): ?int
     {
-        return $this->config_smtp_id;
+        return $this->id;
     }
 
     /**
-     * @param int|null $config_smtp_id
+     * @param int|null $id
      * @return ConfigSmtp
      */
-    public function setConfigSmtpId(?int $config_smtp_id): ConfigSmtp
+    public function setId(?int $id): ConfigSmtp
     {
-        $this->config_smtp_id = $config_smtp_id;
+        $this->id = $id;
         return $this;
     }
 

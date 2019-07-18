@@ -19,7 +19,7 @@ use PainelDLX\Domain\Usuarios\Exceptions\UsuarioJaPossuiGrupoException;
 class Usuario extends Entity
 {
     /** @var int */
-    private $usuario_id;
+    private $id;
     /** @var string */
     private $nome;
     /** @var string */
@@ -34,18 +34,18 @@ class Usuario extends Entity
     /**
      * @return int
      */
-    public function getUsuarioId(): ?int
+    public function getId(): ?int
     {
-        return $this->usuario_id;
+        return $this->id;
     }
 
     /**
-     * @param int $usuario_id
+     * @param int $id
      * @return Usuario
      */
-    public function setUsuarioId(int $usuario_id): Usuario
+    public function setId(int $id): Usuario
     {
-        $this->usuario_id = $usuario_id;
+        $this->id = $id;
         return $this;
     }
 

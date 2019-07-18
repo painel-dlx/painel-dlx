@@ -36,8 +36,8 @@ $config_smtp = $this->getAtributo('config-smtp') ?? new ConfigSmtp()
 [CORPO]
 <h1 class="titulo-pagina"><?php echo $this->getAtributo('titulo-pagina') ?></h1>
 
-<form id="form-config-smtp" method="post" action="<?php echo $config_smtp->getConfigSmtpId() ? '/painel-dlx/config-smtp/atualizar-config-smtp' : '/painel-dlx/config-smtp/salvar-config-smtp' ?>">
-    <input type="hidden" name="config_smtp_id" value="<?php echo $config_smtp->getConfigSmtpId() ?>">
+<form id="form-config-smtp" method="post" action="<?php echo $config_smtp->getId() ? '/painel-dlx/config-smtp/atualizar-config-smtp' : '/painel-dlx/config-smtp/salvar-config-smtp' ?>">
+    <input type="hidden" name="config_smtp_id" value="<?php echo $config_smtp->getId() ?>">
 
     <fieldset class="form-grupo">
         <legend class="form-titulo">Geral</legend>

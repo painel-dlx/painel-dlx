@@ -23,12 +23,12 @@ class CriptografarSenhasTest extends PainelDLXTestCase
         global $painel_dlx;
 
         $senha = 'teste';
-        $server_request = $painel_dlx->getServerRequest();
-        $painel_dlx->setServerRequest($server_request->withQueryParams(['senha' => $senha]));
+        $server_request = $painel_dlx->getRequest();
+        $painel_dlx->setRequest($server_request->withQueryParams(['senha' => $senha]));
 
         $cripto = new CriptografarSenhas('senha');
         $cripto->executar();
 
-        $this->assertEquals(md5(md5($senha)), $painel_dlx->getServerRequest()->getQueryParams()['senha']);
+        $this->assertEquals(md5(md5($senha)), $painel_dlx->getRequest()->getQueryParams()['senha']);
     }
 }

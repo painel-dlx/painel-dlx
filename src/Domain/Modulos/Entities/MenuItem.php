@@ -34,7 +34,7 @@ use PainelDLX\Domain\PermissoesUsuario\Entities\PermissaoUsuario;
 class MenuItem extends Entity
 {
     /** @var int|null */
-    private $menu_item_id;
+    private $id;
     /** @var Menu */
     private $menu;
     /** @var string */
@@ -47,18 +47,18 @@ class MenuItem extends Entity
     /**
      * @return int|null
      */
-    public function getMenuItemId(): ?int
+    public function getId(): ?int
     {
-        return $this->menu_item_id;
+        return $this->id;
     }
 
     /**
-     * @param int|null $menu_item_id
+     * @param int|null $id
      * @return MenuItem
      */
-    public function setMenuItemId(?int $menu_item_id): MenuItem
+    public function setId(?int $id): MenuItem
     {
-        $this->menu_item_id = $menu_item_id;
+        $this->id = $id;
         return $this;
     }
 

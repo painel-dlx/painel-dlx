@@ -30,6 +30,7 @@ use Exception;
 use PainelDLX\Application\Middlewares\Autorizacao;
 use PainelDLX\Application\Middlewares\DefinePaginaMestra;
 use PainelDLX\Application\Middlewares\VerificarLogon;
+use PainelDLX\Application\Services\PainelDLX;
 use PainelDLX\Presentation\Site\GruposUsuarios\Controllers\ConfigurarPermissoesController;
 use PainelDLX\Presentation\Site\GruposUsuarios\Controllers\GrupoUsuarioController;
 
@@ -43,48 +44,54 @@ class GruposUsuariosRouter extends PainelDLXRouter
     public function registrar(): void
     {
         $router = $this->getRouter();
+        $container = PainelDLX::getInstance()->getContainer();
 
+        /** @var VerificarLogon $verificar_logon */
+        $verificar_logon = $container->get(VerificarLogon::class);
+        /** @var DefinePaginaMestra $define_pagina_mestra */
+        $define_pagina_mestra = $container->get(DefinePaginaMestra::class);
+        
         $router->get(
             '/painel-dlx/grupos-de-usuarios',
             [GrupoUsuarioController::class, 'listaGruposUsuarios']
         )->middlewares(
-            new VerificarLogon($this->session),
+            $verificar_logon,
             new Autorizacao('VISUALIZAR_GRUPOS_USUARIOS'),
-            new DefinePaginaMestra($this->painel_dlx->getServerRequest(), $this->session)
+            $define_pagina_mestra
         );
 
         $router->get(
             '/painel-dlx/grupos-de-usuarios/novo',
             [GrupoUsuarioController::class, 'formNovoGrupoUsuario']
         )->middlewares(
-            new VerificarLogon($this->session),
+            $verificar_logon,
             new Autorizacao('CADASTRAR_GRUPO_USUARIO'),
-            new DefinePaginaMestra($this->painel_dlx->getServerRequest(), $this->session)
+            $define_pagina_mestra
         );
 
         $router->get(
             '/painel-dlx/grupos-de-usuarios/editar',
             [GrupoUsuarioController::class, 'formAlterarGrupoUsuario']
         )->middlewares(
-            new VerificarLogon($this->session),
+            $verificar_logon,
             new Autorizacao('EDITAR_GRUPO_USUARIO'),
-            new DefinePaginaMestra($this->painel_dlx->getServerRequest(), $this->session)
+            $define_pagina_mestra
         );
 
         $router->get(
             '/painel-dlx/grupos-de-usuarios/detalhe',
             [GrupoUsuarioController::class, 'detalheGrupoUsuario']
         )->middlewares(
-            new VerificarLogon($this->session),
+            $verificar_logon,
             new Autorizacao('VISUALIZAR_GRUPOS_USUARIOS'),
-            new DefinePaginaMestra($this->painel_dlx->getServerRequest(), $this->session)
+            $define_pagina_mestra
         );
 
         $router->post(
             '/painel-dlx/grupos-de-usuarios/cadastrar',
             [GrupoUsuarioController::class, 'cadastrarNovoGrupoUsuario']
         )->middlewares(
-            new VerificarLogon($this->session),
+            $verificar_logon,
             new Autorizacao('CADASTRAR_GRUPO_USUARIO')
         );
 
@@ -92,7 +99,7 @@ class GruposUsuariosRouter extends PainelDLXRouter
             '/painel-dlx/grupos-de-usuarios/salvar',
             [GrupoUsuarioController::class, 'atualizarGrupoUsuarioExistente']
         )->middlewares(
-            new VerificarLogon($this->session),
+            $verificar_logon,
             new Autorizacao('EDITAR_GRUPO_USUARIO')
         );
 
@@ -100,7 +107,7 @@ class GruposUsuariosRouter extends PainelDLXRouter
             '/painel-dlx/grupos-de-usuarios/excluir',
             [GrupoUsuarioController::class, 'excluirGrupoUsuario']
         )->middlewares(
-            new VerificarLogon($this->session),
+            $verificar_logon,
             new Autorizacao('EXCLUIR_GRUPO_USUARIO')
         );
 
@@ -108,16 +115,16 @@ class GruposUsuariosRouter extends PainelDLXRouter
             '/painel-dlx/grupos-de-usuarios/permissoes',
             [ConfigurarPermissoesController::class, 'formConfigurarPermissao']
         )->middlewares(
-            new VerificarLogon($this->session),
+            $verificar_logon,
             new Autorizacao('GERENCIAR_PERMISSOES_GRUPOS'),
-            new DefinePaginaMestra($this->painel_dlx->getServerRequest(), $this->session)
+            $define_pagina_mestra
         );
 
         $router->post(
             '/painel-dlx/grupos-de-usuarios/configurar-permissoes',
             [ConfigurarPermissoesController::class, 'salvarConfiguracaoPermissao']
         )->middlewares(
-            new VerificarLogon($this->session),
+            $verificar_logon,
             new Autorizacao('GERENCIAR_PERMISSOES_GRUPOS')
         );
     }

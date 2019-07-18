@@ -46,7 +46,7 @@ class GetGrupoUsuarioPorIdHandlerTest extends PainelDLXTestCase
 
         $grupo_usuario = (new NovoGrupoUsuarioHandlerTest())->test_Handle();
 
-        $command = new GetGrupoUsuarioPorIdCommand($grupo_usuario->getGrupoUsuarioId());
+        $command = new GetGrupoUsuarioPorIdCommand($grupo_usuario->getId());
         $grupo_usuario2 = (new GetGrupoUsuarioPorIdCommandHandler($grupo_usuario_repository))->handle($command);
 
         $this->assertEquals($grupo_usuario, $grupo_usuario2);

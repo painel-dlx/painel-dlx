@@ -14,7 +14,7 @@ use DLX\Domain\Entities\Entity;
 class Widget extends Entity
 {
     /** @var null|int */
-    private $widget_id;
+    private $id;
     /** @var string */
     private $titulo;
     /** @var string */
@@ -25,18 +25,18 @@ class Widget extends Entity
     /**
      * @return int|null
      */
-    public function getWidgetId(): ?int
+    public function getId(): ?int
     {
-        return $this->widget_id;
+        return $this->id;
     }
 
     /**
-     * @param int|null $widget_id
+     * @param int|null $id
      * @return Widget
      */
-    public function setWidgetId(?int $widget_id): Widget
+    public function setId(?int $id): Widget
     {
-        $this->widget_id = $widget_id;
+        $this->id = $id;
         return $this;
     }
 

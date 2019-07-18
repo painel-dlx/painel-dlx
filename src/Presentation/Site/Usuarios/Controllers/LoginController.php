@@ -57,6 +57,7 @@ class LoginController extends PainelDLXController
      * @param VileX $view
      * @param CommandBus $commandBus
      * @param SessionInterface $session
+     * @throws ViewNaoEncontradaException
      */
     public function __construct(
         VileX $view,
@@ -66,7 +67,7 @@ class LoginController extends PainelDLXController
         parent::__construct($view, $commandBus);
 
         $this->view->setPaginaMestra("public/views/paginas-mestras/{$session->get('vilex:pagina-mestra')}.phtml");
-        $this->view->setViewRoot('public/views/login');
+        $this->view->setViewRoot('public/views/');
         $this->session = $session;
     }
 
@@ -86,7 +87,7 @@ class LoginController extends PainelDLXController
         $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js', false, Configure::get('app', 'versao'));
 
         // View
-        $this->view->addTemplate('form_login', $get);
+        $this->view->addTemplate('login/form_login', $get);
         return $this->view->render();
     }
 

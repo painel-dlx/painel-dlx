@@ -44,7 +44,7 @@ $lista_grupos = $this->getAtributo('lista_grupos');
     <?php include 'menu_lateral_usuarios.phtml'; ?>
 
     <form id="form-usuario" method="post" action="/painel-dlx/usuarios/salvar-usuario-existente" class="form-alterar-usuario">
-        <input type="hidden" name="usuario_id" value="<?php echo $usuario->getUsuarioId() ?>">
+        <input type="hidden" name="usuario_id" value="<?php echo $usuario->getId() ?>">
 
         <fieldset class="form-grupo" id="dados-pessoais">
             <legend class="form-titulo">Dados Pessoais</legend>
@@ -64,7 +64,7 @@ $lista_grupos = $this->getAtributo('lista_grupos');
         <fieldset class="form-grupo" id="acesso-sistema">
             <legend class="form-titulo">Acesso ao Sistema</legend>
 
-            <a href="/painel-dlx/usuarios/alterar-senha?usuario_id=<?php echo $usuario->getUsuarioId() ?>" class="botao-alterar-senha">
+            <a href="/painel-dlx/usuarios/alterar-senha?usuario_id=<?php echo $usuario->getId() ?>" class="botao-alterar-senha">
                 Alterar senha
             </a>
         </fieldset>
@@ -79,8 +79,8 @@ $lista_grupos = $this->getAtributo('lista_grupos');
                     foreach($lista_grupos as $grupo_usuario) :
                         $is_check = $usuario->getGrupos()->contains($grupo_usuario) ?>
                         <p class="form-paragr">
-                            <input type="checkbox" name="grupos[]" id="chk-grupo-usuario-<?php echo $grupo_usuario->getGrupoUsuarioId() ?>" value="<?php echo $grupo_usuario->getGrupoUsuarioId() ?>"<?php echo $is_check ? ' CHECKED' : '' ?> class="form-controle form-controle-checkbox">
-                            <label for="chk-grupo-usuario-<?php echo $grupo_usuario->getGrupoUsuarioId() ?>"><?php echo $grupo_usuario->getNome() ?></label>
+                            <input type="checkbox" name="grupos[]" id="chk-grupo-usuario-<?php echo $grupo_usuario->getId() ?>" value="<?php echo $grupo_usuario->getId() ?>"<?php echo $is_check ? ' CHECKED' : '' ?>class="form-controle form-controle-checkbox">
+                            <label for="chk-grupo-usuario-<?php echo $grupo_usuario->getId() ?>"><?php echo $grupo_usuario->getNome() ?></label>
                         </p>
                     <?php endforeach; ?>
                 </div>

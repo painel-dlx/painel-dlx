@@ -65,7 +65,7 @@ class VerificaSenhasIguais implements ServiceInterface
     private function compararSenhaAtual(): bool
     {
         if (!$this->reset) {
-            if ($this->usuario->getUsuarioId() > 0 && $this->senha_usuario->getSenhaAtual() !== $this->usuario->getSenha()) {
+            if ($this->usuario->getId() > 0 && $this->senha_usuario->getSenhaAtual() !== $this->usuario->getSenha()) {
                 throw new SenhaAtualNaoConfereException();
             }
         }

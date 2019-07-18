@@ -104,7 +104,7 @@ class EditarConfigSmtpControllerTestCase extends PainelDLXTestCase
         $request
             ->method('getParsedBody')
             ->willReturn([
-                'config_smtp_id' => $config_smtp->getConfigSmtpId(),
+                'config_smtp_id' => $config_smtp->getId(),
                 'nome' => 'Teste de edição',
                 'servidor' => 'localhost',
                 'porta' => 25,

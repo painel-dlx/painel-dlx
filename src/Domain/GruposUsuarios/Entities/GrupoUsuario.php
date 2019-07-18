@@ -36,7 +36,7 @@ use PainelDLX\Domain\Usuarios\Entities\Usuario;
 class GrupoUsuario extends Entity
 {
     /** @var int */
-    private $grupo_usuario_id;
+    private $id;
     /** @var string */
     private $alias;
     /** @var string */
@@ -51,18 +51,18 @@ class GrupoUsuario extends Entity
     /**
      * @return int
      */
-    public function getGrupoUsuarioId(): int
+    public function getId(): int
     {
-        return $this->grupo_usuario_id;
+        return $this->id;
     }
 
     /**
-     * @param int $grupo_usuario_id
+     * @param int $id
      * @return GrupoUsuario
      */
-    public function setGrupoUsuarioId(int $grupo_usuario_id): GrupoUsuario
+    public function setId(int $id): GrupoUsuario
     {
-        $this->grupo_usuario_id = $grupo_usuario_id;
+        $this->id = $id;
         return $this;
     }
 

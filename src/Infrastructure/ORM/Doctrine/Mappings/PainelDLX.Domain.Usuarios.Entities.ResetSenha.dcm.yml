@@ -1,0 +1,28 @@
+PainelDLX\Domain\Usuarios\Entities\ResetSenha:
+    type: entity
+    table: dlx_reset_senha
+    repositoryClass: PainelDLX\Infrastructure\ORM\Doctrine\Repositories\ResetSenhaRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: auto
+            column: reset_senha_id
+    fields:
+        data:
+            type: datetime
+            nullable: false
+        hash:
+            type: string
+            nullable: false
+            length: 50
+        utilizado:
+            type: boolean
+            nullable: false
+    manyToOne:
+        usuario:
+            targetEntity: Usuario
+            joinColumns:
+                usuario_id:
+                    referencedColumnName: usuario_id

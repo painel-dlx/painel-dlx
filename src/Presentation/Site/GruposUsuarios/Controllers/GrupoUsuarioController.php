@@ -43,7 +43,7 @@ use PainelDLX\UseCases\GruposUsuarios\NovoGrupoUsuario\NovoGrupoUsuarioCommandHa
 use PainelDLX\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommand;
 use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
 use PainelDLX\Domain\GruposUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
-use PainelDLX\Infra\ORM\Doctrine\Repositories\GrupoUsuarioRepository;
+use PainelDLX\Infrastructure\ORM\Doctrine\Repositories\GrupoUsuarioRepository;
 use PainelDLX\Presentation\Site\Common\Controllers\PainelDLXController;
 use PainelDLX\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommandHandler;
 use Psr\Http\Message\ResponseInterface;
@@ -173,7 +173,7 @@ class GrupoUsuarioController extends PainelDLXController
 
             $msg['retorno'] = 'sucesso';
             $msg['mensagem'] = 'Grupo de usuário cadastrado com sucesso!';
-            $msg['grupo_usuario_id'] = $grupo_usuario->getGrupoUsuarioId();
+            $msg['grupo_usuario_id'] = $grupo_usuario->getId();
         } catch (Exception $e) {
             $msg['retorno'] = 'erro';
             $msg['mensagem'] = $e->getMessage();
@@ -241,7 +241,7 @@ class GrupoUsuarioController extends PainelDLXController
 
             $msg['retorno'] = 'sucesso';
             $msg['mensagem'] = 'Grupo de usuário atualizado com sucesso!';
-            $msg['grupo_usuario_id'] = $grupo_usuario_atualizado->getGrupoUsuarioId();
+            $msg['grupo_usuario_id'] = $grupo_usuario_atualizado->getId();
         } catch (Exception $e) {
             $msg['retorno'] = 'erro';
             $msg['mensagem'] = $e->getMessage();

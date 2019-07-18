@@ -39,7 +39,7 @@ $grupo_usuario = $this->getAtributo('grupo_usuario');
 <h1 class="titulo-pagina"><?php echo $this->getAtributo('titulo-pagina') ?></h1>
 
 <form id="form-grupo-usuario" method="post" action="/painel-dlx/grupos-de-usuarios/salvar">
-    <input type="hidden" name="grupo_usuario_id" value="<?php echo $grupo_usuario->getGrupoUsuarioId() ?>">
+    <input type="hidden" name="grupo_usuario_id" value="<?php echo $grupo_usuario->getId() ?>">
 
     <fieldset class="form-grupo">
         <legend class="form-titulo">Geral</legend>
@@ -62,7 +62,7 @@ $grupo_usuario = $this->getAtributo('grupo_usuario');
     <fieldset class="form-grupo">
         <legend class="form-titulo">Permissões</legend>
 
-        <a href="javascript:" onclick="popupGerenciarConfiguracoes(<?php echo $grupo_usuario->getGrupoUsuarioId() ?>)" class="botao-gerenciar-permissoes">
+        <a href="javascript:" onclick="popupGerenciarConfiguracoes(<?php echo $grupo_usuario->getId() ?>)" class="botao-gerenciar-permissoes">
             Gerenciar permissões
         </a>
 

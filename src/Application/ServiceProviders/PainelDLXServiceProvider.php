@@ -31,6 +31,7 @@ use DLX\Core\CommandBus\CommandBusAdapter;
 use DLX\Core\Configure;
 use DLX\Infra\EntityManagerX;
 use DLX\Infra\ORM\Doctrine\Services\DoctrineTransaction;
+use Doctrine\ORM\ORMException;
 use League\Container\Container;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 use League\Tactician\CommandBus;
@@ -53,8 +54,10 @@ use PainelDLX\Domain\Usuarios\Entities\ResetSenha;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
 use PainelDLX\Domain\Usuarios\Repositories\ResetSenhaRepositoryInterface;
 use PainelDLX\Domain\Usuarios\Repositories\UsuarioRepositoryInterface;
-use PainelDLX\Infra\ORM\Doctrine\Services\RepositoryFactory;
+use PainelDLX\Infrastructure\ORM\Doctrine\Services\RepositoryFactory;
 use SechianeX\Contracts\SessionInterface;
+use SechianeX\Exceptions\SessionAdapterInterfaceInvalidaException;
+use SechianeX\Exceptions\SessionAdapterNaoEncontradoException;
 use SechianeX\Factories\SessionFactory;
 use Vilex\VileX;
 
@@ -80,9 +83,9 @@ class PainelDLXServiceProvider extends AbstractServiceProvider
      * from the ContainerAwareTrait.
      *
      * @return void
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \SechianeX\Exceptions\SessionAdapterInterfaceInvalidaException
-     * @throws \SechianeX\Exceptions\SessionAdapterNaoEncontradoException
+     * @throws ORMException
+     * @throws SessionAdapterInterfaceInvalidaException
+     * @throws SessionAdapterNaoEncontradoException
      */
     public function register()
     {

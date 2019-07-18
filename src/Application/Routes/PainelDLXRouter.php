@@ -26,46 +26,27 @@
 namespace PainelDLX\Application\Routes;
 
 
-use PainelDLX\Application\Services\PainelDLX;
-use RautereX\RautereX;
-use SechianeX\Contracts\SessionInterface;
+use PainelDLX\Application\Contracts\Router\RouterInterface;
 
 abstract class PainelDLXRouter
 {
     /**
-     * @var RautereX
+     * @var RouterInterface
      */
     private $router;
-    /**
-     * @var PainelDLX
-     */
-    protected $painel_dlx;
-    /**
-     * @var SessionInterface
-     */
-    protected $session;
 
     /**
      * PainelDLXRouter constructor.
-     * @param RautereX $router
-     * @param PainelDLX $painel_dlx
-     * @param SessionInterface $session
-     * @todo desacoplar RautereX e SechianeX
+     * @param RouterInterface $router
      */
-    public function __construct(
-        RautereX $router,
-        PainelDLX $painel_dlx,
-        SessionInterface $session
-    ) {
+    public function __construct(RouterInterface $router) {
         $this->router = $router;
-        $this->painel_dlx = $painel_dlx;
-        $this->session = $session;
     }
 
     /**
-     * @return RautereX
+     * @return RouterInterface
      */
-    public function getRouter(): RautereX
+    public function getRouter(): RouterInterface
     {
         return $this->router;
     }

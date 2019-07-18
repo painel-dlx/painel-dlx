@@ -26,8 +26,13 @@
 namespace PainelDLX\Application\Middlewares;
 
 
-use PainelDLX\Application\Contracts\MiddlewareInterface;
-use PainelDLX\Application\Middlewares\Exceptions\UsuarioNaoLogadoException;
+use Exception;
+use PainelDLX\Application\Services\PainelDLX;
+use PainelDLX\Presentation\Site\Usuarios\Controllers\LoginController;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use SechianeX\Contracts\SessionInterface;
 
 class VerificarLogon implements MiddlewareInterface
@@ -47,12 +52,22 @@ class VerificarLogon implements MiddlewareInterface
     }
 
     /**
-     * @throws UsuarioNaoLogadoException
+     * Process an incoming server request.
+     *
+     * Processes an incoming server request in order to produce a response.
+     * If unable to produce the response itself, it may delegate to the provided
+     * request handler to do so.
+     *
+     * @throws Exception
      */
-    public function executar()
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-       if (!$this->session->isAtiva() || !$this->session->get('logado')) {
-           throw new UsuarioNaoLogadoException();
-       }
+        if (!$this->session->isAtiva() || !$this->session->get('logado')) {
+            /** @var LoginController $login_controller */
+            $login_controller = PainelDLX::getInstance()->getContainer()->get(LoginController::class);
+            return $login_controller->formLogin($request);
+        }
+
+        return $handler->handle($request);
     }
 }

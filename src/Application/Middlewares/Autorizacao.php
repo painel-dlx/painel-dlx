@@ -8,11 +8,15 @@
 
 namespace PainelDLX\Application\Middlewares;
 
-
-use DLX\Infra\EntityManagerX;
-use PainelDLX\Application\Contracts\MiddlewareInterface;
-use PainelDLX\Application\Middlewares\Exceptions\UsuarioNaoPossuiPermissaoException;
+use DLX\Core\Exceptions\UserException;
+use Exception;
+use PainelDLX\Application\Services\PainelDLX;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
+use PainelDLX\Presentation\Site\ErrosHttp\Controllers\ErroHttp;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use SechianeX\Contracts\SessionInterface;
 use SechianeX\Exceptions\SessionAdapterInterfaceInvalidaException;
 use SechianeX\Exceptions\SessionAdapterNaoEncontradoException;
@@ -43,20 +47,27 @@ class Autorizacao implements MiddlewareInterface
     }
 
     /**
-     * @return bool
-     * @throws UsuarioNaoPossuiPermissaoException
+     * Process an incoming server request.
+     *
+     * Processes an incoming server request in order to produce a response.
+     * If unable to produce the response itself, it may delegate to the provided
+     * request handler to do so.
+     *
+     * @throws Exception
      */
-    public function executar(): bool
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         /** @var Usuario $usuario */
         $usuario = $this->session->get('usuario-logado');
 
         foreach ($this->permissoes as $permissao) {
             if (!$usuario->hasPermissao($permissao)) {
-                throw new UsuarioNaoPossuiPermissaoException();
+                /** @var ErroHttp $login_controller */
+                $login_controller = PainelDLX::getInstance()->getContainer()->get(ErroHttp::class);
+                return $login_controller->exibirPaginaErro($request->withQueryParams(['erro' => 403]));
             }
         }
 
-        return true;
+        return $handler->handle($request);
     }
 }

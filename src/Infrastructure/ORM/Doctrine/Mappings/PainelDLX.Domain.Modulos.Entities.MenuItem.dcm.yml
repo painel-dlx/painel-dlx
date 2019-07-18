@@ -1,0 +1,34 @@
+PainelDLX\Domain\Modulos\Entities\MenuItem:
+    type: entity
+    table: dlx_menu_item
+    repositoryClass: PainelDLX\Infrastructure\ORM\Doctrine\Repositories\MenuItemRepository
+    id:
+        id:
+            type: integer
+            id: true
+            nullable: false
+            generator:
+                strategy: auto
+            column: menu_item_id
+    fields:
+        nome:
+            type: string
+            nullable: false
+            length: 50
+        link:
+            type: string
+            nullable: false
+            length: 50
+    manyToOne:
+        menu:
+            targetEntity: Menu
+            inversedBy: itens
+            joinColumns:
+                idMenu:
+                    referencedColumnName: idMenu
+    oneToMany:
+        permissoes:
+            targetEntity: MenuItemPermissao
+            joinColumns:
+                menu_item_id:
+                    referencedColumnName: menu_item_id

@@ -28,24 +28,30 @@ namespace PainelDLX\Application\Routes;
 
 use PainelDLX\Application\Middlewares\DefinePaginaMestra;
 use PainelDLX\Application\Middlewares\VerificarLogon;
+use PainelDLX\Application\Services\PainelDLX;
 use PainelDLX\Presentation\Site\Home\Controllers\PaginaInicialController;
 
 class HomeRouter extends PainelDLXRouter
 {
-
     /**
      * Registrar todas as rotas
      */
     public function registrar(): void
     {
         $router = $this->getRouter();
+        $container = PainelDLX::getInstance()->getContainer();
+
+        /** @var DefinePaginaMestra $define_pagina_mestra */
+        $define_pagina_mestra = $container->get(DefinePaginaMestra::class);
+        /** @var VerificarLogon $verificar_logon */
+        $verificar_logon = $container->get(VerificarLogon::class);
 
         $router->get(
             '/',
             [PaginaInicialController::class, 'home']
         )->middlewares(
-            new VerificarLogon($this->session),
-            new DefinePaginaMestra($this->painel_dlx->getServerRequest(), $this->session)
+            $define_pagina_mestra,
+            $verificar_logon
         );
     }
 }

@@ -119,7 +119,7 @@ class ConfigSmtpControllerTestCase extends PainelDLXTestCase
         $request
             ->method('getParsedBody')
             ->willReturn([
-                'config_smtp_id' => $config_smtp->getConfigSmtpId()
+                'config_smtp_id' => $config_smtp->getId()
             ]);
 
         /** @var ServerRequestInterface $request */
@@ -148,7 +148,7 @@ class ConfigSmtpControllerTestCase extends PainelDLXTestCase
         $request
             ->method('getQueryParams')
             ->willReturn([
-                'config_smtp_id' => $config_smtp->getConfigSmtpId()
+                'config_smtp_id' => $config_smtp->getId()
             ]);
 
         /** @var ServerRequestInterface $request */

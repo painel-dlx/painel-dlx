@@ -34,7 +34,7 @@ use function foo\func;
 class Menu extends Entity
 {
     /** @var int|null */
-    private $menu_id;
+    private $id;
     /** @var string */
     private $nome;
     /** @var Collection */
@@ -43,18 +43,18 @@ class Menu extends Entity
     /**
      * @return int|null
      */
-    public function getMenuId(): ?int
+    public function getId(): ?int
     {
-        return $this->menu_id;
+        return $this->id;
     }
 
     /**
-     * @param int|null $menu_id
+     * @param int|null $id
      * @return Menu
      */
-    public function setMenuId(?int $menu_id): Menu
+    public function setId(?int $id): Menu
     {
-        $this->menu_id = $menu_id;
+        $this->id = $id;
         return $this;
     }
 

@@ -131,7 +131,7 @@ class NovaConfigSmtpController extends PainelDLXController
 
             $json['retorno'] = 'sucesso';
             $json['mensagem'] = 'Configuração SMTP salva com sucesso!';
-            $json['config_smtp_id'] = $config_smtp->getConfigSmtpId();
+            $json['config_smtp_id'] = $config_smtp->getId();
         } catch (UserException $e) {
             $json['erro'] = 'sucesso';
             $json['mensagem'] = $e->getMessage();

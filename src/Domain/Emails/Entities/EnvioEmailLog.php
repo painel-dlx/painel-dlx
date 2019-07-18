@@ -15,7 +15,7 @@ use DLX\Domain\Entities\Entity;
 class EnvioEmailLog extends Entity
 {
     /** @var int|null */
-    private $envio_email_log_id;
+    private $id;
     /** @var DateTime */
     private $data;
     /** @var ConfigSmtp */
@@ -34,18 +34,18 @@ class EnvioEmailLog extends Entity
     /**
      * @return int|null
      */
-    public function getEnvioEmailLogId(): ?int
+    public function getId(): ?int
     {
-        return $this->envio_email_log_id;
+        return $this->id;
     }
 
     /**
-     * @param int|null $envio_email_log_id
+     * @param int|null $id
      * @return EnvioEmailLog
      */
-    public function setEnvioEmailLogId(?int $envio_email_log_id): EnvioEmailLog
+    public function setId(?int $id): EnvioEmailLog
     {
-        $this->envio_email_log_id = $envio_email_log_id;
+        $this->id = $id;
         return $this;
     }
 

@@ -47,7 +47,7 @@ class SolicitarResetSenhaHandlerTest extends PainelDLXTestCase
         $reset_senha = $handler->handle($command);
 
         $this->assertInstanceOf(ResetSenha::class, $reset_senha);
-        $this->assertNotNull($reset_senha->getResetSenhaId());
+        $this->assertNotNull($reset_senha->getId());
 
         return $reset_senha;
     }

@@ -26,8 +26,6 @@
 use DLX\Core\Configure;
 use Doctrine\DBAL\Logging\EchoSQLLogger;
 
-ini_set('session.save_handler', 'files');
-
 return [
     'tipo-ambiente' => Configure::DEV,
 
@@ -35,11 +33,12 @@ return [
         'nome' => 'painel-dlx',
         'base-html' => '/',
         'nome-amigavel' => 'Painel DLX',
-        'rotas' => include 'rotas.php',
-        'service-providers' => include 'service_providers.php',
-        'mapping' => include 'mapping.php',
+        'rotas' => include 'painel-dlx/rotas.php',
+        'service-providers' => include 'painel-dlx/service_providers.php',
+        'mapping' => include 'painel-dlx/mapping.php',
+        'diretorios' => include 'painel-dlx/diretorios.php',
         'favicon' => '/public/imgs/favicon.png',
-        'versao' => '2.4.7'
+        'versao' => '3.0-dev'
     ],
 
     'bd' => [
@@ -48,8 +47,8 @@ return [
         'dev-mode' => true,
         //'debug' => EchoSQLLogger::class,
         'dir' => [
-            'src/Infra/ORM/Doctrine/Mappings/',
-            'src/Infra/ORM/Doctrine/Repositories/'
+            'src/Infrastructure/ORM/Doctrine/Mappings/',
+            'src/Infrastructure/ORM/Doctrine/Repositories/'
         ],
         'conexao' => [
             'dbname' => 'dlx_dev',

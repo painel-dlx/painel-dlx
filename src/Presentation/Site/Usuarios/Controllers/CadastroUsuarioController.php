@@ -44,7 +44,7 @@ use PainelDLX\UseCases\Usuarios\NovoUsuario\NovoUsuarioCommandHandler;
 use PainelDLX\Domain\GruposUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
 use PainelDLX\Domain\Usuarios\Repositories\UsuarioRepositoryInterface;
-use PainelDLX\Infra\ORM\Doctrine\Repositories\UsuarioRepository;
+use PainelDLX\Infrastructure\ORM\Doctrine\Repositories\UsuarioRepository;
 use PainelDLX\Presentation\Site\Common\Controllers\PainelDLXController;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -190,7 +190,7 @@ class CadastroUsuarioController extends PainelDLXController
 
             $msg['retorno'] = 'sucesso';
             $msg['mensagem'] = 'Usuário cadastrado com sucesso!';
-            $msg['usuario_id'] = $usuario->getUsuarioId();
+            $msg['usuario_id'] = $usuario->getId();
         } catch (Exception $e) {
             $msg['retorno'] = 'erro';
             $msg['mensagem'] = $e->getMessage();
@@ -266,7 +266,7 @@ class CadastroUsuarioController extends PainelDLXController
 
             $msg['retorno'] = 'sucesso';
             $msg['mensagem'] = 'Usuário atualizado com sucesso!';
-            $msg['usuario_id'] = $usuario_atualizado->getUsuarioId();
+            $msg['usuario_id'] = $usuario_atualizado->getId();
         } catch (Exception $e) {
             $msg['retorno'] = 'erro';
             $msg['mensagem'] = $e->getMessage();

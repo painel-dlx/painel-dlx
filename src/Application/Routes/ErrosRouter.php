@@ -27,6 +27,7 @@ namespace PainelDLX\Application\Routes;
 
 
 use PainelDLX\Application\Middlewares\DefinePaginaMestra;
+use PainelDLX\Application\Services\PainelDLX;
 use PainelDLX\Presentation\Site\ErrosHttp\Controllers\ErroHttp;
 
 class ErrosRouter extends PainelDLXRouter
@@ -39,11 +40,13 @@ class ErrosRouter extends PainelDLXRouter
     {
         $router = $this->getRouter();
 
+        $container = PainelDLX::getInstance()->getContainer();
+        /** @var DefinePaginaMestra $define_pagina_mestra */
+        $define_pagina_mestra = $container->get(DefinePaginaMestra::class);
+
         $router->get(
             '/painel-dlx/erro-http',
             [ErroHttp::class, 'exibirPaginaErro']
-        )->middlewares(
-            new DefinePaginaMestra($this->painel_dlx->getServerRequest(), $this->session)
-        );
+        )->middlewares($define_pagina_mestra);
     }
 }
