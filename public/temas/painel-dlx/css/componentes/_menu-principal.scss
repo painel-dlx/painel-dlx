@@ -24,6 +24,7 @@
     background: rgba(#32909F, .75);
     list-style: none;
     display: none;
+    overflow-y: auto;
 
     // Flex
     flex-flow: wrap row;

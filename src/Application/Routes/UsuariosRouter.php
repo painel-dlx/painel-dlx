@@ -28,6 +28,7 @@ namespace PainelDLX\Application\Routes;
 
 use Exception;
 use PainelDLX\Application\Middlewares\Autorizacao;
+use PainelDLX\Application\Middlewares\ConfigurarPaginacao;
 use PainelDLX\Application\Middlewares\CriptografarSenhas;
 use PainelDLX\Application\Middlewares\DefinePaginaMestra;
 use PainelDLX\Application\Middlewares\VerificarLogon;
@@ -51,41 +52,44 @@ class UsuariosRouter extends PainelDLXRouter
         $verificar_logon = $container->get(VerificarLogon::class);
         /** @var DefinePaginaMestra $define_pagina_mestra */
         $define_pagina_mestra = $container->get(DefinePaginaMestra::class);
+        /** @var ConfigurarPaginacao $configurar_paginacao */
+        $configurar_paginacao = $container->get(ConfigurarPaginacao::class);
         
         $router->get(
             '/painel-dlx/usuarios',
             [CadastroUsuarioController::class, 'listaUsuarios']
         )->middlewares(
+            $define_pagina_mestra,
             $verificar_logon,
             new Autorizacao('ACESSAR_CADASTRO_USUARIOS'),
-            $define_pagina_mestra
+            $configurar_paginacao
         );
 
         $router->get(
             '/painel-dlx/usuarios/novo',
             [CadastroUsuarioController::class, 'formNovoUsuario']
         )->middlewares(
+            $define_pagina_mestra,
             $verificar_logon,
-            new Autorizacao('CADASTRAR_NOVO_USUARIO'),
-            $define_pagina_mestra
+            new Autorizacao('CADASTRAR_NOVO_USUARIO')
         );
 
         $router->get(
             '/painel-dlx/usuarios/editar',
             [CadastroUsuarioController::class, 'formAlterarUsuario']
         )->middlewares(
+            $define_pagina_mestra,
             $verificar_logon,
-            new Autorizacao('EDITAR_CADASTRO_USUARIO'),
-            $define_pagina_mestra
+            new Autorizacao('EDITAR_CADASTRO_USUARIO')
         );
 
         $router->get(
             '/painel-dlx/usuarios/detalhe',
             [CadastroUsuarioController::class, 'detalheUsuario']
         )->middlewares(
+            $define_pagina_mestra,
             $verificar_logon,
-            new Autorizacao('ACESSAR_CADASTRO_USUARIOS'),
-            $define_pagina_mestra
+            new Autorizacao('ACESSAR_CADASTRO_USUARIOS')
         );
 
         $router->post(
@@ -134,16 +138,16 @@ class UsuariosRouter extends PainelDLXRouter
             '/painel-dlx/minha-conta',
             [MinhaContaController::class, 'meusDados']
         )->middlewares(
-            $verificar_logon,
-            $define_pagina_mestra
+            $define_pagina_mestra,
+            $verificar_logon
         );
 
         $router->get(
             '/painel-dlx/alterar-minha-senha',
             [MinhaContaController::class, 'formAlterarMinhaSenha']
         )->middlewares(
-            $verificar_logon,
-            $define_pagina_mestra
+            $define_pagina_mestra,
+            $verificar_logon
         );
 
         $router->post(
@@ -158,8 +162,8 @@ class UsuariosRouter extends PainelDLXRouter
             '/painel-dlx/resumo-usuario-logado',
             [MinhaContaController::class, 'resumoInformacoes']
         )->middlewares(
-            $verificar_logon,
-            $define_pagina_mestra
+            $define_pagina_mestra,
+            $verificar_logon
         );
     }
 }

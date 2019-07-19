@@ -28,6 +28,7 @@ namespace PainelDLX\Application\Routes;
 
 use Exception;
 use PainelDLX\Application\Middlewares\Autorizacao;
+use PainelDLX\Application\Middlewares\ConfigurarPaginacao;
 use PainelDLX\Application\Middlewares\DefinePaginaMestra;
 use PainelDLX\Application\Middlewares\VerificarLogon;
 use PainelDLX\Application\Services\PainelDLX;
@@ -51,6 +52,8 @@ class ConfigSmtpRouter extends PainelDLXRouter
         $define_pagina_mestra = $container->get(DefinePaginaMestra::class);
         /** @var VerificarLogon $verificar_logon */
         $verificar_logon = $container->get(VerificarLogon::class);
+        /** @var ConfigurarPaginacao $configurar_paginacao */
+        $configurar_paginacao = $container->get(ConfigurarPaginacao::class);
 
         $router->get(
             '/painel-dlx/config-smtp',
@@ -58,7 +61,8 @@ class ConfigSmtpRouter extends PainelDLXRouter
         )->middlewares(
             $define_pagina_mestra,
             $verificar_logon,
-            new Autorizacao('VER_CONFIGURACOES_SMTP')
+            new Autorizacao('VER_CONFIGURACOES_SMTP'),
+            $configurar_paginacao
         );
 
         $router->get(

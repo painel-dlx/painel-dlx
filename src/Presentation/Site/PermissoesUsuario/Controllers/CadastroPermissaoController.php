@@ -66,7 +66,10 @@ class CadastroPermissaoController extends PainelDLXController
     {
         $get = filter_var_array($request->getQueryParams(), [
             'campos' => ['filter' => FILTER_SANITIZE_STRING, 'flags' => FILTER_REQUIRE_ARRAY],
-            'busca' => FILTER_DEFAULT
+            'busca' => FILTER_DEFAULT,
+            'pg' => FILTER_VALIDATE_INT,
+            'qtde' => FILTER_VALIDATE_INT,
+            'offset' => FILTER_VALIDATE_INT
         ]);
 
         try {
@@ -76,15 +79,22 @@ class CadastroPermissaoController extends PainelDLXController
 
             /** @var array $lista_permissoes */
             /* @see GetListaPermissaoUsuarioCommandHandler */
-            $lista_permissoes = $this->command_bus->handle(new GetListaPermissaoUsuarioCommand($criteria));
+            $lista_permissoes = $this->command_bus->handle(new GetListaPermissaoUsuarioCommand(
+                $criteria,
+                [],
+                $get['qtde'],
+                $get['offset']
+            ));
 
             // Atributos
             $this->view->setAtributo('titulo-pagina', 'Permissões');
-            $this->view->setAtributo('lista_permissoes', $lista_permissoes);
+            $this->view->setAtributo('lista-permissoes', $lista_permissoes);
             $this->view->setAtributo('filtro', $get);
+            $this->view->setAtributo('pagina-atual', $get['pg']);
 
             // Views
             $this->view->addTemplate('permissoes/lista_permissoes');
+            $this->view->addTemplate('common/paginacao');
         } catch (UserException $e) {
             $this->view->addTemplate('common/mensagem_usuario');
             $this->view->setAtributo('mensagem', [

@@ -69,7 +69,10 @@ class GrupoUsuarioController extends PainelDLXController
     {
         $get = filter_var_array($request->getQueryParams(), [
             'campos' => ['filter' => FILTER_SANITIZE_STRING, 'flags' => FILTER_REQUIRE_ARRAY],
-            'busca' => FILTER_DEFAULT
+            'busca' => FILTER_DEFAULT,
+            'pg' => FILTER_VALIDATE_INT,
+            'qtde' => FILTER_VALIDATE_INT,
+            'offset' => FILTER_VALIDATE_INT
         ]);
 
         try {
@@ -79,15 +82,17 @@ class GrupoUsuarioController extends PainelDLXController
 
             /** @var array $lista_grupos_usuarios */
             /* @see GetListaGruposUsuariosCommandHandler */
-            $lista_grupos_usuarios = $this->command_bus->handle(new GetListaGruposUsuariosCommand($criteria));
+            $lista_grupos_usuarios = $this->command_bus->handle(new GetListaGruposUsuariosCommand($criteria, [], $get['qtde'], $get['offset']));
 
             // Atributos
             $this->view->setAtributo('titulo-pagina', 'Grupos de Usuários');
             $this->view->setAtributo('lista_grupos_usuarios', $lista_grupos_usuarios);
             $this->view->setAtributo('filtro', $get);
+            $this->view->setAtributo('pagina-atual', $get['pg']);
 
             // Views
             $this->view->addTemplate('grupos-usuarios/lista_grupos_usuarios');
+            $this->view->addTemplate('common/paginacao');
         } catch (UserException $e) {
             $this->view->addTemplate('common/mensagem_usuario');
             $this->view->setAtributo('mensagem', [

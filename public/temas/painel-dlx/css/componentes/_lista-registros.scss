@@ -4,15 +4,16 @@
     // Visual
     background: rgba(#FFF, .5);
     border-collapse: collapse;
-    box-shadow: 0 0 5px rgba(black, .25);
-    border-radius: 3px;
+    box-shadow: 0 0 3px rgba(black, .2);
+    border-radius: 2px;
 
     // Tamanho
     width: 100%;
 
     thead {
         // Visual
-        background: rgba(60, 181, 201, 0.2);
+        // background: rgba(60, 181, 201, 0.2);
+        border-bottom: 1px solid #E5E5E5;
 
         // Texto
         color: #32909F;

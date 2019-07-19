@@ -32,7 +32,6 @@ use PainelDLX\Presentation\Site\ErrosHttp\Controllers\ErroHttp;
 
 class ErrosRouter extends PainelDLXRouter
 {
-
     /**
      * Registrar todas as rotas
      */

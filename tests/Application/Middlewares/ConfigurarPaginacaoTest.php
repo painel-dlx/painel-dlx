@@ -23,40 +23,32 @@
  * SOFTWARE.
  */
 
-include __DIR__ . '/vendor/autoload.php';
+namespace PainelDLX\Tests\Application\Middlewares;
 
-use League\Route\Router;
-use League\Route\Strategy\ApplicationStrategy;
-use PainelDLX\Application\Adapters\Router\League\LeagueContainerAdapter;
-use PainelDLX\Application\Adapters\Router\League\LeagueRouterAdapter;
-use PainelDLX\Application\Services\PainelDLX;
+use PainelDLX\Application\Middlewares\ConfigurarPaginacao;
+use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use Zend\Diactoros\ServerRequestFactory;
-use League\Container\Container;
-use League\Container\ReflectionContainer;
 
-try {
-    $server_request = ServerRequestFactory::fromGlobals();
+/**
+ * Class ConfigurarPaginacaoTest
+ * @package PainelDLX\Tests\Application\Middlewares
+ * @coversDefaultClass \PainelDLX\Application\Middlewares\ConfigurarPaginacao
+ */
+class ConfigurarPaginacaoTest extends TestCase
+{
+    public function test_Process_deve_configurar_pg_e_offset_no_QueryParams_da_requisicao()
+    {
+        $this->markTestSkipped('Teste feito para facilitar o desenvolvimento, mas não consegui automatizar o teste.');
 
-    $league_container = new Container;
-    $league_container->delegate(new ReflectionContainer);
+        $request = ServerRequestFactory::fromGlobals();
 
-    $container = new LeagueContainerAdapter($league_container);
+        /** @var RequestHandlerInterface $handler */
+        $handler = $this->createMock(RequestHandlerInterface::class);
 
-    $strategy = new ApplicationStrategy;
-    $strategy->setContainer($container);
-
-    $league_router = new Router();
-    $league_router->setStrategy($strategy);
-
-    $router = new LeagueRouterAdapter($league_router);
-
-    $painel_dlx = new PainelDLX(
-        $server_request,
-        $router,
-        $container
-    );
-
-    $painel_dlx->init()->executar();
-} catch (Exception $e) {
-    var_dump($e);
+        $response = (new ConfigurarPaginacao())->process($request, $handler);
+        $this->assertInstanceOf(ResponseInterface::class, $response);
+    }
 }

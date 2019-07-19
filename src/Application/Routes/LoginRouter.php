@@ -35,7 +35,6 @@ use PainelDLX\Presentation\Site\Usuarios\Controllers\ResetSenhaController;
 
 class LoginRouter extends PainelDLXRouter
 {
-
     /**
      * Registrar todas as rotas
      */

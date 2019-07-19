@@ -54,10 +54,6 @@ class ConfigurarPermissoesController extends PainelDLXController
      * @var TransactionInterface
      */
     private $transaction;
-    /**
-     * @var SessionInterface
-     */
-    private $session;
 
     /**
      * ConfigurarPermissoesController constructor.

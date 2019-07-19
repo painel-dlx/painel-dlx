@@ -65,10 +65,6 @@ class CadastroUsuarioController extends PainelDLXController
      * @var GrupoUsuarioRepositoryInterface
      */
     private $grupo_usuario_repository;
-    /**
-     * @var SessionInterface
-     */
-    private $session;
 
     /**
      * CadastroUsuarioController constructor.
@@ -99,7 +95,10 @@ class CadastroUsuarioController extends PainelDLXController
     {
         $get = filter_var_array($request->getQueryParams(), [
             'campos' => ['filter' => FILTER_SANITIZE_STRING, 'flags' => FILTER_REQUIRE_ARRAY],
-            'busca' => FILTER_DEFAULT
+            'busca' => FILTER_DEFAULT,
+            'pg' => FILTER_VALIDATE_INT,
+            'qtde' => FILTER_VALIDATE_INT,
+            'offset' => FILTER_VALIDATE_INT
         ]);
 
         try {
@@ -108,15 +107,17 @@ class CadastroUsuarioController extends PainelDLXController
             $criteria = $this->command_bus->handle(new ConverterFiltro2CriteriaCommand($get['campos'], $get['busca']));
 
             /* @see GetListaUsuariosCommandHandler */
-            $lista_usuarios = $this->command_bus->handle(new GetListaUsuariosCommand($criteria));
+            $lista_usuarios = $this->command_bus->handle(new GetListaUsuariosCommand($criteria, [], $get['qtde'], $get['offset']));
 
             // Atributos
             $this->view->setAtributo('titulo-pagina', 'Usuários');
             $this->view->setAtributo('lista_usuarios', $lista_usuarios);
             $this->view->setAtributo('filtro', $get);
+            $this->view->setAtributo('pagina-atual', $get['pg']);
 
             // Views
             $this->view->addTemplate('usuarios/lista_usuarios');
+            $this->view->addTemplate('common/paginacao');
         } catch (UserException $e) {
             $this->view->addTemplate('common/mensagem_usuario');
             $this->view->setAtributo('mensagem', [

@@ -28,6 +28,7 @@ namespace PainelDLX\Application\Routes;
 
 use Exception;
 use PainelDLX\Application\Middlewares\Autorizacao;
+use PainelDLX\Application\Middlewares\ConfigurarPaginacao;
 use PainelDLX\Application\Middlewares\DefinePaginaMestra;
 use PainelDLX\Application\Middlewares\VerificarLogon;
 use PainelDLX\Application\Services\PainelDLX;
@@ -49,6 +50,8 @@ class PermissoesRouter extends PainelDLXRouter
         $verificar_logon = $container->get(VerificarLogon::class);
         /** @var DefinePaginaMestra $define_pagina_mestra */
         $define_pagina_mestra = $container->get(DefinePaginaMestra::class);
+        /** @var ConfigurarPaginacao $configurar_paginacao */
+        $configurar_paginacao = $container->get(ConfigurarPaginacao::class);
         
         $router->get(
             '/painel-dlx/permissoes',
@@ -56,7 +59,8 @@ class PermissoesRouter extends PainelDLXRouter
         )->middlewares(
             $verificar_logon,
             new Autorizacao('CRIAR_PERMISSOES_USUARIO'),
-            $define_pagina_mestra
+            $define_pagina_mestra,
+            $configurar_paginacao
         );
 
         $router->get(

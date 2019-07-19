@@ -95,7 +95,10 @@ class ConfigSmtpController extends PainelDLXController
     {
         $get = filter_var_array($request->getQueryParams(), [
             'campos' => ['filter' => FILTER_SANITIZE_STRING, 'flags' => FILTER_REQUIRE_ARRAY],
-            'busca' => FILTER_DEFAULT
+            'busca' => FILTER_DEFAULT,
+            'pg' => FILTER_VALIDATE_INT,
+            'qtde' => FILTER_VALIDATE_INT,
+            'offset' => FILTER_VALIDATE_INT
         ]);
 
         try {
@@ -105,15 +108,22 @@ class ConfigSmtpController extends PainelDLXController
 
             /** @var array $lista_config_smtp */
             /* @see GetListaConfigSmtpCommandHandler */
-            $lista_config_smtp = $this->command_bus->handle(new GetListaConfigSmtpCommand($criteria));
+            $lista_config_smtp = $this->command_bus->handle(new GetListaConfigSmtpCommand(
+                $criteria,
+                [],
+                $get['qtde'],
+                $get['offset']
+            ));
 
             // View
             $this->view->addTemplate('emails/lista_config_smtp');
+            $this->view->addTemplate('common/paginacao');
 
             // Parâmetros
             $this->view->setAtributo('titulo-pagina', 'Configurações SMTP');
             $this->view->setAtributo('lista-config-smtp', $lista_config_smtp);
             $this->view->setAtributo('filtro', $get);
+            $this->view->setAtributo('pagina-atual', $get['pg']);
 
             // JS
             $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js', false, Configure::get('app', 'versao'));

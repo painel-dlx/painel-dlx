@@ -102,6 +102,9 @@ $(window).on('load.__widgets', function () {
 // Ajax
 // @codekit-prepend "componentes/ajax-setup/_ajax-setup.js"
 
+// Paginação
+// @codekit-prepend "componentes/paginacao/_ir-para-pagina.js"
+
 // Configuração SMTP
 // @codekit-append "componentes/config-smtp/_excluir-config-smtp.js"
 // @codekit-append "componentes/config-smtp/_testar-config-smtp.js"
