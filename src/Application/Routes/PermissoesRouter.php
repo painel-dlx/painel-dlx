@@ -52,13 +52,15 @@ class PermissoesRouter extends PainelDLXRouter
         $define_pagina_mestra = $container->get(DefinePaginaMestra::class);
         /** @var ConfigurarPaginacao $configurar_paginacao */
         $configurar_paginacao = $container->get(ConfigurarPaginacao::class);
+        /** @var Autorizacao $autorizacao */
+        $autorizacao = $container->get(Autorizacao::class);
         
         $router->get(
             '/painel-dlx/permissoes',
             [CadastroPermissaoController::class, 'listaPermissoesUsuarios']
         )->middlewares(
             $verificar_logon,
-            new Autorizacao('CRIAR_PERMISSOES_USUARIO'),
+            $autorizacao->setPermissoes('CRIAR_PERMISSOES_USUARIO'),
             $define_pagina_mestra,
             $configurar_paginacao
         );
@@ -68,7 +70,7 @@ class PermissoesRouter extends PainelDLXRouter
             [CadastroPermissaoController::class, 'formNovaPermissaoUsuario']
         )->middlewares(
             $verificar_logon,
-            new Autorizacao('CRIAR_PERMISSOES_USUARIO'),
+            $autorizacao->setPermissoes('CRIAR_PERMISSOES_USUARIO'),
             $define_pagina_mestra
         );
 
@@ -77,7 +79,7 @@ class PermissoesRouter extends PainelDLXRouter
             [CadastroPermissaoController::class, 'criarNovaPermissao']
         )->middlewares(
             $verificar_logon,
-            new Autorizacao('CRIAR_PERMISSOES_USUARIO')
+            $autorizacao->setPermissoes('CRIAR_PERMISSOES_USUARIO')
         );
 
         $router->get(
@@ -85,7 +87,7 @@ class PermissoesRouter extends PainelDLXRouter
             [CadastroPermissaoController::class, 'formEditarPermissaoUsuario']
         )->middlewares(
             $verificar_logon,
-            new Autorizacao('EDITAR_PERMISSOES_USUARIO'),
+            $autorizacao->setPermissoes('EDITAR_PERMISSOES_USUARIO'),
             $define_pagina_mestra
         );
 
@@ -94,7 +96,7 @@ class PermissoesRouter extends PainelDLXRouter
             [CadastroPermissaoController::class, 'alterarPermissaoUsuario']
         )->middlewares(
             $verificar_logon,
-            new Autorizacao('EDITAR_PERMISSOES_USUARIO')
+            $autorizacao->setPermissoes('EDITAR_PERMISSOES_USUARIO')
         );
 
         $router->get(
@@ -102,7 +104,7 @@ class PermissoesRouter extends PainelDLXRouter
             [CadastroPermissaoController::class, 'detalhePermissaoUsuario']
         )->middlewares(
             $verificar_logon,
-            new Autorizacao('CRIAR_PERMISSOES_USUARIO'),
+            $autorizacao->setPermissoes('CRIAR_PERMISSOES_USUARIO'),
             $define_pagina_mestra
         );
 
@@ -111,7 +113,7 @@ class PermissoesRouter extends PainelDLXRouter
             [CadastroPermissaoController::class, 'excluirPermissaoUsuario']
         )->middlewares(
             $verificar_logon,
-            new Autorizacao('EXCLUIR_PERMISSOES_USUARIO')
+            $autorizacao->setPermissoes('EXCLUIR_PERMISSOES_USUARIO')
         );
     }
 }

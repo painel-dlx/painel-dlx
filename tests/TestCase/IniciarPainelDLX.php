@@ -23,24 +23,24 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Testes\TestCase;
+namespace PainelDLX\Tests\TestCase;
 
 
 use DLX\Core\Exceptions\ArquivoConfiguracaoNaoEncontradoException;
 use DLX\Core\Exceptions\ArquivoConfiguracaoNaoInformadoException;
-use Doctrine\ORM\ORMException;
 use League\Container\Container;
 use League\Container\ReflectionContainer;
+use League\Route\Router;
+use League\Route\Strategy\ApplicationStrategy;
+use PainelDLX\Application\Adapters\Router\League\LeagueContainerAdapter;
+use PainelDLX\Application\Adapters\Router\League\LeagueRouterAdapter;
 use PainelDLX\Application\Services\Exceptions\AmbienteNaoInformadoException;
 use PainelDLX\Application\Services\PainelDLX;
-use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Diactoros\ServerRequestFactory;
 
 trait IniciarPainelDLX
 {
-    /** @var ContainerInterface */
-    protected static $container;
     /** @var PainelDLX */
     protected static $painel_dlx;
 
@@ -49,7 +49,6 @@ trait IniciarPainelDLX
      * @throws ArquivoConfiguracaoNaoEncontradoException
      * @throws ArquivoConfiguracaoNaoInformadoException
      * @throws AmbienteNaoInformadoException
-     * @throws ORMException
      */
     public static function start(string $ambiente = 'paineldlx')
     {
@@ -66,11 +65,20 @@ trait IniciarPainelDLX
         $request = ServerRequestFactory::fromGlobals();
         $request = $request->withQueryParams(['ambiente' => "{$ambiente}-dev"]);
 
-        self::$container = new Container;
-        self::$container->delegate(new ReflectionContainer);
+        $league_container = new Container;
+        $league_container->delegate(new ReflectionContainer);
+        $container = new LeagueContainerAdapter($league_container);
+
+        $strategy = new ApplicationStrategy;
+        $strategy->setContainer($container);
+
+        $league_router = new Router();
+        $league_router->setStrategy($strategy);
+
+        $router = new LeagueRouterAdapter($league_router);
 
         /** @var ServerRequestInterface $request */
-        self::$painel_dlx = (new PainelDLX($request, self::$container))
+        self::$painel_dlx = (new PainelDLX($request, $router, $container))
             ->adicionarDiretorioInclusao(dirname('.'))
             ->init();
     }

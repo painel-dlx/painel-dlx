@@ -13,6 +13,11 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
+/**
+ * Class CriptografarSenhas
+ * @package PainelDLX\Application\Middlewares
+ * @covers CriptografarSenhasTest
+ */
 class CriptografarSenhas implements MiddlewareInterface
 {
     /**
@@ -30,35 +35,14 @@ class CriptografarSenhas implements MiddlewareInterface
     }
 
     /**
-     * Executar a criptografia das senhas
-     */
-    public function executar(): void
-    {
-        // TODO: Verirficar se há melhor alternativa para descoplar essa ServerRequestInterface e IniciarPainelDLX
-        global $painel_dlx;
-        $server_request = $painel_dlx->getRequest();
-
-        $dados = $server_request->getMethod() === 'GET' ? $server_request->getQueryParams() : $server_request->getParsedBody();
-
-        foreach ($this->senhas as $senha) {
-            if (array_key_exists($senha, $dados)) {
-                $dados[$senha] = $this->criptografar($dados[$senha]);
-            }
-        }
-
-        $server_request = $server_request->getMethod() === 'GET'
-            ? $server_request->withQueryParams($dados)
-            : $server_request->withParsedBody($dados);
-
-        $painel_dlx->setRequest($server_request);
-    }
-
-    /**
      * Process an incoming server request.
      *
      * Processes an incoming server request in order to produce a response.
      * If unable to produce the response itself, it may delegate to the provided
      * request handler to do so.
+     * @param ServerRequestInterface $request
+     * @param RequestHandlerInterface $handler
+     * @return ResponseInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

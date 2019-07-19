@@ -10,29 +10,42 @@ namespace PainelDLX\Testes\Application\Middlewares;
 
 use PainelDLX\Application\Middlewares\DefinePaginaMestra;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+use SechianeX\Exceptions\SessionAdapterInterfaceInvalidaException;
+use SechianeX\Exceptions\SessionAdapterNaoEncontradoException;
 use SechianeX\Factories\SessionFactory;
 
+/**
+ * Class DefinePaginaMestraTest
+ * @package PainelDLX\Testes\Application\Middlewares
+ * @coversDefaultClass \PainelDLX\Application\Middlewares\DefinePaginaMestra
+ */
 class DefinePaginaMestraTest extends TestCase
 {
     /**
-     * @throws \SechianeX\Exceptions\SessionAdapterInterfaceInvalidaException
-     * @throws \SechianeX\Exceptions\SessionAdapterNaoEncontradoException
+     * @throws SessionAdapterInterfaceInvalidaException
+     * @throws SessionAdapterNaoEncontradoException
      */
-    public function test_Executar()
+    public function test_Process()
     {
         $pagina_mestra = 'teste.mestra.php';
 
         $request = $this->createMock(ServerRequestInterface::class);
-        $request
-            ->method('getQueryParams')
-            ->willReturn(['pg-mestra' => $pagina_mestra]);
+        $request->method('getQueryParams')->willReturn(['pg-mestra' => $pagina_mestra]);
+
+        $response = $this->createMock(ResponseInterface::class);
+
+        $handler = $this->createMock(RequestHandlerInterface::class);
+        $handler->method('handle')->willReturn($response);
 
         $session = SessionFactory::createPHPSession('dlx-teste');
 
         /** @var ServerRequestInterface $request */
-        $middleware = new DefinePaginaMestra($request, $session);
-        $middleware->executar();
+        /** @var RequestHandlerInterface $handler */
+
+        (new DefinePaginaMestra($session))->process($request, $handler);
 
         $this->assertEquals($pagina_mestra, $session->get('vilex:pagina-mestra'));
     }

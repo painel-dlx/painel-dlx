@@ -26,7 +26,7 @@
 namespace PainelDLX\Testes\Application\Factories;
 
 use PainelDLX\Application\Factories\CommandBusFactory;
-use PainelDLX\Testes\TestCase\PainelDLXTestCase;
+use PainelDLX\Tests\TestCase\PainelDLXTestCase;
 use Psr\Container\ContainerInterface;
 
 /**
