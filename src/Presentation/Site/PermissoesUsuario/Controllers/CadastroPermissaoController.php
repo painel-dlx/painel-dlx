@@ -28,7 +28,6 @@ namespace PainelDLX\Presentation\Site\PermissoesUsuario\Controllers;
 
 use DLX\Core\Configure;
 use DLX\Core\Exceptions\UserException;
-use League\Tactician\CommandBus;
 use PainelDLX\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommand;
 use PainelDLX\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommandHandler;
 use PainelDLX\UseCases\PermissoesUsuario\CadastrarPermissaoUsuario\CadastrarPermissaoUsuarioCommand;
@@ -40,17 +39,14 @@ use PainelDLX\UseCases\PermissoesUsuario\ExcluirPermissaoUsuario\ExcluirPermissa
 use PainelDLX\UseCases\PermissoesUsuario\GetListaPermissaoUsuario\GetListaPermissaoUsuarioCommand;
 use PainelDLX\UseCases\PermissoesUsuario\GetListaPermissaoUsuario\GetListaPermissaoUsuarioCommandHandler;
 use PainelDLX\Domain\PermissoesUsuario\Entities\PermissaoUsuario;
-use PainelDLX\Domain\PermissoesUsuario\Repositories\PermissaoUsuarioRepositoryInterface;
 use PainelDLX\Presentation\Site\Common\Controllers\PainelDLXController;
 use PainelDLX\UseCases\PermissoesUsuario\GetPermissaoUsuarioPorId\GetPermissaoUsuarioPorIdCommand;
 use PainelDLX\UseCases\PermissoesUsuario\GetPermissaoUsuarioPorId\GetPermissaoUsuarioPorIdCommandHandler;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use SechianeX\Contracts\SessionInterface;
 use Vilex\Exceptions\ContextoInvalidoException;
 use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
 use Vilex\Exceptions\ViewNaoEncontradaException;
-use Vilex\VileX;
 use Zend\Diactoros\Response\JsonResponse;
 
 class CadastroPermissaoController extends PainelDLXController
