@@ -33,12 +33,18 @@ use PainelDLX\Domain\Emails\Repositories\ConfigSmtpRepositoryInterface;
 use PainelDLX\Domain\Emails\Services\Validators\SalvarConfigSmtpValidator;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Class SalvarConfigSmtpValidatorTest
+ * @package PainelDLX\Testes\Domain\Emails\Services\Validators
+ * @coversDefaultClass \PainelDLX\Domain\Emails\Services\Validators\SalvarConfigSmtpValidator
+ */
 class SalvarConfigSmtpValidatorTest extends TestCase
 {
     /**
      * @throws NomeSmtpRepetidoException
-     * @throws \PainelDLX\Domain\Emails\Exceptions\AutentContaNaoInformadaException
-     * @throws \PainelDLX\Domain\Emails\Exceptions\AutentSenhaNaoInformadaException
+     * @throws AutentContaNaoInformadaException
+     * @throws AutentSenhaNaoInformadaException
+     * @covers ::validar
      */
     public function test_Validar_ConfigSmtp_com_nome_repetido()
     {
@@ -46,9 +52,7 @@ class SalvarConfigSmtpValidatorTest extends TestCase
         $config_smtp->setNome('Qualquer nome');
 
         $config_smtp_repository = $this->createMock(ConfigSmtpRepositoryInterface::class);
-        $config_smtp_repository
-            ->method('existsOutroSmtpMesmoNome')
-            ->willReturn(true);
+        $config_smtp_repository->method('existsOutroSmtpMesmoNome')->willReturn(true);
 
         $this->expectException(NomeSmtpRepetidoException::class);
 
@@ -57,7 +61,10 @@ class SalvarConfigSmtpValidatorTest extends TestCase
     }
 
     /**
-     * @throws \Doctrine\ORM\ORMException
+     * @throws AutentContaNaoInformadaException
+     * @throws AutentSenhaNaoInformadaException
+     * @throws NomeSmtpRepetidoException
+     * @covers ::validar
      */
     public function test_Validar_ConfigSmtp_requer_autent_sem_conta()
     {
@@ -67,9 +74,7 @@ class SalvarConfigSmtpValidatorTest extends TestCase
             ->setSenha('lekrhj93');
 
         $config_smtp_repository = $this->createMock(ConfigSmtpRepositoryInterface::class);
-        $config_smtp_repository
-            ->method('existsOutroSmtpMesmoNome')
-            ->willReturn(false);
+        $config_smtp_repository->method('existsOutroSmtpMesmoNome')->willReturn(false);
 
         $this->expectException(AutentContaNaoInformadaException::class);
 
@@ -81,6 +86,7 @@ class SalvarConfigSmtpValidatorTest extends TestCase
      * @throws AutentContaNaoInformadaException
      * @throws AutentSenhaNaoInformadaException
      * @throws NomeSmtpRepetidoException
+     * @covers ::validar
      */
     public function test_Validar_ConfigSmtp_requer_autent_sem_senha()
     {
@@ -104,6 +110,7 @@ class SalvarConfigSmtpValidatorTest extends TestCase
      * @throws AutentContaNaoInformadaException
      * @throws AutentSenhaNaoInformadaException
      * @throws NomeSmtpRepetidoException
+     * @covers ::validar
      */
     public function test_Validar_ConfigSmtp_requer_autent_com_conta_e_senha()
     {

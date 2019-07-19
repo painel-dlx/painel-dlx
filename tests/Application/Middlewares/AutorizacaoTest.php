@@ -25,70 +25,87 @@
 
 namespace PainelDLX\Testes\Application\Middlewares;
 
-use DLX\Core\Exceptions\ArquivoConfiguracaoNaoEncontradoException;
-use DLX\Core\Exceptions\ArquivoConfiguracaoNaoInformadoException;
 use Doctrine\ORM\ORMException;
+use Exception;
 use PainelDLX\Application\Middlewares\Autorizacao;
-use PainelDLX\Application\Middlewares\Exceptions\UsuarioNaoPossuiPermissaoException;
-use PainelDLX\Application\Services\Exceptions\AmbienteNaoInformadoException;
 use PainelDLX\Domain\GruposUsuarios\Exceptions\GrupoJaPossuiPermissaoException;
+use PainelDLX\Domain\Usuarios\Entities\Usuario;
 use PainelDLX\Domain\Usuarios\Exceptions\UsuarioJaPossuiGrupoException;
-use PainelDLX\Testes\Domain\Usuarios\Entities\UsuarioTest;
-use PainelDLX\Testes\TestCase\PainelDLXTestCase;
+use PainelDLX\Tests\TestCase\PainelDLXTestCase;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use SechianeX\Contracts\SessionInterface;
-use SechianeX\Exceptions\SessionAdapterInterfaceInvalidaException;
-use SechianeX\Exceptions\SessionAdapterNaoEncontradoException;
-use SechianeX\Factories\SessionFactory;
+use Vilex\Exceptions\ContextoInvalidoException;
+use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
+use Vilex\Exceptions\ViewNaoEncontradaException;
+use Zend\Diactoros\Response\HtmlResponse;
 
+/**
+ * Class AutorizacaoTest
+ * @package PainelDLX\Testes\Application\Middlewares
+ * @coversDefaultClass \PainelDLX\Application\Middlewares\Autorizacao
+ */
 class AutorizacaoTest extends PainelDLXTestCase
 {
-    /** @var SessionInterface */
-    private $session;
-
     /**
-     * @throws ArquivoConfiguracaoNaoEncontradoException
-     * @throws ArquivoConfiguracaoNaoInformadoException
-     * @throws ORMException
-     * @throws AmbienteNaoInformadoException
-     * @throws SessionAdapterInterfaceInvalidaException
-     * @throws SessionAdapterNaoEncontradoException
+     * @throws Exception
+     * @covers ::process
      */
-    protected function setUp()
+    public function test_Process_deve_renderizar_pagina_de_erro_403_quando_usuario_NAO_possui_acesso()
     {
-        parent::setUp();
-        $this->session = SessionFactory::createPHPSession();
+        $usuario = $this->createMock(Usuario::class);
+        $usuario->method('hasPermissao')->willReturn(false);
+
+        $session = $this->createMock(SessionInterface::class);
+        $session->method('get')->with('usuario-logado')->willReturn($usuario);
+
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->method('withQueryParams')->willReturn($request);
+        $request->method('getQueryParams')->willReturn(['erro' => 403]);
+
+        $handler = $this->createMock(RequestHandlerInterface::class);
+
+        /** @var SessionInterface $session */
+        /** @var ServerRequestInterface $request */
+        /** @var RequestHandlerInterface $handler */
+
+        $autorizacao = (new Autorizacao($session))->setPermissoes('TESTE');
+        $response = $autorizacao->process($request, $handler);
+
+        $this->assertInstanceOf(HtmlResponse::class, $response);
+        $this->assertStringContainsString('<h2 class="erro-http-titulo">403</h2>', (string)$response->getBody());
     }
 
     /**
-     * @throws GrupoJaPossuiPermissaoException
-     * @throws UsuarioJaPossuiGrupoException
-     * @throws SessionAdapterInterfaceInvalidaException
-     * @throws SessionAdapterNaoEncontradoException
-     * @throws UsuarioNaoPossuiPermissaoException
+     * @throws ContextoInvalidoException
+     * @throws PaginaMestraNaoEncontradaException
+     * @throws ViewNaoEncontradaException
+     * @covers ::process
      */
-    public function test_Executar_retorna_true_quando_usuario_possui_permissao()
+    public function test_Process_deve_retornar_ResponseInterface_da_handle_quando_usuaario_tiver_permissao()
     {
-        $usuario = (new UsuarioTest())->test_hasPermissao_deve_retornar_bool();
-        $this->session->set('usuario-logado', $usuario);
+        $usuario = $this->createMock(Usuario::class);
+        $usuario->method('hasPermissao')->willReturn(true);
 
-        $autorizacao = new Autorizacao('TESTE');
-        $this->assertTrue($autorizacao->executar());
-    }
+        $session = $this->createMock(SessionInterface::class);
+        $session->method('get')->with('usuario-logado')->willReturn($usuario);
 
-    /**
-     * @throws GrupoJaPossuiPermissaoException
-     * @throws UsuarioJaPossuiGrupoException
-     * @throws SessionAdapterInterfaceInvalidaException
-     * @throws SessionAdapterNaoEncontradoException
-     * @throws UsuarioNaoPossuiPermissaoException
-     */
-    public function test_Executar_lanca_uma_UsuarioNaoPossuiPermissaoException_quando_usuario_NAO_possui_permissao()
-    {
-        $usuario = (new UsuarioTest())->test_hasPermissao_deve_retornar_bool();
-        $this->session->set('usuario-logado', $usuario);
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->method('withQueryParams')->willReturn($request);
 
-        $this->expectException(UsuarioNaoPossuiPermissaoException::class);
-        $autorizacao = new Autorizacao('OUTRO_TESTE');
-        $autorizacao->executar();
+        $response_esperada = $this->createMock(ResponseInterface::class);
+
+        $handler = $this->createMock(RequestHandlerInterface::class);
+        $handler->method('handle')->willReturn($response_esperada);
+
+        /** @var SessionInterface $session */
+        /** @var ServerRequestInterface $request */
+        /** @var RequestHandlerInterface $handler */
+
+        $autorizacao = (new Autorizacao($session))->setPermissoes('TESTE');
+        $response = $autorizacao->process($request, $handler);
+
+        $this->assertSame($response_esperada, $response);
     }
 }

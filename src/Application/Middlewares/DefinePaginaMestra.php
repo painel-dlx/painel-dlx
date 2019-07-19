@@ -15,6 +15,11 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use SechianeX\Contracts\SessionInterface;
 
+/**
+ * Class DefinePaginaMestra
+ * @package PainelDLX\Application\Middlewares
+ * @covers DefinePaginaMestraTest
+ */
 class DefinePaginaMestra implements MiddlewareInterface
 {
     /**
@@ -24,7 +29,6 @@ class DefinePaginaMestra implements MiddlewareInterface
 
     /**
      * DefinePaginaMestra constructor.
-     * @param ServerRequestInterface $request
      * @param SessionInterface $session
      */
     public function __construct(SessionInterface $session)
@@ -38,6 +42,9 @@ class DefinePaginaMestra implements MiddlewareInterface
      * Processes an incoming server request in order to produce a response.
      * If unable to produce the response itself, it may delegate to the provided
      * request handler to do so.
+     * @param ServerRequestInterface $request
+     * @param RequestHandlerInterface $handler
+     * @return ResponseInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

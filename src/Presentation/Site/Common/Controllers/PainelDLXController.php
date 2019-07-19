@@ -69,7 +69,9 @@ abstract class PainelDLXController
         $this->view->addArquivoJs(PainelDLX::$dir . '/public/temas/painel-dlx/js/paineldlx.tema-min.js', true, $versao);
         $this->view->addArquivoJs(PainelDLX::$dir . '/public/js/painel-dlx-min.js', true, $versao);
 
-        $this->view->setPaginaMestra("public/views/paginas-mestras/{$session->get('vilex:pagina-mestra')}.phtml");
+        $pagina_mestra = $session->get('vilex:pagina-mestra') ?: 'painel-dlx-master';
+
+        $this->view->setPaginaMestra("public/views/paginas-mestras/{$pagina_mestra}.phtml");
         $this->view->setViewRoot('public/views/');
         $this->view->addTemplate('common/rodape');
     }

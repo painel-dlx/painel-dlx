@@ -23,13 +23,12 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Testes\TestCase;
+namespace PainelDLX\Tests\TestCase;
 
 
 use DLX\Core\Exceptions\ArquivoConfiguracaoNaoEncontradoException;
 use DLX\Core\Exceptions\ArquivoConfiguracaoNaoInformadoException;
 use DLX\Infra\EntityManagerX;
-use Doctrine\Common\Persistence\Mapping\MappingException;
 use Doctrine\ORM\ORMException;
 use PainelDLX\Application\Services\Exceptions\AmbienteNaoInformadoException;
 use PHPUnit\Framework\TestCase;
@@ -42,7 +41,6 @@ class PainelDLXTestCase extends TestCase
      * @throws AmbienteNaoInformadoException
      * @throws ArquivoConfiguracaoNaoEncontradoException
      * @throws ArquivoConfiguracaoNaoInformadoException
-     * @throws ORMException
      */
     public static function setUpBeforeClass()
     {
@@ -51,9 +49,6 @@ class PainelDLXTestCase extends TestCase
     }
 
     /**
-     * @throws ArquivoConfiguracaoNaoEncontradoException
-     * @throws ArquivoConfiguracaoNaoInformadoException
-     * @throws AmbienteNaoInformadoException
      * @throws ORMException
      */
     protected function setUp()
@@ -66,7 +61,6 @@ class PainelDLXTestCase extends TestCase
     }
 
     /**
-     * @throws MappingException
      * @throws ORMException
      */
     protected function tearDown()

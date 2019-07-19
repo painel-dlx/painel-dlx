@@ -8,8 +8,6 @@
 
 namespace PainelDLX\Application\Middlewares;
 
-use DLX\Core\Exceptions\UserException;
-use Exception;
 use PainelDLX\Application\Services\PainelDLX;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
 use PainelDLX\Presentation\Site\ErrosHttp\Controllers\ErroHttp;
@@ -18,9 +16,9 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use SechianeX\Contracts\SessionInterface;
-use SechianeX\Exceptions\SessionAdapterInterfaceInvalidaException;
-use SechianeX\Exceptions\SessionAdapterNaoEncontradoException;
-use SechianeX\Factories\SessionFactory;
+use Vilex\Exceptions\ContextoInvalidoException;
+use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
+use Vilex\Exceptions\ViewNaoEncontradaException;
 
 class Autorizacao implements MiddlewareInterface
 {
@@ -31,19 +29,25 @@ class Autorizacao implements MiddlewareInterface
     /**
      * @var string[]
      */
-    private $permissoes;
+    private $permissoes = [];
 
     /**
      * Autorizacao constructor.
-     * @param string ...$permissoes
-     * @throws SessionAdapterInterfaceInvalidaException
-     * @throws SessionAdapterNaoEncontradoException
+     * @param SessionInterface $session
      */
-    public function __construct(string ...$permissoes)
+    public function __construct(SessionInterface $session)
     {
-        // TODO: Tentar desacoplar a sessão
-        $this->session = SessionFactory::createPHPSession();
+        $this->session = $session;
+    }
+
+    /**
+     * @param string ...$permissoes
+     * @return Autorizacao
+     */
+    public function setPermissoes(string ... $permissoes): self
+    {
         $this->permissoes = $permissoes;
+        return $this;
     }
 
     /**
@@ -53,7 +57,12 @@ class Autorizacao implements MiddlewareInterface
      * If unable to produce the response itself, it may delegate to the provided
      * request handler to do so.
      *
-     * @throws Exception
+     * @param ServerRequestInterface $request
+     * @param RequestHandlerInterface $handler
+     * @return ResponseInterface
+     * @throws ContextoInvalidoException
+     * @throws PaginaMestraNaoEncontradaException
+     * @throws ViewNaoEncontradaException
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

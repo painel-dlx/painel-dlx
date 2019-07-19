@@ -32,6 +32,11 @@ use PainelDLX\Domain\Emails\Exceptions\AutentSenhaNaoInformadaException;
 use PainelDLX\Domain\Emails\Exceptions\NomeSmtpRepetidoException;
 use PainelDLX\Domain\Emails\Repositories\ConfigSmtpRepositoryInterface;
 
+/**
+ * Class SalvarConfigSmtpValidator
+ * @package PainelDLX\Domain\Emails\Services\Validators
+ * @covers SalvarConfigSmtpValidatorTest
+ */
 class SalvarConfigSmtpValidator
 {
     /**

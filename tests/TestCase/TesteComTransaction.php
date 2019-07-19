@@ -23,7 +23,7 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Testes\TestCase;
+namespace PainelDLX\Tests\TestCase;
 
 
 trait TesteComTransaction
