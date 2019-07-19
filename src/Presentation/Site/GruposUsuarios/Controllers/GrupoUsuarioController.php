@@ -88,7 +88,11 @@ class GrupoUsuarioController extends PainelDLXController
             $this->view->setAtributo('titulo-pagina', 'Grupos de Usuários');
             $this->view->setAtributo('lista_grupos_usuarios', $lista_grupos_usuarios);
             $this->view->setAtributo('filtro', $get);
+
+            // Paginação
             $this->view->setAtributo('pagina-atual', $get['pg']);
+            $this->view->setAtributo('qtde-registros-pagina', $get['qtde']);
+            $this->view->setAtributo('qtde-registros-lista', count($lista_grupos_usuarios));
 
             // Views
             $this->view->addTemplate('grupos-usuarios/lista_grupos_usuarios');

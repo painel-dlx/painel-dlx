@@ -90,7 +90,11 @@ class CadastroPermissaoController extends PainelDLXController
             $this->view->setAtributo('titulo-pagina', 'Permissões');
             $this->view->setAtributo('lista-permissoes', $lista_permissoes);
             $this->view->setAtributo('filtro', $get);
+
+            // Paginação
             $this->view->setAtributo('pagina-atual', $get['pg']);
+            $this->view->setAtributo('qtde-registros-pagina', $get['qtde']);
+            $this->view->setAtributo('qtde-registros-lista', count($lista_permissoes));
 
             // Views
             $this->view->addTemplate('permissoes/lista_permissoes');

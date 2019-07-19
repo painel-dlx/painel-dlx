@@ -113,7 +113,11 @@ class CadastroUsuarioController extends PainelDLXController
             $this->view->setAtributo('titulo-pagina', 'Usuários');
             $this->view->setAtributo('lista_usuarios', $lista_usuarios);
             $this->view->setAtributo('filtro', $get);
+
+            // Paginação
             $this->view->setAtributo('pagina-atual', $get['pg']);
+            $this->view->setAtributo('qtde-registros-pagina', $get['qtde']);
+            $this->view->setAtributo('qtde-registros-lista', count($lista_usuarios));
 
             // Views
             $this->view->addTemplate('usuarios/lista_usuarios');

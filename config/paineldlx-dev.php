@@ -58,6 +58,7 @@ return [
             'password' => '$d5Ro0t',
             'host' => 'localhost',
             'driver' => 'pdo_mysql',
+            'charset' => 'utf8',
         ]
     ]
 ];

@@ -123,7 +123,11 @@ class ConfigSmtpController extends PainelDLXController
             $this->view->setAtributo('titulo-pagina', 'Configurações SMTP');
             $this->view->setAtributo('lista-config-smtp', $lista_config_smtp);
             $this->view->setAtributo('filtro', $get);
+
+            // Paginação
             $this->view->setAtributo('pagina-atual', $get['pg']);
+            $this->view->setAtributo('qtde-registros-pagina', $get['qtde']);
+            $this->view->setAtributo('qtde-registros-lista', count($lista_config_smtp));
 
             // JS
             $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js', false, Configure::get('app', 'versao'));

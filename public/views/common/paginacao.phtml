@@ -29,6 +29,8 @@ use Vilex\VileX;
 /** @var Vilex $this */
 
 $pagina_atual = $this->getAtributo('pagina-atual');
+$qtde_registros_pagina = $this->getAtributo('qtde-registros-pagina');
+$qtde_registros_atual = $this->getAtributo('qtde-registros-lista');
 ?>
 
 [CORPO]
@@ -43,8 +45,14 @@ $pagina_atual = $this->getAtributo('pagina-atual');
         </a>
     <?php endif; ?>
 
-    <a href="javascript:" onclick="irParaPagina(<?php echo $pagina_atual + 1 ?>)" class="botao-pagina -proxima">
-        Próxima
-    </a>
+    <?php if ($qtde_registros_atual < $qtde_registros_pagina) : ?>
+        <a href="javascript:" class="botao-pagina -proxima --desativado">
+            Próxima
+        </a>
+    <?php else : ?>
+        <a href="javascript:" onclick="irParaPagina(<?php echo $pagina_atual + 1 ?>)" class="botao-pagina -proxima">
+            Próxima
+        </a>
+    <?php endif; ?>
 </div>
 [/CORPO]
