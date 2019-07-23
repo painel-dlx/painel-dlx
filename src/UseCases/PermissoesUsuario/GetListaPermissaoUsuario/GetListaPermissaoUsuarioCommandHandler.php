@@ -52,12 +52,14 @@ class GetListaPermissaoUsuarioCommandHandler
      */
     public function handle(GetListaPermissaoUsuarioCommand $command): array
     {
-        $lista = $this->permissao_usuario_repository->findByLike(
-            $command->getCriteria(),
+        $criteria = $command->getCriteria();
+        $criteria['and'] = ['deletado' => false];
+
+        return $this->permissao_usuario_repository->findByLike(
+            $criteria,
             $command->getOrderBy(),
             $command->getLimit(),
             $command->getOffset()
         );
-        return array_filter($lista, function (PermissaoUsuario $permissao_usuario) { return !$permissao_usuario->isDeletado(); });
     }
 }

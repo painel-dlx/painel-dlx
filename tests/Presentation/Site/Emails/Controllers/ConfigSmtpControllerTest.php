@@ -25,27 +25,17 @@
 
 namespace PainelDLX\Testes\Presentation\Site\Emails\Controllers;
 
-use DLX\Core\CommandBus\CommandBusAdapter;
 use DLX\Core\Configure;
-use DLX\Core\Exceptions\ArquivoConfiguracaoNaoEncontradoException;
-use DLX\Core\Exceptions\ArquivoConfiguracaoNaoInformadoException;
+use DLX\Infrastructure\EntityManagerX;
+use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\ORMException;
-use League\Tactician\Container\ContainerLocator;
-use League\Tactician\Handler\CommandHandlerMiddleware;
-use League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor;
-use League\Tactician\Handler\MethodNameInflector\HandleInflector;
-use PainelDLX\Application\Services\Exceptions\AmbienteNaoInformadoException;
-use PainelDLX\Domain\Emails\Exceptions\AutentContaNaoInformadaException;
-use PainelDLX\Domain\Emails\Exceptions\AutentSenhaNaoInformadaException;
+use PainelDLX\Application\Factories\CommandBusFactory;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
 use PainelDLX\Presentation\Site\Emails\Controllers\ConfigSmtpController;
-use PainelDLX\Testes\Application\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpHandlerTestCase;
-use PainelDLX\Testes\TestCase\PainelDLXTestCase;
+use PainelDLX\Tests\TestCase\PainelDLXTestCase;
+use PainelDLX\Tests\TestCase\TesteComTransaction;
 use Psr\Http\Message\ServerRequestInterface;
 use SechianeX\Contracts\SessionInterface;
-use SechianeX\Exceptions\SessionAdapterInterfaceInvalidaException;
-use SechianeX\Exceptions\SessionAdapterNaoEncontradoException;
-use SechianeX\Factories\SessionFactory;
 use Vilex\Exceptions\ContextoInvalidoException;
 use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
 use Vilex\Exceptions\ViewNaoEncontradaException;
@@ -53,52 +43,60 @@ use Vilex\VileX;
 use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Diactoros\Response\JsonResponse;
 
-class ConfigSmtpControllerTestCase extends PainelDLXTestCase
+/**
+ * Class ConfigSmtpControllerTestCase
+ * @package PainelDLX\Testes\Presentation\Site\Emails\Controllers
+ * @coversDefaultClass \PainelDLX\Presentation\Site\Emails\Controllers\ConfigSmtpController
+ */
+class ConfigSmtpControllerTest extends PainelDLXTestCase
 {
-    /** @var ConfigSmtpController */
+    use TesteComTransaction;
+
+    /**
+     * @var ConfigSmtpController
+     */
     private $controller;
 
     /**
-     * @throws ArquivoConfiguracaoNaoEncontradoException
-     * @throws ArquivoConfiguracaoNaoInformadoException
      * @throws ORMException
-     * @throws AmbienteNaoInformadoException
-     * @throws SessionAdapterInterfaceInvalidaException
-     * @throws SessionAdapterNaoEncontradoException
      */
     protected function setUp()
     {
         parent::setUp();
 
-        $session = $this->createMock(SessionInterface::class);
-        $session
-            ->method('get')
-            ->with('usuario-logado')
-            ->willReturn((new Usuario('Diego Lepera', 'dlepera88@gmail.com')));
-
         /** @var SessionInterface $session */
-        $this->controller = new ConfigSmtpController(
-            new VileX(),
-            CommandBusAdapter::create(new CommandHandlerMiddleware(
-                new ClassNameExtractor,
-                new ContainerLocator($this->container, Configure::get('app', 'mapping')),
-                new HandleInflector
-            )),
-            $session
-        );
+        $this->controller = self::$painel_dlx->getContainer()->get(ConfigSmtpController::class);
+    }
+
+    /**
+     * @return int
+     * @throws DBALException
+     * @throws ORMException
+     */
+    public function inserirNovaConfiguracao(): int
+    {
+        $conn = EntityManagerX::getInstance()->getConnection();
+
+        $query = 'insert into dlx_config_smtp (servidor, porta, nome) values (:servidor, :porta, :nome)';
+        $conn->executeQuery($query, [
+            ':servidor' => 'localhost',
+            ':porta' => 587,
+            ':nome' => 'Teste'
+        ]);
+
+        return $conn->lastInsertId();
     }
 
     /**
      * @throws ContextoInvalidoException
      * @throws PaginaMestraNaoEncontradaException
      * @throws ViewNaoEncontradaException
+     * @covers ::listaConfigSmtp
      */
     public function test_ListaConfigSmtp_deve_retornar_um_HtmlResponse()
     {
         $request = $this->createMock(ServerRequestInterface::class);
-        $request
-            ->method('getQueryParams')
-            ->willReturn([]);
+        $request->method('getQueryParams')->willReturn([]);
 
         /** @var ServerRequestInterface $request */
         $response = $this->controller->listaConfigSmtp($request);
@@ -107,49 +105,46 @@ class ConfigSmtpControllerTestCase extends PainelDLXTestCase
     }
 
     /**
+     * @covers ::excluirConfigSmtp
      * @throws ORMException
-     * @throws AutentContaNaoInformadaException
-     * @throws AutentSenhaNaoInformadaException
+     * @throws DBALException
+     * @covers ::excluirConfigSmtp
      */
     public function test_ExcluirConfigSmtp_deve_retornar_JsonResponse()
     {
-        $config_smtp = (new NovaConfigSmtpHandlerTestCase())->test_Handle();
+        $id = $this->inserirNovaConfiguracao();
 
         $request = $this->createMock(ServerRequestInterface::class);
-        $request
-            ->method('getParsedBody')
-            ->willReturn([
-                'config_smtp_id' => $config_smtp->getId()
-            ]);
+        $request->method('getParsedBody')->willReturn([
+            'config_smtp_id' => $id
+        ]);
 
         /** @var ServerRequestInterface $request */
+
         $response = $this->controller->excluirConfigSmtp($request);
 
         $this->assertInstanceOf(JsonResponse::class, $response);
 
         $json = json_decode((string)$response->getBody());
-
         $this->assertEquals('sucesso', $json->retorno);
     }
 
     /**
-     * @throws ORMException
-     * @throws AutentContaNaoInformadaException
-     * @throws AutentSenhaNaoInformadaException
      * @throws ContextoInvalidoException
+     * @throws DBALException
+     * @throws ORMException
      * @throws PaginaMestraNaoEncontradaException
      * @throws ViewNaoEncontradaException
+     * @covers ::detalheConfigSmtp
      */
     public function test_DetalheConfigSmtp_deve_retornar_um_HtmlResponse()
     {
-        $config_smtp = (new NovaConfigSmtpHandlerTestCase())->test_Handle();
+        $id = $this->inserirNovaConfiguracao();
 
         $request = $this->createMock(ServerRequestInterface::class);
-        $request
-            ->method('getQueryParams')
-            ->willReturn([
-                'config_smtp_id' => $config_smtp->getId()
-            ]);
+        $request->method('getQueryParams')->willReturn([
+            'config_smtp_id' => $id
+        ]);
 
         /** @var ServerRequestInterface $request */
         $response = $this->controller->detalheConfigSmtp($request);
@@ -157,25 +152,43 @@ class ConfigSmtpControllerTestCase extends PainelDLXTestCase
         $this->assertInstanceOf(HtmlResponse::class, $response);
     }
 
+    /**
+     * @covers ::testarConfigSmtp
+     * @throws ViewNaoEncontradaException
+     */
     public function test_testarConfigSmtp_deve_retornar_um_JsonResponse_sucesso()
     {
         $server_request = $this->createMock(ServerRequestInterface::class);
-        $server_request
-            ->method('getParsedBody')
-            ->willReturn([
-                'servidor' => 'smtp.gmail.com',
-                'porta' => 587,
-                'requer_autent' => true,
-                'conta' => 'dlepera88.emails@gmail.com',
-                'senha' => 'oxswveitoainkmbu',
-                'cripto' => 'tls',
-                'de_nome' => null,
-                'responder_para' => null,
-                'corpo_html' => true
-            ]);
+        $server_request->method('getParsedBody')->willReturn([
+            'servidor' => 'smtp.gmail.com',
+            'porta' => 587,
+            'requer_autent' => true,
+            'conta' => 'dlepera88.emails@gmail.com',
+            'senha' => 'oxswveitoainkmbu',
+            'cripto' => 'tls',
+            'de_nome' => null,
+            'responder_para' => null,
+            'corpo_html' => true
+        ]);
+
+        $command_bus = CommandBusFactory::create(
+            self::$painel_dlx->getContainer(),
+            Configure::get('app', 'mapping')
+        );
+
+        $session = $this->createMock(SessionInterface::class);
+        $session->method('get')->willReturn(new Usuario('Teste', 'dlepera88@gmail.com'));
 
         /** @var ServerRequestInterface $server_request */
-        $response = $this->controller->testarConfigSmtp($server_request);
+        /** @var SessionInterface $session */
+
+        $controller = new ConfigSmtpController(
+            new VileX(),
+            $command_bus(),
+            $session
+        );
+
+        $response = $controller->testarConfigSmtp($server_request);
 
         $this->assertInstanceOf(JsonResponse::class, $response);
 

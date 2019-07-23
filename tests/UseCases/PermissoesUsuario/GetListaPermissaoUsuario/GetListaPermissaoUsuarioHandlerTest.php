@@ -25,7 +25,7 @@
 
 namespace PainelDLX\Testes\Application\UseCases\PermissoesUsuario\GetListaPermissaoUsuario;
 
-use DLX\Infra\EntityManagerX;
+use DLX\Infrastructure\EntityManagerX;
 use Doctrine\Common\Collections\ArrayCollection;
 use PainelDLX\UseCases\PermissoesUsuario\GetListaPermissaoUsuario\GetListaPermissaoUsuarioCommand;
 use PainelDLX\UseCases\PermissoesUsuario\GetListaPermissaoUsuario\GetListaPermissaoUsuarioCommandHandler;

@@ -25,14 +25,21 @@
 
 namespace PainelDLX\Testes\Application\UseCases\ListaRegistros\ConverterFiltro2Criteria;
 
+use PainelDLX\Tests\TestCase\PainelDLXTestCase;
 use PainelDLX\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommand;
 use PainelDLX\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommandHandler;
-use PainelDLX\Testes\TestCase\PainelDLXTestCase;
 
+/**
+ * Class ConverterFiltro2CriteriaCommandHandlerTest
+ * @package PainelDLX\Testes\Application\UseCases\ListaRegistros\ConverterFiltro2Criteria
+ * @coversDefaultClass \PainelDLX\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommandHandler
+ */
 class ConverterFiltro2CriteriaCommandHandlerTest extends PainelDLXTestCase
 {
-
-    public function test_Handle()
+    /**
+     * @covers ::handle
+     */
+    public function test_Handle_deve_configurar_request_como_criteria()
     {
         $campos = ['campo1', 'campo2'];
         $busca = 'busca';
@@ -44,5 +51,21 @@ class ConverterFiltro2CriteriaCommandHandlerTest extends PainelDLXTestCase
             $this->assertArrayHasKey($campo, $criteria);
             $this->assertEquals($busca, $criteria[$campo]);
         }
+    }
+
+    /**
+     * O PHP lança uma warning quando tenta executar o foreach num valor NULL. Quando o filtro não é informado a chave
+     * 'campos' do filtro não é informada.
+     * @covers ::handle
+     */
+    public function test_Handle_nao_deve_lancar_warning_nem_erro_quando_nao_informar_campos()
+    {
+        $campos = null;
+        $busca = null;
+
+        $command = new ConverterFiltro2CriteriaCommand($campos, $busca);
+        (new ConverterFiltro2CriteriaCommandHandler())->handle($command);
+
+        $this->expectNotToPerformAssertions();
     }
 }

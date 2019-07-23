@@ -27,41 +27,62 @@ namespace PainelDLX\UseCases\Emails\EditarConfigSmtp;
 
 
 use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
-use PainelDLX\Domain\Emails\Exceptions\AutentContaNaoInformadaException;
-use PainelDLX\Domain\Emails\Exceptions\AutentSenhaNaoInformadaException;
-use PainelDLX\Domain\Emails\Exceptions\NomeSmtpRepetidoException;
+use PainelDLX\Domain\Emails\Exceptions\ConfigSmtpInvalidoException;
 use PainelDLX\Domain\Emails\Repositories\ConfigSmtpRepositoryInterface;
 use PainelDLX\Domain\Emails\Services\Validators\SalvarConfigSmtpValidator;
-use PainelDLX\UseCases\Emails\EditarConfigSmtp\EditarConfigSmtpCommand;
 
+/**
+ * Class EditarConfigSmtpCommandHandler
+ * @package PainelDLX\UseCases\Emails\EditarConfigSmtp
+ * @covers EditarConfigSmtpCommandHandlerTest
+ */
 class EditarConfigSmtpCommandHandler
 {
     /**
      * @var ConfigSmtpRepositoryInterface
      */
     private $config_smtp_repository;
+    /**
+     * @var SalvarConfigSmtpValidator
+     */
+    private $validator;
 
     /**
      * EditarConfigSmtpCommandHandler constructor.
      * @param ConfigSmtpRepositoryInterface $config_smtp_repository
+     * @param SalvarConfigSmtpValidator $validator
      */
-    public function __construct(ConfigSmtpRepositoryInterface $config_smtp_repository)
-    {
+    public function __construct(
+        ConfigSmtpRepositoryInterface $config_smtp_repository,
+        SalvarConfigSmtpValidator $validator
+    ) {
         $this->config_smtp_repository = $config_smtp_repository;
+        $this->validator = $validator;
     }
 
     /**
      * @param EditarConfigSmtpCommand $command
      * @return ConfigSmtp
-     * @throws AutentContaNaoInformadaException
-     * @throws AutentSenhaNaoInformadaException
-     * @throws NomeSmtpRepetidoException
+     * @throws ConfigSmtpInvalidoException
      */
     public function handle(EditarConfigSmtpCommand $command): ConfigSmtp
     {
-        (new SalvarConfigSmtpValidator($command->getConfigSmtp(), $this->config_smtp_repository))->validar();
-        $this->config_smtp_repository->update($command->getConfigSmtp());
+        $config_smtp  = $command->getConfigSmtp();
 
-        return $command->getConfigSmtp();
+        $config_smtp->setNome($command->getNome());
+        $config_smtp->setServidor($command->getServidor());
+        $config_smtp->setPorta($command->getPorta());
+        $config_smtp->setRequerAutent($command->isRequerAutent());
+        $config_smtp->setConta($command->getConta());
+        $config_smtp->setSenha($command->getSenha());
+        $config_smtp->setCripto($command->getCripto());
+        $config_smtp->setDeNome($command->getDeNome());
+        $config_smtp->setResponderPara($command->getResponderPara());
+        $config_smtp->setCorpoHtml($command->isCorpoHtml());
+
+        $this->validator->validar($config_smtp);
+        $this->config_smtp_repository->update($config_smtp);
+
+        return $config_smtp;
     }
 }

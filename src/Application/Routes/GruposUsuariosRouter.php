@@ -61,7 +61,7 @@ class GruposUsuariosRouter extends PainelDLXRouter
         )->middlewares(
             $define_pagina_mestra,
             $verificar_logon,
-            $autorizacao->setPermissoes('VISUALIZAR_GRUPOS_USUARIOS'),
+            $autorizacao->necessitaPermissoes('VISUALIZAR_GRUPOS_USUARIOS'),
             $configurar_paginacao
         );
 
@@ -71,7 +71,7 @@ class GruposUsuariosRouter extends PainelDLXRouter
         )->middlewares(
             $define_pagina_mestra,
             $verificar_logon,
-            $autorizacao->setPermissoes('CADASTRAR_GRUPO_USUARIO')
+            $autorizacao->necessitaPermissoes('CADASTRAR_GRUPO_USUARIO')
         );
 
         $router->get(
@@ -80,7 +80,7 @@ class GruposUsuariosRouter extends PainelDLXRouter
         )->middlewares(
             $define_pagina_mestra,
             $verificar_logon,
-            $autorizacao->setPermissoes('EDITAR_GRUPO_USUARIO')
+            $autorizacao->necessitaPermissoes('EDITAR_GRUPO_USUARIO')
         );
 
         $router->get(
@@ -89,7 +89,7 @@ class GruposUsuariosRouter extends PainelDLXRouter
         )->middlewares(
             $define_pagina_mestra,
             $verificar_logon,
-            $autorizacao->setPermissoes('VISUALIZAR_GRUPOS_USUARIOS')
+            $autorizacao->necessitaPermissoes('VISUALIZAR_GRUPOS_USUARIOS')
         );
 
         $router->post(
@@ -97,7 +97,7 @@ class GruposUsuariosRouter extends PainelDLXRouter
             [GrupoUsuarioController::class, 'cadastrarNovoGrupoUsuario']
         )->middlewares(
             $verificar_logon,
-            $autorizacao->setPermissoes('CADASTRAR_GRUPO_USUARIO')
+            $autorizacao->necessitaPermissoes('CADASTRAR_GRUPO_USUARIO')
         );
 
         $router->post(
@@ -105,7 +105,7 @@ class GruposUsuariosRouter extends PainelDLXRouter
             [GrupoUsuarioController::class, 'atualizarGrupoUsuarioExistente']
         )->middlewares(
             $verificar_logon,
-            $autorizacao->setPermissoes('EDITAR_GRUPO_USUARIO')
+            $autorizacao->necessitaPermissoes('EDITAR_GRUPO_USUARIO')
         );
 
         $router->post(
@@ -113,7 +113,7 @@ class GruposUsuariosRouter extends PainelDLXRouter
             [GrupoUsuarioController::class, 'excluirGrupoUsuario']
         )->middlewares(
             $verificar_logon,
-            $autorizacao->setPermissoes('EXCLUIR_GRUPO_USUARIO')
+            $autorizacao->necessitaPermissoes('EXCLUIR_GRUPO_USUARIO')
         );
 
         $router->get(
@@ -122,7 +122,7 @@ class GruposUsuariosRouter extends PainelDLXRouter
         )->middlewares(
             $define_pagina_mestra,
             $verificar_logon,
-            $autorizacao->setPermissoes('GERENCIAR_PERMISSOES_GRUPOS')
+            $autorizacao->necessitaPermissoes('GERENCIAR_PERMISSOES_GRUPOS')
         );
 
         $router->post(
@@ -130,7 +130,7 @@ class GruposUsuariosRouter extends PainelDLXRouter
             [ConfigurarPermissoesController::class, 'salvarConfiguracaoPermissao']
         )->middlewares(
             $verificar_logon,
-            $autorizacao->setPermissoes('GERENCIAR_PERMISSOES_GRUPOS')
+            $autorizacao->necessitaPermissoes('GERENCIAR_PERMISSOES_GRUPOS')
         );
     }
 }

@@ -41,13 +41,24 @@ class Autorizacao implements MiddlewareInterface
     }
 
     /**
-     * @param string ...$permissoes
+     * @param string[] $permissoes
      * @return Autorizacao
      */
     public function setPermissoes(string ... $permissoes): self
     {
         $this->permissoes = $permissoes;
         return $this;
+    }
+
+    /**
+     * Retornar uma nova instância configurada para validar as permissões informadas
+     * @param string ...$permissoes
+     * @return Autorizacao
+     */
+    public function necessitaPermissoes(string ... $permissoes): self
+    {
+        $this_clone = new self($this->session);
+        return $this_clone->setPermissoes(... $permissoes);
     }
 
     /**

@@ -26,7 +26,7 @@
 namespace PainelDLX\Infrastructure\ORM\Doctrine\Services;
 
 
-use DLX\Infra\EntityManagerX;
+use DLX\Infrastructure\EntityManagerX;
 
 class RepositoryFactory
 {

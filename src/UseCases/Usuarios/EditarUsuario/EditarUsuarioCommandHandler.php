@@ -25,68 +25,76 @@
 
 namespace PainelDLX\UseCases\Usuarios\EditarUsuario;
 
-use Exception;
-use PainelDLX\UseCases\Usuarios\Exceptions\RegistroEntityNaoEncontradoException;
+use PainelDLX\Domain\Usuarios\Exceptions\UsuarioInvalidoException;
+use PainelDLX\Domain\Usuarios\Exceptions\UsuarioJaPossuiGrupoException;
+use PainelDLX\Domain\Usuarios\Validators\SalvarUsuarioValidator;
 use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
 use PainelDLX\Domain\GruposUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
 use PainelDLX\Domain\Usuarios\Repositories\UsuarioRepositoryInterface;
-use PainelDLX\Domain\Usuarios\Services\VerificaEmailJaCadastrado;
-use PainelDLX\UseCases\Usuarios\EditarUsuario\EditarUsuarioCommand;
 
+/**
+ * Class EditarUsuarioCommandHandler
+ * @package PainelDLX\UseCases\Usuarios\EditarUsuario
+ * @covers EditarUsuarioCommandHandlerTest
+ */
 class EditarUsuarioCommandHandler
 {
-    /** @var UsuarioRepositoryInterface */
+    /**
+     * @var UsuarioRepositoryInterface
+     */
     private $usuario_repository;
-    /** @var GrupoUsuarioRepositoryInterface */
+    /**
+     * @var GrupoUsuarioRepositoryInterface
+     */
     private $grupo_usuario_repository;
+    /**
+     * @var SalvarUsuarioValidator
+     */
+    private $validator;
 
     /**
      * NovoUsuarioCommandHandler constructor.
      * @param UsuarioRepositoryInterface $usuario_repository
      * @param GrupoUsuarioRepositoryInterface $grupo_usuario_repository
+     * @param SalvarUsuarioValidator $validator
      */
     public function __construct(
         UsuarioRepositoryInterface $usuario_repository,
-        GrupoUsuarioRepositoryInterface $grupo_usuario_repository
+        GrupoUsuarioRepositoryInterface $grupo_usuario_repository,
+        SalvarUsuarioValidator $validator
     ) {
         $this->usuario_repository = $usuario_repository;
         $this->grupo_usuario_repository = $grupo_usuario_repository;
+        $this->validator = $validator;
     }
 
     /**
      * @param EditarUsuarioCommand $command
-     * @throws Exception
+     * @return Usuario
+     * @throws UsuarioInvalidoException
+     * @throws UsuarioJaPossuiGrupoException
      */
     public function handle(EditarUsuarioCommand $command)
     {
-        try {
-            $lista_grupos = $this->grupo_usuario_repository->getListaGruposByIds(...$command->getGrupos());
-            /** @var Usuario $usuario */
-            $usuario = $this->usuario_repository->find($command->getUsuarioId());
+        $lista_grupos = $this->grupo_usuario_repository->getListaGruposByIds(...$command->getGrupos());
 
-            if (is_null($usuario)) {
-                throw new RegistroEntityNaoEncontradoException('Usuário');
+        $usuario = $command->getUsuario();
+        $usuario
+            ->setNome($command->getNome())
+            ->setEmail($command->getEmail());
+
+        /** @var GrupoUsuario $grupo_usuario */
+        foreach ($lista_grupos as $grupo_usuario) {
+            if (!$usuario->hasGrupoUsuario($grupo_usuario)) {
+                $usuario->addGrupo($grupo_usuario);
             }
-
-            $usuario
-                ->setNome($command->getNome())
-                ->setEmail($command->getEmail());
-
-            /** @var GrupoUsuario $grupo_usuario */
-            foreach ($lista_grupos as $grupo_usuario) {
-                if (!$usuario->hasGrupoUsuario($grupo_usuario)) {
-                    $usuario->addGrupo($grupo_usuario);
-                }
-            }
-
-            // Verifica se o email desse usuário não está sendo usado por outro usuário
-            (new VerificaEmailJaCadastrado($this->usuario_repository, $usuario))->executar();
-            $this->usuario_repository->update($usuario);
-
-            return $usuario;
-        } catch (Exception $e) {
-            throw $e;
         }
+
+        // Verifica se o email desse usuário não está sendo usado por outro usuário
+        $this->validator->validar($usuario, null);
+        $this->usuario_repository->update($usuario);
+
+        return $usuario;
     }
 }

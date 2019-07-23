@@ -23,15 +23,30 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Domain\Emails\Exceptions;
+namespace PainelDLX\Tests\Infra\ORM\Doctrine\Services;
 
+use Doctrine\ORM\EntityRepository;
+use PainelDLX\Domain\Usuarios\Entities\Usuario;
+use PainelDLX\Infrastructure\ORM\Doctrine\Services\RepositoryFactory;
+use PainelDLX\Tests\TestCase\PainelDLXTestCase;
 
-use DLX\Core\Exceptions\UserException;
-
-class AutentContaNaoInformadaException extends UserException
+/**
+ * Class RepositoryFactoryTest
+ * @package PainelDLX\Testes\Infra\ORM\Doctrine\Services
+ * @coversDefaultClass \PainelDLX\Infrastructure\ORM\Doctrine\Services\RepositoryFactory
+ */
+class RepositoryFactoryTest extends PainelDLXTestCase
 {
-    public function __construct()
+    /**
+     * @covers ::create
+     */
+    public function test_Create_deve_retornar_uma_funcao_anonima()
     {
-        parent::__construct('Opa, você esqueceu de informar a conta para autenticar no servidor SMTP.');
+        $entity = Usuario::class;
+        $func = RepositoryFactory::create($entity);
+        $repository = call_user_func($func);
+
+        $this->assertIsCallable($func);
+        $this->assertInstanceOf(EntityRepository::class, $repository);
     }
 }

@@ -33,7 +33,7 @@ use PainelDLX\UseCases\Usuarios\AlterarSenhaUsuario\AlterarSenhaUsuarioCommand;
 use PainelDLX\UseCases\Usuarios\GetUsuarioPeloId\GetUsuarioPeloIdCommand;
 use PainelDLX\UseCases\Usuarios\GetUsuarioPeloId\GetUsuarioPeloIdCommandHandler;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
-use PainelDLX\Domain\Usuarios\Exceptions\UsuarioNaoEncontrado;
+use PainelDLX\Domain\Usuarios\Exceptions\UsuarioNaoEncontradoException;
 use PainelDLX\Domain\Usuarios\Repositories\UsuarioRepositoryInterface;
 use PainelDLX\Domain\Usuarios\ValueObjects\SenhaUsuario;
 use PainelDLX\Presentation\Site\Common\Controllers\PainelDLXController;
@@ -118,7 +118,7 @@ class AlterarSenhaUsuarioController extends PainelDLXController
             $usuario = $this->command_bus->handle(new GetUsuarioPeloIdCommand($usuario_id));
 
             if (!$usuario instanceof Usuario) {
-                throw new UsuarioNaoEncontrado();
+                throw new UsuarioNaoEncontradoException();
             }
 
             $senha_usuario = new SenhaUsuario($senha_nova, $senha_confirm, $senha_atual);

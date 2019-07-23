@@ -26,6 +26,7 @@
 namespace PainelDLX\Testes\Domain\Usuarios\Entities;
 
 use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
+use PainelDLX\Domain\GruposUsuarios\Exceptions\GrupoJaPossuiPermissaoException;
 use PainelDLX\Domain\PermissoesUsuario\Entities\PermissaoUsuario;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
 use PainelDLX\Domain\Usuarios\Exceptions\UsuarioJaPossuiGrupoException;
@@ -62,7 +63,7 @@ class UsuarioTest extends TestCase
     /**
      * @return Usuario
      * @throws UsuarioJaPossuiGrupoException
-     * @throws \PainelDLX\Domain\GruposUsuarios\Exceptions\GrupoJaPossuiPermissaoException
+     * @throws GrupoJaPossuiPermissaoException
      */
     public function test_hasPermissao_deve_retornar_bool(): Usuario
     {

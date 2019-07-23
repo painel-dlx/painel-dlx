@@ -23,19 +23,20 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\UseCases\Usuarios\Exceptions;
+namespace PainelDLX\Domain\Emails\Exceptions;
 
 
-use DLX\Core\Exceptions\UserException;
+use Exception;
 
-class RegistroEntityNaoEncontradoException extends UserException
+class ConfigSmtpNaoEncontradaException extends Exception
 {
     /**
-     * RegistroEntityNaoEncontradoException constructor.
-     * @param string $nome_amigavel_entity
+     * @param $id
+     * @return ConfigSmtpNaoEncontradaException
      */
-    public function __construct(string $nome_amigavel_entity)
+    public static function porId($id): self
     {
-        parent::__construct(sprintf('%s não encontrado!', $nome_amigavel_entity), 404);
+        $valor_id = var_export($id, true);
+        return new self("Configuração SMTP não encontrada com o ID informado: {$valor_id}.", 10);
     }
 }

@@ -25,6 +25,7 @@
 
 namespace PainelDLX\Testes\Application\Factories;
 
+use League\Tactician\CommandBus;
 use PainelDLX\Application\Factories\CommandBusFactory;
 use PainelDLX\Tests\TestCase\PainelDLXTestCase;
 use Psr\Container\ContainerInterface;
@@ -46,7 +47,9 @@ class CommandBusFactoryTest extends PainelDLXTestCase
         $mapping = [];
 
         $func = CommandBusFactory::create($container, $mapping);
+        $command_bus = call_user_func($func);
 
         $this->assertIsCallable($func);
+        $this->assertInstanceOf(CommandBus::class, $command_bus);
     }
 }

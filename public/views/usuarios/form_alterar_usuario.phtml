@@ -79,7 +79,7 @@ $lista_grupos = $this->getAtributo('lista_grupos');
                     foreach($lista_grupos as $grupo_usuario) :
                         $is_check = $usuario->getGrupos()->contains($grupo_usuario) ?>
                         <p class="form-paragr">
-                            <input type="checkbox" name="grupos[]" id="chk-grupo-usuario-<?php echo $grupo_usuario->getId() ?>" value="<?php echo $grupo_usuario->getId() ?>"<?php echo $is_check ? ' CHECKED' : '' ?>class="form-controle form-controle-checkbox">
+                            <input type="checkbox" name="grupos[]" id="chk-grupo-usuario-<?php echo $grupo_usuario->getId() ?>" value="<?php echo $grupo_usuario->getId() ?>"<?php echo $is_check ? ' CHECKED' : '' ?> class="form-controle form-controle-checkbox">
                             <label for="chk-grupo-usuario-<?php echo $grupo_usuario->getId() ?>"><?php echo $grupo_usuario->getNome() ?></label>
                         </p>
                     <?php endforeach; ?>

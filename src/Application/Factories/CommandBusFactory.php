@@ -44,6 +44,7 @@ class CommandBusFactory
      * Cria uma função anônima que retorna uma CommandBus para ser utilizada no ServiceProvider.
      * @param ContainerInterface $container
      * @param array $mapping
+     * @return callable
      */
     public static function create(ContainerInterface $container, array $mapping): callable
     {

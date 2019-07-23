@@ -25,7 +25,7 @@
 
 namespace PainelDLX\Testes\Application\UseCases\GruposUsuarios\NovoGrupoUsuario;
 
-use DLX\Infra\EntityManagerX;
+use DLX\Infrastructure\EntityManagerX;
 use Doctrine\ORM\ORMException;
 use Exception;
 use PainelDLX\UseCases\GruposUsuarios\NovoGrupoUsuario\NovoGrupoUsuarioCommand;

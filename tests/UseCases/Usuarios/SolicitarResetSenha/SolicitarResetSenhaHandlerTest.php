@@ -8,13 +8,13 @@
 
 namespace PainelDLX\Testes\Application\UseCases\Usuarios\SolicitarResetSenha;
 
-use DLX\Infra\EntityManagerX;
+use DLX\Infrastructure\EntityManagerX;
 use Doctrine\ORM\ORMException;
 use PainelDLX\UseCases\Usuarios\SolicitarResetSenha\SolicitarResetSenhaCommand;
 use PainelDLX\UseCases\Usuarios\SolicitarResetSenha\SolicitarResetSenhaCommandHandler;
 use PainelDLX\Domain\Usuarios\Entities\ResetSenha;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
-use PainelDLX\Domain\Usuarios\Exceptions\UsuarioNaoEncontrado;
+use PainelDLX\Domain\Usuarios\Exceptions\UsuarioNaoEncontradoException;
 use PainelDLX\Domain\Usuarios\Repositories\ResetSenhaRepositoryInterface;
 use PainelDLX\Domain\Usuarios\Repositories\UsuarioRepositoryInterface;
 use PainelDLX\Testes\TestCase\PainelDLXTestCase;
@@ -23,7 +23,7 @@ class SolicitarResetSenhaHandlerTest extends PainelDLXTestCase
 {
     /**
      * @throws ORMException
-     * @throws UsuarioNaoEncontrado
+     * @throws UsuarioNaoEncontradoException
      */
     public function test_Handle(): ResetSenha
     {
@@ -55,7 +55,7 @@ class SolicitarResetSenhaHandlerTest extends PainelDLXTestCase
     /**
      * @return void
      * @throws ORMException
-     * @throws UsuarioNaoEncontrado
+     * @throws UsuarioNaoEncontradoException
      */
     public function test_Handle_nao_deve_criar_novo_ResetSenha_caso_exista_um_ativo(): void
     {

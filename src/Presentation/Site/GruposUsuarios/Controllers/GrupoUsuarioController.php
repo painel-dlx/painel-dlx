@@ -29,6 +29,7 @@ namespace PainelDLX\Presentation\Site\GruposUsuarios\Controllers;
 use DLX\Core\Configure;
 use DLX\Core\Exceptions\UserException;
 use Exception;
+use PainelDLX\Domain\GruposUsuarios\Exceptions\GrupoUsuarioNaoEncontradoException;
 use PainelDLX\UseCases\GruposUsuarios\EditarGrupoUsuario\EditarGrupoUsuarioCommand;
 use PainelDLX\UseCases\GruposUsuarios\EditarGrupoUsuario\EditarGrupoUsuarioCommandHandler;
 use PainelDLX\UseCases\GruposUsuarios\ExcluirGrupoUsuario\ExcluirGrupoUsuarioCommand;
@@ -243,12 +244,16 @@ class GrupoUsuarioController extends PainelDLXController
         extract($request->getParsedBody());
 
         try {
+            /** @var GrupoUsuario $grupo_usuario */
+            /* @see GetGrupoUsuarioPorIdCommandHandler */
+            $grupo_usuario = $this->command_bus->handle(new GetGrupoUsuarioPorIdCommand($grupo_usuario_id));
+
             /* @see ExcluirGrupoUsuarioCommandHandler */
-            $this->command_bus->handle(new ExcluirGrupoUsuarioCommand($grupo_usuario_id));
+            $this->command_bus->handle(new ExcluirGrupoUsuarioCommand($grupo_usuario));
 
             $msg['retorno'] = 'sucesso';
             $msg['mensagem'] = 'Grupo de usuário excluído com sucesso!';
-        } catch (Exception $e) {
+        } catch (GrupoUsuarioNaoEncontradoException | Exception $e) {
             $msg['retorno'] = 'erro';
             $msg['mensagem'] = $e->getMessage();
         }

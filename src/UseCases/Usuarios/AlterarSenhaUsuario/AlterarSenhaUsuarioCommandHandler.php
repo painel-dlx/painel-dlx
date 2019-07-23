@@ -27,42 +27,57 @@ namespace PainelDLX\UseCases\Usuarios\AlterarSenhaUsuario;
 
 
 use Exception;
+use PainelDLX\Domain\Usuarios\Entities\Usuario;
+use PainelDLX\Domain\Usuarios\Exceptions\UsuarioInvalidoException;
 use PainelDLX\Domain\Usuarios\Repositories\UsuarioRepositoryInterface;
-use PainelDLX\Domain\Usuarios\Services\VerificaSenhasIguais;
+use PainelDLX\Domain\Usuarios\Validators\ValidarSenhas;
 use PainelDLX\UseCases\Usuarios\AlterarSenhaUsuario\AlterarSenhaUsuarioCommand;
 
+/**
+ * Class AlterarSenhaUsuarioCommandHandler
+ * @package PainelDLX\UseCases\Usuarios\AlterarSenhaUsuario
+ * @covers AlterarSenhaUsuarioCommandHandlerTest
+ */
 class AlterarSenhaUsuarioCommandHandler
 {
-    /** @var UsuarioRepositoryInterface */
+    /**
+     * @var UsuarioRepositoryInterface
+     */
     private $usuario_repository;
+    /**
+     * @var ValidarSenhas
+     */
+    private $validator;
 
     /**
      * AlterarSenhaUsuarioCommandHandler constructor.
      * @param UsuarioRepositoryInterface $usuario_repository
+     * @param ValidarSenhas $validator
      */
-    public function __construct(UsuarioRepositoryInterface $usuario_repository)
-    {
+    public function __construct(
+        UsuarioRepositoryInterface $usuario_repository,
+        ValidarSenhas $validator
+    ) {
         $this->usuario_repository = $usuario_repository;
+        $this->validator = $validator;
     }
 
     /**
      * @param AlterarSenhaUsuarioCommand $command
-     * @throws Exception
+     * @return Usuario
+     * @throws UsuarioInvalidoException
      */
-    public function handle(AlterarSenhaUsuarioCommand $command)
+    public function handle(AlterarSenhaUsuarioCommand $command): Usuario
     {
-        try {
-            $usuario = $command->getUsuario();
-            $senha = $command->getSenhaUsuario();
-            $is_reset = $command->isReset();
+        $usuario = $command->getUsuario();
+        $senha = $command->getSenhaUsuario();
 
-            // Verificar se as senhas coincidem
-            (new VerificaSenhasIguais($usuario, $senha, $is_reset))->executar();
+        // Verificar se as senhas coincidem
+        $this->validator->validar($usuario, $senha);
 
-            $usuario->setSenha($senha->getSenhaInformada());
-            $this->usuario_repository->update($usuario);
-        } catch (Exception $e) {
-            throw $e;
-        }
+        $usuario->setSenha($senha->getSenhaInformada());
+        $this->usuario_repository->update($usuario);
+
+        return $usuario;
     }
 }

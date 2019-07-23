@@ -12,7 +12,7 @@ use DLX\Core\CommandBus\CommandBusAdapter;
 use DLX\Core\Configure;
 use DLX\Core\Exceptions\ArquivoConfiguracaoNaoEncontradoException;
 use DLX\Core\Exceptions\ArquivoConfiguracaoNaoInformadoException;
-use DLX\Infra\EntityManagerX;
+use DLX\Infrastructure\EntityManagerX;
 use Doctrine\ORM\ORMException;
 use League\Tactician\Container\ContainerLocator;
 use League\Tactician\Handler\CommandHandlerMiddleware;

@@ -32,7 +32,12 @@ use PainelDLX\Tests\TestCase\PainelDLXTestCase;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 
-class EnviarEmailTestCase extends PainelDLXTestCase
+/**
+ * Class EnviarEmailTestCase
+ * @package PainelDLX\Testes\Application\Services
+ * @covers \PainelDLX\Application\Services\EnviarEmail
+ */
+class EnviarEmailTest extends PainelDLXTestCase
 {
     /** @var EnviarEmail */
     private $enviar_email;

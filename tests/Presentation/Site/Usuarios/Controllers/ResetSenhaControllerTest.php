@@ -10,15 +10,15 @@ namespace PainelDLX\Testes\Presentation\Site\Usuarios\Controllers;
 
 use DLX\Core\CommandBus\CommandBusAdapter;
 use DLX\Core\Configure;
-use DLX\Infra\EntityManagerX;
-use DLX\Infra\ORM\Doctrine\Services\DoctrineTransaction;
+use DLX\Infrastructure\EntityManagerX;
+use DLX\Infrastructure\ORM\Doctrine\Services\DoctrineTransaction;
 use Doctrine\ORM\ORMException;
 use League\Tactician\Container\ContainerLocator;
 use League\Tactician\Handler\CommandHandlerMiddleware;
 use League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor;
 use League\Tactician\Handler\MethodNameInflector\HandleInflector;
 use PainelDLX\Application\Factories\CommandBusFactory;
-use PainelDLX\Domain\Usuarios\Exceptions\UsuarioNaoEncontrado;
+use PainelDLX\Domain\Usuarios\Exceptions\UsuarioNaoEncontradoException;
 use PainelDLX\Presentation\Site\Usuarios\Controllers\ResetSenhaController;
 use PainelDLX\Testes\Application\UseCases\Usuarios\SolicitarResetSenha\SolicitarResetSenhaHandlerTest;
 use PainelDLX\Testes\TestCase\PainelDLXTestCase;
@@ -120,7 +120,7 @@ class ResetSenhaControllerTest extends PainelDLXTestCase
      * @throws ContextoInvalidoException
      * @throws ORMException
      * @throws PaginaMestraNaoEncontradaException
-     * @throws UsuarioNaoEncontrado
+     * @throws UsuarioNaoEncontradoException
      * @throws ViewNaoEncontradaException
      * @covers ::formResetSenha
      * @depends test__construct
@@ -143,7 +143,7 @@ class ResetSenhaControllerTest extends PainelDLXTestCase
     /**
      * @param ResetSenhaController $controller
      * @throws ORMException
-     * @throws UsuarioNaoEncontrado
+     * @throws UsuarioNaoEncontradoException
      * @covers ::resetarSenha
      * @depends test__construct
      */

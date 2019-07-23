@@ -36,10 +36,18 @@ class GetListaUsuariosCommandHandler
 
     /**
      * @param GetListaUsuariosCommand $command
+     * @return array|null
      */
     public function handle(GetListaUsuariosCommand $command): ?array
     {
-        $lista = $this->usuario_repository->findByLike($command->getCriteria(), $command->getOrderBy(), $command->getLimit(), $command->getOffset());
-        return array_filter($lista, function (Usuario $usuario) { return !$usuario->isDeletado(); });
+        $criteria = $command->getCriteria();
+        $criteria['and'] = ['deletado' => false];
+
+        return $this->usuario_repository->findByLike(
+            $criteria,
+            $command->getOrderBy(),
+            $command->getLimit(),
+            $command->getOffset()
+        );
     }
 }

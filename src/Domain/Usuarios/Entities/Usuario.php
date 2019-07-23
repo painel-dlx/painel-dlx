@@ -148,13 +148,19 @@ class Usuario extends Entity
      * Usuario constructor.
      * @param string $nome
      * @param string $email
-     * @param GrupoUsuario $grupo_usuario
+     * @param GrupoUsuario[] $grupos_usuarios
+     * @throws UsuarioJaPossuiGrupoException
      */
-    public function __construct(string $nome, string $email)
+    public function __construct(string $nome, string $email, GrupoUsuario ... $grupos_usuarios)
     {
         $this->grupos = new ArrayCollection();
         $this->setNome($nome);
         $this->setEmail($email);
+
+        /** @var GrupoUsuario $grupo_usuario */
+        foreach ($grupos_usuarios as $grupo_usuario) {
+            $this->addGrupo($grupo_usuario);
+        }
     }
 
     /**
@@ -163,6 +169,7 @@ class Usuario extends Entity
      * @param GrupoUsuario ...$grupo_usuario
      * @return Usuario
      * @throws UsuarioJaPossuiGrupoException
+     * @deprecated
      */
     public static function create(string $nome, string $email, GrupoUsuario ...$grupo_usuario): Usuario
     {

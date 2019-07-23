@@ -8,14 +8,19 @@
 
 namespace PainelDLX\Testes\Application\UseCases\Usuarios\GetListaUsuarios;
 
-use DLX\Infra\EntityManagerX;
+use DLX\Infrastructure\EntityManagerX;
 use Doctrine\Common\Collections\ArrayCollection;
+use PainelDLX\Tests\TestCase\PainelDLXTestCase;
 use PainelDLX\UseCases\Usuarios\GetListaUsuarios\GetListaUsuariosCommand;
 use PainelDLX\UseCases\Usuarios\GetListaUsuarios\GetListaUsuariosCommandHandler;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
 use PainelDLX\Domain\Usuarios\Repositories\UsuarioRepositoryInterface;
-use PainelDLX\Testes\TestCase\PainelDLXTestCase;
 
+/**
+ * Class GetListaUsuariosHandlerTest
+ * @package PainelDLX\Testes\Application\UseCases\Usuarios\GetListaUsuarios
+ * @coversDefaultClass \PainelDLX\UseCases\Usuarios\GetListaUsuarios\GetListaUsuariosCommandHandler
+ */
 class GetListaUsuariosHandlerTest extends PainelDLXTestCase
 {
     /** @var UsuarioRepositoryInterface */
@@ -31,6 +36,9 @@ class GetListaUsuariosHandlerTest extends PainelDLXTestCase
         $this->handler = new GetListaUsuariosCommandHandler($this->usuario_repository);
     }
 
+    /**
+     * @covers ::handle
+     */
     public function test_Handle_sem_criteria()
     {
         $command = new GetListaUsuariosCommand();
@@ -47,9 +55,12 @@ class GetListaUsuariosHandlerTest extends PainelDLXTestCase
         }));
     }
 
+    /**
+     * @covers ::handle
+     */
     public function test_Handle_com_criteria()
     {
-        $criteria = ['nome' => 'Novo Usuário'];
+        $criteria = ['nome' => 'Usuário'];
 
         $command = new GetListaUsuariosCommand($criteria);
         $lista_usuarios_command = $this->handler->handle($command);

@@ -25,13 +25,13 @@
 
 namespace PainelDLX\Testes\Application\UseCases\Usuarios\GetResetSenhaPorHash;
 
-use DLX\Infra\EntityManagerX;
+use DLX\Infrastructure\EntityManagerX;
 use Doctrine\ORM\ORMException;
 use PainelDLX\UseCases\Emails\GetConfigSmtpPorId\GetConfigSmtpPorIdCommandHandler;
 use PainelDLX\UseCases\Usuarios\GetResetSenhaPorHash\GetResetSenhaPorHashCommand;
 use PainelDLX\UseCases\Usuarios\GetResetSenhaPorHash\GetResetSenhaPorHashCommandHandler;
 use PainelDLX\Domain\Usuarios\Entities\ResetSenha;
-use PainelDLX\Domain\Usuarios\Exceptions\UsuarioNaoEncontrado;
+use PainelDLX\Domain\Usuarios\Exceptions\UsuarioNaoEncontradoException;
 use PainelDLX\Domain\Usuarios\Repositories\ResetSenhaRepositoryInterface;
 use PainelDLX\Testes\Application\UseCases\Usuarios\SolicitarResetSenha\SolicitarResetSenhaHandlerTest;
 use PainelDLX\Testes\TestCase\PainelDLXTestCase;
@@ -41,7 +41,7 @@ class GetResetSenhaPorHashHandlerTest extends PainelDLXTestCase
 
     /**
      * @throws ORMException
-     * @throws UsuarioNaoEncontrado
+     * @throws UsuarioNaoEncontradoException
      */
     public function test_Handle()
     {

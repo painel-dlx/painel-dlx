@@ -25,54 +25,64 @@
 
 namespace PainelDLX\UseCases\GruposUsuarios\EditarGrupoUsuario;
 
-use Exception;
-use PainelDLX\Application\UseCases\CadastroUsuarios\Exceptions\RegistroEntityNaoEncontradoException;
-use PainelDLX\UseCases\GruposUsuarios\EditarGrupoUsuario\EditarGrupoUsuarioCommand;
 use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
+use PainelDLX\Domain\GruposUsuarios\Exceptions\GrupoUsuarioInvalidoException;
+use PainelDLX\Domain\GruposUsuarios\Exceptions\GrupoUsuarioNaoEncontradoException;
 use PainelDLX\Domain\GruposUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
-use PainelDLX\Domain\GruposUsuarios\Services\VerificaAliasGrupoUsuarioJaExiste;
-use PainelDLX\Domain\Usuarios\Repositories\UsuarioRepositoryInterface;
+use PainelDLX\Domain\GruposUsuarios\Validators\AliasUtilizadoValidator;
 
+/**
+ * Class EditarGrupoUsuarioCommandHandler
+ * @package PainelDLX\UseCases\GruposUsuarios\EditarGrupoUsuario
+ * @covers EditarGrupoUsuarioCommandHandlerTest
+ */
 class EditarGrupoUsuarioCommandHandler
 {
-    /** @var GrupoUsuarioRepositoryInterface */
+    /**
+     * @var GrupoUsuarioRepositoryInterface
+     */
     private $grupo_usuario_repository;
+    /**
+     * @var AliasUtilizadoValidator
+     */
+    private $validator;
 
     /**
      * NovoUsuarioCommandHandler constructor.
-     * @param UsuarioRepositoryInterface $usuario_repository
      * @param GrupoUsuarioRepositoryInterface $grupo_usuario_repository
+     * @param AliasUtilizadoValidator $validator
      */
     public function __construct(
-        GrupoUsuarioRepositoryInterface $grupo_usuario_repository
+        GrupoUsuarioRepositoryInterface $grupo_usuario_repository,
+        AliasUtilizadoValidator $validator
     ) {
         $this->grupo_usuario_repository = $grupo_usuario_repository;
+        $this->validator = $validator;
     }
 
     /**
      * @param EditarGrupoUsuarioCommand $command
-     * @throws Exception
+     * @return GrupoUsuario
+     * @throws GrupoUsuarioNaoEncontradoException
+     * @throws GrupoUsuarioInvalidoException
      */
     public function handle(EditarGrupoUsuarioCommand $command)
     {
-        try {
-            /** @var GrupoUsuario $grupo_usuario */
-            $grupo_usuario = $this->grupo_usuario_repository->find($command->getGrupoUsuarioId());
+        $grupo_usuario_id = $command->getId();
 
-            if (!$grupo_usuario instanceof GrupoUsuario) {
-                throw new RegistroEntityNaoEncontradoException('Grupo de Usuário');
-            }
+        /** @var GrupoUsuario|null $grupo_usuario */
+        $grupo_usuario = $this->grupo_usuario_repository->find($grupo_usuario_id);
 
-            $grupo_usuario->setNome($command->getNome());
-
-            // Verificar se o alias gerado não está sendo utilizado
-            (new VerificaAliasGrupoUsuarioJaExiste($this->grupo_usuario_repository, $grupo_usuario));
-
-            $this->grupo_usuario_repository->update($grupo_usuario);
-
-            return $grupo_usuario;
-        } catch (Exception $e) {
-            throw $e;
+        if (is_null($grupo_usuario)) {
+            throw GrupoUsuarioNaoEncontradoException::porId($grupo_usuario_id);
         }
+
+        $grupo_usuario->setNome($command->getNome());
+
+        // Verificar se o alias gerado não está sendo utilizado
+        $this->validator->validar($grupo_usuario);
+        $this->grupo_usuario_repository->update($grupo_usuario);
+
+        return $grupo_usuario;
     }
 }

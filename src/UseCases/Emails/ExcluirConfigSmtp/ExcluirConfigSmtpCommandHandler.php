@@ -27,7 +27,6 @@ namespace PainelDLX\UseCases\Emails\ExcluirConfigSmtp;
 
 
 use PainelDLX\Domain\Emails\Repositories\ConfigSmtpRepositoryInterface;
-use PainelDLX\UseCases\Emails\ExcluirConfigSmtp\ExcluirConfigSmtpCommand;
 
 class ExcluirConfigSmtpCommandHandler
 {

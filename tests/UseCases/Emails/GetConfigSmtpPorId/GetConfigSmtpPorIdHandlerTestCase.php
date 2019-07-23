@@ -25,7 +25,7 @@
 
 namespace PainelDLX\Testes\Application\UseCases\Emails\GetConfigSmtpPorId;
 
-use DLX\Infra\EntityManagerX;
+use DLX\Infrastructure\EntityManagerX;
 use Doctrine\ORM\ORMException;
 use PainelDLX\UseCases\Emails\GetConfigSmtpPorId\GetConfigSmtpPorIdCommand;
 use PainelDLX\UseCases\Emails\GetConfigSmtpPorId\GetConfigSmtpPorIdCommandHandler;
@@ -33,7 +33,7 @@ use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
 use PainelDLX\Domain\Emails\Exceptions\AutentContaNaoInformadaException;
 use PainelDLX\Domain\Emails\Exceptions\AutentSenhaNaoInformadaException;
 use PainelDLX\Domain\Emails\Repositories\ConfigSmtpRepositoryInterface;
-use PainelDLX\Testes\Application\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpHandlerTestCase;
+use PainelDLX\Testes\Application\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpHandlerTest;
 use PainelDLX\Testes\TestCase\PainelDLXTestCase;
 
 class GetConfigSmtpPorIdHandlerTestCase extends PainelDLXTestCase
@@ -57,7 +57,7 @@ class GetConfigSmtpPorIdHandlerTestCase extends PainelDLXTestCase
      */
     public function test_Handle()
     {
-        $config_smtp = (new NovaConfigSmtpHandlerTestCase())->test_Handle();
+        $config_smtp = (new NovaConfigSmtpHandlerTest())->test_Handle();
         $command = new GetConfigSmtpPorIdCommand($config_smtp->getId());
 
         $config_smtp2 = $this->handler->handle($command);

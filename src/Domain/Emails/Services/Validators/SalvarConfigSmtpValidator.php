@@ -27,9 +27,7 @@ namespace PainelDLX\Domain\Emails\Services\Validators;
 
 
 use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
-use PainelDLX\Domain\Emails\Exceptions\AutentContaNaoInformadaException;
-use PainelDLX\Domain\Emails\Exceptions\AutentSenhaNaoInformadaException;
-use PainelDLX\Domain\Emails\Exceptions\NomeSmtpRepetidoException;
+use PainelDLX\Domain\Emails\Exceptions\ConfigSmtpInvalidoException;
 use PainelDLX\Domain\Emails\Repositories\ConfigSmtpRepositoryInterface;
 
 /**
@@ -40,49 +38,43 @@ use PainelDLX\Domain\Emails\Repositories\ConfigSmtpRepositoryInterface;
 class SalvarConfigSmtpValidator
 {
     /**
-     * @var ConfigSmtp
-     */
-    private $config_smtp;
-    /**
      * @var ConfigSmtpRepositoryInterface
      */
     private $confg_smtp_repository;
 
     /**
      * SalvarConfigSmtpValidator constructor.
-     * @param ConfigSmtp $config_smtp
      * @param ConfigSmtpRepositoryInterface $confg_smtp_repository
      */
-    public function __construct(ConfigSmtp $config_smtp, ConfigSmtpRepositoryInterface $confg_smtp_repository)
+    public function __construct(ConfigSmtpRepositoryInterface $confg_smtp_repository)
     {
-        $this->config_smtp = $config_smtp;
         $this->confg_smtp_repository = $confg_smtp_repository;
     }
 
     /**
      * Validar as informações passadas antes de salvar essa configuração SMTP
      *
+     * @param ConfigSmtp $config_smtp
      * @return bool
-     * @throws AutentContaNaoInformadaException
-     * @throws AutentSenhaNaoInformadaException
-     * @throws NomeSmtpRepetidoException
+     * @throws ConfigSmtpInvalidoException
      */
-    public function validar(): bool
+    public function validar(ConfigSmtp $config_smtp): bool
     {
-        $this->verificarNomeRepetido();
-        $this->validarAutenticacao();
+        $this->verificarNomeRepetido($config_smtp);
+        $this->validarAutenticacao($config_smtp);
 
         return true;
     }
 
     /**
+     * @param ConfigSmtp $config_smtp
      * @return bool
-     * @throws NomeSmtpRepetidoException
+     * @throws ConfigSmtpInvalidoException
      */
-    private function verificarNomeRepetido(): bool
+    private function verificarNomeRepetido(ConfigSmtp $config_smtp): bool
     {
-        if ($this->confg_smtp_repository->existsOutroSmtpMesmoNome($this->config_smtp)) {
-            throw new NomeSmtpRepetidoException($this->config_smtp->getNome());
+        if ($this->confg_smtp_repository->existsOutroSmtpMesmoNome($config_smtp)) {
+            throw ConfigSmtpInvalidoException::nomeJaEstaSendoUtilizado($config_smtp->getNome());
         }
 
         return true;
@@ -91,19 +83,19 @@ class SalvarConfigSmtpValidator
     /**
      * Se a flag Requer Autenticação estiver ativada, verificar se a conta e a senha para autenticação
      * foram informados.
+     * @param ConfigSmtp $config_smtp
      * @return bool
-     * @throws AutentContaNaoInformadaException
-     * @throws AutentSenhaNaoInformadaException
+     * @throws ConfigSmtpInvalidoException
      */
-    private function validarAutenticacao(): bool
+    private function validarAutenticacao(ConfigSmtp $config_smtp): bool
     {
-        if ($this->config_smtp->isRequerAutent()) {
-            if (empty($this->config_smtp->getConta())) {
-                throw new AutentContaNaoInformadaException();
+        if ($config_smtp->isRequerAutent()) {
+            if (empty($config_smtp->getConta())) {
+                throw ConfigSmtpInvalidoException::contaAutenticacaoNaoInformado();
             }
 
-            if (empty($this->config_smtp->getSenha())) {
-                throw new AutentSenhaNaoInformadaException();
+            if (empty($config_smtp->getSenha())) {
+                throw ConfigSmtpInvalidoException::senhaAutenticacaoNaoInformada();
             }
         }
 

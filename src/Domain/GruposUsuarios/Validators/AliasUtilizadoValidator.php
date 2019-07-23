@@ -23,43 +23,41 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Domain\GruposUsuarios\Services;
+namespace PainelDLX\Domain\GruposUsuarios\Validators;
 
-
-use DLX\Contracts\ServiceInterface;
 use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
-use PainelDLX\Domain\GruposUsuarios\Exceptions\AliasGrupoUsuarioJaUtilizadoException;
+use PainelDLX\Domain\GruposUsuarios\Exceptions\GrupoUsuarioInvalidoException;
 use PainelDLX\Domain\GruposUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
 
-class VerificaAliasGrupoUsuarioJaExiste implements ServiceInterface
+/**
+ * Class AliasUtilizadoValidator
+ * @package PainelDLX\Domain\GruposUsuarios\Validators
+ * @covers AliasUtilizadoValidatorTest
+ */
+class AliasUtilizadoValidator
 {
     /** @var GrupoUsuarioRepositoryInterface */
     private $grupo_usuario_repository;
-    /** @var GrupoUsuario */
-    private $grupo_usuario;
 
     /**
      * VerificaAliasGrupoUsuarioJaExiste constructor.
      * @param GrupoUsuarioRepositoryInterface $grupo_usuario_repository
-     * @param GrupoUsuario $grupo_usuario
      */
-    public function __construct(
-        GrupoUsuarioRepositoryInterface $grupo_usuario_repository,
-        GrupoUsuario $grupo_usuario
-    ) {
+    public function __construct(GrupoUsuarioRepositoryInterface $grupo_usuario_repository)
+    {
         $this->grupo_usuario_repository = $grupo_usuario_repository;
-        $this->grupo_usuario = $grupo_usuario;
     }
 
     /**
      * Executar o serviço.
+     * @param GrupoUsuario $grupo_usuario
      * @return mixed
-     * @throws AliasGrupoUsuarioJaUtilizadoException
+     * @throws GrupoUsuarioInvalidoException
      */
-    public function executar()
+    public function validar(GrupoUsuario $grupo_usuario): bool
     {
-        if ($this->grupo_usuario_repository->existsOutroGrupoComMesmoAlias($this->grupo_usuario)) {
-            throw new AliasGrupoUsuarioJaUtilizadoException($this->grupo_usuario->getAlias());
+        if ($this->grupo_usuario_repository->existsOutroGrupoComMesmoAlias($grupo_usuario)) {
+            throw GrupoUsuarioInvalidoException::aliasUtilizadoOutroGrupo($grupo_usuario->getAlias());
         }
 
         return true;

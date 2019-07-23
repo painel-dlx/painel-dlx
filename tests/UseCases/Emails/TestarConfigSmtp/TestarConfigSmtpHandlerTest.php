@@ -10,7 +10,7 @@ namespace PainelDLX\Testes\Application\UseCases\Emails\TestarConfigSmtp;
 
 use PainelDLX\Application\Services\Exceptions\ErroAoEnviarEmailException;
 use PainelDLX\UseCases\Emails\TestarConfigSmtp\TestarConfigSmtpCommand;
-use PainelDLX\UseCases\Emails\TestarConfigSmtp\TestarConfigSmtpHandler;
+use PainelDLX\UseCases\Emails\TestarConfigSmtp\TestarConfigSmtpCommandHandler;
 use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
@@ -35,6 +35,6 @@ class TestarConfigSmtpHandlerTest extends TestCase
             ->setCorpoHtml(true);
         
         $command = new TestarConfigSmtpCommand($config_smtp, 'dlepera88@gmail.com');
-        (new TestarConfigSmtpHandler(new PHPMailer()))->handle($command);
+        (new TestarConfigSmtpCommandHandler(new PHPMailer()))->handle($command);
     }
 }

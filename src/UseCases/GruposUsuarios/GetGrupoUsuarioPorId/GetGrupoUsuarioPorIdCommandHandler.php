@@ -27,9 +27,14 @@ namespace PainelDLX\UseCases\GruposUsuarios\GetGrupoUsuarioPorId;
 
 
 use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
+use PainelDLX\Domain\GruposUsuarios\Exceptions\GrupoUsuarioNaoEncontradoException;
 use PainelDLX\Domain\GruposUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
-use PainelDLX\UseCases\GruposUsuarios\GetGrupoUsuarioPorId\GetGrupoUsuarioPorIdCommand;
 
+/**
+ * Class GetGrupoUsuarioPorIdCommandHandler
+ * @package PainelDLX\UseCases\GruposUsuarios\GetGrupoUsuarioPorId
+ * @covers GetGrupoUsuarioPorIdCommandHandlerTest
+ */
 class GetGrupoUsuarioPorIdCommandHandler
 {
     /**
@@ -49,9 +54,19 @@ class GetGrupoUsuarioPorIdCommandHandler
     /**
      * @param GetGrupoUsuarioPorIdCommand $command
      * @return GrupoUsuario|null
+     * @throws GrupoUsuarioNaoEncontradoException
      */
     public function handle(GetGrupoUsuarioPorIdCommand $command): ?GrupoUsuario
     {
-        return $this->grupo_usuario_repository->find($command->getGrupoUsuarioId());
+        $grupo_usuario_id = $command->getId();
+
+        /** @var GrupoUsuario|null $grupo_usuario */
+        $grupo_usuario = $this->grupo_usuario_repository->find($grupo_usuario_id);
+
+        if (is_null($grupo_usuario)) {
+            throw GrupoUsuarioNaoEncontradoException::porId($grupo_usuario_id);
+        }
+
+        return $grupo_usuario;
     }
 }

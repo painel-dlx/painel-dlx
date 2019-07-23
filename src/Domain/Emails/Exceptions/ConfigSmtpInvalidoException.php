@@ -23,15 +23,35 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Domain\GruposUsuarios\Exceptions;
+namespace PainelDLX\Domain\Emails\Exceptions;
 
 
-use DLX\Core\Exceptions\UserException;
+use Exception;
 
-class AliasGrupoUsuarioJaUtilizadoException extends UserException
+class ConfigSmtpInvalidoException extends Exception
 {
-    public function __construct(string $alias)
+    /**
+     * @param string $nome
+     * @return ConfigSmtpInvalidoException
+     */
+    public static function nomeJaEstaSendoUtilizado(string $nome)
     {
-        parent::__construct("O alias informado {$alias} já está sendo usado em outro grupo de usuário.");
+        return new self("O nome {$nome} já está sendo usado em outra configuração SMTP.", 10);
+    }
+
+    /**
+     * @return ConfigSmtpInvalidoException
+     */
+    public static function contaAutenticacaoNaoInformado()
+    {
+        return new self('Opa, você esqueceu de informar a conta para autenticar no servidor SMTP.', 11);
+    }
+
+    /**
+     * @return ConfigSmtpInvalidoException
+     */
+    public static function senhaAutenticacaoNaoInformada()
+    {
+        return new self('Hm... faltou informar a senha usada para autenticar sua conta no servidor SMTP.', 12);
     }
 }

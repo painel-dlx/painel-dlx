@@ -17,6 +17,10 @@ class SenhaUsuario
     private $senha_informada;
     /** @var string */
     private $senha_confirm;
+    /**
+     * @var bool
+     */
+    private $reset_senha;
 
     /**
      * @return null|string
@@ -73,15 +77,25 @@ class SenhaUsuario
     }
 
     /**
+     * @return bool
+     */
+    public function isResetSenha(): bool
+    {
+        return $this->reset_senha;
+    }
+
+    /**
      * SenhaUsuario constructor.
      * @param string $senha_informada
      * @param string $senha_confirm
      * @param null|string $senha_atual
+     * @param bool $reset_senha
      */
-    public function __construct(string $senha_informada, string $senha_confirm, ?string $senha_atual = null)
+    public function __construct(string $senha_informada, string $senha_confirm, ?string $senha_atual = null, bool $reset_senha = false)
     {
         $this->setSenhaInformada($senha_informada);
         $this->setSenhaConfirm($senha_confirm);
         $this->setSenhaAtual($senha_atual);
+        $this->reset_senha = $reset_senha;
     }
 }

@@ -23,15 +23,20 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Domain\Emails\Exceptions;
+namespace PainelDLX\Domain\Usuarios\Exceptions;
 
 
-use DLX\Core\Exceptions\UserException;
+use Exception;
 
-class NomeSmtpRepetidoException extends UserException
+class UsuarioNaoEncontradoException extends Exception
 {
-    public function __construct(string $nome)
+    /**
+     * @param $id
+     * @return UsuarioNaoEncontradoException
+     */
+    public static function porId($id): self
     {
-        parent::__construct("Esse nome {$nome} já está sendo usado em outra configuração SMTP.");
+        $valor_id = var_export($id);
+        return new self("Usuário não encontrado com o ID informado: {$valor_id}", 10);
     }
 }

@@ -26,27 +26,9 @@
 namespace PainelDLX\UseCases\GruposUsuarios\GetGrupoUsuarioPorId;
 
 
-class GetGrupoUsuarioPorIdCommand
+use PainelDLX\Application\Contracts\FindByIdCommand;
+
+class GetGrupoUsuarioPorIdCommand extends FindByIdCommand
 {
-    /**
-     * @var int
-     */
-    private $grupo_usuario_id;
 
-    /**
-     * @return int
-     */
-    public function getGrupoUsuarioId(): int
-    {
-        return $this->grupo_usuario_id;
-    }
-
-    /**
-     * GetGrupoUsuarioPorIdCommand constructor.
-     * @param int $grupo_usuario_id
-     */
-    public function __construct(int $grupo_usuario_id)
-    {
-        $this->grupo_usuario_id = $grupo_usuario_id;
-    }
 }

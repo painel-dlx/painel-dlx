@@ -25,7 +25,11 @@
 
 namespace PainelDLX\UseCases\ListaRegistros\ConverterFiltro2Criteria;
 
-
+/**
+ * Class ConverterFiltro2CriteriaCommandHandler
+ * @package PainelDLX\UseCases\ListaRegistros\ConverterFiltro2Criteria
+ * @covers ConverterFiltro2CriteriaCommandHandlerTest
+ */
 class ConverterFiltro2CriteriaCommandHandler
 {
     /**
@@ -36,6 +40,10 @@ class ConverterFiltro2CriteriaCommandHandler
     public function handle(ConverterFiltro2CriteriaCommand $command): array
     {
         $criteria = [];
+
+        if (is_null($command->getCampos())) {
+            return $criteria;
+        }
 
         foreach ($command->getCampos() as $campo) {
             $criteria[$campo] = $command->getBusca();

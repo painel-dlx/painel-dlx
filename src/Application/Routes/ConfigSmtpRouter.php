@@ -63,7 +63,7 @@ class ConfigSmtpRouter extends PainelDLXRouter
         )->middlewares(
             $define_pagina_mestra,
             $verificar_logon,
-            $autorizacao->setPermissoes('VER_CONFIGURACOES_SMTP'),
+            $autorizacao->necessitaPermissoes('VER_CONFIGURACOES_SMTP'),
             $configurar_paginacao
         );
 
@@ -73,7 +73,7 @@ class ConfigSmtpRouter extends PainelDLXRouter
         )->middlewares(
             $define_pagina_mestra,
             $verificar_logon,
-            $autorizacao->setPermissoes('CRIAR_CONFIGURACAO_SMTP')
+            $autorizacao->necessitaPermissoes('CRIAR_CONFIGURACAO_SMTP')
         );
 
         $router->post(
@@ -81,7 +81,7 @@ class ConfigSmtpRouter extends PainelDLXRouter
             [NovaConfigSmtpController::class, 'salvarNovaConfigSmtp']
         )->middlewares(
             $verificar_logon,
-            $autorizacao->setPermissoes('CRIAR_CONFIGURACAO_SMTP')
+            $autorizacao->necessitaPermissoes('CRIAR_CONFIGURACAO_SMTP')
         );
 
         $router->get(
@@ -90,7 +90,7 @@ class ConfigSmtpRouter extends PainelDLXRouter
         )->middlewares(
             $define_pagina_mestra,
             $verificar_logon,
-            $autorizacao->setPermissoes('EDITAR_CONFIGURACAO_SMTP')
+            $autorizacao->necessitaPermissoes('EDITAR_CONFIGURACAO_SMTP')
         );
 
         $router->post(
@@ -98,7 +98,7 @@ class ConfigSmtpRouter extends PainelDLXRouter
             [EditarConfigSmtpController::class, 'editarConfigSmtp']
         )->middlewares(
             $verificar_logon,
-            $autorizacao->setPermissoes('EDITAR_CONFIGURACAO_SMTP')
+            $autorizacao->necessitaPermissoes('EDITAR_CONFIGURACAO_SMTP')
         );
 
         $router->post(
@@ -106,7 +106,7 @@ class ConfigSmtpRouter extends PainelDLXRouter
             [ConfigSmtpController::class, 'excluirConfigSmtp']
         )->middlewares(
             $verificar_logon,
-            $autorizacao->setPermissoes('EXCLUIR_CONFIGURACAO_SMTP')
+            $autorizacao->necessitaPermissoes('EXCLUIR_CONFIGURACAO_SMTP')
         );
 
         $router->get(
@@ -115,7 +115,7 @@ class ConfigSmtpRouter extends PainelDLXRouter
         )->middlewares(
             $define_pagina_mestra,
             $verificar_logon,
-            $autorizacao->setPermissoes('VER_CONFIGURACOES_SMTP')
+            $autorizacao->necessitaPermissoes('VER_CONFIGURACOES_SMTP')
         );
 
         // TODO: Teste de email é GET ou POST?
@@ -124,7 +124,7 @@ class ConfigSmtpRouter extends PainelDLXRouter
             [ConfigSmtpController::class, 'testarConfigSmtp']
         )->middlewares(
             $verificar_logon,
-            $autorizacao->setPermissoes('VER_CONFIGURACOES_SMTP')
+            $autorizacao->necessitaPermissoes('VER_CONFIGURACOES_SMTP')
         );
 
         $router->post(
@@ -132,7 +132,7 @@ class ConfigSmtpRouter extends PainelDLXRouter
             [ConfigSmtpController::class, 'testarConfigSmtp']
         )->middlewares(
             $verificar_logon,
-            $autorizacao->setPermissoes('VER_CONFIGURACOES_SMTP')
+            $autorizacao->necessitaPermissoes('VER_CONFIGURACOES_SMTP')
         );
     }
 }

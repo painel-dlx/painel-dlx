@@ -64,6 +64,7 @@ class PainelDLXTest extends TestCase
     /**
      * @covers ::getInstance
      * @depends test__construct
+     * @param PainelDLX $painel_dlx
      */
     public function test_GetInstance_deve_retornar_intancia_atual_PainelDLX(PainelDLX $painel_dlx)
     {

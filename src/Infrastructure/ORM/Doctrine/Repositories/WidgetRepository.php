@@ -9,7 +9,7 @@
 namespace PainelDLX\Infrastructure\ORM\Doctrine\Repositories;
 
 
-use DLX\Infra\ORM\Doctrine\Repositories\EntityRepository;
+use DLX\Infrastructure\ORM\Doctrine\Repositories\EntityRepository;
 use PainelDLX\Domain\Home\Repositories\WidgetRepositoryInterface;
 
 class WidgetRepository extends EntityRepository implements WidgetRepositoryInterface

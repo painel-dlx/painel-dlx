@@ -25,7 +25,7 @@
 
 namespace PainelDLX\Testes\Application\UseCases\Emails\GetListaConfigSmtp;
 
-use DLX\Infra\EntityManagerX;
+use DLX\Infrastructure\EntityManagerX;
 use Doctrine\Common\Collections\ArrayCollection;
 use PainelDLX\UseCases\Emails\GetListaConfigSmtp\GetListaConfigSmtpCommand;
 use PainelDLX\UseCases\Emails\GetListaConfigSmtp\GetListaConfigSmtpCommandHandler;

@@ -27,18 +27,13 @@ namespace PainelDLX\Application\ServiceProviders;
 
 
 use DLX\Contracts\TransactionInterface;
-use DLX\Core\CommandBus\CommandBusAdapter;
 use DLX\Core\Configure;
-use DLX\Infra\EntityManagerX;
-use DLX\Infra\ORM\Doctrine\Services\DoctrineTransaction;
+use DLX\Infrastructure\EntityManagerX;
+use DLX\Infrastructure\ORM\Doctrine\Services\DoctrineTransaction;
 use Doctrine\ORM\ORMException;
 use League\Container\Container;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 use League\Tactician\CommandBus;
-use League\Tactician\Container\ContainerLocator;
-use League\Tactician\Handler\CommandHandlerMiddleware;
-use League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor;
-use League\Tactician\Handler\MethodNameInflector\HandleInflector;
 use PainelDLX\Application\Factories\CommandBusFactory;
 use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
 use PainelDLX\Domain\Emails\Repositories\ConfigSmtpRepositoryInterface;
@@ -66,7 +61,6 @@ class PainelDLXServiceProvider extends AbstractServiceProvider
     protected $provides = [
         GrupoUsuarioRepositoryInterface::class,
         CommandBus::class,
-        VileX::class,
         UsuarioRepositoryInterface::class,
         PermissaoUsuarioRepositoryInterface::class,
         SessionInterface::class,
@@ -83,9 +77,9 @@ class PainelDLXServiceProvider extends AbstractServiceProvider
      * from the ContainerAwareTrait.
      *
      * @return void
-     * @throws ORMException
      * @throws SessionAdapterInterfaceInvalidaException
      * @throws SessionAdapterNaoEncontradoException
+     * @throws ORMException
      */
     public function register()
     {
@@ -100,11 +94,6 @@ class PainelDLXServiceProvider extends AbstractServiceProvider
         $container->add(
             CommandBus::class,
             CommandBusFactory::create($container, Configure::get('app', 'mapping'))
-        );
-
-        $container->add(
-            VileX::class,
-            new VileX
         );
 
         $container->add(

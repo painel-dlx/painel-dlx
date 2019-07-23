@@ -29,41 +29,46 @@ namespace PainelDLX\UseCases\GruposUsuarios\NovoGrupoUsuario;
 use Exception;
 use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
 use PainelDLX\Domain\GruposUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
-use PainelDLX\Domain\GruposUsuarios\Services\VerificaAliasGrupoUsuarioJaExiste;
-use PainelDLX\UseCases\GruposUsuarios\NovoGrupoUsuario\NovoGrupoUsuarioCommand;
+use PainelDLX\Domain\GruposUsuarios\Validators\AliasUtilizadoValidator;
 
 class NovoGrupoUsuarioCommandHandler
 {
-    /** @var GrupoUsuarioRepositoryInterface */
+    /**
+     * @var GrupoUsuarioRepositoryInterface
+     */
     private $grupo_usuario_repository;
+    /**
+     * @var AliasUtilizadoValidator
+     */
+    private $validator;
 
     /**
      * NovoUsuarioCommandHandler constructor.
      * @param GrupoUsuarioRepositoryInterface $grupo_usuario_repository
+     * @param AliasUtilizadoValidator $validator
      */
     public function __construct(
-        GrupoUsuarioRepositoryInterface $grupo_usuario_repository
+        GrupoUsuarioRepositoryInterface $grupo_usuario_repository,
+        AliasUtilizadoValidator $validator
     ) {
         $this->grupo_usuario_repository = $grupo_usuario_repository;
+        $this->validator = $validator;
     }
 
     /**
      * @param NovoGrupoUsuarioCommand $command
+     * @return GrupoUsuario
      * @throws Exception
      */
     public function handle(NovoGrupoUsuarioCommand $command)
     {
-        try {
-            $grupo_usuario = GrupoUsuario::create($command->getNome());
+        $grupo_usuario = GrupoUsuario::create($command->getNome());
 
-            // Verificar se o alias gerado não está sendo utilizado
-            (new VerificaAliasGrupoUsuarioJaExiste($this->grupo_usuario_repository, $grupo_usuario));
+        // Verificar se o alias gerado não está sendo utilizado
+        $this->validator->validar($grupo_usuario);
 
-            $this->grupo_usuario_repository->create($grupo_usuario);
+        $this->grupo_usuario_repository->create($grupo_usuario);
 
-            return $grupo_usuario;
-        } catch (Exception $e) {
-            throw $e;
-        }
+        return $grupo_usuario;
     }
 }

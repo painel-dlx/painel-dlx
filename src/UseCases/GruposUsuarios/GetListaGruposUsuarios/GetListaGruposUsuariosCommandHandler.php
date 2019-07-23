@@ -25,10 +25,7 @@
 
 namespace PainelDLX\UseCases\GruposUsuarios\GetListaGruposUsuarios;
 
-
-use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
 use PainelDLX\Domain\GruposUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
-use PainelDLX\UseCases\GruposUsuarios\GetListaGruposUsuarios\GetListaGruposUsuariosCommand;
 
 class GetListaGruposUsuariosCommandHandler
 {
@@ -46,9 +43,20 @@ class GetListaGruposUsuariosCommandHandler
         $this->grupo_usuario_repository = $grupo_usuario_repository;
     }
 
+    /**
+     * @param GetListaGruposUsuariosCommand $command
+     * @return array|null
+     */
     public function handle(GetListaGruposUsuariosCommand $command): ?array
     {
-        $lista = $this->grupo_usuario_repository->findByLike($command->getCriteria(), $command->getOrderBy(), $command->getLimit(), $command->getOffset());
-        return array_filter($lista, function (GrupoUsuario $grupo_usuario) { return !$grupo_usuario->isDeletado(); });
+        $criteria = $command->getCriteria();
+        $criteria['and'] = ['deletado' => false];
+
+        return $this->grupo_usuario_repository->findByLike(
+            $criteria,
+            $command->getOrderBy(),
+            $command->getLimit(),
+            $command->getOffset()
+        );
     }
 }

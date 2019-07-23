@@ -30,7 +30,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
 use PainelDLX\Domain\GruposUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
 use PainelDLX\Domain\PermissoesUsuario\Entities\PermissaoUsuario;
-use PainelDLX\UseCases\GruposUsuarios\ConfigurarPermissoes\ConfigurarPermissoesCommand;
 
 class ConfigurarPermissoesCommandHandler
 {
@@ -50,6 +49,7 @@ class ConfigurarPermissoesCommandHandler
 
     /**
      * @param ConfigurarPermissoesCommand $command
+     * @return GrupoUsuario
      */
     public function handle(ConfigurarPermissoesCommand $command): GrupoUsuario
     {
@@ -79,6 +79,10 @@ class ConfigurarPermissoesCommandHandler
         });
     }
 
+    /**
+     * @param GrupoUsuario $grupo_usuario
+     * @param ArrayCollection $permissoes
+     */
     private function excluirPermissoes(GrupoUsuario $grupo_usuario, ArrayCollection $permissoes): void
     {
         $grupo_usuario->getPermissoes()->map(function (PermissaoUsuario $permissao_usuario) use ($permissoes, $grupo_usuario) {

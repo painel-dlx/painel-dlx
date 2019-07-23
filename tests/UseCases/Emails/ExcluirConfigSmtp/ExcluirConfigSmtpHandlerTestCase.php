@@ -27,7 +27,7 @@ namespace PainelDLX\Testes\Application\UseCases\Emails\ExcluirConfigSmtp;
 
 use DLX\Core\Exceptions\ArquivoConfiguracaoNaoEncontradoException;
 use DLX\Core\Exceptions\ArquivoConfiguracaoNaoInformadoException;
-use DLX\Infra\EntityManagerX;
+use DLX\Infrastructure\EntityManagerX;
 use Doctrine\ORM\ORMException;
 use PainelDLX\Application\Services\Exceptions\AmbienteNaoInformadoException;
 use PainelDLX\UseCases\Emails\ExcluirConfigSmtp\ExcluirConfigSmtpCommand;
@@ -36,7 +36,7 @@ use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
 use PainelDLX\Domain\Emails\Exceptions\AutentContaNaoInformadaException;
 use PainelDLX\Domain\Emails\Exceptions\AutentSenhaNaoInformadaException;
 use PainelDLX\Domain\Emails\Repositories\ConfigSmtpRepositoryInterface;
-use PainelDLX\Testes\Application\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpHandlerTestCase;
+use PainelDLX\Testes\Application\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpHandlerTest;
 use PainelDLX\Testes\TestCase\PainelDLXTestCase;
 
 class ExcluirConfigSmtpHandlerTestCase extends PainelDLXTestCase
@@ -66,7 +66,7 @@ class ExcluirConfigSmtpHandlerTestCase extends PainelDLXTestCase
      */
     public function test_Handle()
     {
-        $config_smtp = (new NovaConfigSmtpHandlerTestCase())->test_Handle();
+        $config_smtp = (new NovaConfigSmtpHandlerTest())->test_Handle();
 
         $command = new ExcluirConfigSmtpCommand($config_smtp);
         $this->handler->handle($command);

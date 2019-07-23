@@ -32,14 +32,25 @@ use PainelDLX\Domain\Usuarios\ValueObjects\SenhaUsuario;
 
 class AlterarSenhaUsuarioCommand
 {
-    /** @var Usuario */
-    private $usuario;
-    /** @var SenhaUsuario */
-    private $senha_usuario;
     /**
-     * @var bool
+     * @var Usuario
      */
-    private $reset;
+    private $usuario;
+    /**
+     * @var SenhaUsuario
+     */
+    private $senha_usuario;
+
+    /**
+     * AlterarSenhaUsuarioCommand constructor.
+     * @param Usuario $usuario
+     * @param SenhaUsuario $senha_usuario
+     */
+    public function __construct(Usuario $usuario, SenhaUsuario $senha_usuario)
+    {
+        $this->usuario = $usuario;
+        $this->senha_usuario = $senha_usuario;
+    }
 
     /**
      * @return Usuario
@@ -55,26 +66,5 @@ class AlterarSenhaUsuarioCommand
     public function getSenhaUsuario(): SenhaUsuario
     {
         return $this->senha_usuario;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isReset(): bool
-    {
-        return $this->reset;
-    }
-
-    /**
-     * AlterarSenhaUsuarioCommand constructor.
-     * @param Usuario $usuario
-     * @param SenhaUsuario $senha_usuario
-     * @param bool $reset
-     */
-    public function __construct(Usuario $usuario, SenhaUsuario $senha_usuario, bool $reset = false)
-    {
-        $this->usuario = $usuario;
-        $this->senha_usuario = $senha_usuario;
-        $this->reset = $reset;
     }
 }

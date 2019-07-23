@@ -63,7 +63,7 @@ class UsuariosRouter extends PainelDLXRouter
         )->middlewares(
             $define_pagina_mestra,
             $verificar_logon,
-            $autorizacao->setPermissoes('ACESSAR_CADASTRO_USUARIOS'),
+            $autorizacao->necessitaPermissoes('ACESSAR_CADASTRO_USUARIOS'),
             $configurar_paginacao
         );
 
@@ -73,7 +73,7 @@ class UsuariosRouter extends PainelDLXRouter
         )->middlewares(
             $define_pagina_mestra,
             $verificar_logon,
-            $autorizacao->setPermissoes('CADASTRAR_NOVO_USUARIO')
+            $autorizacao->necessitaPermissoes('CADASTRAR_NOVO_USUARIO')
         );
 
         $router->get(
@@ -82,7 +82,7 @@ class UsuariosRouter extends PainelDLXRouter
         )->middlewares(
             $define_pagina_mestra,
             $verificar_logon,
-            $autorizacao->setPermissoes('EDITAR_CADASTRO_USUARIO')
+            $autorizacao->necessitaPermissoes('EDITAR_CADASTRO_USUARIO')
         );
 
         $router->get(
@@ -91,7 +91,7 @@ class UsuariosRouter extends PainelDLXRouter
         )->middlewares(
             $define_pagina_mestra,
             $verificar_logon,
-            $autorizacao->setPermissoes('ACESSAR_CADASTRO_USUARIOS')
+            $autorizacao->necessitaPermissoes('ACESSAR_CADASTRO_USUARIOS')
         );
 
         $router->post(
@@ -99,7 +99,7 @@ class UsuariosRouter extends PainelDLXRouter
             [CadastroUsuarioController::class, 'cadastrarNovoUsuario']
         )->middlewares(
             $verificar_logon,
-            $autorizacao->setPermissoes('CADASTRAR_NOVO_USUARIO'),
+            $autorizacao->necessitaPermissoes('CADASTRAR_NOVO_USUARIO'),
             new CriptografarSenhas('senha', 'senha_confirm')
         );
 
@@ -108,7 +108,7 @@ class UsuariosRouter extends PainelDLXRouter
             [CadastroUsuarioController::class, 'atualizarUsuarioExistente']
         )->middlewares(
             $verificar_logon,
-            $autorizacao->setPermissoes('EDITAR_CADASTRO_USUARIO')
+            $autorizacao->necessitaPermissoes('EDITAR_CADASTRO_USUARIO')
         );
 
         $router->post(
@@ -116,7 +116,7 @@ class UsuariosRouter extends PainelDLXRouter
             [CadastroUsuarioController::class, 'excluirUsuario']
         )->middlewares(
             $verificar_logon,
-            $autorizacao->setPermissoes('EXCLUIR_CADASTRO_USUARIO')
+            $autorizacao->necessitaPermissoes('EXCLUIR_CADASTRO_USUARIO')
         );
 
         $router->get(
@@ -124,7 +124,7 @@ class UsuariosRouter extends PainelDLXRouter
             [AlterarSenhaUsuarioController::class, 'formAlterarSenha']
         )->middlewares(
             $verificar_logon,
-            $autorizacao->setPermissoes('ALTERAR_SENHA_USUARIO')
+            $autorizacao->necessitaPermissoes('ALTERAR_SENHA_USUARIO')
         );
 
         $router->post(
@@ -132,7 +132,7 @@ class UsuariosRouter extends PainelDLXRouter
             [AlterarSenhaUsuarioController::class, 'alterarSenhaUsuario']
         )->middlewares(
             $verificar_logon,
-            $autorizacao->setPermissoes('ALTERAR_SENHA_USUARIO'),
+            $autorizacao->necessitaPermissoes('ALTERAR_SENHA_USUARIO'),
             new CriptografarSenhas('senha_atual', 'senha_nova', 'senha_confirm')
         );
 

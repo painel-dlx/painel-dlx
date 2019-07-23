@@ -48,12 +48,6 @@ class ExcluirGrupoUsuarioCommandHandler
      */
     public function handle(ExcluirGrupoUsuarioCommand $command)
     {
-        try {
-            /** @var GrupoUsuario $usuario */
-            $grupo_usuario = $this->grupo_usuario_repository->find($command->getGrupoUsuarioId());
-            $this->grupo_usuario_repository->delete($grupo_usuario);
-        } catch (Exception $e) {
-            throw $e;
-        }
+        $this->grupo_usuario_repository->delete($command->getGrupoUsuario());
     }
 }

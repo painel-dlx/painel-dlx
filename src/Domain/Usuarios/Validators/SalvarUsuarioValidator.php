@@ -23,27 +23,46 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Testes\Infra\ORM\Doctrine\Services;
+namespace PainelDLX\Domain\Usuarios\Validators;
+
 
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
-use PainelDLX\Infrastructure\ORM\Doctrine\Services\RepositoryFactory;
-use PainelDLX\Testes\TestCase\PainelDLXTestCase;
+use PainelDLX\Domain\Usuarios\Exceptions\UsuarioInvalidoException;
+use PainelDLX\Domain\Usuarios\Repositories\UsuarioRepositoryInterface;
+use PainelDLX\Domain\Usuarios\ValueObjects\SenhaUsuario;
 
-/**
- * Class RepositoryFactoryTest
- * @package PainelDLX\Testes\Infra\ORM\Doctrine\Services
- * @coversDefaultClass \PainelDLX\Infrastructure\ORM\Doctrine\Services\RepositoryFactory
- */
-class RepositoryFactoryTest extends PainelDLXTestCase
+class SalvarUsuarioValidator
 {
     /**
-     * @covers ::create
+     * @var UsuarioRepositoryInterface
      */
-    public function test_Create_deve_retornar_uma_funcao_anonima()
-    {
-        $entity = Usuario::class;
-        $func = RepositoryFactory::create($entity);
+    private $usuario_repository;
 
-        $this->assertIsCallable($func);
+    /**
+     * SalvarUsuarioValidator constructor.
+     * @param UsuarioRepositoryInterface $usuario_repository
+     */
+    public function __construct(UsuarioRepositoryInterface $usuario_repository)
+    {
+        $this->usuario_repository = $usuario_repository;
+    }
+
+    /**
+     * @param Usuario $usuario
+     * @param SenhaUsuario $senha_usuario
+     * @return bool
+     * @throws UsuarioInvalidoException
+     */
+    public function validar(
+        Usuario $usuario,
+        ?SenhaUsuario $senha_usuario = null
+    ): bool {
+        (new ValidarEmailUsuario($this->usuario_repository))->validar($usuario);
+
+        if (!is_null($senha_usuario)) {
+            (new ValidarSenhas())->validar($usuario, $senha_usuario);
+        }
+
+        return true;
     }
 }

@@ -26,21 +26,29 @@
 namespace PainelDLX\UseCases\GruposUsuarios\ExcluirGrupoUsuario;
 
 
+use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
+
 class ExcluirGrupoUsuarioCommand
 {
-    /** @var int */
-    private $grupo_usuario_id;
+    /**
+     * @var GrupoUsuario
+     */
+    private $grupo_usuario;
 
     /**
-     * @return int
+     * ExcluirGrupoUsuarioCommand constructor.
+     * @param GrupoUsuario $grupo_usuario
      */
-    public function getGrupoUsuarioId(): int
+    public function __construct(GrupoUsuario $grupo_usuario)
     {
-        return $this->grupo_usuario_id;
+        $this->grupo_usuario = $grupo_usuario;
     }
 
-    public function __construct(int $grupo_usuario_id)
+    /**
+     * @return GrupoUsuario
+     */
+    public function getGrupoUsuario(): GrupoUsuario
     {
-        $this->grupo_usuario_id = $grupo_usuario_id;
+        return $this->grupo_usuario;
     }
 }

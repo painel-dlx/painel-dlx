@@ -25,68 +25,51 @@
 
 namespace PainelDLX\Testes\Application\UseCases\Usuarios\NovoUsuario;
 
-use DLX\Infra\EntityManagerX;
-use Doctrine\ORM\ORMException;
-use Exception;
+use PainelDLX\Domain\Usuarios\Exceptions\UsuarioInvalidoException;
+use PainelDLX\Domain\Usuarios\Exceptions\UsuarioJaPossuiGrupoException;
+use PainelDLX\Domain\Usuarios\Repositories\UsuarioRepositoryInterface;
+use PainelDLX\Domain\Usuarios\Validators\SalvarUsuarioValidator;
 use PainelDLX\UseCases\Usuarios\NovoUsuario\NovoUsuarioCommand;
 use PainelDLX\UseCases\Usuarios\NovoUsuario\NovoUsuarioCommandHandler;
-use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
-use PainelDLX\Domain\GruposUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
-use PainelDLX\Domain\Usuarios\Repositories\UsuarioRepositoryInterface;
-use PainelDLX\Testes\TestCase\PainelDLXTestCase;
-use PainelDLX\Testes\TestCase\TesteComTransaction;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class NovoUsuarioCommandHandlerTest
  * @package PainelDLX\Testes\Application\UseCases\Usuarios\NovoUsuario
  * @coversDefaultClass NovoUsuarioCommandHandler
  */
-class NovoUsuarioCommandHandlerTest extends PainelDLXTestCase
+class NovoUsuarioCommandHandlerTest extends TestCase
 {
-    use TesteComTransaction;
-
     /**
-     * @return NovoUsuarioCommandHandler
-     * @throws ORMException
-     */
-    public function test__construct(): NovoUsuarioCommandHandler
-    {
-        /** @var UsuarioRepositoryInterface $usuario_repository */
-        $usuario_repository = EntityManagerX::getRepository(Usuario::class);
-        /** @var GrupoUsuarioRepositoryInterface $grupo_usuario_repository */
-        $grupo_usuario_repository = EntityManagerX::getRepository(GrupoUsuario::class);
-
-        $handler = new NovoUsuarioCommandHandler($usuario_repository, $grupo_usuario_repository);
-
-        $this->assertInstanceOf(NovoUsuarioCommandHandler::class, $handler);
-
-        return $handler;
-    }
-
-    /**
-     * @return Usuario
-     * @throws Exception
+     * @return void
+     * @throws UsuarioInvalidoException
+     * @throws UsuarioJaPossuiGrupoException
      * @covers ::handle
-     * @depends test__construct
      */
-    public function test_Handle_deve_salvar_novo_Usuario(NovoUsuarioCommandHandler $handler): Usuario
+    public function test_Handle_deve_salvar_novo_Usuario()
     {
-        /** @var GrupoUsuarioRepositoryInterface $grupo_usuario_repository */
-        $grupo_usuario_repository = EntityManagerX::getRepository(GrupoUsuario::class);
-        /** @var GrupoUsuario $grupo_usuario */
-        $grupo_usuario = $grupo_usuario_repository->findOneBy(['alias' => 'ADMIN']);
+        $usuario_repository = $this->createMock(UsuarioRepositoryInterface::class);
+        $usuario_repository->method('create')->willReturn(null);
 
+        $validator = $this->createMock(SalvarUsuarioValidator::class);
+        $validator->method('validar')->willReturn(true);
+
+        /** @var UsuarioRepositoryInterface $usuario_repository */
+        /** @var SalvarUsuarioValidator $validator */
+
+        $nome = 'Teste Unitário';
+        $email = 'teste@teste.com.br';
         $senha = '123456';
-        $usuario = new Usuario('Teste Unitário', 'teste@teste.com.br');
-        $usuario->setSenha($senha);
-        $usuario->addGrupo($grupo_usuario);
+        $senha_confirm = '123456';
+        $grupos = [];
 
-        $command = new NovoUsuarioCommand($usuario, $senha);
-        $handler->handle($command);
+        $command = new NovoUsuarioCommand($nome, $email, $senha, $senha_confirm, $grupos);
+        $usuario = (new NovoUsuarioCommandHandler($usuario_repository, $validator))->handle($command);
 
-        $this->assertNotNull($usuario->getId());
-
-        return $usuario;
+        $this->assertInstanceOf(Usuario::class, $usuario);
+        $this->assertEquals($nome, $usuario->getNome());
+        $this->assertEquals($email, $usuario->getEmail());
+        $this->assertEquals($senha, $usuario->getSenha());
     }
 }

@@ -28,8 +28,9 @@ namespace PainelDLX\Presentation\Site\Emails\Controllers;
 
 use DLX\Core\Configure;
 use DLX\Core\Exceptions\UserException;
+use PainelDLX\Domain\Emails\Exceptions\ConfigSmtpInvalidoException;
 use PainelDLX\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpCommand;
-use PainelDLX\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpHandler;
+use PainelDLX\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpCommandHandler;
 use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
 use PainelDLX\Presentation\Site\Common\Controllers\PainelDLXController;
 use Psr\Http\Message\ResponseInterface;
@@ -91,24 +92,25 @@ class NovaConfigSmtpController extends PainelDLXController
         extract($request->getParsedBody());
 
         try {
-            $config_smtp = new ConfigSmtp($servidor, $porta);
-            $config_smtp
-                ->setNome($nome)
-                ->setCripto($cripto)
-                ->setRequerAutent($requer_autent)
-                ->setConta($conta)
-                ->setSenha($senha)
-                ->setDeNome($de_nome)
-                ->setResponderPara($responder_para)
-                ->setCorpoHtml($corpo_html);
-
-            /* @see NovaConfigSmtpHandler */
-            $this->command_bus->handle(new NovaConfigSmtpCommand($config_smtp));
+            /** @var ConfigSmtp $config_smtp */
+            /* @see NovaConfigSmtpCommandHandler */
+            $config_smtp = $this->command_bus->handle(new NovaConfigSmtpCommand(
+                $nome,
+                $servidor,
+                $porta,
+                $cripto,
+                $requer_autent,
+                $conta,
+                $senha,
+                $de_nome,
+                $responder_para,
+                $corpo_html
+            ));
 
             $json['retorno'] = 'sucesso';
             $json['mensagem'] = 'Configuração SMTP salva com sucesso!';
             $json['config_smtp_id'] = $config_smtp->getId();
-        } catch (UserException $e) {
+        } catch (ConfigSmtpInvalidoException | UserException $e) {
             $json['erro'] = 'sucesso';
             $json['mensagem'] = $e->getMessage();
         }

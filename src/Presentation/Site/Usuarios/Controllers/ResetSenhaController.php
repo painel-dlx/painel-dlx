@@ -29,7 +29,7 @@ namespace PainelDLX\Presentation\Site\Usuarios\Controllers;
 use DLX\Contracts\TransactionInterface;
 use DLX\Core\Configure;
 use DLX\Core\Exceptions\UserException;
-use DLX\Infra\EntityManagerX;
+use DLX\Infrastructure\EntityManagerX;
 use Doctrine\ORM\ORMException;
 use League\Tactician\CommandBus;
 use PainelDLX\UseCases\Usuarios\AlterarSenhaUsuario\AlterarSenhaUsuarioCommand;

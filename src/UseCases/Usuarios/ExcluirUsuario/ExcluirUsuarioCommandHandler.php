@@ -25,10 +25,7 @@
 
 namespace PainelDLX\UseCases\Usuarios\ExcluirUsuario;
 
-
-use Exception;
 use PainelDLX\Domain\Usuarios\Repositories\UsuarioRepositoryInterface;
-use PainelDLX\UseCases\Usuarios\ExcluirUsuario\ExcluirUsuarioCommand;
 
 class ExcluirUsuarioCommandHandler
 {
@@ -42,14 +39,9 @@ class ExcluirUsuarioCommandHandler
 
     /**
      * @param ExcluirUsuarioCommand $command
-     * @throws Exception
      */
     public function handle(ExcluirUsuarioCommand $command)
     {
-        try {
-            $this->usuario_repository->delete($command->getUsuario());
-        } catch (Exception $e) {
-            throw $e;
-        }
+        $this->usuario_repository->delete($command->getUsuario());
     }
 }

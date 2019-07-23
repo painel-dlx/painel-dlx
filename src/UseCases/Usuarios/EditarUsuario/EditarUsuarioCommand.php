@@ -26,10 +26,12 @@
 namespace PainelDLX\UseCases\Usuarios\EditarUsuario;
 
 
+use PainelDLX\Domain\Usuarios\Entities\Usuario;
+
 class EditarUsuarioCommand
 {
-    /** @var int */
-    private $usuario_id;
+    /** @var Usuario */
+    private $usuario;
     /** @var string */
     private $nome;
     /** @var string */
@@ -38,11 +40,11 @@ class EditarUsuarioCommand
     private $grupos = [];
 
     /**
-     * @return int
+     * @return Usuario
      */
-    public function getUsuarioId(): int
+    public function getUsuario(): Usuario
     {
-        return $this->usuario_id;
+        return $this->usuario;
     }
 
     /**
@@ -71,14 +73,14 @@ class EditarUsuarioCommand
 
     /**
      * EditarUsuarioCommand constructor.
-     * @param int $usuario_id
+     * @param Usuario $usuario
      * @param string $nome
      * @param string $email
      * @param array $grupos
      */
-    public function __construct(int $usuario_id, string $nome, string $email, array $grupos)
+    public function __construct(Usuario $usuario, string $nome, string $email, array $grupos)
     {
-        $this->usuario_id = $usuario_id;
+        $this->usuario = $usuario;
         $this->nome = $nome;
         $this->email = $email;
         $this->grupos = $grupos;

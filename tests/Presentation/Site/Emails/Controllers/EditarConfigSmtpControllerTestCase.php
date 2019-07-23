@@ -38,7 +38,7 @@ use PainelDLX\Application\Services\Exceptions\AmbienteNaoInformadoException;
 use PainelDLX\Domain\Emails\Exceptions\AutentContaNaoInformadaException;
 use PainelDLX\Domain\Emails\Exceptions\AutentSenhaNaoInformadaException;
 use PainelDLX\Presentation\Site\Emails\Controllers\EditarConfigSmtpController;
-use PainelDLX\Testes\Application\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpHandlerTestCase;
+use PainelDLX\Testes\Application\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpHandlerTest;
 use PainelDLX\Testes\TestCase\PainelDLXTestCase;
 use Psr\Http\Message\ServerRequestInterface;
 use RautereX\Exceptions\RotaNaoEncontradaException;
@@ -98,7 +98,7 @@ class EditarConfigSmtpControllerTestCase extends PainelDLXTestCase
      */
     public function test_EditarConfigSmtp()
     {
-        $config_smtp = (new NovaConfigSmtpHandlerTestCase())->test_Handle();
+        $config_smtp = (new NovaConfigSmtpHandlerTest())->test_Handle();
 
         $request = $this->createMock(ServerRequestInterface::class);
         $request

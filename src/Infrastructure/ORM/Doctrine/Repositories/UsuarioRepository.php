@@ -26,7 +26,7 @@
 namespace PainelDLX\Infrastructure\ORM\Doctrine\Repositories;
 
 
-use DLX\Infra\ORM\Doctrine\Repositories\EntityRepository;
+use DLX\Infrastructure\ORM\Doctrine\Repositories\EntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\NonUniqueResultException;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;

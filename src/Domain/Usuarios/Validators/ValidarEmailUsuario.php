@@ -23,15 +23,38 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Domain\Emails\Exceptions;
+namespace PainelDLX\Domain\Usuarios\Validators;
 
+use PainelDLX\Domain\Usuarios\Entities\Usuario;
+use PainelDLX\Domain\Usuarios\Exceptions\UsuarioInvalidoException;
+use PainelDLX\Domain\Usuarios\Repositories\UsuarioRepositoryInterface;
 
-use DLX\Core\Exceptions\UserException;
-
-class AutentSenhaNaoInformadaException extends UserException
+class ValidarEmailUsuario
 {
-    public function __construct()
+    /** @var UsuarioRepositoryInterface */
+    private $usuario_repository;
+
+    /**
+     * VerificaEmailJaCadastrado constructor.
+     * @param UsuarioRepositoryInterface $usuarioRepository
+     */
+    public function __construct(UsuarioRepositoryInterface $usuarioRepository)
     {
-        parent::__construct('Hm... faltou informar a senha usada para autenticar sua conta no servidor SMTP.');
+        $this->usuario_repository = $usuarioRepository;
+    }
+
+    /**
+     * Executa a verificação se o email do usuário informado já está sendo usado por outro usuario.
+     * @param Usuario $usuario
+     * @return bool
+     * @throws UsuarioInvalidoException
+     */
+    public function validar(Usuario $usuario): bool
+    {
+        if ($this->usuario_repository->hasOutroUsuarioComMesmoEmail($usuario)) {
+            throw UsuarioInvalidoException::emailUtilizadoPorOutroUsuario($usuario->getEmail());
+        }
+
+        return true;
     }
 }

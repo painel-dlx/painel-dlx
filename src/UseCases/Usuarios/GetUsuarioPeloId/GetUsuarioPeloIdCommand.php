@@ -9,27 +9,8 @@
 namespace PainelDLX\UseCases\Usuarios\GetUsuarioPeloId;
 
 
-class GetUsuarioPeloIdCommand
+use PainelDLX\Application\Contracts\FindByIdCommand;
+
+class GetUsuarioPeloIdCommand extends FindByIdCommand
 {
-    /**
-     * @var int
-     */
-    private $usuario_id;
-
-    /**
-     * @return int
-     */
-    public function getUsuarioId(): int
-    {
-        return $this->usuario_id;
-    }
-
-    /**
-     * GetUsuarioPeloIdCommand constructor.
-     * @param int $usuario_id
-     */
-    public function __construct(int $usuario_id)
-    {
-        $this->usuario_id = $usuario_id;
-    }
 }

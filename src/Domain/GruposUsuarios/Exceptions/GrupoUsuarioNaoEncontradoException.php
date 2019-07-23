@@ -23,42 +23,20 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Domain\Usuarios\Services;
+namespace PainelDLX\Domain\GruposUsuarios\Exceptions;
 
 
-use DLX\Contracts\ServiceInterface;
-use PainelDLX\Domain\Usuarios\Entities\Usuario;
-use PainelDLX\Domain\Usuarios\Exceptions\EmailUtilizadoPorOutroUsuarioException;
-use PainelDLX\Domain\Usuarios\Repositories\UsuarioRepositoryInterface;
+use Exception;
 
-class VerificaEmailJaCadastrado implements ServiceInterface
+class GrupoUsuarioNaoEncontradoException extends Exception
 {
-    /** @var UsuarioRepositoryInterface */
-    private $usuario_repository;
-    /** @var Usuario */
-    private $usuario;
-
-    public function __construct(
-        UsuarioRepositoryInterface $usuarioRepository,
-        Usuario $usuario
-    ) {
-        $this->usuario_repository = $usuarioRepository;
-        $this->usuario = $usuario;
-    }
-
     /**
-     * Executa a verificação se o email do usuário informado já está sendo usado por outro usuario.
-     * @return bool
-     * @throws EmailUtilizadoPorOutroUsuarioException
+     * @param $id
+     * @return GrupoUsuarioNaoEncontradoException
      */
-    public function executar(): bool
+    public static function porId($id): self
     {
-        $is_email_utilizado = $this->usuario_repository->hasOutroUsuarioComMesmoEmail($this->usuario);
-
-        if ($is_email_utilizado) {
-            throw new EmailUtilizadoPorOutroUsuarioException($this->usuario->getEmail());
-        }
-
-        return false;
+        $valor_id = var_export($id, true);
+        return new self("Grupo de Usuário não encontrado com o ID informado: {$valor_id}.", 10);
     }
 }

@@ -11,11 +11,10 @@ namespace PainelDLX\UseCases\Emails\TestarConfigSmtp;
 
 use PainelDLX\Application\Services\EnviarEmail;
 use PainelDLX\Application\Services\Exceptions\ErroAoEnviarEmailException;
-use PainelDLX\UseCases\Emails\TestarConfigSmtp\TestarConfigSmtpCommand;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 
-class TestarConfigSmtpHandler
+class TestarConfigSmtpCommandHandler
 {
     /**
      * @var PHPMailer

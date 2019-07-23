@@ -23,31 +23,35 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Testes\Application\UseCases\Usuarios\NovoUsuario;
+namespace PainelDLX\Domain\Usuarios\Exceptions;
 
-use PainelDLX\UseCases\Usuarios\NovoUsuario\NovoUsuarioCommand;
-use PainelDLX\Domain\Usuarios\Entities\Usuario;
-use PainelDLX\Testes\TestCase\PainelDLXTestCase;
-use PHPUnit\Framework\TestCase;
 
-class NovoUsuarioCommandTest extends PainelDLXTestCase
+use Exception;
+
+class UsuarioInvalidoException extends Exception
 {
-    /** @var NovoUsuarioCommand */
-    private $command;
-
-    protected function setUp()
+    /**
+     * @param string $email
+     * @return UsuarioInvalidoException
+     */
+    public static function emailUtilizadoPorOutroUsuario(string $email): self
     {
-        parent::setUp();
-        $this->command = new NovoUsuarioCommand(new Usuario('Teste', 'teste@teste.com.br'), '123456');
+        return new self("O email informado {$email} já está sendo utilizado por outro usuário.", 10);
     }
 
-    public function test_GetSenhaConfirm_deve_retornar_uma_string()
+    /**
+     * @return UsuarioInvalidoException
+     */
+    public static function senhasInformadasNaoConferem(): self
     {
-        $this->assertIsString($this->command->getSenhaConfirm());
+        return new self("As senhas informadas não conferem.", 11);
     }
 
-    public function test_GetUsuario_deve_retornar_uma_instancia_Usuario()
+    /**
+     * @return UsuarioInvalidoException
+     */
+    public static function senhaAtualNaoConfere(): self
     {
-        $this->assertInstanceOf(Usuario::class, $this->command->getUsuario());
+        return new self("A senha atual não confere.", 12);
     }
 }

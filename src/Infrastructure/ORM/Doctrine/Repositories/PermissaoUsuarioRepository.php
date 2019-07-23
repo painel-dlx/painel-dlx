@@ -26,7 +26,7 @@
 namespace PainelDLX\Infrastructure\ORM\Doctrine\Repositories;
 
 
-use DLX\Infra\ORM\Doctrine\Repositories\EntityRepository;
+use DLX\Infrastructure\ORM\Doctrine\Repositories\EntityRepository;
 use PainelDLX\Domain\PermissoesUsuario\Repositories\PermissaoUsuarioRepositoryInterface;
 
 class PermissaoUsuarioRepository extends EntityRepository implements PermissaoUsuarioRepositoryInterface

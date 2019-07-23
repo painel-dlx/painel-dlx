@@ -25,7 +25,7 @@
 
 namespace PainelDLX\Testes\Application\UseCases\GruposUsuarios\GetListaGruposUsuarios;
 
-use DLX\Infra\EntityManagerX;
+use DLX\Infrastructure\EntityManagerX;
 use Doctrine\Common\Collections\ArrayCollection;
 use PainelDLX\UseCases\GruposUsuarios\GetListaGruposUsuarios\GetListaGruposUsuariosCommandHandler;
 use PainelDLX\UseCases\GruposUsuarios\GetListaGruposUsuarios\GetListaGruposUsuariosCommand;

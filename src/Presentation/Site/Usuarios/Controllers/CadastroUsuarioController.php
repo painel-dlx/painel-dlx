@@ -29,6 +29,11 @@ use DLX\Core\Configure;
 use DLX\Core\Exceptions\UserException;
 use Exception;
 use League\Tactician\CommandBus;
+use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
+use PainelDLX\Domain\Usuarios\Exceptions\UsuarioInvalidoException;
+use PainelDLX\Domain\Usuarios\Exceptions\UsuarioNaoEncontradoException;
+use PainelDLX\UseCases\GruposUsuarios\GetListaGruposUsuarios\GetListaGruposUsuariosCommand;
+use PainelDLX\UseCases\GruposUsuarios\GetListaGruposUsuarios\GetListaGruposUsuariosCommandHandler;
 use PainelDLX\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommand;
 use PainelDLX\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommandHandler;
 use PainelDLX\UseCases\Usuarios\EditarUsuario\EditarUsuarioCommand;
@@ -140,7 +145,9 @@ class CadastroUsuarioController extends PainelDLXController
     public function formNovoUsuario(): ResponseInterface
     {
         try {
-            $lista_grupos = $this->grupo_usuario_repository->findAtivos();
+            /** @var array $lista_grupos */
+            /* @see GetListaGruposUsuariosCommandHandler */
+            $lista_grupos = $this->command_bus->handle(new GetListaGruposUsuariosCommand());
 
             // Atributos
             $this->view->setAtributo('titulo-pagina', 'Adicionar novo usuário');
@@ -180,11 +187,16 @@ class CadastroUsuarioController extends PainelDLXController
 
         try {
             $grupos = $this->grupo_usuario_repository->getListaGruposByIds(...$grupos);
-            $usuario = Usuario::create($nome, $email, ...$grupos)
-                ->setSenha($senha);
 
+            /** @var Usuario $usuario */
             /* @see NovoUsuarioCommandHandler */
-            $this->command_bus->handle(new NovoUsuarioCommand($usuario, $senha_confirm));
+            $usuario = $this->command_bus->handle(new NovoUsuarioCommand(
+                $nome,
+                $email,
+                $senha,
+                $senha_confirm,
+                $grupos
+            ));
 
             $msg['retorno'] = 'sucesso';
             $msg['mensagem'] = 'Usuário cadastrado com sucesso!';
@@ -212,7 +224,10 @@ class CadastroUsuarioController extends PainelDLXController
             /** @var Usuario|null $usuario */
             /* @see GetUsuarioPeloIdCommandHandler */
             $usuario = $this->command_bus->handle(new GetUsuarioPeloIdCommand($get['usuario_id']));
-            $lista_grupos = $this->grupo_usuario_repository->findAtivos();
+
+            /** @var GrupoUsuario|null $lista_grupos */
+            /* @see GetListaGruposUsuariosCommandHandler */
+            $lista_grupos = $this->command_bus->handle(new GetListaGruposUsuariosCommand());
 
             // Atributos
             $this->view->setAtributo('titulo-pagina', 'Atualizar informações do usuário');
@@ -258,14 +273,22 @@ class CadastroUsuarioController extends PainelDLXController
         extract($post); unset($post);
 
         try {
-            /** @var Usuario $usuario_atualizado */
+            /** @var Usuario $usuario */
+            /* @see GetUsuarioPeloIdCommandHandler */
+            $usuario = $this->command_bus->handle(new GetUsuarioPeloIdCommand($usuario_id));
+
             /* @see EditarUsuarioCommandHandler */
-            $usuario_atualizado = $this->command_bus->handle(new EditarUsuarioCommand($usuario_id, $nome, $email, $grupos));
+            $this->command_bus->handle(new EditarUsuarioCommand(
+                $usuario,
+                $nome,
+                $email,
+                $grupos
+            ));
 
             $msg['retorno'] = 'sucesso';
             $msg['mensagem'] = 'Usuário atualizado com sucesso!';
-            $msg['usuario_id'] = $usuario_atualizado->getId();
-        } catch (Exception $e) {
+            $msg['usuario_id'] = $usuario->getId();
+        } catch (UsuarioNaoEncontradoException | UsuarioInvalidoException | Exception $e) {
             $msg['retorno'] = 'erro';
             $msg['mensagem'] = $e->getMessage();
         }

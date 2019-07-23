@@ -29,6 +29,7 @@ namespace PainelDLX\Presentation\Site\Usuarios\Controllers;
 use DLX\Core\Configure;
 use DLX\Core\Exceptions\UserException;
 use League\Tactician\CommandBus;
+use PainelDLX\Domain\Usuarios\Exceptions\UsuarioInvalidoException;
 use PainelDLX\UseCases\Usuarios\AlterarSenhaUsuario\AlterarSenhaUsuarioCommand;
 use PainelDLX\UseCases\Usuarios\GetUsuarioPeloId\GetUsuarioPeloIdCommandHandler;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
@@ -157,7 +158,7 @@ class MinhaContaController extends PainelDLXController
 
             $json['retorno'] = 'sucesso';
             $json['mensagem'] = 'Senha alterada com sucesso!';
-        } catch (UserException $e) {
+        } catch (UsuarioInvalidoException | UserException $e) {
             $json['retorno'] = 'erro';
             $json['mensagem'] = $e->getMessage();
         }

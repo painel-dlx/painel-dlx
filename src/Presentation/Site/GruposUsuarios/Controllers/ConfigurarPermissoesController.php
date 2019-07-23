@@ -31,6 +31,7 @@ use DLX\Core\Configure;
 use DLX\Core\Exceptions\UserException;
 use Doctrine\Common\Collections\ArrayCollection;
 use League\Tactician\CommandBus;
+use PainelDLX\Domain\GruposUsuarios\Exceptions\GrupoUsuarioNaoEncontradoException;
 use PainelDLX\UseCases\GruposUsuarios\ConfigurarPermissoes\ConfigurarPermissoesCommand;
 use PainelDLX\UseCases\GruposUsuarios\GetGrupoUsuarioPorId\GetGrupoUsuarioPorIdCommand;
 use PainelDLX\UseCases\GruposUsuarios\GetGrupoUsuarioPorId\GetGrupoUsuarioPorIdCommandHandler;
@@ -149,7 +150,7 @@ class ConfigurarPermissoesController extends PainelDLXController
 
             /* @see GetListaPermissaoUsuarioCommandHandler */
             $lista_permissoes = new ArrayCollection($this->command_bus->handle(new GetListaPermissaoUsuarioCommand(
-                ['permissao_usuario_id' => $permissao_usuario_ids]
+                ['id' => $permissao_usuario_ids]
             )));
 
             $this->transaction->transactional(function () use ($grupo_usuario, $lista_permissoes) {
@@ -159,7 +160,7 @@ class ConfigurarPermissoesController extends PainelDLXController
 
             $json['retorno'] = 'sucesso';
             $json['mensagem'] = 'Permissões salvas com sucesso!';
-        } catch (UserException $e) {
+        } catch (GrupoUsuarioNaoEncontradoException | UserException $e) {
             $json['retorno'] = 'erro';
             $json['mensagem'] = $e->getMessage();
         }

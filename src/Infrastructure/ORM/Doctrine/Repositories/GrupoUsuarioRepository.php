@@ -26,26 +26,13 @@
 namespace PainelDLX\Infrastructure\ORM\Doctrine\Repositories;
 
 
-use DLX\Infra\ORM\Doctrine\Repositories\EntityRepository;
+use DLX\Infrastructure\ORM\Doctrine\Repositories\EntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
 use PainelDLX\Domain\GruposUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
 
 class GrupoUsuarioRepository extends EntityRepository implements GrupoUsuarioRepositoryInterface
 {
-    /**
-     * Selecionar todos os grupos de usuários ativos.
-     * @return array
-     */
-    public function findAtivos(array $criteria = [], array $order_by = []): array
-    {
-        $criteria = array_merge($criteria, [
-            'deletado' => false
-        ]);
-
-        return $this->findBy($criteria, $order_by);
-    }
-
     /**
      * Obter a lista de grupos de usuários por um array de IDs passados.
      * @param int ...$grupo_usuario_id
@@ -54,7 +41,7 @@ class GrupoUsuarioRepository extends EntityRepository implements GrupoUsuarioRep
     public function getListaGruposByIds(int ...$grupo_usuario_id): array
     {
         return $this->findBy([
-            'grupo_usuario_id' => $grupo_usuario_id,
+            'id' => $grupo_usuario_id,
             'deletado' => false
         ]);
     }
@@ -66,8 +53,9 @@ class GrupoUsuarioRepository extends EntityRepository implements GrupoUsuarioRep
      */
     public function existsOutroGrupoComMesmoAlias(GrupoUsuario $grupo_usuario): bool
     {
-        $lista_grupos_usuarios = new ArrayCollection($this->findAtivos([
-            'alias' => $grupo_usuario->getAlias()
+        $lista_grupos_usuarios = new ArrayCollection($this->findBy([
+            'alias' => $grupo_usuario->getAlias(),
+            'deletado' => false
         ]));
 
         return $lista_grupos_usuarios->exists(function ($key, GrupoUsuario $grupo_usuario_lista) use ($grupo_usuario) {

@@ -25,10 +25,15 @@
 
 namespace PainelDLX\UseCases\Emails\GetConfigSmtpPorId;
 
-
-use PainelDLX\UseCases\Emails\GetConfigSmtpPorId\GetConfigSmtpPorIdCommand;
+use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
+use PainelDLX\Domain\Emails\Exceptions\ConfigSmtpNaoEncontradaException;
 use PainelDLX\Domain\Emails\Repositories\ConfigSmtpRepositoryInterface;
 
+/**
+ * Class GetConfigSmtpPorIdCommandHandler
+ * @package PainelDLX\UseCases\Emails\GetConfigSmtpPorId
+ * @covers GetConfigSmtpPorIdCommandHandlerTest
+ */
 class GetConfigSmtpPorIdCommandHandler
 {
     /**
@@ -47,12 +52,20 @@ class GetConfigSmtpPorIdCommandHandler
 
     /**
      * @param GetConfigSmtpPorIdCommand $command
-     * @return |null
+     * @return ConfigSmtp|null
+     * @throws ConfigSmtpNaoEncontradaException
      */
     public function handle(GetConfigSmtpPorIdCommand $command)
     {
-        return !empty($command->getConfigSmtpId())
-            ? $this->config_smtp_repository->find($command->getConfigSmtpId())
-            : null;
+        $config_smtp_id = $command->getId();
+
+        /** @var ConfigSmtp|null $config_smtp */
+        $config_smtp = $this->config_smtp_repository->find($config_smtp_id);
+
+        if (is_null($config_smtp)) {
+            throw ConfigSmtpNaoEncontradaException::porId($config_smtp_id);
+        }
+
+        return $config_smtp;
     }
 }

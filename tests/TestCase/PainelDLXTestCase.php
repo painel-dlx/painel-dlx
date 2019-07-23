@@ -28,7 +28,7 @@ namespace PainelDLX\Tests\TestCase;
 
 use DLX\Core\Exceptions\ArquivoConfiguracaoNaoEncontradoException;
 use DLX\Core\Exceptions\ArquivoConfiguracaoNaoInformadoException;
-use DLX\Infra\EntityManagerX;
+use DLX\Infrastructure\EntityManagerX;
 use Doctrine\ORM\ORMException;
 use PainelDLX\Application\Services\Exceptions\AmbienteNaoInformadoException;
 use PHPUnit\Framework\TestCase;

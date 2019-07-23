@@ -23,15 +23,19 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Domain\Usuarios\Exceptions;
+namespace PainelDLX\Domain\GruposUsuarios\Exceptions;
 
 
 use DLX\Core\Exceptions\UserException;
 
-class UsuarioNaoEncontrado extends UserException
+class GrupoUsuarioInvalidoException extends UserException
 {
-    public function __construct()
+    /**
+     * @param string $alias
+     * @return GrupoUsuarioInvalidoException
+     */
+    public static function aliasUtilizadoOutroGrupo(string $alias)
     {
-        parent::__construct('Usuário não encontrado!');
+        return new self("O alias informado {$alias} já está sendo usado em outro grupo de usuário.", 10);
     }
 }

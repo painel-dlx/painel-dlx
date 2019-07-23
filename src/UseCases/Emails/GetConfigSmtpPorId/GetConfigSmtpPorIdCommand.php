@@ -26,27 +26,9 @@
 namespace PainelDLX\UseCases\Emails\GetConfigSmtpPorId;
 
 
-class GetConfigSmtpPorIdCommand
+use PainelDLX\Application\Contracts\FindByIdCommand;
+
+class GetConfigSmtpPorIdCommand extends FindByIdCommand
 {
-    /**
-     * @var int
-     */
-    private $config_smtp_id;
 
-    /**
-     * @return int
-     */
-    public function getConfigSmtpId(): int
-    {
-        return $this->config_smtp_id;
-    }
-
-    /**
-     * GetConfigSmtpPorIdCommand constructor.
-     * @param int $config_smtp_id
-     */
-    public function __construct(int $config_smtp_id)
-    {
-        $this->config_smtp_id = $config_smtp_id;
-    }
 }

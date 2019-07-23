@@ -35,9 +35,9 @@ use PainelDLX\UseCases\Emails\GetConfigSmtpPorId\GetConfigSmtpPorIdCommandHandle
 use PainelDLX\UseCases\Emails\GetListaConfigSmtp\GetListaConfigSmtpCommand;
 use PainelDLX\UseCases\Emails\GetListaConfigSmtp\GetListaConfigSmtpCommandHandler;
 use PainelDLX\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpCommand;
-use PainelDLX\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpHandler;
+use PainelDLX\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpCommandHandler;
 use PainelDLX\UseCases\Emails\TestarConfigSmtp\TestarConfigSmtpCommand;
-use PainelDLX\UseCases\Emails\TestarConfigSmtp\TestarConfigSmtpHandler;
+use PainelDLX\UseCases\Emails\TestarConfigSmtp\TestarConfigSmtpCommandHandler;
 use PainelDLX\UseCases\GruposUsuarios\ConfigurarPermissoes\ConfigurarPermissoesCommand;
 use PainelDLX\UseCases\GruposUsuarios\ConfigurarPermissoes\ConfigurarPermissoesCommandHandler;
 use PainelDLX\UseCases\GruposUsuarios\EditarGrupoUsuario\EditarGrupoUsuarioCommand;
@@ -106,7 +106,7 @@ class PainelDLXMapping
         ExcluirPermissaoUsuarioCommand::class => ExcluirPermissaoUsuarioCommandHandler::class,
         FazerLoginCommand::class => FazerLoginCommandHandler::class,
         FazerLogoutCommand::class => FazerLogoutCommandHandler::class,
-        NovaConfigSmtpCommand::class => NovaConfigSmtpHandler::class,
+        NovaConfigSmtpCommand::class => NovaConfigSmtpCommandHandler::class,
         GetConfigSmtpPorIdCommand::class => GetConfigSmtpPorIdCommandHandler::class,
         EditarConfigSmtpCommand::class => EditarConfigSmtpCommandHandler::class,
         ExcluirConfigSmtpCommand::class => ExcluirConfigSmtpCommandHandler::class,
@@ -119,7 +119,7 @@ class PainelDLXMapping
         ConfigurarPermissoesCommand::class => ConfigurarPermissoesCommandHandler::class,
         GetListaPermissaoUsuarioCommand::class => GetListaPermissaoUsuarioCommandHandler::class,
         GetUsuarioPeloIdCommand::class => GetUsuarioPeloIdCommandHandler::class,
-        TestarConfigSmtpCommand::class => TestarConfigSmtpHandler::class,
+        TestarConfigSmtpCommand::class => TestarConfigSmtpCommandHandler::class,
         GetListaUsuariosCommand::class => GetListaUsuariosCommandHandler::class,
         GetListaGruposUsuariosCommand::class => GetListaGruposUsuariosCommandHandler::class,
         GetListaMenuCommand::class => GetListaMenuCommandHandler::class,

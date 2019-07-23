@@ -29,6 +29,7 @@ namespace PainelDLX\Presentation\Site\Emails\Controllers;
 use DLX\Core\Configure;
 use DLX\Core\Exceptions\UserException;
 use PainelDLX\Application\Services\Exceptions\ErroAoEnviarEmailException;
+use PainelDLX\Domain\Emails\Exceptions\ConfigSmtpNaoEncontradaException;
 use PainelDLX\UseCases\Emails\ExcluirConfigSmtp\ExcluirConfigSmtpCommand;
 use PainelDLX\UseCases\Emails\ExcluirConfigSmtp\ExcluirConfigSmtpCommandHandler;
 use PainelDLX\UseCases\Emails\GetConfigSmtpPorId\GetConfigSmtpPorIdCommand;
@@ -36,7 +37,7 @@ use PainelDLX\UseCases\Emails\GetConfigSmtpPorId\GetConfigSmtpPorIdCommandHandle
 use PainelDLX\UseCases\Emails\GetListaConfigSmtp\GetListaConfigSmtpCommand;
 use PainelDLX\UseCases\Emails\GetListaConfigSmtp\GetListaConfigSmtpCommandHandler;
 use PainelDLX\UseCases\Emails\TestarConfigSmtp\TestarConfigSmtpCommand;
-use PainelDLX\UseCases\Emails\TestarConfigSmtp\TestarConfigSmtpHandler;
+use PainelDLX\UseCases\Emails\TestarConfigSmtp\TestarConfigSmtpCommandHandler;
 use PainelDLX\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommand;
 use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
@@ -49,6 +50,11 @@ use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
 use Vilex\Exceptions\ViewNaoEncontradaException;
 use Zend\Diactoros\Response\JsonResponse;
 
+/**
+ * Class ConfigSmtpController
+ * @package PainelDLX\Presentation\Site\Emails\Controllers
+ * @covers ConfigSmtpControllerTest
+ */
 class ConfigSmtpController extends PainelDLXController
 {
     /**
@@ -192,9 +198,13 @@ class ConfigSmtpController extends PainelDLXController
             /** @var Usuario $usuario */
             $usuario = $this->session->get('usuario-logado');
 
-            /** @var ConfigSmtp|null $config_smtp */
-            /* @see GetConfigSmtpPorIdCommandHandler */
-            $config_smtp = $this->command_bus->handle(new GetConfigSmtpPorIdCommand((int)$post['config_smtp_id']));
+            try {
+                /** @var ConfigSmtp|null $config_smtp */
+                /* @see GetConfigSmtpPorIdCommandHandler */
+                $config_smtp = $this->command_bus->handle(new GetConfigSmtpPorIdCommand((int)$post['config_smtp_id']));
+            } catch (ConfigSmtpNaoEncontradaException $e) {
+                $config_smtp = null;
+            }
 
             if (is_null($config_smtp)) {
                 $config_smtp = new ConfigSmtp($post['servidor'], $post['porta']);
@@ -208,7 +218,7 @@ class ConfigSmtpController extends PainelDLXController
                     ->setCorpoHtml((bool)$post['corpo_html']);
             }
 
-            /* @see TestarConfigSmtpHandler */
+            /* @see TestarConfigSmtpCommandHandler */
             $this->command_bus->handle(new TestarConfigSmtpCommand($config_smtp, $usuario->getEmail()));
 
             $json['retorno'] = 'sucesso';

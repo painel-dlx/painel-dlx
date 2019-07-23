@@ -25,21 +25,77 @@
 
 namespace PainelDLX\UseCases\Usuarios\NovoUsuario;
 
-use PainelDLX\Domain\Usuarios\Entities\Usuario;
-
+/**
+ * Class NovoUsuarioCommand
+ * @package PainelDLX\UseCases\Usuarios\NovoUsuario
+ */
 class NovoUsuarioCommand
 {
-    /** @var Usuario */
-    private $usuario;
-    /** @var string */
+    /**
+     * @var string
+     */
+    private $nome;
+    /**
+     * @var string
+     */
+    private $email;
+    /**
+     * @var string
+     */
+    private $senha;
+    /**
+     * @var string
+     */
     private $senha_confirm;
+    /**
+     * @var array
+     */
+    private $grupos;
 
     /**
-     * @return Usuario
+     * NovoUsuarioCommand constructor.
+     * @param string $nome
+     * @param string $email
+     * @param string $senha
+     * @param string $senha_confirm
+     * @param array $grupos
      */
-    public function getUsuario(): Usuario
+    public function __construct(
+        string $nome,
+        string $email,
+        string $senha,
+        string $senha_confirm,
+        array $grupos
+    ) {
+        $this->nome = $nome;
+        $this->email = $email;
+        $this->senha = $senha;
+        $this->senha_confirm = $senha_confirm;
+        $this->grupos = $grupos;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNome(): string
     {
-        return $this->usuario;
+        return $this->nome;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSenha(): string
+    {
+        return $this->senha;
     }
 
     /**
@@ -51,13 +107,10 @@ class NovoUsuarioCommand
     }
 
     /**
-     * NovoUsuarioCommand constructor.
-     * @param Usuario $usuario
-     * @param string $senha_confirm
+     * @return array
      */
-    public function __construct(Usuario $usuario, string $senha_confirm)
+    public function getGrupos(): array
     {
-        $this->usuario = $usuario;
-        $this->senha_confirm = $senha_confirm;
+        return $this->grupos;
     }
 }

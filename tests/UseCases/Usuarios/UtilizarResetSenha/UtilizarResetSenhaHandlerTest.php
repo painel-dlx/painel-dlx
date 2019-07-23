@@ -25,12 +25,12 @@
 
 namespace PainelDLX\Testes\Application\UseCases\Usuarios\UtilizarResetSenha;
 
-use DLX\Infra\EntityManagerX;
+use DLX\Infrastructure\EntityManagerX;
 use Doctrine\ORM\ORMException;
 use PainelDLX\UseCases\Usuarios\UtilizarResetSenha\UtilizarResetSenhaCommand;
 use PainelDLX\UseCases\Usuarios\UtilizarResetSenha\UtilizarResetSenhaCommandHandler;
 use PainelDLX\Domain\Usuarios\Entities\ResetSenha;
-use PainelDLX\Domain\Usuarios\Exceptions\UsuarioNaoEncontrado;
+use PainelDLX\Domain\Usuarios\Exceptions\UsuarioNaoEncontradoException;
 use PainelDLX\Domain\Usuarios\Repositories\ResetSenhaRepositoryInterface;
 use PainelDLX\Testes\Application\UseCases\Usuarios\SolicitarResetSenha\SolicitarResetSenhaHandlerTest;
 use PainelDLX\Testes\TestCase\PainelDLXTestCase;
@@ -39,7 +39,7 @@ class UtilizarResetSenhaHandlerTest extends PainelDLXTestCase
 {
     /**
      * @throws ORMException
-     * @throws UsuarioNaoEncontrado
+     * @throws UsuarioNaoEncontradoException
      */
     public function test_Handle()
     {

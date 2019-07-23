@@ -27,8 +27,8 @@ namespace PainelDLX\Testes\Presentation\Site\GruposUsuarios\Controllers;
 
 use DLX\Core\CommandBus\CommandBusAdapter;
 use DLX\Core\Configure;
-use DLX\Infra\EntityManagerX;
-use DLX\Infra\ORM\Doctrine\Services\DoctrineTransaction;
+use DLX\Infrastructure\EntityManagerX;
+use DLX\Infrastructure\ORM\Doctrine\Services\DoctrineTransaction;
 use Doctrine\ORM\ORMException;
 use League\Tactician\Container\ContainerLocator;
 use League\Tactician\Handler\CommandHandlerMiddleware;

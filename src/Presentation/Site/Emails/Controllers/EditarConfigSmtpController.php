@@ -28,7 +28,8 @@ namespace PainelDLX\Presentation\Site\Emails\Controllers;
 
 use DLX\Core\Configure;
 use DLX\Core\Exceptions\UserException;
-use League\Tactician\CommandBus;
+use PainelDLX\Domain\Emails\Exceptions\ConfigSmtpInvalidoException;
+use PainelDLX\Domain\Emails\Exceptions\ConfigSmtpNaoEncontradaException;
 use PainelDLX\UseCases\Emails\EditarConfigSmtp\EditarConfigSmtpCommand;
 use PainelDLX\UseCases\Emails\GetConfigSmtpPorId\GetConfigSmtpPorIdCommand;
 use PainelDLX\UseCases\Emails\GetConfigSmtpPorId\GetConfigSmtpPorIdCommandHandler;
@@ -37,11 +38,9 @@ use PainelDLX\Presentation\Site\Common\Controllers\PainelDLXController;
 use PainelDLX\UseCases\Emails\EditarConfigSmtp\EditarConfigSmtpCommandHandler;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use SechianeX\Contracts\SessionInterface;
 use Vilex\Exceptions\ContextoInvalidoException;
 use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
 use Vilex\Exceptions\ViewNaoEncontradaException;
-use Vilex\VileX;
 use Zend\Diactoros\Response\JsonResponse;
 
 class EditarConfigSmtpController extends PainelDLXController
@@ -111,26 +110,28 @@ class EditarConfigSmtpController extends PainelDLXController
 
         try {
             /** @var ConfigSmtp $config_smtp */
+            /* @see GetConfigSmtpPorIdCommandHandler */
             $config_smtp = $this->command_bus->handle(new GetConfigSmtpPorIdCommand($config_smtp_id));
-            $config_smtp
-                ->setNome($nome)
-                ->setServidor($servidor)
-                ->setPorta($porta)
-                ->setCripto($cripto)
-                ->setRequerAutent($requer_autent)
-                ->setConta($conta)
-                ->setSenha($senha)
-                ->setDeNome($de_nome)
-                ->setResponderPara($responder_para)
-                ->setCorpoHtml($corpo_html);
 
             /* @see EditarConfigSmtpCommandHandler */
-            $this->command_bus->handle(new EditarConfigSmtpCommand($config_smtp));
+            $this->command_bus->handle(new EditarConfigSmtpCommand(
+                $config_smtp,
+                $nome,
+                $servidor,
+                $porta,
+                $cripto,
+                $requer_autent,
+                $conta,
+                $senha,
+                $de_nome,
+                $responder_para,
+                $corpo_html
+            ));
 
             $json['retorno'] = 'sucesso';
             $json['mensagem'] = 'Configuração SMTP salva com sucesso!';
             $json['config_smtp_id'] = $config_smtp->getId();
-        } catch (UserException $e) {
+        } catch (ConfigSmtpNaoEncontradaException | ConfigSmtpInvalidoException | UserException $e) {
             $json['erro'] = 'sucesso';
             $json['mensagem'] = $e->getMessage();
         }

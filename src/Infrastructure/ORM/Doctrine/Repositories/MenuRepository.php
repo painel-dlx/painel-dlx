@@ -26,7 +26,7 @@
 namespace PainelDLX\Infrastructure\ORM\Doctrine\Repositories;
 
 
-use DLX\Infra\ORM\Doctrine\Repositories\EntityRepository;
+use DLX\Infrastructure\ORM\Doctrine\Repositories\EntityRepository;
 use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\Query\Expr\Join;
 use PainelDLX\Domain\Modulos\Entities\Menu;

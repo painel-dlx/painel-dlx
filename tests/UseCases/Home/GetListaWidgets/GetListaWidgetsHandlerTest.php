@@ -8,7 +8,7 @@
 
 namespace PainelDLX\Testes\Application\UseCases\Home\GetListaWidgets;
 
-use DLX\Infra\EntityManagerX;
+use DLX\Infrastructure\EntityManagerX;
 use PainelDLX\UseCases\Home\GetListaWigets\GetListaWidgetsCommand;
 use PainelDLX\UseCases\Home\GetListaWigets\GetListaWidgetsCommandHandler;
 use PainelDLX\Domain\Home\Entities\Widget;

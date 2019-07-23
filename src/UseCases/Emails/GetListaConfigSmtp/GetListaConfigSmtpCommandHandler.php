@@ -25,10 +25,7 @@
 
 namespace PainelDLX\UseCases\Emails\GetListaConfigSmtp;
 
-
-use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
 use PainelDLX\Domain\Emails\Repositories\ConfigSmtpRepositoryInterface;
-use PainelDLX\UseCases\Emails\GetListaConfigSmtp\GetListaConfigSmtpCommand;
 
 class GetListaConfigSmtpCommandHandler
 {
@@ -52,13 +49,14 @@ class GetListaConfigSmtpCommandHandler
      */
     public function handle(GetListaConfigSmtpCommand $command): array
     {
-        $lista = $this->config_smtp_repository->findByLike(
-            $command->getCriteria(),
+        $criteria = $command->getCriteria();
+        $criteria['and'] = ['deletado' => false];
+
+        return $this->config_smtp_repository->findByLike(
+            $criteria,
             $command->getOrderBy(),
             $command->getLimit(),
             $command->getOffset()
         );
-
-        return array_filter($lista, function (ConfigSmtp $config_smtp) { return !$config_smtp->isDeletado(); });
     }
 }

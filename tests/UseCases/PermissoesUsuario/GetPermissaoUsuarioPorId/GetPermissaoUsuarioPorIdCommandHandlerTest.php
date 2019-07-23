@@ -25,7 +25,7 @@
 
 namespace PainelDLX\Tests\UseCases\PermissoesUsuario\GetPermissaoUsuarioPorId;
 
-use DLX\Infra\EntityManagerX;
+use DLX\Infrastructure\EntityManagerX;
 use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\ORMException;
 use PainelDLX\Domain\PermissoesUsuario\Entities\PermissaoUsuario;

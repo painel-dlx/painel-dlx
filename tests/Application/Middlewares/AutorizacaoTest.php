@@ -25,16 +25,15 @@
 
 namespace PainelDLX\Testes\Application\Middlewares;
 
-use Doctrine\ORM\ORMException;
 use Exception;
 use PainelDLX\Application\Middlewares\Autorizacao;
-use PainelDLX\Domain\GruposUsuarios\Exceptions\GrupoJaPossuiPermissaoException;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
-use PainelDLX\Domain\Usuarios\Exceptions\UsuarioJaPossuiGrupoException;
 use PainelDLX\Tests\TestCase\PainelDLXTestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use ReflectionException;
+use ReflectionProperty;
 use SechianeX\Contracts\SessionInterface;
 use Vilex\Exceptions\ContextoInvalidoException;
 use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
@@ -107,5 +106,24 @@ class AutorizacaoTest extends PainelDLXTestCase
         $response = $autorizacao->process($request, $handler);
 
         $this->assertSame($response_esperada, $response);
+    }
+
+    /**
+     * @throws ReflectionException
+     * @covers ::necessitaPermissoes
+     */
+    public function test_NecessitaPermissoes_deve_retornar_uma_nova_instancia_com_permissoes_configuradas()
+    {
+        /** @var SessionInterface $session */
+        $session = $this->createMock(SessionInterface::class);
+
+        $autorizacao_original = new Autorizacao($session);
+        $nova_instancia = $autorizacao_original->necessitaPermissoes('TESTE 1', 'TESTE 2');
+
+        $rfx_permissoes = new ReflectionProperty($nova_instancia, 'permissoes');
+        $rfx_permissoes->setAccessible(true);
+
+        $this->assertNotSame($autorizacao_original, $nova_instancia);
+        $this->assertCount(2, $rfx_permissoes->getValue($nova_instancia));
     }
 }

@@ -32,12 +32,6 @@ use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
 interface GrupoUsuarioRepositoryInterface extends EntityRepositoryInterface
 {
     /**
-     * Selecionar todos os grupos de usuários ativos.
-     * @return array
-     */
-    public function findAtivos(array $criteria = [], array $order_by = []): array;
-
-    /**
      * Obter a lista de grupos de usuários por um array de IDs passados.
      * @param int ...$grupo_usuario_id
      * @return array

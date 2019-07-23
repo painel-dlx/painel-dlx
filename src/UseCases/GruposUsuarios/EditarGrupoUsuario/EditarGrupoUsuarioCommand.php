@@ -27,17 +27,21 @@ namespace PainelDLX\UseCases\GruposUsuarios\EditarGrupoUsuario;
 
 class EditarGrupoUsuarioCommand
 {
-    /** @var int */
-    private $grupo_usuario_id;
-    /** @var string */
+    /**
+     * @var int
+     */
+    private $id;
+    /**
+     * @var string
+     */
     private $nome;
 
     /**
      * @return int
      */
-    public function getGrupoUsuarioId(): int
+    public function getId(): int
     {
-        return $this->grupo_usuario_id;
+        return $this->id;
     }
 
     /**
@@ -50,12 +54,12 @@ class EditarGrupoUsuarioCommand
 
     /**
      * EditarUsuarioCommand constructor.
-     * @param int $grupo_usuario_id
+     * @param int $id
      * @param string $nome
      */
-    public function __construct(int $grupo_usuario_id, string $nome)
+    public function __construct(int $id, string $nome)
     {
-        $this->grupo_usuario_id = $grupo_usuario_id;
+        $this->id = $id;
         $this->nome = $nome;
     }
 }

@@ -13,7 +13,7 @@ use DateTime;
 use Exception;
 use PainelDLX\Domain\Emails\Repositories\ConfigSmtpRepositoryInterface;
 use PainelDLX\Domain\Usuarios\Entities\ResetSenha;
-use PainelDLX\Domain\Usuarios\Exceptions\UsuarioNaoEncontrado;
+use PainelDLX\Domain\Usuarios\Exceptions\UsuarioNaoEncontradoException;
 use PainelDLX\Domain\Usuarios\Repositories\ResetSenhaRepositoryInterface;
 use PainelDLX\Domain\Usuarios\Repositories\UsuarioRepositoryInterface;
 use PainelDLX\UseCases\Usuarios\SolicitarResetSenha\SolicitarResetSenhaCommand;
@@ -45,7 +45,7 @@ class SolicitarResetSenhaCommandHandler
 
     /**
      * @param SolicitarResetSenhaCommand $command
-     * @throws UsuarioNaoEncontrado
+     * @throws UsuarioNaoEncontradoException
      * @throws Exception
      */
     public function handle(SolicitarResetSenhaCommand $command): ResetSenha
@@ -53,7 +53,7 @@ class SolicitarResetSenhaCommandHandler
         $lista_usuarios = $this->usuario_repository->findBy(['email' => $command->getEmail()]);
 
         if (count($lista_usuarios) < 1) {
-            throw new UsuarioNaoEncontrado();
+            throw new UsuarioNaoEncontradoException();
         }
 
         $usuario = current($lista_usuarios);

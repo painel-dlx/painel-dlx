@@ -26,7 +26,7 @@
 namespace PainelDLX\Testes\Helpers;
 
 
-use DLX\Infra\EntityManagerX;
+use DLX\Infrastructure\EntityManagerX;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\ORM\ORMException;
