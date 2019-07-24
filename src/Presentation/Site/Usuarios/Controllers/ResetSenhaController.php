@@ -33,6 +33,8 @@ use DLX\Infrastructure\EntityManagerX;
 use Doctrine\ORM\ORMException;
 use League\Tactician\CommandBus;
 use PainelDLX\Application\Services\Exceptions\ErroAoEnviarEmailException;
+use PainelDLX\Domain\Usuarios\Exceptions\ResetSenhaNaoEncontradoException;
+use PainelDLX\Domain\Usuarios\Exceptions\UsuarioNaoEncontradoException;
 use PainelDLX\UseCases\Usuarios\AlterarSenhaUsuario\AlterarSenhaUsuarioCommand;
 use PainelDLX\UseCases\Usuarios\AlterarSenhaUsuario\AlterarSenhaUsuarioCommandHandler;
 use PainelDLX\UseCases\Usuarios\EnviarEmailResetSenha\EnviarEmailResetSenhaCommand;
@@ -134,7 +136,7 @@ class ResetSenhaController extends PainelDLXController
 
             $json['retorno'] = 'sucesso';
             $json['mensagem'] = 'Foi enviado um email com instruções para recuperar sua senha.';
-        } catch (ErroAoEnviarEmailException | UserException $e) {
+        } catch (UsuarioNaoEncontradoException | ErroAoEnviarEmailException | UserException $e) {
             $json['retorno'] = 'erro';
             $json['mensagem'] = $e->getMessage();
         }
@@ -148,34 +150,27 @@ class ResetSenhaController extends PainelDLXController
      * @throws ContextoInvalidoException
      * @throws PaginaMestraNaoEncontradaException
      * @throws ViewNaoEncontradaException
-     * @throws ORMException
      */
     public function formResetSenha(ServerRequestInterface $request): ResponseInterface
     {
         $hash = filter_var($request->getQueryParams()['hash']);
 
         try {
-            // TODO: está dando erro para gerar o proxy do usuário
-            EntityManagerX::getRepository(Usuario::class)->find(2);
-
-            /** @covers GetResetSenhaPorHashCommandHandler */
+            /* @see GetResetSenhaPorHashCommandHandler */
             $reset_senha = $this->command_bus->handle(new GetResetSenhaPorHashCommand($hash));
-
-            if (is_null($reset_senha)) {
-                throw new UserException('Solicitação não encontrada!');
-            }
 
             $this->session->set('hash', $hash);
 
             // Views
-            $this->view->addTemplate('form_resetar_senha', [
-                'titulo-pagina' => 'Recuperação de senha',
-                'reset-senha' => $reset_senha
-            ]);
+            $this->view->addTemplate('login/form_resetar_senha');
+
+            // Parâmetros
+            $this->view->setAtributo('titulo-pagina', 'Recuperação de senha');
+            $this->view->setAtributo('reset-senha', $reset_senha);
 
             // JS
             $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js', false, Configure::get('app', 'versao'));
-        } catch (UserException $e) {
+        } catch (ResetSenhaNaoEncontradoException | UserException $e) {
             $this->view->addTemplate('common/mensagem_usuario');
             $this->view->setAtributo('mensagem', [
                 'tipo' => 'erro',
@@ -189,7 +184,6 @@ class ResetSenhaController extends PainelDLXController
     /**
      * @param ServerRequestInterface $request
      * @return ResponseInterface
-     * @throws ORMException
      */
     public function resetarSenha(ServerRequestInterface $request): ResponseInterface
     {
@@ -207,32 +201,22 @@ class ResetSenhaController extends PainelDLXController
         extract($post); unset($post);
 
         try {
-            // TODO: está dando erro para gerar o proxy do usuário
-            EntityManagerX::getRepository(Usuario::class)->find(2);
+            $senha_usuario = new SenhaUsuario($senha_nova, $senha_confirm, null, true);
 
-            $senha_usuario = new SenhaUsuario($senha_nova, $senha_confirm);
-
-            /** @covers GetResetSenhaPorHashCommandHandler */
+            /* @see GetResetSenhaPorHashCommandHandler */
             $reset_senha = $this->command_bus->handle(new GetResetSenhaPorHashCommand($hash));
 
-            if (is_null($reset_senha)) {
-                throw new UserException('Solicitação não encontrada!');
-            }
+            $this->transaction->transactional(function () use ($reset_senha, $senha_usuario) {
+                /* @see AlterarSenhaUsuarioCommandHandler */
+                $this->command_bus->handle(new AlterarSenhaUsuarioCommand($reset_senha->getUsuario(), $senha_usuario));
 
-            $this->transaction->begin();
-
-            /* @see AlterarSenhaUsuarioCommandHandler */
-            $this->command_bus->handle(new AlterarSenhaUsuarioCommand($reset_senha->getUsuario(), $senha_usuario, true));
-
-            /* @see UtilizarResetSenhaCommandHandler */
-            $this->command_bus->handle(new UtilizarResetSenhaCommand($reset_senha));
-
-            $this->transaction->commit();
+                /* @see UtilizarResetSenhaCommandHandler */
+                $this->command_bus->handle(new UtilizarResetSenhaCommand($reset_senha));
+            });
 
             $json['retorno'] = 'sucesso';
             $json['mensagem'] = 'Senha alterada com sucesso! Faça login no sistema com sua nova senha.';
-        } catch (UserException $e) {
-            $this->transaction->rollback();
+        } catch (ResetSenhaNaoEncontradoException | ErroAoEnviarEmailException | UserException $e) {
             $json['retorno'] = 'erro';
             $json['mensagem'] = $e->getMessage();
         }

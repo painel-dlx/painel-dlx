@@ -54,7 +54,9 @@ $reset_senha = $this->getAtributo('reset-senha');
     </p>
 
     <p class="form-botoes">
-        <button type="submit" class="botao-reset-senha">Alterar senha</button>
+        <button type="submit" class="botao-reset-senha" data-ajax-msg="Salvando sua nova senha...<br>Por favor, aguarde.">
+            Alterar senha
+        </button>
     </p>
 </form>
 [/CORPO]
@@ -62,12 +64,13 @@ $reset_senha = $this->getAtributo('reset-senha');
 [SCRIPTS]
 <script>
     $('#form-reset-senha').formAjax({
-        func_depois: function(retorno) {
-            alert(retorno.mensagem);
-
-            if (retorno.retorno === 'sucesso') {
+        func_depois: function(json, status, xhr) {
+            if (json.retorno === 'sucesso') {
+                msgUsuario.adicionar(json.mensagem, json.retorno, xhr.id);
                 window.location = '/';
             }
+
+            msgUsuario.mostrar(json.mensagem, json.retorno, xhr.id);
         }
     });
 </script>

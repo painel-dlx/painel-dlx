@@ -9,7 +9,7 @@
 namespace PainelDLX\UseCases\Usuarios\EnviarEmailResetSenha;
 
 
-use PainelDLX\Application\Services\EnviarEmail;
+use PainelDLX\Infrastructure\Services\Email\EnviarEmail;
 use PainelDLX\Application\Services\Exceptions\ErroAoEnviarEmailException;
 use PainelDLX\Domain\Emails\Repositories\ConfigSmtpRepositoryInterface;
 use PainelDLX\UseCases\Usuarios\EnviarEmailResetSenha\EnviarEmailResetSenhaCommand;

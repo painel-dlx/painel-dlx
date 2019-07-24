@@ -1,3 +1,5 @@
+/* global $ */
+
 /**
  * Exibir um determinado trecho HTML
  */
@@ -30,12 +32,14 @@ function encerrarSessao() {
         url: '/painel-dlx/login/encerrar-sessao',
         type: 'get',
         dataType: 'json',
+        mensagem: 'Encerrando sua sessão...',
         success: function (json) {
             if (json.retorno === 'sucesso') {
                 window.location = '/';
-            } else {
-                msgUsuario.mostrar(json.mensagem);
+                return;
             }
+
+            msgUsuario.mostrar(json.mensagem);
         }
     });
 }

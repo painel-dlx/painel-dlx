@@ -26,9 +26,7 @@
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
 use Vilex\VileX;
 
-/**
- * @var VileX $this
- */
+/** @var VileX $this */
 ?>
 
 [CORPO]
@@ -46,7 +44,9 @@ use Vilex\VileX;
     </p>
 
     <p class="form-botoes">
-        <button type="submit" class="botao-reset-senha">Recuperar senha</button>
+        <button type="submit" class="botao-reset-senha" data-ajax-msg="Enviando email de recuperação da senha...<br>Por favor, aguarde um instante.">
+            Recuperar senha
+        </button>
     </p>
 </form>
 [/CORPO]
@@ -54,12 +54,13 @@ use Vilex\VileX;
 [SCRIPTS]
 <script>
     $('#form-reset-senha').formAjax({
-        func_depois: function(retorno) {
-            alert(retorno.mensagem);
-
-            if (retorno.retorno === 'sucesso') {
+        func_depois: function(json, status, xhr) {
+            if (json.retorno === 'sucesso') {
+                msgUsuario.adicionar(json.mensagem, json.retorno, xhr.id);
                 window.location = '/';
             }
+
+            msgUsuario.mostrar(json.mensagem, json.retorno, xhr.id);
         }
     });
 </script>

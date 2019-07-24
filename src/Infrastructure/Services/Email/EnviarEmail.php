@@ -23,11 +23,12 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Application\Services;
+namespace PainelDLX\Infrastructure\Services\Email;
 
 
 use PainelDLX\Application\Services\Exceptions\ErroAoEnviarEmailException;
 use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
+use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 
 class EnviarEmail
@@ -101,7 +102,7 @@ class EnviarEmail
      * @param string|null $cco
      * @return bool
      * @throws ErroAoEnviarEmailException
-     * @throws \PHPMailer\PHPMailer\Exception
+     * @throws Exception
      */
     public function enviarPara(string $para, ?string $cc = null, ?string $cco = null): bool
     {

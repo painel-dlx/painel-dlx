@@ -37,7 +37,7 @@ class UsuarioNaoEncontradoException extends Exception
     public static function porId($id): self
     {
         $valor_id = var_export($id, true);
-        return new self("Usuário não encontrado com o ID informado: {$valor_id}", 10);
+        return new self("Usuário não encontrado com o ID informado: {$valor_id}.", 10);
     }
 
     /**
@@ -47,6 +47,6 @@ class UsuarioNaoEncontradoException extends Exception
     public static function porEmail($email): self
     {
         $valor_email = var_export($email, true);
-        return new self("Usuário não encontrado com o email informado: {$valor_email}", 11);
+        return new self("Usuário não encontrado com o email informado: {$valor_email}.", 11);
     }
 }

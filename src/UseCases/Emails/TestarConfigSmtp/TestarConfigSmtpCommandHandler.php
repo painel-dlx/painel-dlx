@@ -9,7 +9,7 @@
 namespace PainelDLX\UseCases\Emails\TestarConfigSmtp;
 
 
-use PainelDLX\Application\Services\EnviarEmail;
+use PainelDLX\Infrastructure\Services\Email\EnviarEmail;
 use PainelDLX\Application\Services\Exceptions\ErroAoEnviarEmailException;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
