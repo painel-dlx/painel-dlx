@@ -31,6 +31,7 @@ use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\ORMException;
 use PainelDLX\Application\Factories\CommandBusFactory;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
+use PainelDLX\Domain\Usuarios\Exceptions\UsuarioJaPossuiGrupoException;
 use PainelDLX\Presentation\Site\Emails\Controllers\ConfigSmtpController;
 use PainelDLX\Tests\TestCase\PainelDLXTestCase;
 use PainelDLX\Tests\TestCase\TesteComTransaction;
@@ -155,6 +156,7 @@ class ConfigSmtpControllerTest extends PainelDLXTestCase
     /**
      * @covers ::testarConfigSmtp
      * @throws ViewNaoEncontradaException
+     * @throws UsuarioJaPossuiGrupoException
      */
     public function test_testarConfigSmtp_deve_retornar_um_JsonResponse_sucesso()
     {

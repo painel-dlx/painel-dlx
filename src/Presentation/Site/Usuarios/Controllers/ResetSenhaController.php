@@ -32,6 +32,7 @@ use DLX\Core\Exceptions\UserException;
 use DLX\Infrastructure\EntityManagerX;
 use Doctrine\ORM\ORMException;
 use League\Tactician\CommandBus;
+use PainelDLX\Application\Services\Exceptions\ErroAoEnviarEmailException;
 use PainelDLX\UseCases\Usuarios\AlterarSenhaUsuario\AlterarSenhaUsuarioCommand;
 use PainelDLX\UseCases\Usuarios\AlterarSenhaUsuario\AlterarSenhaUsuarioCommandHandler;
 use PainelDLX\UseCases\Usuarios\EnviarEmailResetSenha\EnviarEmailResetSenhaCommand;
@@ -58,13 +59,9 @@ use Zend\Diactoros\Response\JsonResponse;
 class ResetSenhaController extends PainelDLXController
 {
     /**
-     * @var SessionInterface
-     */
-    private $session;
-    /**
      * @var TransactionInterface
      */
-    private $transacao;
+    private $transaction;
 
     /**
      * ResetSenhaController constructor.
@@ -81,7 +78,7 @@ class ResetSenhaController extends PainelDLXController
         TransactionInterface $transacao
     ) {
         parent::__construct($view, $commandBus, $session);
-        $this->transacao = $transacao;
+        $this->transaction = $transacao;
     }
 
     /**
@@ -95,7 +92,7 @@ class ResetSenhaController extends PainelDLXController
     {
         try {
             // Views
-            $this->view->addTemplate('form_reset_senha', [
+            $this->view->addTemplate('login/form_reset_senha', [
                 'titulo-pagina' => 'Recuperação de senha'
             ]);
 
@@ -121,17 +118,23 @@ class ResetSenhaController extends PainelDLXController
         $email = filter_var($request->getParsedBody()['email'], FILTER_VALIDATE_EMAIL);
 
         try {
-            /** @see SolicitarResetSenhaCommandHandler */
-            /* @var ResetSenha $reset_senha */
-            $reset_senha = $this->command_bus->handle(new SolicitarResetSenhaCommand($email));
+            $json = [];
 
-            /* @see EnviarEmailResetSenhaCommandHandler */
-            $this->command_bus->handle(new EnviarEmailResetSenhaCommand($reset_senha));
+            // @todo: melhorar o retorno na variável $json
+            $this->transaction->transactional(function () use ($email, &$json) {
+                /** @var ResetSenha $reset_senha */
+                /* @see SolicitarResetSenhaCommandHandler */
+                $reset_senha = $this->command_bus->handle(new SolicitarResetSenhaCommand($email));
+
+                /* @see EnviarEmailResetSenhaCommandHandler */
+                $this->command_bus->handle(new EnviarEmailResetSenhaCommand($reset_senha));
+
+                $json['reset_senha_id'] = $reset_senha->getId();
+            });
 
             $json['retorno'] = 'sucesso';
             $json['mensagem'] = 'Foi enviado um email com instruções para recuperar sua senha.';
-            $json['reset_senha_id'] = $reset_senha->getId();
-        } catch (UserException $e) {
+        } catch (ErroAoEnviarEmailException | UserException $e) {
             $json['retorno'] = 'erro';
             $json['mensagem'] = $e->getMessage();
         }
@@ -216,7 +219,7 @@ class ResetSenhaController extends PainelDLXController
                 throw new UserException('Solicitação não encontrada!');
             }
 
-            $this->transacao->begin();
+            $this->transaction->begin();
 
             /* @see AlterarSenhaUsuarioCommandHandler */
             $this->command_bus->handle(new AlterarSenhaUsuarioCommand($reset_senha->getUsuario(), $senha_usuario, true));
@@ -224,12 +227,12 @@ class ResetSenhaController extends PainelDLXController
             /* @see UtilizarResetSenhaCommandHandler */
             $this->command_bus->handle(new UtilizarResetSenhaCommand($reset_senha));
 
-            $this->transacao->commit();
+            $this->transaction->commit();
 
             $json['retorno'] = 'sucesso';
             $json['mensagem'] = 'Senha alterada com sucesso! Faça login no sistema com sua nova senha.';
         } catch (UserException $e) {
-            $this->transacao->rollback();
+            $this->transaction->rollback();
             $json['retorno'] = 'erro';
             $json['mensagem'] = $e->getMessage();
         }

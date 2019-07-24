@@ -11,6 +11,11 @@ namespace PainelDLX\UseCases\Usuarios\EnviarEmailResetSenha;
 
 use PainelDLX\Domain\Usuarios\Entities\ResetSenha;
 
+/**
+ * Class EnviarEmailResetSenhaCommand
+ * @package PainelDLX\UseCases\Usuarios\EnviarEmailResetSenha
+ * @covers EnviarEmailResetSenhaCommandTest
+ */
 class EnviarEmailResetSenhaCommand
 {
     /**

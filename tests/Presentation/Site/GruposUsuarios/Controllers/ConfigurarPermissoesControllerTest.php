@@ -25,20 +25,12 @@
 
 namespace PainelDLX\Testes\Presentation\Site\GruposUsuarios\Controllers;
 
-use DLX\Core\CommandBus\CommandBusAdapter;
-use DLX\Core\Configure;
 use DLX\Infrastructure\EntityManagerX;
-use DLX\Infrastructure\ORM\Doctrine\Services\DoctrineTransaction;
+use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\ORMException;
-use League\Tactician\Container\ContainerLocator;
-use League\Tactician\Handler\CommandHandlerMiddleware;
-use League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor;
-use League\Tactician\Handler\MethodNameInflector\HandleInflector;
-use PainelDLX\Application\Factories\CommandBusFactory;
 use PainelDLX\Presentation\Site\GruposUsuarios\Controllers\ConfigurarPermissoesController;
-use PainelDLX\Testes\Application\UseCases\GruposUsuarios\NovoGrupoUsuario\NovoGrupoUsuarioHandlerTest;
-use PainelDLX\Testes\TestCase\PainelDLXTestCase;
-use PainelDLX\Testes\TestCase\TesteComTransaction;
+use PainelDLX\Tests\TestCase\PainelDLXTestCase;
+use PainelDLX\Tests\TestCase\TesteComTransaction;
 use Psr\Http\Message\ServerRequestInterface;
 use SechianeX\Exceptions\SessionAdapterInterfaceInvalidaException;
 use SechianeX\Exceptions\SessionAdapterNaoEncontradoException;
@@ -46,7 +38,6 @@ use SechianeX\Factories\SessionFactory;
 use Vilex\Exceptions\ContextoInvalidoException;
 use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
 use Vilex\Exceptions\ViewNaoEncontradaException;
-use Vilex\VileX;
 use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Diactoros\Response\JsonResponse;
 
@@ -61,7 +52,6 @@ class ConfigurarPermissoesControllerTest extends PainelDLXTestCase
 
     /**
      * @return ConfigurarPermissoesController
-     * @throws ORMException
      * @throws SessionAdapterInterfaceInvalidaException
      * @throws SessionAdapterNaoEncontradoException
      */
@@ -70,14 +60,7 @@ class ConfigurarPermissoesControllerTest extends PainelDLXTestCase
         $session = SessionFactory::createPHPSession();
         $session->set('vilex:pagina-mestra', 'painel-dlx-master');
 
-        $command_bus = CommandBusFactory::create(self::$container, Configure::get('app', 'mapping'));
-
-        $controller = new ConfigurarPermissoesController(
-            new VileX(),
-            $command_bus(),
-            new DoctrineTransaction(EntityManagerX::getInstance()),
-            $session
-        );
+        $controller = self::$painel_dlx->getContainer()->get(ConfigurarPermissoesController::class);
 
         $this->assertInstanceOf(ConfigurarPermissoesController::class, $controller);
 
@@ -85,21 +68,48 @@ class ConfigurarPermissoesControllerTest extends PainelDLXTestCase
     }
 
     /**
+     * @return int
+     * @throws ORMException
+     * @throws DBALException
+     */
+    private function getIdGrupoUsuario(): int
+    {
+        $query = '
+            select
+                *
+            from
+                dlx_grupos_usuarios
+            order by 
+                rand()
+            limit 1
+        ';
+
+        $sql = EntityManagerX::getInstance()->getConnection()->executeQuery($query);
+        $grupo_usuario_id = $sql->fetchColumn();
+
+        if (empty($grupo_usuario_id)) {
+            $this->markTestIncomplete('Nenhum grupo de usuário encontrado para executar o teste.');
+        }
+
+        return $grupo_usuario_id;
+    }
+
+    /**
+     * @param ConfigurarPermissoesController $controller
      * @throws ContextoInvalidoException
+     * @throws DBALException
+     * @throws ORMException
      * @throws PaginaMestraNaoEncontradaException
      * @throws ViewNaoEncontradaException
-     * @throws ORMException
      * @covers ::formConfigurarPermissao
      * @depends test__construct
      */
     public function test_FormConfigurarPermissao_deve_retornar_um_HtmlResponse(ConfigurarPermissoesController $controller)
     {
-        $grupo_usuario = (new NovoGrupoUsuarioHandlerTest())->test_Handle();
+        $grupo_usuario_id = $this->getIdGrupoUsuario();
 
         $request = $this->createMock(ServerRequestInterface::class);
-        $request
-            ->method('getQueryParams')
-            ->willReturn(['grupo_usuario_id' => $grupo_usuario->getId()]);
+        $request->method('getQueryParams')->willReturn(['grupo_usuario_id' => $grupo_usuario_id]);
 
         /** @var ServerRequestInterface $request */
         $response = $controller->formConfigurarPermissao($request);
@@ -108,21 +118,21 @@ class ConfigurarPermissoesControllerTest extends PainelDLXTestCase
     }
 
     /**
+     * @param ConfigurarPermissoesController $controller
+     * @throws DBALException
      * @throws ORMException
      * @covers ::salvarConfiguracaoPermissao
      * @depends test__construct
      */
     public function test_SalvarConfiguracaoPermissao_deve_retornar_um_JsonResponse_sucesso(ConfigurarPermissoesController $controller)
     {
-        $grupo_usuario = (new NovoGrupoUsuarioHandlerTest())->test_Handle();
+        $grupo_usuario_id = $this->getIdGrupoUsuario();
 
         $request = $this->createMock(ServerRequestInterface::class);
-        $request
-            ->method('getParsedBody')
-            ->willReturn([
-                'grupo_usuario_id' => $grupo_usuario->getId(),
-                'permissao_usuario_ids' => range(1, 100)
-            ]);
+        $request->method('getParsedBody')->willReturn([
+            'grupo_usuario_id' => $grupo_usuario_id,
+            'permissao_usuario_ids' => range(1, 100)
+        ]);
 
         /** @var ServerRequestInterface $request */
         $response = $controller->salvarConfiguracaoPermissao($request);

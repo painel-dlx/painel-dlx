@@ -31,6 +31,11 @@ use PainelDLX\Domain\PermissoesUsuario\Entities\PermissaoUsuario;
 use PainelDLX\Domain\PermissoesUsuario\Exceptions\PermissaoUsuarioJaPossuiGrupoException;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Class PermissaoUsuarioTest
+ * @package PainelDLX\Testes\Domain\PermissoesUsuarios\Entities
+ * @coversDefaultClass \PainelDLX\Domain\PermissoesUsuario\Entities\PermissaoUsuario
+ */
 class PermissaoUsuarioTest extends TestCase
 {
     /** @var string */

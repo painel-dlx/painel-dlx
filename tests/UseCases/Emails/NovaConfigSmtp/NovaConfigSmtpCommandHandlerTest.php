@@ -23,7 +23,7 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Tests\Application\UseCases\Emails\NovaConfigSmtp;
+namespace PainelDLX\Testes\Application\UseCases\Emails\NovaConfigSmtp;
 
 use PainelDLX\Domain\Emails\Exceptions\ConfigSmtpInvalidoException;
 use PainelDLX\Domain\Emails\Services\Validators\SalvarConfigSmtpValidator;
@@ -38,7 +38,7 @@ use PHPUnit\Framework\TestCase;
  * @package PainelDLX\Testes\Application\UseCases\Emails\NovaConfigSmtp
  * @coversDefaultClass \PainelDLX\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpCommandHandler
  */
-class NovaConfigSmtpHandlerTest extends TestCase
+class NovaConfigSmtpCommandHandlerTest extends TestCase
 {
     /**
      * @return ConfigSmtp

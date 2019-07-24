@@ -15,6 +15,11 @@ use PainelDLX\Domain\Usuarios\Entities\ResetSenha;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Class EnviarEmailResetSenhaCommandTest
+ * @package PainelDLX\Testes\Application\UseCases\Usuarios\EnviarEmailResetSenha
+ * @coversDefaultClass \PainelDLX\UseCases\Usuarios\EnviarEmailResetSenha\EnviarEmailResetSenhaCommand
+ */
 class EnviarEmailResetSenhaCommandTest extends TestCase
 {
     /**

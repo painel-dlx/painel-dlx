@@ -43,6 +43,11 @@ use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
 use Vilex\Exceptions\ViewNaoEncontradaException;
 use Zend\Diactoros\Response\JsonResponse;
 
+/**
+ * Class EditarConfigSmtpController
+ * @package PainelDLX\Presentation\Site\Emails\Controllers
+ * @covers EditarConfigSmtpControllerTest
+ */
 class EditarConfigSmtpController extends PainelDLXController
 {
     /**

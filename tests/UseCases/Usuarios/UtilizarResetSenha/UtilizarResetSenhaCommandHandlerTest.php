@@ -25,29 +25,40 @@
 
 namespace PainelDLX\Testes\Application\UseCases\Usuarios\UtilizarResetSenha;
 
-use DLX\Infrastructure\EntityManagerX;
-use Doctrine\ORM\ORMException;
+use PainelDLX\Domain\Usuarios\Entities\Usuario;
+use PainelDLX\Domain\Usuarios\Exceptions\UsuarioJaPossuiGrupoException;
 use PainelDLX\UseCases\Usuarios\UtilizarResetSenha\UtilizarResetSenhaCommand;
 use PainelDLX\UseCases\Usuarios\UtilizarResetSenha\UtilizarResetSenhaCommandHandler;
 use PainelDLX\Domain\Usuarios\Entities\ResetSenha;
-use PainelDLX\Domain\Usuarios\Exceptions\UsuarioNaoEncontradoException;
 use PainelDLX\Domain\Usuarios\Repositories\ResetSenhaRepositoryInterface;
-use PainelDLX\Testes\Application\UseCases\Usuarios\SolicitarResetSenha\SolicitarResetSenhaHandlerTest;
-use PainelDLX\Testes\TestCase\PainelDLXTestCase;
+use PHPUnit\Framework\TestCase;
 
-class UtilizarResetSenhaHandlerTest extends PainelDLXTestCase
+/**
+ * Class UtilizarResetSenhaCommandHandlerTest
+ * @package PainelDLX\Testes\Application\UseCases\Usuarios\UtilizarResetSenha
+ * @coversDefaultClass \PainelDLX\UseCases\Usuarios\UtilizarResetSenha\UtilizarResetSenhaCommandHandler
+ */
+class UtilizarResetSenhaCommandHandlerTest extends TestCase
 {
     /**
-     * @throws ORMException
-     * @throws UsuarioNaoEncontradoException
+     * @throws UsuarioJaPossuiGrupoException
+     * @covers ::handle
      */
-    public function test_Handle()
+    public function test_Handle_deve_utilizar_um_determinado_hash_de_ResetSenha_para_que_nao_seja_mais_utilizado()
     {
-        $reset_senha = (new SolicitarResetSenhaHandlerTest())->test_Handle();
-        $this->assertFalse($reset_senha->isUtilizado());
+        $hash = uniqid();
+
+        // Criar um usuário para poder pedir o reset de senha
+        $usuario = new Usuario('Diego Lepera', 'dlepera88.emails@gmail.com');
+        $usuario->setSenha('345nesf87p1AS');
+
+        $reset_senha = new ResetSenha();
+        $reset_senha->setUsuario($usuario);
+        $reset_senha->setHash($hash);
+
+        $reset_senha_repository = $this->createMock(ResetSenhaRepositoryInterface::class);
 
         /** @var ResetSenhaRepositoryInterface $reset_senha_repository */
-        $reset_senha_repository = EntityManagerX::getRepository(ResetSenha::class);
 
         $command = new UtilizarResetSenhaCommand($reset_senha);
         $reset_senha = (new UtilizarResetSenhaCommandHandler($reset_senha_repository))->handle($command);

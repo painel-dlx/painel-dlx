@@ -28,6 +28,11 @@ namespace PainelDLX\UseCases\Usuarios\UtilizarResetSenha;
 
 use PainelDLX\Domain\Usuarios\Entities\ResetSenha;
 
+/**
+ * Class UtilizarResetSenhaCommand
+ * @package PainelDLX\UseCases\Usuarios\UtilizarResetSenha
+ * @covers UtilizarResetSenhaCommandTest
+ */
 class UtilizarResetSenhaCommand
 {
     /**

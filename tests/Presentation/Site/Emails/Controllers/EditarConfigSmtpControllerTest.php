@@ -25,97 +25,113 @@
 
 namespace PainelDLX\Testes\Presentation\Site\Emails\Controllers;
 
-use DLX\Core\CommandBus\CommandBusAdapter;
-use DLX\Core\Configure;
-use DLX\Core\Exceptions\ArquivoConfiguracaoNaoEncontradoException;
-use DLX\Core\Exceptions\ArquivoConfiguracaoNaoInformadoException;
+use DLX\Infrastructure\EntityManagerX;
+use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\ORMException;
-use League\Tactician\Container\ContainerLocator;
-use League\Tactician\Handler\CommandHandlerMiddleware;
-use League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor;
-use League\Tactician\Handler\MethodNameInflector\HandleInflector;
-use PainelDLX\Application\Services\Exceptions\AmbienteNaoInformadoException;
-use PainelDLX\Domain\Emails\Exceptions\AutentContaNaoInformadaException;
-use PainelDLX\Domain\Emails\Exceptions\AutentSenhaNaoInformadaException;
 use PainelDLX\Presentation\Site\Emails\Controllers\EditarConfigSmtpController;
-use PainelDLX\Testes\Application\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpHandlerTest;
-use PainelDLX\Testes\TestCase\PainelDLXTestCase;
+use PainelDLX\Tests\TestCase\PainelDLXTestCase;
+use PainelDLX\Tests\TestCase\TesteComTransaction;
 use Psr\Http\Message\ServerRequestInterface;
-use RautereX\Exceptions\RotaNaoEncontradaException;
-use ReflectionException;
 use Vilex\Exceptions\ContextoInvalidoException;
 use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
 use Vilex\Exceptions\ViewNaoEncontradaException;
-use Vilex\VileX;
 use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Diactoros\Response\JsonResponse;
 
-class EditarConfigSmtpControllerTestCase extends PainelDLXTestCase
+/**
+ * Class EditarConfigSmtpControllerTest
+ * @package PainelDLX\Testes\Presentation\Site\Emails\Controllers
+ * @coversDefaultClass \PainelDLX\Presentation\Site\Emails\Controllers\EditarConfigSmtpController
+ */
+class EditarConfigSmtpControllerTest extends PainelDLXTestCase
 {
-    /** @var EditarConfigSmtpController */
+    use TesteComTransaction;
+
+    /**
+     * @var EditarConfigSmtpController
+     */
     private $controller;
 
     /**
-     * @throws ArquivoConfiguracaoNaoEncontradoException
-     * @throws ArquivoConfiguracaoNaoInformadoException
-     * @throws RotaNaoEncontradaException
-     * @throws ReflectionException
-     * @throws AmbienteNaoInformadoException
      * @throws ORMException
      */
     protected function setUp()
     {
         parent::setUp();
+        $this->controller = self::$painel_dlx->getContainer()->get(EditarConfigSmtpController::class);
+    }
 
-        $this->controller = new EditarConfigSmtpController(
-            new VileX(),
-            CommandBusAdapter::create(new CommandHandlerMiddleware(
-                new ClassNameExtractor,
-                new ContainerLocator($this->container, Configure::get('app', 'mapping')),
-                new HandleInflector
-            ))
-        );
+    /**
+     * @return int
+     * @throws DBALException
+     * @throws ORMException
+     */
+    private function getIdConfigSmtp(): int
+    {
+        $query = '
+            select
+                config_smtp_id
+            from
+                dlx_config_smtp
+            order by
+                rand()
+            limit 1
+        ';
+
+        $sql = EntityManagerX::getInstance()->getConnection()->executeQuery($query);
+        $id = $sql->fetchColumn();
+
+        if (empty($id)) {
+            $this->markTestIncomplete('Nenhuma configuração SMTP encontrada para fazer o teste.');
+        }
+
+        return $id;
     }
 
     /**
      * @throws ContextoInvalidoException
      * @throws PaginaMestraNaoEncontradaException
      * @throws ViewNaoEncontradaException
+     * @throws ORMException
+     * @throws DBALException
      */
     public function test_FormEditarConfigSmtp_deve_retornar_HtmlResponse()
     {
-        /** @var ServerRequestInterface $request */
-        $request = $this->createMock(ServerRequestInterface::class);
-        $response = $this->controller->formEditarConfigSmtp($request);
+        $config_smtp_id = $this->getIdConfigSmtp();
 
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->method('getQueryParams')->willReturn([
+            'config_smtp_id' => $config_smtp_id
+        ]);
+
+        /** @var ServerRequestInterface $request */
+
+        $response = $this->controller->formEditarConfigSmtp($request);
         $this->assertInstanceOf(HtmlResponse::class, $response);
     }
 
     /**
+     * @throws DBALException
      * @throws ORMException
-     * @throws AutentContaNaoInformadaException
-     * @throws AutentSenhaNaoInformadaException
      */
-    public function test_EditarConfigSmtp()
+    public function test_EditarConfigSmtp_deve_retornar_JsonResponse()
     {
-        $config_smtp = (new NovaConfigSmtpHandlerTest())->test_Handle();
+        $config_smtp_id = $this->getIdConfigSmtp();
 
         $request = $this->createMock(ServerRequestInterface::class);
-        $request
-            ->method('getParsedBody')
-            ->willReturn([
-                'config_smtp_id' => $config_smtp->getId(),
-                'nome' => 'Teste de edição',
-                'servidor' => 'localhost',
-                'porta' => 25,
-                'cripto' => null,
-                'requer_autent' => false,
-                'conta' => null,
-                'senha' => null,
-                'de_nome' => 'Painel DLX',
-                'responder_para' => null,
-                'corpo_html' => true
-            ]);
+        $request->method('getParsedBody')->willReturn([
+            'config_smtp_id' => $config_smtp_id,
+            'nome' => 'Teste de edição',
+            'servidor' => 'localhost',
+            'porta' => 25,
+            'cripto' => null,
+            'requer_autent' => false,
+            'conta' => null,
+            'senha' => null,
+            'de_nome' => 'Painel DLX',
+            'responder_para' => null,
+            'corpo_html' => true
+        ]);
 
         /** @var ServerRequestInterface $request */
         $response = $this->controller->editarConfigSmtp($request);

@@ -16,7 +16,12 @@ use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPUnit\Framework\TestCase;
 
-class TestarConfigSmtpHandlerTest extends TestCase
+/**
+ * Class TestarConfigSmtpCommandHandlerTest
+ * @package PainelDLX\Testes\Application\UseCases\Emails\TestarConfigSmtp
+ * @coversDefaultClass \PainelDLX\UseCases\Emails\TestarConfigSmtp\TestarConfigSmtpCommandHandler
+ */
+class TestarConfigSmtpCommandHandlerTest extends TestCase
 {
     /**
      * @throws Exception

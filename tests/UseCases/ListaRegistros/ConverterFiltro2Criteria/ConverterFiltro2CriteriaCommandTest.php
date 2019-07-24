@@ -26,10 +26,18 @@
 namespace PainelDLX\Testes\Application\UseCases\ListaRegistros\ConverterFiltro2Criteria;
 
 use PainelDLX\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommand;
-use PainelDLX\Testes\TestCase\PainelDLXTestCase;
+use PHPUnit\Framework\TestCase;
 
-class ConverterFiltro2CriteriaCommandTest extends PainelDLXTestCase
+/**
+ * Class ConverterFiltro2CriteriaCommandTest
+ * @package PainelDLX\Testes\Application\UseCases\ListaRegistros\ConverterFiltro2Criteria
+ * @coversDefaultClass \PainelDLX\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommand
+ */
+class ConverterFiltro2CriteriaCommandTest extends TestCase
 {
+    /**
+     * @covers ::getCampos
+     */
     public function test_GetCampos()
     {
         $campos = ['campo1', 'campo2'];
@@ -40,6 +48,9 @@ class ConverterFiltro2CriteriaCommandTest extends PainelDLXTestCase
         $this->assertEquals($campos, $command->getCampos());
     }
 
+    /**
+     * @covers ::getBusca
+     */
     public function test_GetBusca()
     {
         $campos = ['campo1', 'campo2'];

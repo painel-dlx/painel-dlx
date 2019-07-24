@@ -27,9 +27,15 @@ namespace PainelDLX\UseCases\Usuarios\GetResetSenhaPorHash;
 
 
 use PainelDLX\Domain\Usuarios\Entities\ResetSenha;
+use PainelDLX\Domain\Usuarios\Exceptions\ResetSenhaNaoEncontradoException;
 use PainelDLX\Domain\Usuarios\Repositories\ResetSenhaRepositoryInterface;
 use PainelDLX\UseCases\Usuarios\GetResetSenhaPorHash\GetResetSenhaPorHashCommand;
 
+/**
+ * Class GetResetSenhaPorHashCommandHandler
+ * @package PainelDLX\UseCases\Usuarios\GetResetSenhaPorHash
+ * @covers GetResetSenhaPorHashCommandHandlerTest
+ */
 class GetResetSenhaPorHashCommandHandler
 {
     /**
@@ -49,9 +55,18 @@ class GetResetSenhaPorHashCommandHandler
     /**
      * @param GetResetSenhaPorHashCommand $command
      * @return ResetSenha|null
+     * @throws ResetSenhaNaoEncontradoException
      */
     public function handle(GetResetSenhaPorHashCommand $command): ?ResetSenha
     {
-        return $this->reset_senha_repository->findResetSenhaAtivoPorHash($command->getHash());
+        $hash = $command->getHash();
+
+        $reset_senha = $this->reset_senha_repository->findResetSenhaAtivoPorHash($hash);
+
+        if (is_null($reset_senha)) {
+            throw ResetSenhaNaoEncontradoException::porHash($hash);
+        }
+
+        return $reset_senha;
     }
 }

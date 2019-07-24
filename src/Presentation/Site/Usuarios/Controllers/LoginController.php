@@ -42,6 +42,11 @@ use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
 use Vilex\Exceptions\ViewNaoEncontradaException;
 use Zend\Diactoros\Response\JsonResponse;
 
+/**
+ * Class LoginController
+ * @package PainelDLX\Presentation\Site\Usuarios\Controllers
+ * @covers LoginControllerTest
+ */
 class LoginController extends PainelDLXController
 {
     /**

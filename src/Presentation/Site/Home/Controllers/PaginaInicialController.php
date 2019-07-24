@@ -22,6 +22,11 @@ use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
 use Vilex\Exceptions\ViewNaoEncontradaException;
 use Vilex\VileX;
 
+/**
+ * Class PaginaInicialController
+ * @package PainelDLX\Presentation\Site\Home\Controllers
+ * @covers PaginaInicialControllerTest
+ */
 class PaginaInicialController extends PainelDLXController
 {
     /**

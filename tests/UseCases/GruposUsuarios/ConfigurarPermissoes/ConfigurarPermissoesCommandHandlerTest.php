@@ -28,30 +28,39 @@ namespace PainelDLX\Testes\Application\UseCases\GruposUsuarios\ConfigurarPermiss
 use DLX\Infrastructure\EntityManagerX;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\ORMException;
+use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
 use PainelDLX\UseCases\GruposUsuarios\ConfigurarPermissoes\ConfigurarPermissoesCommand;
 use PainelDLX\UseCases\GruposUsuarios\ConfigurarPermissoes\ConfigurarPermissoesCommandHandler;
-use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
 use PainelDLX\Domain\GruposUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
 use PainelDLX\Domain\PermissoesUsuario\Entities\PermissaoUsuario;
-use PainelDLX\Testes\Application\UseCases\GruposUsuarios\NovoGrupoUsuario\NovoGrupoUsuarioHandlerTest;
-use PainelDLX\Testes\TestCase\PainelDLXTestCase;
+use PHPUnit\Framework\TestCase;
 
-class ConfigurarPermissoesHandlerTest extends PainelDLXTestCase
+/**
+ * Class ConfigurarPermissoesCommandHandlerTest
+ * @package PainelDLX\Testes\Application\UseCases\GruposUsuarios\ConfigurarPermissoes
+ * @coversDefaultClass \PainelDLX\UseCases\GruposUsuarios\ConfigurarPermissoes\ConfigurarPermissoesCommandHandler
+ */
+class ConfigurarPermissoesCommandHandlerTest extends TestCase
 {
     /**
-     * @throws ORMException
+     * @covers ::handle
      */
-    public function test_Handle()
+    public function test_Handle_deve_adicionar_permissoes_em_GrupoUsuario()
     {
-        /** @var GrupoUsuarioRepositoryInterface $grupo_usuario_repository */
-        $grupo_usuario_repository = EntityManagerX::getRepository(GrupoUsuario::class);
+        $grupo_usuario_repository = $this->createMock(GrupoUsuarioRepositoryInterface::class);
+        $grupo_usuario_repository->method('update')->willReturn(null);
 
-        $grupo_usuario = (new NovoGrupoUsuarioHandlerTest())->test_Handle();
+        /** @var GrupoUsuarioRepositoryInterface $grupo_usuario_repository */
+
         $permissoes = new ArrayCollection();
 
-        $permissoes->add(PermissaoUsuario::create('TESTE_1', 'Teste 1'));
-        $permissoes->add(PermissaoUsuario::create('TESTE_2', 'Teste 2'));
-        $permissoes->add(PermissaoUsuario::create('TESTE_3', 'Teste 3'));
+        $grupo_usuario = new GrupoUsuario();
+        $grupo_usuario->setNome('Grupo de Teste');
+        $grupo_usuario->setAlias('GRUPO_DE_TESTE');
+
+        $permissoes->add(new PermissaoUsuario('TESTE_1', 'Teste 1'));
+        $permissoes->add(new PermissaoUsuario('TESTE_2', 'Teste 2'));
+        $permissoes->add(new PermissaoUsuario('TESTE_3', 'Teste 3'));
 
         $command = new ConfigurarPermissoesCommand($grupo_usuario, $permissoes);
         $grupo_usuario = (new ConfigurarPermissoesCommandHandler($grupo_usuario_repository))->handle($command);

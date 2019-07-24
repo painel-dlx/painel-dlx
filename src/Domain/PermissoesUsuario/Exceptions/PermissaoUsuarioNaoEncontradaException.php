@@ -23,26 +23,20 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Testes\Application\UseCases\Emails\NovaConfigSmtp;
+namespace PainelDLX\Domain\PermissoesUsuario\Exceptions;
 
-use PainelDLX\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpCommand;
-use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
-use PainelDLX\Testes\TestCase\PainelDLXTestCase;
-use PHPUnit\Framework\TestCase;
 
-class NovaConfigSmtpCommandTestCase extends PainelDLXTestCase
+use Exception;
+
+class PermissaoUsuarioNaoEncontradaException extends Exception
 {
-    public function test__construct()
+    /**
+     * @param $id
+     * @return PermissaoUsuarioNaoEncontradaException
+     */
+    public static function porId($id): self
     {
-        $config_smtp = new ConfigSmtp();
-        $command = new NovaConfigSmtpCommand($config_smtp);
-        $this->assertInstanceOf(ConfigSmtp::class, $command->getConfigSmtp());
-    }
-
-    public function testGetConfigSmtp()
-    {
-        $config_smtp = new ConfigSmtp();
-        $command = new NovaConfigSmtpCommand($config_smtp);
-        $this->assertEquals('localhost', $command->getConfigSmtp()->getServidor());
+        $valor_id = var_export($id, true);
+        return new self("Permissão de usuário não encontrada com ID informado: {$valor_id}.", 10);
     }
 }

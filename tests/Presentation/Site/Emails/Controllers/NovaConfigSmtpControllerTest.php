@@ -25,53 +25,38 @@
 
 namespace PainelDLX\Testes\Presentation\Site\Emails\Controllers;
 
-use DLX\Core\CommandBus\CommandBusAdapter;
-use DLX\Core\Configure;
-use DLX\Core\Exceptions\ArquivoConfiguracaoNaoEncontradoException;
-use DLX\Core\Exceptions\ArquivoConfiguracaoNaoInformadoException;
 use Doctrine\ORM\ORMException;
-use League\Tactician\Container\ContainerLocator;
-use League\Tactician\Handler\CommandHandlerMiddleware;
-use League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor;
-use League\Tactician\Handler\MethodNameInflector\HandleInflector;
-use PainelDLX\Application\Services\Exceptions\AmbienteNaoInformadoException;
 use PainelDLX\Presentation\Site\Emails\Controllers\NovaConfigSmtpController;
-use PainelDLX\Testes\TestCase\PainelDLXTestCase;
+use PainelDLX\Tests\TestCase\PainelDLXTestCase;
+use PainelDLX\Tests\TestCase\TesteComTransaction;
 use Psr\Http\Message\ServerRequestInterface;
-use RautereX\Exceptions\RotaNaoEncontradaException;
-use ReflectionException;
 use Vilex\Exceptions\ContextoInvalidoException;
 use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
 use Vilex\Exceptions\ViewNaoEncontradaException;
-use Vilex\VileX;
 use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Diactoros\Response\JsonResponse;
 
-class NovaConfigSmtpControllerTestCase extends PainelDLXTestCase
+/**
+ * Class NovaConfigSmtpControllerTest
+ * @package PainelDLX\Testes\Presentation\Site\Emails\Controllers
+ * @coversDefaultClass \PainelDLX\Presentation\Site\Emails\Controllers\NovaConfigSmtpController
+ */
+class NovaConfigSmtpControllerTest extends PainelDLXTestCase
 {
-    /** @var NovaConfigSmtpController */
+    use TesteComTransaction;
+
+    /**
+     * @var NovaConfigSmtpController
+     */
     private $controller;
 
     /**
-     * @throws ArquivoConfiguracaoNaoEncontradoException
-     * @throws ArquivoConfiguracaoNaoInformadoException
-     * @throws RotaNaoEncontradaException
-     * @throws ReflectionException
-     * @throws AmbienteNaoInformadoException
      * @throws ORMException
      */
     protected function setUp()
     {
         parent::setUp();
-
-        $this->controller = new NovaConfigSmtpController(
-            new VileX(),
-            CommandBusAdapter::create(new CommandHandlerMiddleware(
-                new ClassNameExtractor,
-                new ContainerLocator($this->container, Configure::get('app', 'mapping')),
-                new HandleInflector
-            ))
-        );
+        $this->controller = self::$painel_dlx->getContainer()->get(NovaConfigSmtpController::class);
     }
 
     /**
@@ -94,20 +79,18 @@ class NovaConfigSmtpControllerTestCase extends PainelDLXTestCase
     public function test_SalvarNovaConfigSmtp_retornar_instancia_JsonResponse()
     {
         $request = $this->createMock(ServerRequestInterface::class);
-        $request
-            ->method('getParsedBody')
-            ->willReturn([
-                'nome' => 'Teste',
-                'servidor' => 'localhost',
-                'porta' => 25,
-                'cripto' => null,
-                'requer_autent' => false,
-                'conta' => null,
-                'senha' => null,
-                'de_nome' => 'Painel DLX',
-                'responder_para' => null,
-                'corpo_html' => true
-            ]);
+        $request->method('getParsedBody')->willReturn([
+            'nome' => 'Teste',
+            'servidor' => 'localhost',
+            'porta' => 25,
+            'cripto' => null,
+            'requer_autent' => false,
+            'conta' => null,
+            'senha' => null,
+            'de_nome' => 'Painel DLX',
+            'responder_para' => null,
+            'corpo_html' => true
+        ]);
 
         /** @var ServerRequestInterface $request */
         $response = $this->controller->salvarNovaConfigSmtp($request);

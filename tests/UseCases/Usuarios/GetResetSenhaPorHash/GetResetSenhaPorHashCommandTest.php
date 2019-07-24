@@ -26,11 +26,18 @@
 namespace PainelDLX\Testes\Application\UseCases\Usuarios\GetResetSenhaPorHash;
 
 use PainelDLX\UseCases\Usuarios\GetResetSenhaPorHash\GetResetSenhaPorHashCommand;
-use PainelDLX\Testes\TestCase\PainelDLXTestCase;
+use PHPUnit\Framework\TestCase;
 
-class GetResetSenhaPorHashCommandTest extends PainelDLXTestCase
+/**
+ * Class GetResetSenhaPorHashCommandTest
+ * @package PainelDLX\Testes\Application\UseCases\Usuarios\GetResetSenhaPorHash
+ * @coversDefaultClass \PainelDLX\UseCases\Usuarios\GetResetSenhaPorHash\GetResetSenhaPorHashCommand
+ */
+class GetResetSenhaPorHashCommandTest extends TestCase
 {
-
+    /**
+     * @covers ::getHash
+     */
     public function test_GetHash()
     {
         $hash = uniqid('pdlx');

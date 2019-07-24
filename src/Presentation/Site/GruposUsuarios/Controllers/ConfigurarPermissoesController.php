@@ -49,6 +49,11 @@ use Vilex\Exceptions\ViewNaoEncontradaException;
 use Vilex\VileX;
 use Zend\Diactoros\Response\JsonResponse;
 
+/**
+ * Class ConfigurarPermissoesController
+ * @package PainelDLX\Presentation\Site\GruposUsuarios\Controllers
+ * @covers ConfigurarPermissoesControllerTest
+ */
 class ConfigurarPermissoesController extends PainelDLXController
 {
     /**

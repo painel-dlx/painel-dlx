@@ -25,18 +25,35 @@
 
 namespace PainelDLX\Testes\Application\UseCases\Emails\ExcluirConfigSmtp;
 
-use PainelDLX\UseCases\Emails\ExcluirConfigSmtp\ExcluirConfigSmtpCommand;
 use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
-use PainelDLX\Testes\TestCase\PainelDLXTestCase;
+use PainelDLX\UseCases\Emails\ExcluirConfigSmtp\ExcluirConfigSmtpCommand;
+use PainelDLX\UseCases\Emails\ExcluirConfigSmtp\ExcluirConfigSmtpCommandHandler;
+use PainelDLX\Domain\Emails\Repositories\ConfigSmtpRepositoryInterface;
 use PHPUnit\Framework\TestCase;
 
-class ExcluirConfigSmtpCommandTestCase extends PainelDLXTestCase
+/**
+ * Class ExcluirConfigSmtpHandlerTest
+ * @package PainelDLX\Testes\Application\UseCases\Emails\ExcluirConfigSmtp
+ * @coversDefaultClass \PainelDLX\UseCases\Emails\ExcluirConfigSmtp\ExcluirConfigSmtpCommandHandler
+ */
+class ExcluirConfigSmtpCommandHandlerTest extends TestCase
 {
-    public function testGetConfigSmtp()
+    /**
+     * @covers ::handle
+     */
+    public function test_Handle()
     {
-        $config_smtp = new ConfigSmtp();
-        $command = new ExcluirConfigSmtpCommand($config_smtp);
+        $config_smtp = $this->createMock(ConfigSmtp::class);
 
-        $this->assertInstanceOf(ConfigSmtp::class, $command->getConfigSmtp());
+        $config_smtp_repository = $this->createMock(ConfigSmtpRepositoryInterface::class);
+        $config_smtp_repository->method('delete')->willReturn(null);
+
+        /** @var ConfigSmtp $config_smtp */
+        /** @var ConfigSmtpRepositoryInterface $config_smtp_repository */
+
+        $command = new ExcluirConfigSmtpCommand($config_smtp);
+        (new ExcluirConfigSmtpCommandHandler($config_smtp_repository))->handle($command);
+
+        $this->expectNotToPerformAssertions();
     }
 }

@@ -31,6 +31,11 @@ use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
 use PainelDLX\Domain\GruposUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
 use PainelDLX\Domain\PermissoesUsuario\Entities\PermissaoUsuario;
 
+/**
+ * Class ConfigurarPermissoesCommandHandler
+ * @package PainelDLX\UseCases\GruposUsuarios\ConfigurarPermissoes
+ * @covers ConfigurarPermissoesCommandHandlerTest
+ */
 class ConfigurarPermissoesCommandHandler
 {
     /**

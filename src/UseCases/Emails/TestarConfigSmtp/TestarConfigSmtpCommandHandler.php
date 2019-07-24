@@ -14,6 +14,11 @@ use PainelDLX\Application\Services\Exceptions\ErroAoEnviarEmailException;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 
+/**
+ * Class TestarConfigSmtpCommandHandler
+ * @package PainelDLX\UseCases\Emails\TestarConfigSmtp
+ * @covers TestarConfigSmtpCommandHandlerTest
+ */
 class TestarConfigSmtpCommandHandler
 {
     /**

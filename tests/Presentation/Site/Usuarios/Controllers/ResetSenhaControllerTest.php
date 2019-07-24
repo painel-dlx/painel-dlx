@@ -8,29 +8,24 @@
 
 namespace PainelDLX\Testes\Presentation\Site\Usuarios\Controllers;
 
-use DLX\Core\CommandBus\CommandBusAdapter;
-use DLX\Core\Configure;
 use DLX\Infrastructure\EntityManagerX;
-use DLX\Infrastructure\ORM\Doctrine\Services\DoctrineTransaction;
+use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\ORMException;
-use League\Tactician\Container\ContainerLocator;
-use League\Tactician\Handler\CommandHandlerMiddleware;
-use League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor;
-use League\Tactician\Handler\MethodNameInflector\HandleInflector;
-use PainelDLX\Application\Factories\CommandBusFactory;
-use PainelDLX\Domain\Usuarios\Exceptions\UsuarioNaoEncontradoException;
 use PainelDLX\Presentation\Site\Usuarios\Controllers\ResetSenhaController;
-use PainelDLX\Testes\Application\UseCases\Usuarios\SolicitarResetSenha\SolicitarResetSenhaHandlerTest;
-use PainelDLX\Testes\TestCase\PainelDLXTestCase;
-use PainelDLX\Testes\TestCase\TesteComTransaction;
+use PainelDLX\Tests\TestCase\PainelDLXTestCase;
+use PainelDLX\Tests\TestCase\TesteComTransaction;
 use Psr\Http\Message\ServerRequestInterface;
 use SechianeX\Contracts\SessionInterface;
+use SechianeX\Exceptions\SessionAdapterInterfaceInvalidaException;
+use SechianeX\Exceptions\SessionAdapterNaoEncontradoException;
+use SechianeX\Factories\SessionFactory;
 use Vilex\Exceptions\ContextoInvalidoException;
 use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
 use Vilex\Exceptions\ViewNaoEncontradaException;
-use Vilex\VileX;
 use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Diactoros\Response\JsonResponse;
+
+$_SESSION = [];
 
 /**
  * Class ResetSenhaControllerTest
@@ -41,35 +36,29 @@ class ResetSenhaControllerTest extends PainelDLXTestCase
 {
     use TesteComTransaction;
 
-    /** @var SessionInterface */
+    /**
+     * @var SessionInterface
+     */
     private $session;
 
+    /**
+     * @throws ORMException
+     * @throws SessionAdapterInterfaceInvalidaException
+     * @throws SessionAdapterNaoEncontradoException
+     */
     protected function setUp()
     {
         parent::setUp();
-
-        $this->session = $this->createMock(SessionInterface::class);
-        $this->session
-            ->method('get')
-            ->with('vilex:pagina-mestra')
-            ->willReturn('painel-dlx-master');
+        $this->session = SessionFactory::createPHPSession();
+        $this->session->set('vilex:pagina-mestra', 'painel-dlx-master');
     }
 
     /**
      * @return ResetSenhaController
-     * @throws ORMException
      */
     public function test__construct(): ResetSenhaController
     {
-        $command_bus = CommandBusFactory::create(self::$container, Configure::get('app', 'mapping'));
-
-        /** @var SessionInterface $session */
-        $controller = new ResetSenhaController(
-            new VileX(),
-            $command_bus(),
-            $this->session,
-            new DoctrineTransaction(EntityManagerX::getInstance())
-        );
+        $controller = self::$painel_dlx->getContainer()->get(ResetSenhaController::class);
 
         $this->assertInstanceOf(ResetSenhaController::class, $controller);
 
@@ -77,6 +66,7 @@ class ResetSenhaControllerTest extends PainelDLXTestCase
     }
 
     /**
+     * @param ResetSenhaController $controller
      * @throws ContextoInvalidoException
      * @throws PaginaMestraNaoEncontradaException
      * @throws ViewNaoEncontradaException
@@ -100,9 +90,7 @@ class ResetSenhaControllerTest extends PainelDLXTestCase
     public function test_SolicitarResetSenha_deve_retornar_JsonResponse_sucesso(ResetSenhaController $controller)
     {
         $request = $this->createMock(ServerRequestInterface::class);
-        $request
-            ->method('getParsedBody')
-            ->willReturn(['email' => 'dlepera88@gmail.com']);
+        $request->method('getParsedBody')->willReturn(['email' => 'dlepera88@gmail.com']);
 
         /** @var ServerRequestInterface $request */
         $response = $controller->solicitarResetSenha($request);
@@ -120,19 +108,34 @@ class ResetSenhaControllerTest extends PainelDLXTestCase
      * @throws ContextoInvalidoException
      * @throws ORMException
      * @throws PaginaMestraNaoEncontradaException
-     * @throws UsuarioNaoEncontradoException
      * @throws ViewNaoEncontradaException
+     * @throws DBALException
      * @covers ::formResetSenha
      * @depends test__construct
      */
     public function test_FormResetSenha_deve_retornar_um_HtmlResponse(ResetSenhaController $controller)
     {
-        $reset_senha = (new SolicitarResetSenhaHandlerTest())->test_Handle();
+        $query = '
+            select
+                hash
+            from
+                dlx_reset_senha
+            where
+                utilizado = 0
+            order by 
+                rand()
+            limit 1
+        ';
+
+        $sql = EntityManagerX::getInstance()->getConnection()->executeQuery($query);
+        $reset_senha_hash = $sql->fetchColumn();
+
+        if (empty($reset_senha_hash)) {
+            $this->markTestIncomplete('Nenhuma recuperação de senha encontrada para executar o teste.');
+        }
 
         $request = $this->createMock(ServerRequestInterface::class);
-        $request
-            ->method('getQueryParams')
-            ->willReturn(['hash' => $reset_senha->getHash()]);
+        $request->method('getQueryParams')->willReturn(['hash' => $reset_senha_hash]);
 
         /** @var ServerRequestInterface $request */
         $response = $controller->formResetSenha($request);
@@ -143,20 +146,16 @@ class ResetSenhaControllerTest extends PainelDLXTestCase
     /**
      * @param ResetSenhaController $controller
      * @throws ORMException
-     * @throws UsuarioNaoEncontradoException
      * @covers ::resetarSenha
      * @depends test__construct
      */
-    public function teste_resetarSenha_deve_retornar_um_JsonResponse_sucesso(ResetSenhaController $controller)
+    public function test_ResetarSenha_deve_retornar_um_JsonResponse_sucesso(ResetSenhaController $controller)
     {
         $this->markTestSkipped('Erro no mock da sessão.');
 
-        $reset_senha = (new SolicitarResetSenhaHandlerTest())->test_Handle();
+        // $reset_senha = (new SolicitarResetSenhaCommandHandlerTest())->test_Handle();
 
-        $this->session
-            ->method('get')
-            ->with('hash')
-            ->willReturn($reset_senha->getHash());
+        // $this->session->set('hash', $reset_senha->getHash());
 
         $request = $this->createMock(ServerRequestInterface::class);
         $request

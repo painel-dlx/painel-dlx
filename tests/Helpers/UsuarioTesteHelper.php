@@ -23,7 +23,7 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Testes\Helpers;
+namespace PainelDLX\Tests\Helpers;
 
 
 use DLX\Infrastructure\EntityManagerX;

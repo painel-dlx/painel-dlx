@@ -29,10 +29,15 @@ use PainelDLX\UseCases\Usuarios\UtilizarResetSenha\UtilizarResetSenhaCommand;
 use PainelDLX\Domain\Usuarios\Entities\ResetSenha;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Class UtilizarResetSenhaCommandTest
+ * @package PainelDLX\Testes\Application\UseCases\Usuarios\UtilizarResetSenha
+ * @coversDefaultClass \PainelDLX\UseCases\Usuarios\UtilizarResetSenha\UtilizarResetSenhaCommand
+ */
 class UtilizarResetSenhaCommandTest extends TestCase
 {
     /**
-     *
+     * @covers ::getResetSenha
      */
     public function test_GetResetSenha()
     {

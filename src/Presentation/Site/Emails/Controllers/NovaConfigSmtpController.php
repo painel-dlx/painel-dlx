@@ -40,6 +40,11 @@ use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
 use Vilex\Exceptions\ViewNaoEncontradaException;
 use Zend\Diactoros\Response\JsonResponse;
 
+/**
+ * Class NovaConfigSmtpController
+ * @package PainelDLX\Presentation\Site\Emails\Controllers
+ * @covers NovaConfigSmtpControllerTest
+ */
 class NovaConfigSmtpController extends PainelDLXController
 {
     /**

@@ -18,6 +18,11 @@ use PainelDLX\Domain\Usuarios\Repositories\ResetSenhaRepositoryInterface;
 use PainelDLX\Domain\Usuarios\Repositories\UsuarioRepositoryInterface;
 use PainelDLX\UseCases\Usuarios\SolicitarResetSenha\SolicitarResetSenhaCommand;
 
+/**
+ * Class SolicitarResetSenhaCommandHandler
+ * @package PainelDLX\UseCases\Usuarios\SolicitarResetSenha
+ * @covers SolicitarResetSenhaCommandHandlerTest
+ */
 class SolicitarResetSenhaCommandHandler
 {
     /**
@@ -33,7 +38,6 @@ class SolicitarResetSenhaCommandHandler
      * SolicitarResetSenhaCommandHandler constructor.
      * @param ResetSenhaRepositoryInterface $reset_senha_repository
      * @param UsuarioRepositoryInterface $usuario_repository
-     * @param ConfigSmtpRepositoryInterface $config_smtp_repository
      */
     public function __construct(
         ResetSenhaRepositoryInterface $reset_senha_repository,
@@ -45,15 +49,18 @@ class SolicitarResetSenhaCommandHandler
 
     /**
      * @param SolicitarResetSenhaCommand $command
+     * @return ResetSenha
      * @throws UsuarioNaoEncontradoException
      * @throws Exception
      */
     public function handle(SolicitarResetSenhaCommand $command): ResetSenha
     {
-        $lista_usuarios = $this->usuario_repository->findBy(['email' => $command->getEmail()]);
+        $email = $command->getEmail();
+
+        $lista_usuarios = $this->usuario_repository->findBy(['email' => $email]);
 
         if (count($lista_usuarios) < 1) {
-            throw new UsuarioNaoEncontradoException();
+            throw UsuarioNaoEncontradoException::porEmail($email);
         }
 
         $usuario = current($lista_usuarios);

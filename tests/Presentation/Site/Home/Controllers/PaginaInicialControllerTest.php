@@ -8,20 +8,8 @@
 
 namespace PainelDLX\Testes\Presentation\Site\Home\Controllers;
 
-use DLX\Core\CommandBus\CommandBusAdapter;
-use DLX\Core\Configure;
-use DLX\Core\Exceptions\ArquivoConfiguracaoNaoEncontradoException;
-use DLX\Core\Exceptions\ArquivoConfiguracaoNaoInformadoException;
-use DLX\Infrastructure\EntityManagerX;
-use Doctrine\ORM\ORMException;
-use League\Tactician\Container\ContainerLocator;
-use League\Tactician\Handler\CommandHandlerMiddleware;
-use League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor;
-use League\Tactician\Handler\MethodNameInflector\HandleInflector;
-use PainelDLX\Application\Factories\CommandBusFactory;
-use PainelDLX\Application\Services\Exceptions\AmbienteNaoInformadoException;
 use PainelDLX\Presentation\Site\Home\Controllers\PaginaInicialController;
-use PainelDLX\Testes\TestCase\PainelDLXTestCase;
+use PainelDLX\Tests\TestCase\PainelDLXTestCase;
 use Psr\Http\Message\ServerRequestInterface;
 use SechianeX\Exceptions\SessionAdapterInterfaceInvalidaException;
 use SechianeX\Exceptions\SessionAdapterNaoEncontradoException;
@@ -29,7 +17,6 @@ use SechianeX\Factories\SessionFactory;
 use Vilex\Exceptions\ContextoInvalidoException;
 use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
 use Vilex\Exceptions\ViewNaoEncontradaException;
-use Vilex\VileX;
 use Zend\Diactoros\Response\HtmlResponse;
 
 /**
@@ -49,12 +36,7 @@ class PaginaInicialControllerTest extends PainelDLXTestCase
         $session = SessionFactory::createPHPSession();
         $session->set('vilex:pagina-mestra', 'painel-dlx-master');
 
-        $command_bus = CommandBusFactory::create(self::$container, Configure::get('app', 'mapping'));
-        $controller = new PaginaInicialController(
-            new VileX(),
-            $command_bus(),
-            $session
-        );
+        $controller = self::$painel_dlx->getContainer()->get(PaginaInicialController::class);
 
         $this->assertInstanceOf(PaginaInicialController::class, $controller);
 

@@ -25,7 +25,11 @@
 
 namespace PainelDLX\UseCases\Usuarios\GetResetSenhaPorHash;
 
-
+/**
+ * Class GetResetSenhaPorHashCommand
+ * @package PainelDLX\UseCases\Usuarios\GetResetSenhaPorHash
+ * @covers GetResetSenhaPorHashCommandTest
+ */
 class GetResetSenhaPorHashCommand
 {
     /**

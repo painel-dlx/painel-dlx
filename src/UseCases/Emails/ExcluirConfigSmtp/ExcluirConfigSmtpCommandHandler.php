@@ -28,6 +28,11 @@ namespace PainelDLX\UseCases\Emails\ExcluirConfigSmtp;
 
 use PainelDLX\Domain\Emails\Repositories\ConfigSmtpRepositoryInterface;
 
+/**
+ * Class ExcluirConfigSmtpCommandHandler
+ * @package PainelDLX\UseCases\Emails\ExcluirConfigSmtp
+ * @covers ExcluirConfigSmtpCommandHandlerTest
+ */
 class ExcluirConfigSmtpCommandHandler
 {
     /**

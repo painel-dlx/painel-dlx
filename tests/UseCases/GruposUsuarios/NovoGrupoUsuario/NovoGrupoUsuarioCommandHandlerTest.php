@@ -23,32 +23,35 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Testes\Application\UseCases\GruposUsuarios\GetGrupoUsuarioPorId;
+namespace PainelDLX\Testes\Application\UseCases\GruposUsuarios\NovoGrupoUsuario;
 
-use DLX\Infrastructure\EntityManagerX;
-use Doctrine\ORM\ORMException;
-use PainelDLX\UseCases\GruposUsuarios\GetGrupoUsuarioPorId\GetGrupoUsuarioPorIdCommand;
-use PainelDLX\UseCases\GruposUsuarios\GetGrupoUsuarioPorId\GetGrupoUsuarioPorIdCommandHandler;
+use Exception;
+use PainelDLX\Domain\GruposUsuarios\Validators\AliasUtilizadoValidator;
+use PainelDLX\UseCases\GruposUsuarios\NovoGrupoUsuario\NovoGrupoUsuarioCommand;
+use PainelDLX\UseCases\GruposUsuarios\NovoGrupoUsuario\NovoGrupoUsuarioCommandHandler;
 use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
 use PainelDLX\Domain\GruposUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
-use PainelDLX\Testes\Application\UseCases\GruposUsuarios\NovoGrupoUsuario\NovoGrupoUsuarioHandlerTest;
-use PainelDLX\Testes\TestCase\PainelDLXTestCase;
+use PHPUnit\Framework\TestCase;
 
-class GetGrupoUsuarioPorIdHandlerTest extends PainelDLXTestCase
+class NovoGrupoUsuarioCommandHandlerTest extends TestCase
 {
     /**
-     * @throws ORMException
+     * @return void
+     * @throws Exception
      */
-    public function test_Handle()
+    public function test_Handle_deve_preencher_informacoes_Usuario_e_salvar_no_bd()
     {
+        $grupo_usuario_repository = $this->createMock(GrupoUsuarioRepositoryInterface::class);
+        $validator = $this->createMock(AliasUtilizadoValidator::class);
+
         /** @var GrupoUsuarioRepositoryInterface $grupo_usuario_repository */
-        $grupo_usuario_repository = EntityManagerX::getRepository(GrupoUsuario::class);
+        /** @var AliasUtilizadoValidator $validator */
 
-        $grupo_usuario = (new NovoGrupoUsuarioHandlerTest())->test_Handle();
+        $nome = 'Teste 123';
+        $command = new NovoGrupoUsuarioCommand($nome);
+        $grupo_usuario = (new NovoGrupoUsuarioCommandHandler($grupo_usuario_repository, $validator))->handle($command);
 
-        $command = new GetGrupoUsuarioPorIdCommand($grupo_usuario->getId());
-        $grupo_usuario2 = (new GetGrupoUsuarioPorIdCommandHandler($grupo_usuario_repository))->handle($command);
-
-        $this->assertEquals($grupo_usuario, $grupo_usuario2);
+        $this->assertInstanceOf(GrupoUsuario::class, $grupo_usuario);
+        $this->assertEquals($nome, $grupo_usuario->getNome());
     }
 }

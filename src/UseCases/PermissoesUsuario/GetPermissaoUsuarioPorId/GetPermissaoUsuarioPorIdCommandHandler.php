@@ -27,6 +27,7 @@ namespace PainelDLX\UseCases\PermissoesUsuario\GetPermissaoUsuarioPorId;
 
 
 use PainelDLX\Domain\PermissoesUsuario\Entities\PermissaoUsuario;
+use PainelDLX\Domain\PermissoesUsuario\Exceptions\PermissaoUsuarioNaoEncontradaException;
 use PainelDLX\Domain\PermissoesUsuario\Repositories\PermissaoUsuarioRepositoryInterface;
 
 /**
@@ -41,6 +42,10 @@ class GetPermissaoUsuarioPorIdCommandHandler
      */
     private $permissao_usuario_repository;
 
+    /**
+     * GetPermissaoUsuarioPorIdCommandHandler constructor.
+     * @param PermissaoUsuarioRepositoryInterface $permissao_usuario_repository
+     */
     public function __construct(PermissaoUsuarioRepositoryInterface $permissao_usuario_repository)
     {
         $this->permissao_usuario_repository = $permissao_usuario_repository;
@@ -49,9 +54,18 @@ class GetPermissaoUsuarioPorIdCommandHandler
     /**
      * @param GetPermissaoUsuarioPorIdCommand $command
      * @return PermissaoUsuario|null
+     * @throws PermissaoUsuarioNaoEncontradaException
      */
     public function handle(GetPermissaoUsuarioPorIdCommand $command): ?PermissaoUsuario
     {
-        return $this->permissao_usuario_repository->find($command->getId());
+        $permissao_usuario_id = $command->getId();
+
+        $permissao_usuario = $this->permissao_usuario_repository->find($permissao_usuario_id);
+
+        if (is_null($permissao_usuario)) {
+            throw PermissaoUsuarioNaoEncontradaException::porId($permissao_usuario_id);
+        }
+
+        return $permissao_usuario;
     }
 }

@@ -29,71 +29,57 @@ use DLX\Infrastructure\EntityManagerX;
 use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\ORMException;
 use PainelDLX\Domain\PermissoesUsuario\Entities\PermissaoUsuario;
+use PainelDLX\Domain\PermissoesUsuario\Exceptions\PermissaoUsuarioNaoEncontradaException;
 use PainelDLX\Domain\PermissoesUsuario\Repositories\PermissaoUsuarioRepositoryInterface;
-use PainelDLX\Testes\TestCase\PainelDLXTestCase;
 use PainelDLX\UseCases\PermissoesUsuario\GetPermissaoUsuarioPorId\GetPermissaoUsuarioPorIdCommand;
 use PainelDLX\UseCases\PermissoesUsuario\GetPermissaoUsuarioPorId\GetPermissaoUsuarioPorIdCommandHandler;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class GetPermissaoUsuarioPorIdCommandHandlerTest
  * @package PainelDLX\Tests\UseCases\PermissoesUsuario\GetPermissaoUsuarioPorId
  * @coversDefaultClass \PainelDLX\UseCases\PermissoesUsuario\GetPermissaoUsuarioPorId\GetPermissaoUsuarioPorIdCommandHandler
  */
-class GetPermissaoUsuarioPorIdCommandHandlerTest extends PainelDLXTestCase
+class GetPermissaoUsuarioPorIdCommandHandlerTest extends TestCase
 {
     /**
-     * @return GetPermissaoUsuarioPorIdCommandHandler
-     * @throws ORMException
+     * @covers ::handle
+     * @throws PermissaoUsuarioNaoEncontradaException
      */
-    public function test__construct(): GetPermissaoUsuarioPorIdCommandHandler
+    public function test_Handle_deve_lancar_excecao_quando_nao_encontrar_registro_bd()
     {
+        $permissao_usuario_repository = $this->createMock(PermissaoUsuarioRepositoryInterface::class);
+        $permissao_usuario_repository->method('find')->willReturn(null);
+
         /** @var PermissaoUsuarioRepositoryInterface $permissao_usuario_repository */
-        $permissao_usuario_repository = EntityManagerX::getRepository(PermissaoUsuario::class);
-        $handler = new GetPermissaoUsuarioPorIdCommandHandler($permissao_usuario_repository);
 
-        $this->assertInstanceOf(GetPermissaoUsuarioPorIdCommandHandler::class, $handler);
+        $this->expectException(PermissaoUsuarioNaoEncontradaException::class);
+        $this->expectExceptionCode(10);
 
-        return $handler;
-    }
-
-    /**
-     * @param GetPermissaoUsuarioPorIdCommandHandler $handler
-     * @covers ::handle
-     * @depends test__construct
-     */
-    public function test_Handle_deve_retornar_null_quando_nao_encontrar_registro_bd(GetPermissaoUsuarioPorIdCommandHandler $handler)
-    {
         $command = new GetPermissaoUsuarioPorIdCommand(0);
-        $permissao_usuario = $handler->handle($command);
-
-        $this->assertNull($permissao_usuario);
+        (new GetPermissaoUsuarioPorIdCommandHandler($permissao_usuario_repository))->handle($command);
     }
 
     /**
-     * @param GetPermissaoUsuarioPorIdCommandHandler $handler
-     * @throws ORMException
-     * @throws DBALException
+     * @throws PermissaoUsuarioNaoEncontradaException
      * @covers ::handle
-     * @depends test__construct
      */
-    public function test_Handle_deve_retornar_PermissaoUsuario_quando_encontrar_registro_bd(GetPermissaoUsuarioPorIdCommandHandler $handler)
+    public function test_Handle_deve_retornar_PermissaoUsuario_quando_encontrar_registro_bd()
     {
-        $query = '
-            select
-                permissao_usuario_id
-            from
-                dlx_permissoes_usuario
-            order by 
-                rand()
-            limit 1
-        ';
+        $permissao_usuario_id = mt_rand();
 
-        $sql = EntityManagerX::getInstance()->getConnection()->executeQuery($query);
-        $id = $sql->fetchColumn();
+        $permissao_usuario = $this->createMock(PermissaoUsuario::class);
+        $permissao_usuario->method('getId')->willReturn($permissao_usuario_id);
 
-        $command = new GetPermissaoUsuarioPorIdCommand($id);
-        $permissao_usuario = $handler->handle($command);
+        $permissao_usuario_repository = $this->createMock(PermissaoUsuarioRepositoryInterface::class);
+        $permissao_usuario_repository->method('find')->willReturn($permissao_usuario);
 
-        $this->assertInstanceOf(PermissaoUsuario::class, $permissao_usuario);
+        /** @var PermissaoUsuarioRepositoryInterface $permissao_usuario_repository */
+
+        $command = new GetPermissaoUsuarioPorIdCommand($permissao_usuario_id);
+        $permissao_usuario_retornada = (new GetPermissaoUsuarioPorIdCommandHandler($permissao_usuario_repository))->handle($command);
+
+        $this->assertInstanceOf(PermissaoUsuario::class, $permissao_usuario_retornada);
+        $this->assertEquals($permissao_usuario_id, $permissao_usuario_retornada->getId());
     }
 }

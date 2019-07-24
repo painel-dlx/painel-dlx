@@ -25,7 +25,11 @@
 
 namespace PainelDLX\UseCases\ListaRegistros\ConverterFiltro2Criteria;
 
-
+/**
+ * Class ConverterFiltro2CriteriaCommand
+ * @package PainelDLX\UseCases\ListaRegistros\ConverterFiltro2Criteria
+ * @covers ConverterFiltro2CriteriaCommandTest
+ */
 class ConverterFiltro2CriteriaCommand
 {
     /**

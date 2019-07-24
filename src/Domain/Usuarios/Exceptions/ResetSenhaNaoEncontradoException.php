@@ -23,34 +23,30 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Testes\Application\UseCases\GruposUsuarios\ConfigurarPermissoes;
+namespace PainelDLX\Domain\Usuarios\Exceptions;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use PainelDLX\UseCases\GruposUsuarios\ConfigurarPermissoes\ConfigurarPermissoesCommand;
-use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
-use PainelDLX\Testes\TestCase\PainelDLXTestCase;
 
-class ConfigurarPermissoesCommandTest extends PainelDLXTestCase
+use Exception;
+
+class ResetSenhaNaoEncontradoException extends Exception
 {
     /**
-     * @var ConfigurarPermissoesCommand
+     * @param $id
+     * @return ResetSenhaNaoEncontradoException
      */
-    private $command;
-
-    protected function setUp()
+    public static function porId($id): self
     {
-        parent::setUp();
-
-        $this->command = new ConfigurarPermissoesCommand(new GrupoUsuario(), new ArrayCollection());
+        $valor_id = var_export($id, true);
+        return new self("Solicitação de recuperação de senha não encontrada com o ID informado: {$valor_id}.", 10);
     }
 
-    public function test_GetPermissoes_deve_retornar_uma_ArrayCollection()
+    /**
+     * @param $hash
+     * @return ResetSenhaNaoEncontradoException
+     */
+    public static function porHash($hash): self
     {
-        $this->assertInstanceOf(ArrayCollection::class, $this->command->getPermissoes());
-    }
-
-    public function test_GetGrupoUsuario_deve_retornar_um_GrupoUsuario()
-    {
-        $this->assertInstanceOf(GrupoUsuario::class, $this->command->getGrupoUsuario());
+        $valor_hash = var_export($hash, true);
+        return new self("Solicitação de recuperação de senha não encontrada com o hash informado: {$valor_hash}.", 11);
     }
 }

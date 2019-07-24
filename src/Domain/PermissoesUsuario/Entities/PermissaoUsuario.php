@@ -32,6 +32,11 @@ use Doctrine\Common\Collections\Collection;
 use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
 use PainelDLX\Domain\PermissoesUsuario\Exceptions\PermissaoUsuarioJaPossuiGrupoException;
 
+/**
+ * Class PermissaoUsuario
+ * @package PainelDLX\Domain\PermissoesUsuario\Entities
+ * @covers PermissaoUsuarioTest
+ */
 class PermissaoUsuario extends Entity
 {
     /** @var int */
@@ -140,8 +145,15 @@ class PermissaoUsuario extends Entity
         return $this;
     }
 
-    public function __construct()
+    /**
+     * PermissaoUsuario constructor.
+     * @param string $alias
+     * @param string $descricao
+     */
+    public function __construct(string $alias, string $descricao)
     {
+        $this->setAlias($alias);
+        $this->setDescricao($descricao);
         $this->grupos = new ArrayCollection();
     }
 
@@ -149,12 +161,11 @@ class PermissaoUsuario extends Entity
      * @param string $alias
      * @param string $descricao
      * @return PermissaoUsuario
+     * @deprecated
      */
     public static function create(string $alias, string $descricao)
     {
-        return (new self)
-            ->setAlias($alias)
-            ->setDescricao($descricao);
+        return new self($alias, $descricao);
     }
 
     /**
