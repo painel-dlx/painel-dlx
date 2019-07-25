@@ -70,12 +70,12 @@ class NovaConfigSmtpCommand
         string $servidor,
         int $porta,
         ?string $cripto,
-        bool $requer_autent,
-        ?string $conta,
-        ?string $senha,
-        ?string $de_nome,
-        ?string $responder_para,
-        bool $corpo_html
+        bool $requer_autent = false,
+        ?string $conta = null,
+        ?string $senha = null,
+        ?string $de_nome = null,
+        ?string $responder_para = null,
+        bool $corpo_html = false
     ) {
         $this->nome = $nome;
         $this->servidor = $servidor;

@@ -25,13 +25,11 @@
 
 namespace PainelDLX\Infrastructure\ORM\Doctrine\Repositories;
 
-
-use DLX\Infrastructure\ORM\Doctrine\Repositories\EntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
 use PainelDLX\Domain\GruposUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
 
-class GrupoUsuarioRepository extends EntityRepository implements GrupoUsuarioRepositoryInterface
+class GrupoUsuarioRepository extends AbstractPainelDLXRepository implements GrupoUsuarioRepositoryInterface
 {
     /**
      * Obter a lista de grupos de usuários por um array de IDs passados.

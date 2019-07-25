@@ -26,10 +26,9 @@
 namespace PainelDLX\Infrastructure\ORM\Doctrine\Repositories;
 
 
-use DLX\Infrastructure\ORM\Doctrine\Repositories\EntityRepository;
 use PainelDLX\Domain\Modulos\Repositories\MenuItemPermissaoRepositoryInterface;
 
-class MenuItemPermissaoRepository extends EntityRepository implements MenuItemPermissaoRepositoryInterface
+class MenuItemPermissaoRepository extends AbstractPainelDLXRepository implements MenuItemPermissaoRepositoryInterface
 {
 
 }

@@ -8,14 +8,12 @@
 
 namespace PainelDLX\Infrastructure\ORM\Doctrine\Repositories;
 
-
-use DLX\Infrastructure\ORM\Doctrine\Repositories\EntityRepository;
 use Exception;
 use PainelDLX\Domain\Usuarios\Entities\ResetSenha;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
 use PainelDLX\Domain\Usuarios\Repositories\ResetSenhaRepositoryInterface;
 
-class ResetSenhaRepository extends EntityRepository implements ResetSenhaRepositoryInterface
+class ResetSenhaRepository extends AbstractPainelDLXRepository implements ResetSenhaRepositoryInterface
 {
 
     /**

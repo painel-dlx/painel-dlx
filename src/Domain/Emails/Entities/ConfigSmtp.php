@@ -10,9 +10,14 @@ namespace PainelDLX\Domain\Emails\Entities;
 
 
 use DLX\Domain\Entities\Entity;
+use PainelDLX\Domain\Common\Entities\LogRegistroTrait;
 
 class ConfigSmtp extends Entity
 {
+    const TABELA_BD = 'dlx_config_smtp';
+
+    use LogRegistroTrait;
+
     /** @var int|null */
     private $id;
     /** @var string|null */

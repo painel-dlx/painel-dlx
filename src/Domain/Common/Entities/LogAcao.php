@@ -23,11 +23,12 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Infrastructure\ORM\Doctrine\Repositories;
+namespace PainelDLX\Domain\Common\Entities;
 
-use PainelDLX\Domain\Modulos\Repositories\MenuItemRepositoryInterface;
 
-class MenuItemRepository extends AbstractPainelDLXRepository implements MenuItemRepositoryInterface
+class LogAcao
 {
-
+    const INSERT = 'I';
+    const UPDATE = 'U';
+    const DELETE = 'D';
 }

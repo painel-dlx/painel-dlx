@@ -25,21 +25,16 @@
 
 namespace PainelDLX\Infrastructure\ORM\Doctrine\Repositories;
 
-
-use DLX\Infrastructure\ORM\Doctrine\Repositories\EntityRepository;
 use Doctrine\DBAL\DBALException;
-use Doctrine\ORM\Query\Expr\Join;
-use PainelDLX\Domain\Modulos\Entities\Menu;
-use PainelDLX\Domain\Modulos\Entities\MenuItem;
-use PainelDLX\Domain\Modulos\Entities\MenuItemPermissao;
 use PainelDLX\Domain\Modulos\Repositories\MenuRepositoryInterface;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
 
-class MenuRepository extends EntityRepository implements MenuRepositoryInterface
+class MenuRepository extends AbstractPainelDLXRepository implements MenuRepositoryInterface
 {
 
     /**
      * Lista de itens para gerar o menu
+     * @param Usuario $usuario
      * @return array
      * @throws DBALException
      */

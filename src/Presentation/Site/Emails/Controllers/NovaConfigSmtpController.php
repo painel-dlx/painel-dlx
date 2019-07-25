@@ -104,12 +104,12 @@ class NovaConfigSmtpController extends PainelDLXController
                 $servidor,
                 $porta,
                 $cripto,
-                $requer_autent,
+                $requer_autent ?? false,
                 $conta,
                 $senha,
                 $de_nome,
                 $responder_para,
-                $corpo_html
+                $corpo_html ?? false
             ));
 
             $json['retorno'] = 'sucesso';

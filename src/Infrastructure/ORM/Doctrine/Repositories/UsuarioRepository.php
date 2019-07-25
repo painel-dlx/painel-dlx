@@ -25,14 +25,12 @@
 
 namespace PainelDLX\Infrastructure\ORM\Doctrine\Repositories;
 
-
-use DLX\Infrastructure\ORM\Doctrine\Repositories\EntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\NonUniqueResultException;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
 use PainelDLX\Domain\Usuarios\Repositories\UsuarioRepositoryInterface;
 
-class UsuarioRepository extends EntityRepository implements UsuarioRepositoryInterface
+class UsuarioRepository extends AbstractPainelDLXRepository implements UsuarioRepositoryInterface
 {
 
     /**

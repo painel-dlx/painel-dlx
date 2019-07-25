@@ -1,0 +1,27 @@
+PainelDLX\Domain\Common\Entities\LogRegistro:
+    type: entity
+    table: dlx_log_registros
+    # repositoryClass: PainelDLX\Infrastructure\ORM\Doctrine\Repositories\LogRegistroRepository
+    id:
+        id:
+            type: integer
+            id: true
+            nullable: false
+            generator:
+                strategy: auto
+            column: log_registro_id
+    fields:
+        tabela:
+            type: string
+            nullable: false
+            length: 50
+        registro_id:
+            type: integer
+            nullable: false
+        data:
+            type: datetime
+            nullable: false
+        acao:
+            type: string
+            nullable: false
+            length: 1

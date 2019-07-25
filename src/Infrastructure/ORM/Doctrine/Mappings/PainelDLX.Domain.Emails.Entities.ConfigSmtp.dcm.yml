@@ -51,3 +51,13 @@ PainelDLX\Domain\Emails\Entities\ConfigSmtp:
         deletado:
             type: boolean
             nullable: false
+    # oneToMany:
+    #     log:
+    #         targetEntity: PainelDLX\Domain\Common\Entities\LogRegistro
+    #         orderBy: { data: desc }
+    #         cascade:
+    #             - persist
+    #             - merge
+    #         joinColumns:
+    #             config_smtp_id:
+    #                 referencedColumnName: registro_id

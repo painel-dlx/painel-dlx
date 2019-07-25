@@ -166,7 +166,7 @@ class ConfigSmtpController extends PainelDLXController
 
             $json['retorno'] = 'sucesso';
             $json['mensagem'] = 'Configuração SMTP excluída com sucesso!';
-        } catch (UserException $e) {
+        } catch (ConfigSmtpNaoEncontradaException | UserException $e) {
             $json['retorno'] = 'erro';
             $json['mensagem'] = $e->getMessage();
         }

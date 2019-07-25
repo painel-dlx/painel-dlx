@@ -9,10 +9,9 @@
 namespace PainelDLX\Infrastructure\ORM\Doctrine\Repositories;
 
 
-use DLX\Infrastructure\ORM\Doctrine\Repositories\EntityRepository;
 use PainelDLX\Domain\Emails\Repositories\EnvioEmailRepositoryInterface;
 
-class EnvioEmailLogRepository extends EntityRepository implements EnvioEmailRepositoryInterface
+class EnvioEmailLogRepository extends AbstractPainelDLXRepository implements EnvioEmailRepositoryInterface
 {
 
 }

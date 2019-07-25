@@ -12,12 +12,17 @@ namespace PainelDLX\Domain\Usuarios\Entities;
 use DLX\Domain\Entities\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use PainelDLX\Domain\Common\Entities\LogRegistroTrait;
 use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
 use PainelDLX\Domain\PermissoesUsuario\Entities\PermissaoUsuario;
 use PainelDLX\Domain\Usuarios\Exceptions\UsuarioJaPossuiGrupoException;
 
 class Usuario extends Entity
 {
+    const TABELA_BD = 'dlx_usuarios';
+
+    use LogRegistroTrait;
+
     /** @var int */
     private $id;
     /** @var string */

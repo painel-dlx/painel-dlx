@@ -8,12 +8,10 @@
 
 namespace PainelDLX\Infrastructure\ORM\Doctrine\Repositories;
 
-
-use DLX\Infrastructure\ORM\Doctrine\Repositories\EntityRepository;
 use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
 use PainelDLX\Domain\Emails\Repositories\ConfigSmtpRepositoryInterface;
 
-class ConfigSmtpRepository extends EntityRepository implements ConfigSmtpRepositoryInterface
+class ConfigSmtpRepository extends AbstractPainelDLXRepository implements ConfigSmtpRepositoryInterface
 {
 
     /**

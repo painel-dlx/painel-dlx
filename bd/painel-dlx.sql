@@ -133,3 +133,13 @@ CREATE TABLE dlx_widgets (
 ) ENGINE=INNODB;
 
 INSERT INTO dlx_widgets (titulo, url_conteudo) VALUES ('Meus Dados', '/painel-dlx/resumo-usuario-logado');
+
+-- Logs de registros
+CREATE TABLE dlx_log_registros (
+    log_registro_id bigint not null auto_increment primary key,
+    tabela varchar(50) not null,
+    registro_id varchar(100) not null,
+    data datetime not null,
+    acao char(1) not null default 'I',
+    usuario_id int references dlx_usuarios (usuario_id)
+) ENGINE=INNODB;

@@ -23,11 +23,18 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Infrastructure\ORM\Doctrine\Repositories;
+namespace PainelDLX\Domain\Common\Exceptions;
 
-use PainelDLX\Domain\Modulos\Repositories\MenuItemRepositoryInterface;
 
-class MenuItemRepository extends AbstractPainelDLXRepository implements MenuItemRepositoryInterface
+use Error;
+
+class ConfiguracaoLogRegistroInvalidaException extends Error
 {
-
+    /**
+     * @return ConfiguracaoLogRegistroInvalidaException
+     */
+    public static function nomeTabelaNaoInformado(): self
+    {
+        return new self('Nome da tabela não informado. Para informar o nome da tabela de uma entidade, é necessário configurar uma constraint com o nome TABELA_BD.');
+    }
 }
