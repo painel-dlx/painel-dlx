@@ -61,10 +61,13 @@ use Vilex\VileX;
 [SCRIPTS]
 <script>
     $('#form-login').formAjax({
-        func_depois: function (json) {
+        func_depois: function (json, status, xhr) {
             if (json.retorno === 'sucesso') {
+                msgUsuario.adicionar(json.mensagem, json.retorno, xhr.id);
                 window.location.reload();
             }
+
+            msgUsuario.mostrar(json.mensagem, json.retorno, xhr.id);
         }
     });
 </script>

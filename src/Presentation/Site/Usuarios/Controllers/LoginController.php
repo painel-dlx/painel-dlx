@@ -28,6 +28,7 @@ namespace PainelDLX\Presentation\Site\Usuarios\Controllers;
 
 use DLX\Core\Configure;
 use DLX\Core\Exceptions\UserException;
+use PainelDLX\UseCases\Login\Exceptions\UsuarioOuSenhaInvalidosException;
 use PainelDLX\UseCases\Login\FazerLogin\FazerLoginCommand;
 use PainelDLX\UseCases\Login\FazerLogin\FazerLoginCommandHandler;
 use PainelDLX\UseCases\Login\FazerLogout\FazerLogoutCommand;
@@ -82,8 +83,8 @@ class LoginController extends PainelDLXController
         ]);
 
         try {
-            /** @see FazerLoginCommandHandler */
             /* @var Usuario|null $usuario */
+            /** @see FazerLoginCommandHandler */
             $usuario = $this->command_bus->handle(new FazerLoginCommand($post['email'], $post['senha']));
 
             /* @see GetListaMenuCommandHandler */
@@ -92,7 +93,7 @@ class LoginController extends PainelDLXController
 
             $json['retorno'] = 'sucesso';
             $json['mensagem'] = "Seja bem-vindo {$usuario->getNome()}!";
-        } catch (UserException $e) {
+        } catch (UsuarioOuSenhaInvalidosException | UserException $e) {
             $json['retorno'] = 'erro';
             $json['mensagem'] = $e->getMessage();
         }
