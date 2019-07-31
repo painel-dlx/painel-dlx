@@ -242,6 +242,9 @@ class PainelDLX
             // Setar o path do PainelDLX
             self::$dir = trim(str_replace($document_root, '', $base_dir), '/');
 
+            // Garantir que os separadores de diretório estejam padronizados
+            self::$dir = str_replace(DIRECTORY_SEPARATOR, '/', self::$dir);
+
             // Adicionar o path do PainelDLX no include_path
             $this->adicionarDiretorioInclusao($base_dir);
         }
