@@ -240,7 +240,7 @@ class PainelDLX
             $document_root = $this->request->getServerParams()['DOCUMENT_ROOT'];
 
             // Setar o path do PainelDLX
-            self::$dir = trim(str_replace($document_root, '', $base_dir), '/');
+            self::$dir = trim(str_replace($document_root, '', $base_dir), DIRECTORY_SEPARATOR);
 
             // Garantir que os separadores de diretório estejam padronizados
             self::$dir = str_replace(DIRECTORY_SEPARATOR, '/', self::$dir);
