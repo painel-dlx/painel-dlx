@@ -53,5 +53,13 @@ class HomeRouter extends PainelDLXRouter
             $define_pagina_mestra,
             $verificar_logon
         );
+
+        $router->get(
+            '/painel-dlx/',
+            [PaginaInicialController::class, 'home']
+        )->middlewares(
+            $define_pagina_mestra,
+            $verificar_logon
+        );
     }
 }
