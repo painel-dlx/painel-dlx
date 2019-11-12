@@ -1,6 +1,6 @@
 PainelDLX\Domain\Modulos\Entities\Menu:
     type: entity
-    table: dlx_menu
+    table: dlx.Menu
     repositoryClass: PainelDLX\Infrastructure\ORM\Doctrine\Repositories\MenuRepository
     id:
         id:
@@ -20,5 +20,5 @@ PainelDLX\Domain\Modulos\Entities\Menu:
             targetEntity: MenuItem
             mappedBy: menu
             joinColumns:
-                idMenu:
-                    referencedColumnName: idMenu
+                menu_id:
+                    referencedColumnName: menu_id

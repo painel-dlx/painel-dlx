@@ -72,7 +72,7 @@ class EditarConfigSmtpControllerTest extends PainelDLXTestCase
             select
                 config_smtp_id
             from
-                dlx_config_smtp
+                ConfiguracaoSmtp
             order by
                 rand()
             limit 1

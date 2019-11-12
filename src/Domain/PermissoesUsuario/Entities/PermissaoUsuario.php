@@ -40,7 +40,7 @@ use PainelDLX\Domain\PermissoesUsuario\Exceptions\PermissaoUsuarioJaPossuiGrupoE
  */
 class PermissaoUsuario extends Entity
 {
-    const TABELA_BD = 'dlx_permissoes_usuarios';
+    const TABELA_BD = 'PermissaoUsuario';
 
     use LogRegistroTrait;
 

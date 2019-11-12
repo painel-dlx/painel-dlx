@@ -1,6 +1,6 @@
 PainelDLX\Domain\Usuarios\Entities\ResetSenha:
     type: entity
-    table: dlx_reset_senha
+    table: dlx.ResetSenha
     repositoryClass: PainelDLX\Infrastructure\ORM\Doctrine\Repositories\ResetSenhaRepository
     id:
         id:

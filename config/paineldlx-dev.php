@@ -40,7 +40,7 @@ return [
         'mapping' => include 'painel-dlx/mapping.php',
         'diretorios' => include 'painel-dlx/diretorios.php',
         'favicon' => '/public/imgs/favicon.png',
-        'versao' => '3.0.4'
+        'versao' => '3.0.5'
     ],
 
     'bd' => [
@@ -53,7 +53,7 @@ return [
             'src/Infrastructure/ORM/Doctrine/Repositories/'
         ],
         'conexao' => [
-            'dbname' => 'dlx_dev',
+            'dbname' => 'dlx',
             'user' => 'root',
             'password' => '$d5Ro0t',
             'host' => 'localhost',

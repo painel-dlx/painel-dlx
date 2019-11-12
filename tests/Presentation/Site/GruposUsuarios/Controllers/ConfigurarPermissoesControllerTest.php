@@ -78,7 +78,7 @@ class ConfigurarPermissoesControllerTest extends PainelDLXTestCase
             select
                 *
             from
-                dlx_grupos_usuarios
+                GrupoUsuario
             order by 
                 rand()
             limit 1

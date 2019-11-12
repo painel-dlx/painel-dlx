@@ -78,7 +78,7 @@ class ConfigSmtpControllerTest extends PainelDLXTestCase
     {
         $conn = EntityManagerX::getInstance()->getConnection();
 
-        $query = 'insert into dlx_config_smtp (servidor, porta, nome) values (:servidor, :porta, :nome)';
+        $query = 'insert into ConfiguracaoSmtp (servidor, porta, nome) values (:servidor, :porta, :nome)';
         $conn->executeQuery($query, [
             ':servidor' => 'localhost',
             ':porta' => 587,

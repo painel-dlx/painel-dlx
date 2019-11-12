@@ -14,7 +14,7 @@ use PainelDLX\Domain\Common\Entities\LogRegistroTrait;
 
 class ConfigSmtp extends Entity
 {
-    const TABELA_BD = 'dlx_config_smtp';
+    const TABELA_BD = 'ConfiguracaoSmtp';
 
     use LogRegistroTrait;
 

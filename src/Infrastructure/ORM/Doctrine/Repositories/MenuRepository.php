@@ -46,15 +46,15 @@ class MenuRepository extends AbstractPainelDLXRepository implements MenuReposito
                 i.nome AS item,
                 i.link AS link
             FROM
-                dlx_menu m
+                Menu m
             INNER JOIN
-                dlx_menu_item i ON i.menu_id = m.menu_id
+                MenuItem i ON i.menu_id = m.menu_id
             INNER JOIN
-                dlx_menu_item_x_permissao p ON i.menu_item_id = p.menu_item_id
+                MenuItem_x_PermissaoUsuario p ON i.menu_item_id = p.menu_item_id
             INNER JOIN
-                dlx_permissoes_x_grupos pxg ON pxg.permissao_usuario_id = p.permissao_usuario_id
+                PermissaoUsuario_x_GrupoUsuario pxg ON pxg.permissao_usuario_id = p.permissao_usuario_id
             INNER JOIN
-                dlx_grupos_x_usuarios gxu ON gxu.grupo_usuario_id = pxg.grupo_usuario_id
+                GrupoUsuario_x_Usuario gxu ON gxu.grupo_usuario_id = pxg.grupo_usuario_id
             WHERE
                 m.deletado = 0
                 AND i.deletado = 0

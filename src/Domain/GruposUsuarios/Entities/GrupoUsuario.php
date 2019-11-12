@@ -36,7 +36,7 @@ use PainelDLX\Domain\Usuarios\Entities\Usuario;
 
 class GrupoUsuario extends Entity
 {
-    const TABELA_BD = 'dlx_grupos_usuarios';
+    const TABELA_BD = 'GrupoUsuario';
 
     use LogRegistroTrait;
 

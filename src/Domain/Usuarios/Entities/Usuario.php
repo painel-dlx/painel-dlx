@@ -19,7 +19,7 @@ use PainelDLX\Domain\Usuarios\Exceptions\UsuarioJaPossuiGrupoException;
 
 class Usuario extends Entity
 {
-    const TABELA_BD = 'dlx_usuarios';
+    const TABELA_BD = 'Usuario';
 
     use LogRegistroTrait;
 

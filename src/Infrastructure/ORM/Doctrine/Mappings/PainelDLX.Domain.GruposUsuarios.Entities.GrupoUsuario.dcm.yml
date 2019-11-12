@@ -1,6 +1,6 @@
 PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario:
     type: entity
-    table: dlx_grupos_usuarios
+    table: dlx.GrupoUsuario
     repositoryClass: PainelDLX\Infrastructure\ORM\Doctrine\Repositories\GrupoUsuarioRepository
     id:
         id:
@@ -33,7 +33,7 @@ PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario:
                 - persist
                 - merge
             joinTable:
-                name: dlx_permissoes_x_grupos
+                name: PermissaoUsuario_x_GrupoUsuario
                 joinColumns:
                     grupo_usuario_id:
                         referencedColumnName: grupo_usuario_id

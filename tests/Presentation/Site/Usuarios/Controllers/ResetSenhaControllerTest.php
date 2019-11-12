@@ -119,7 +119,7 @@ class ResetSenhaControllerTest extends PainelDLXTestCase
             select
                 hash
             from
-                dlx_reset_senha
+                ResetSenha
             where
                 utilizado = 0
             order by 

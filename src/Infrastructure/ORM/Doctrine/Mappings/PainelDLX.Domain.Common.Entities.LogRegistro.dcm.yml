@@ -1,6 +1,6 @@
 PainelDLX\Domain\Common\Entities\LogRegistro:
     type: entity
-    table: dlx_log_registros
+    table: dlx.LogRegistro
     # repositoryClass: PainelDLX\Infrastructure\ORM\Doctrine\Repositories\LogRegistroRepository
     id:
         id:

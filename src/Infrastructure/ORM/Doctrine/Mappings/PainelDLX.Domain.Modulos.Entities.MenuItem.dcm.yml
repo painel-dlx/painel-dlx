@@ -1,6 +1,6 @@
 PainelDLX\Domain\Modulos\Entities\MenuItem:
     type: entity
-    table: dlx_menu_item
+    table: dlx.MenuItem
     repositoryClass: PainelDLX\Infrastructure\ORM\Doctrine\Repositories\MenuItemRepository
     id:
         id:
@@ -24,8 +24,8 @@ PainelDLX\Domain\Modulos\Entities\MenuItem:
             targetEntity: Menu
             inversedBy: itens
             joinColumns:
-                idMenu:
-                    referencedColumnName: idMenu
+                menu_id:
+                    referencedColumnName: menu_id
     oneToMany:
         permissoes:
             targetEntity: MenuItemPermissao

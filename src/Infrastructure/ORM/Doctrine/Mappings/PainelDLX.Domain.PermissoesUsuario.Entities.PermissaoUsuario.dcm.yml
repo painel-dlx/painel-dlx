@@ -1,6 +1,6 @@
 PainelDLX\Domain\PermissoesUsuario\Entities\PermissaoUsuario:
     type: entity
-    table: dlx_permissoes_usuario
+    table: dlx.PermissaoUsuario
     repositoryClass: PainelDLX\Infrastructure\ORM\Doctrine\Repositories\PermissaoUsuarioRepository
     id:
         id:

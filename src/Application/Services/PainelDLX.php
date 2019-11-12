@@ -34,8 +34,6 @@ use PainelDLX\Application\Contracts\Router\RouterInterface;
 use PainelDLX\Application\Routes\PainelDLXRouter;
 use PainelDLX\Application\Services\Exceptions\AmbienteNaoInformadoException;
 use Psr\Http\Message\ServerRequestInterface;
-use RautereX\Exceptions\RotaNaoEncontradaException;
-use ReflectionException;
 
 /**
  * Class PainelDLX
@@ -165,8 +163,6 @@ class PainelDLX
     /**
      * Redirecionar para outra ação.
      * @param ServerRequestInterface $request
-     * @throws RotaNaoEncontradaException
-     * @throws ReflectionException
      * @deprecated é necessário? está sendo utilizado?
      */
     public function redirect(ServerRequestInterface $request)
