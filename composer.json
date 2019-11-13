@@ -1,6 +1,6 @@
 {
     "name": "painel-dlx/painel-dlx",
-    "version": "3.0.6",
+    "version": "3.0.7",
     "license": "MIT",
     "require": {
         "dlepera88-php/dlx": "^1.1",
