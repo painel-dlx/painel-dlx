@@ -64,9 +64,9 @@ abstract class PainelDLXController
 
         // TODO: retirar a inclusão do tema do controller. Está aqui apenas para agilizar o dev
         $versao = Configure::get('app', 'versao');
-        $this->view->addArquivoCss('public/temas/painel-dlx/css/paineldlx.tema.css', $versao, false);
-        $this->view->addArquivoJs('public/temas/painel-dlx/js/paineldlx.tema-min.js', $versao, false);
-        $this->view->addArquivoJs( 'public/js/painel-dlx-min.js', $versao, false);
+        $this->view->addArquivoCss('public/temas/painel-dlx/css/paineldlx.tema.css', false, $versao);
+        $this->view->addArquivoJs('public/temas/painel-dlx/js/paineldlx.tema-min.js', false, $versao);
+        $this->view->addArquivoJs( 'public/js/painel-dlx-min.js',false, $versao);
 
         $pagina_mestra = $session->get('vilex:pagina-mestra') ?: 'painel-dlx-master';
 
