@@ -30,7 +30,7 @@ PainelDLX\Domain\Usuarios\Entities\Usuario:
                 - persist
                 - merge
             joinTable:
-                name: GrupoUsuario_x_Usuario
+                name: dlx.GrupoUsuario_x_Usuario
                 joinColumns:
                     usuario_id:
                         referencedColumnName: usuario_id

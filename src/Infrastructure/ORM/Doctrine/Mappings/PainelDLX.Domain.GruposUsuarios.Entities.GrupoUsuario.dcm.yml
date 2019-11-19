@@ -33,7 +33,7 @@ PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario:
                 - persist
                 - merge
             joinTable:
-                name: PermissaoUsuario_x_GrupoUsuario
+                name: dlx.PermissaoUsuario_x_GrupoUsuario
                 joinColumns:
                     grupo_usuario_id:
                         referencedColumnName: grupo_usuario_id
