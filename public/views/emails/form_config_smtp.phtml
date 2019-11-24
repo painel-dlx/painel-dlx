@@ -58,8 +58,8 @@ $config_smtp = $this->getAtributo('config-smtp') ?? new ConfigSmtp()
         <legend class="form-titulo">Autenticação</legend>
 
         <p class="form-paragr">
+            <input type="checkbox" name="requer_autent" id="chk-requer-autent" value="1" class="form-checkbox-tooggle" <?php echo $config_smtp->isRequerAutent() ? ' CHECKED' : '' ?>>
             <label for="chk-requer-autent" class="form-rotulo">Requer autenticação?</label>
-            <input type="checkbox" name="requer_autent" id="chk-requer-autent" value="1"<?php echo $config_smtp->isRequerAutent() ? ' CHECKED' : '' ?>>
         </p>
 
         <div id="config-autenticacao-servidor"<?php echo !$config_smtp->isRequerAutent() ? ' style="display: none;"' : '' ?>>
@@ -102,8 +102,8 @@ $config_smtp = $this->getAtributo('config-smtp') ?? new ConfigSmtp()
         </p>
 
         <p class="form-paragr">
+            <input type="checkbox" name="corpo_html" id="chk-corpo-html" value="1" class="form-checkbox-tooggle" <?php echo $config_smtp->isCorpoHtml() ? ' CHECKED' : '' ?>>
             <label for="chk-corpo-html" class="form-rotulo">Enviar corpo em formato HTML?</label>
-            <input type="checkbox" name="corpo_html" id="chk-corpo-html" value="1"<?php echo $config_smtp->isCorpoHtml() ? ' CHECKED' : '' ?>>
         </p>
     </fieldset>
 

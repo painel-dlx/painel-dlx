@@ -27,7 +27,6 @@ namespace PainelDLX\Presentation\Site\Common\Controllers;
 
 use DLX\Core\Configure;
 use League\Tactician\CommandBus;
-use PainelDLX\Application\Services\PainelDLX;
 use SechianeX\Contracts\SessionInterface;
 use Vilex\Exceptions\ViewNaoEncontradaException;
 use Vilex\VileX;
@@ -65,9 +64,9 @@ abstract class PainelDLXController
 
         // TODO: retirar a inclusão do tema do controller. Está aqui apenas para agilizar o dev
         $versao = Configure::get('app', 'versao');
-        $this->view->addArquivoCss(PainelDLX::$dir . '/public/temas/painel-dlx/css/paineldlx.tema.css', false, $versao);
-        $this->view->addArquivoJs(PainelDLX::$dir . '/public/temas/painel-dlx/js/paineldlx.tema-min.js', false, $versao);
-        $this->view->addArquivoJs( PainelDLX::$dir . '/public/js/painel-dlx-min.js',false, $versao);
+        $this->view->addArquivoCss('/vendor/painel-dlx/ui-painel-dlx/css/painel-dlx.tema.css', false, $versao);
+        $this->view->addArquivoJs('/vendor/painel-dlx/ui-painel-dlx/js/paineldlx.tema-min.js', false, $versao);
+        $this->view->addArquivoJs('public/js/painel-dlx-min.js',false, $versao);
 
         $pagina_mestra = $session->get('vilex:pagina-mestra') ?: 'painel-dlx-master';
 
