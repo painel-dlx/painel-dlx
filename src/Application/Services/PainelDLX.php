@@ -233,7 +233,7 @@ class PainelDLX
     {
         // Previnir que o diretório seja alterado caso alguém tenha setado ele manualmente
         if (empty(self::$dir)) {
-            $base_dir = dirname(dirname(dirname(__DIR__)));
+            $base_dir = dirname(dirname(dirname(__DIR__))) . DIRECTORY_SEPARATOR;
             $document_root = $this->request->getServerParams()['DOCUMENT_ROOT'];
 
             // Setar o path do PainelDLX
