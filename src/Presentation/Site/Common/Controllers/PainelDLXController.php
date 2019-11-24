@@ -72,6 +72,7 @@ abstract class PainelDLXController
 
         $this->view->setPaginaMestra("public/views/paginas-mestras/{$pagina_mestra}.phtml");
         $this->view->setViewRoot('public/views/');
+        $this->view->addTemplate('common/titulo_pagina');
         $this->view->addTemplate('common/rodape');
     }
 }
