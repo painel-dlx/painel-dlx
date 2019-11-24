@@ -122,6 +122,7 @@ class PainelDLX
         $this->router = $router;
         $this->container = $container;
         $this->defineDirPainelDLX();
+        $this->defineVersoes();
 
         self::$instance = $this;
     }
@@ -254,6 +255,28 @@ class PainelDLX
     {
         foreach ($diretorios as $diretorio) {
             $this->adicionarDiretorioInclusao($diretorio);
+        }
+    }
+
+    /**
+     * Define as versões dos pacotes 'Painel DLX' instalados
+     */
+    private function defineVersoes(): void
+    {
+        // Todos os pacotes Painel-DLX, inclusive o atual
+        $pacotes_painel_dlx = array_merge(
+            glob('composer.json'),
+            glob('vendor/painel-dlx/*/composer.json')
+        );
+
+        foreach ($pacotes_painel_dlx as $pacote) {
+            $composer_json = json_decode(file_get_contents($pacote));
+            $nome_pacote = str_replace('painel-dlx/', '', $composer_json->name);
+            $nome_constante = 'VERSAO_' . strtoupper(str_replace('-', '_', $nome_pacote));
+
+            if (!defined($nome_constante)) {
+                define($nome_constante, $composer_json->version);
+            }
         }
     }
 }

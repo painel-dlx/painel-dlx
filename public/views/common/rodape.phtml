@@ -27,8 +27,17 @@ use DLX\Core\Configure;
 use Vilex\VileX;
 
 /** @var Vilex $this */
+
+define('TEXTO_COPYRIGHT', '%s @ %d - v%s');
+$ano_atual = date('Y');
 ?>
 
 [RODAPE]
-<?php echo Configure::get('app', 'nome-amigavel'), ' @ ', date('Y'), ' - v', Configure::get('app', 'versao') ?>
+<?php printf(TEXTO_COPYRIGHT, Configure::get('app', 'nome-amigavel'), $ano_atual, Configure::get('app', 'versao'));
+
+if (Configure::get('app', 'nome') !== 'painel-dlx') {
+    echo ' // ';
+    printf(TEXTO_COPYRIGHT, 'Painel DLX', $ano_atual, VERSAO_PAINEL_DLX);
+}
+?>
 [/RODAPE]

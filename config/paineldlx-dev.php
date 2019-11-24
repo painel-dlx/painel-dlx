@@ -40,7 +40,7 @@ return [
         'mapping' => include 'painel-dlx/mapping.php',
         'diretorios' => include 'painel-dlx/diretorios.php',
         'favicon' => '/public/imgs/favicon.png',
-        'versao' => '3.0.10'
+        'versao' => '3.1.0'
     ],
 
     'bd' => [
