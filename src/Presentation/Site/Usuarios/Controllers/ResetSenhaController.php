@@ -94,9 +94,10 @@ class ResetSenhaController extends PainelDLXController
     {
         try {
             // Views
-            $this->view->addTemplate('login/form_reset_senha', [
-                'titulo-pagina' => 'Recuperação de senha'
-            ]);
+            $this->view->addTemplate('login/form_reset_senha');
+
+            // Atributos
+            $this->view->setAtributo('titulo-pagina', 'Esqueci minha senha');
 
             // JS
             $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js', false, Configure::get('app', 'versao'));

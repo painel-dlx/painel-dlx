@@ -39,6 +39,7 @@ use PainelDLX\Domain\Usuarios\Entities\Usuario;
 use PainelDLX\Presentation\Site\Common\Controllers\PainelDLXController;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Vilex\Exceptions\ContextoInvalidoException;
 use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
 use Vilex\Exceptions\ViewNaoEncontradaException;
 use Zend\Diactoros\Response\JsonResponse;
@@ -55,6 +56,7 @@ class LoginController extends PainelDLXController
      * @return ResponseInterface
      * @throws PaginaMestraNaoEncontradaException
      * @throws ViewNaoEncontradaException
+     * @throws ContextoInvalidoException
      */
     public function formLogin(ServerRequestInterface $request): ResponseInterface
     {
@@ -67,6 +69,10 @@ class LoginController extends PainelDLXController
 
         // View
         $this->view->addTemplate('login/form_login', $get);
+
+        // Atributos
+        $this->view->setAtributo('titulo-pagina', 'Login');
+
         return $this->view->render();
     }
 
