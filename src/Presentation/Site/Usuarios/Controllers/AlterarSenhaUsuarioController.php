@@ -79,7 +79,7 @@ class AlterarSenhaUsuarioController extends PainelDLXController
             $this->view->addTemplate('usuarios/form_alterar_senha');
 
             // JS
-            $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js', false, Configure::get('app', 'versao'));
+            $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js', false, VERSAO_PAINEL_DLX);
         } catch (UserException $e) {
             $this->view->addTemplate('common/mensagem_usuario');
             $this->view->setAtributo('mensagem', [
@@ -94,6 +94,7 @@ class AlterarSenhaUsuarioController extends PainelDLXController
     /**
      * @param ServerRequestInterface $request
      * @return ResponseInterface
+     * @throws UsuarioNaoEncontradoException
      */
     public function alterarSenhaUsuario(ServerRequestInterface $request): ResponseInterface
     {

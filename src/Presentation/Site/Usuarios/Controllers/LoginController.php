@@ -65,7 +65,7 @@ class LoginController extends PainelDLXController
         ]);
 
         // JS
-        $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js', false, Configure::get('app', 'versao'));
+        $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js', false, VERSAO_PAINEL_DLX);
 
         // View
         $this->view->addTemplate('login/form_login', $get);

@@ -123,7 +123,7 @@ class GrupoUsuarioController extends PainelDLXController
             $this->view->addTemplate('grupos-usuarios/form_novo_grupo_usuario');
 
             // JS
-            $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js', false, Configure::get('app', 'versao'));
+            $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js', false, VERSAO_PAINEL_DLX);
         } catch (UserException $e) {
             $this->view->addTemplate('commmon/mensagem_usuario');
             $this->view->setAtributo('mensagem', [
@@ -190,12 +190,12 @@ class GrupoUsuarioController extends PainelDLXController
             $this->view->addTemplate('grupos-usuarios/form_alterar_grupo_usuario');
 
             // JS
-            $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js', false, Configure::get('app', 'versao'));
+            $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js', false, VERSAO_PAINEL_DLX);
         } catch (UserException $e) {
             $this->view->addTemplate('common/mensagem_usuario');
             $this->view->setAtributo('mensagem', [
                 'tipo' => 'erro',
-                'mensagem' => $e->getMessage()
+                'texto' => $e->getMessage()
             ]);
         }
 
@@ -290,7 +290,7 @@ class GrupoUsuarioController extends PainelDLXController
             $this->view->addTemplate('mensagem_usuario');
             $this->view->setAtributo('mensagem', [
                 'tipo' => 'erro',
-                'mensagem' => $e->getMessage()
+                'texto' => $e->getMessage()
             ]);
         }
 
