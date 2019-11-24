@@ -31,15 +31,15 @@ use DLX\Core\Configure;
 use DLX\Core\Exceptions\UserException;
 use Doctrine\Common\Collections\ArrayCollection;
 use League\Tactician\CommandBus;
+use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
 use PainelDLX\Domain\GruposUsuarios\Exceptions\GrupoUsuarioNaoEncontradoException;
+use PainelDLX\Presentation\Site\Common\Controllers\PainelDLXController;
 use PainelDLX\UseCases\GruposUsuarios\ConfigurarPermissoes\ConfigurarPermissoesCommand;
+use PainelDLX\UseCases\GruposUsuarios\ConfigurarPermissoes\ConfigurarPermissoesCommandHandler;
 use PainelDLX\UseCases\GruposUsuarios\GetGrupoUsuarioPorId\GetGrupoUsuarioPorIdCommand;
 use PainelDLX\UseCases\GruposUsuarios\GetGrupoUsuarioPorId\GetGrupoUsuarioPorIdCommandHandler;
-use PainelDLX\UseCases\GruposUsuarios\ConfigurarPermissoes\ConfigurarPermissoesCommandHandler;
 use PainelDLX\UseCases\PermissoesUsuario\GetListaPermissaoUsuario\GetListaPermissaoUsuarioCommand;
 use PainelDLX\UseCases\PermissoesUsuario\GetListaPermissaoUsuario\GetListaPermissaoUsuarioCommandHandler;
-use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
-use PainelDLX\Presentation\Site\Common\Controllers\PainelDLXController;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use SechianeX\Contracts\SessionInterface;
@@ -97,15 +97,8 @@ class ConfigurarPermissoesController extends PainelDLXController
             /* @see GetGrupoUsuarioPorIdCommandHandler */
             $grupo_usuario = $this->command_bus->handle(new GetGrupoUsuarioPorIdCommand($get['grupo_usuario_id']));
 
-            if (!$grupo_usuario instanceof GrupoUsuario) {
-                throw new UserException('Grupo de Usuário não identificado.');
-            }
-
             /* @see GetListaPermissaoUsuarioCommandHandler */
-            $lista_permissoes = $this->command_bus->handle(new GetListaPermissaoUsuarioCommand(
-                ['deletado' => false],
-                []
-            ));
+            $lista_permissoes = $this->command_bus->handle(new GetListaPermissaoUsuarioCommand());
 
             // Views
             $this->view->addTemplate('grupos-usuarios/form_configurar_permissoes');
@@ -117,7 +110,7 @@ class ConfigurarPermissoesController extends PainelDLXController
 
             // JS
             $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js', false, Configure::get('app', 'versao'));
-        } catch (UserException $e) {
+        } catch (GrupoUsuarioNaoEncontradoException | UserException $e) {
             $this->view->addTemplate('common/mensagem_usuario');
             $this->view->setAtributo('mensagem', [
                 'tipo' => 'erro',

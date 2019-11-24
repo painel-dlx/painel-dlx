@@ -46,6 +46,7 @@ class PaginaInicialController extends PainelDLXController
             $this->view->addTemplate('home/index');
 
             // Parâmetros
+            $this->view->setAtributo('titulo-pagina', 'Home');
             $this->view->setAtributo('lista-widgets', $lista_widgets);
         } catch (UserException $e) {
             $this->view->addTemplate('common/mensagem_usuario');
