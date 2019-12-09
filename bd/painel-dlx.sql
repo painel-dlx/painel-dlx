@@ -37,7 +37,7 @@ insert into dlx.GrupoUsuario (alias, nome) values
     ('ADMIN', 'Administradores'),
     ('USUARIO', 'Usuários');
 
-insert into dlx.Usuario (nome, email, senha) values ('Administrador', 'admin@gmail.com', 'eddcf34d3bf578b99708d1020ccff36f');
+insert into dlx.Usuario (nome, email, senha) values ('Administrador', 'admin@gmail.com', '64eedda5e60fdb52fc29aa903ce9002a');
 insert into dlx.GrupoUsuario_x_Usuario
     select
         g.grupo_usuario_id,
