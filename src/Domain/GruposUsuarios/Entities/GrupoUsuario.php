@@ -178,6 +178,8 @@ class GrupoUsuario extends Entity
 
     /**
      * @param string $nome
+     * @return GrupoUsuario
+     * @deprecated Prefira utilizar o __construct dessa entidade
      */
     public static function create(string $nome)
     {
