@@ -271,6 +271,11 @@ class PainelDLX
 
         foreach ($pacotes_painel_dlx as $pacote) {
             $composer_json = json_decode(file_get_contents($pacote));
+
+            if (!property_exists($composer_json, 'name')) {
+                continue;
+            }
+
             $nome_pacote = str_replace('painel-dlx/', '', $composer_json->name);
             $nome_constante = 'VERSAO_' . strtoupper(str_replace('-', '_', $nome_pacote));
 
