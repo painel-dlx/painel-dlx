@@ -10,7 +10,7 @@ namespace PainelDLX\Application\Middlewares;
 
 use PainelDLX\Application\Services\PainelDLX;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
-use PainelDLX\Presentation\Site\ErrosHttp\Controllers\ErroHttp;
+use PainelDLX\Presentation\Site\ErrosHttp\Controllers\ErroHttpController;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -41,7 +41,7 @@ class Autorizacao implements MiddlewareInterface
     }
 
     /**
-     * @param string[] $permissoes
+     * @param string ...$permissoes
      * @return Autorizacao
      */
     public function setPermissoes(string ... $permissoes): self
@@ -55,10 +55,10 @@ class Autorizacao implements MiddlewareInterface
      * @param string ...$permissoes
      * @return Autorizacao
      */
-    public function necessitaPermissoes(string ... $permissoes): self
+    public function necessitaPermissoes(string ...$permissoes): self
     {
         $this_clone = new self($this->session);
-        return $this_clone->setPermissoes(... $permissoes);
+        return $this_clone->setPermissoes(...$permissoes);
     }
 
     /**
@@ -82,9 +82,9 @@ class Autorizacao implements MiddlewareInterface
 
         foreach ($this->permissoes as $permissao) {
             if (!$usuario->hasPermissao($permissao)) {
-                /** @var ErroHttp $login_controller */
-                $login_controller = PainelDLX::getInstance()->getContainer()->get(ErroHttp::class);
-                return $login_controller->exibirPaginaErro($request->withQueryParams(['erro' => 403]));
+                /** @var ErroHttpController $erro_http_controller */
+                $erro_http_controller = PainelDLX::getInstance()->getContainer()->get(ErroHttpController::class);
+                return $erro_http_controller->exibirPaginaErro($request->withQueryParams(['erro' => 403]));
             }
         }
 

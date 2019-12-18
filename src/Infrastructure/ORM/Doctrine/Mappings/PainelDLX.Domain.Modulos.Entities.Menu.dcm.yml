@@ -15,6 +15,11 @@ PainelDLX\Domain\Modulos\Entities\Menu:
             type: string
             nullable: false
             length: 50
+        deletado:
+            type: boolean
+            nullable: false
+            options:
+                default: false
     oneToMany:
         itens:
             targetEntity: MenuItem

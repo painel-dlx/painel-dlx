@@ -43,6 +43,8 @@ class MenuItem extends Entity
     private $link;
     /** @var Collection */
     private $permissoes;
+    /** @var bool */
+    private $deletado = false;
 
     /**
      * @return int|null
@@ -126,11 +128,20 @@ class MenuItem extends Entity
 
     /**
      * @param MenuItemPermissao
+     * @return MenuItem
      */
     public function addPermissao(MenuItemPermissao $menu_item_permissao): MenuItem
     {
         $this->permissoes->add($menu_item_permissao);
         return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDeletado(): bool
+    {
+        return $this->deletado;
     }
 
     /**

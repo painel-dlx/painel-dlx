@@ -29,11 +29,16 @@ namespace PainelDLX\Application\Services;
 use DLX\Core\Configure;
 use DLX\Core\Exceptions\ArquivoConfiguracaoNaoEncontradoException;
 use DLX\Core\Exceptions\ArquivoConfiguracaoNaoInformadoException;
+use League\Route\Http\Exception\NotFoundException;
 use PainelDLX\Application\Contracts\Router\ContainerInterface;
 use PainelDLX\Application\Contracts\Router\RouterInterface;
 use PainelDLX\Application\Routes\PainelDLXRouter;
 use PainelDLX\Application\Services\Exceptions\AmbienteNaoInformadoException;
+use PainelDLX\Presentation\Site\ErrosHttp\Controllers\ErroHttpController;
 use Psr\Http\Message\ServerRequestInterface;
+use Vilex\Exceptions\ContextoInvalidoException;
+use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
+use Vilex\Exceptions\ViewNaoEncontradaException;
 
 /**
  * Class PainelDLX
@@ -154,16 +159,29 @@ class PainelDLX
 
     /**
      * Executar a task desejada
+     * @throws ContextoInvalidoException
+     * @throws PaginaMestraNaoEncontradaException
+     * @throws ViewNaoEncontradaException
      */
     public function executar(): void
     {
-        $response = $this->router->dispatch($this->request);
+        try {
+            $response = $this->router->dispatch($this->request);
+        } catch (NotFoundException $e) {
+            /** @var ErroHttpController $controller */
+            $controller = $this->getContainer()->get(ErroHttpController::class);
+            $response = $controller->exibirPaginaErro($this->request->withQueryParams(['erro' => 404]));
+        }
+
         echo $response->getBody();
     }
 
     /**
      * Redirecionar para outra ação.
      * @param ServerRequestInterface $request
+     * @throws ContextoInvalidoException
+     * @throws PaginaMestraNaoEncontradaException
+     * @throws ViewNaoEncontradaException
      * @deprecated é necessário? está sendo utilizado?
      */
     public function redirect(ServerRequestInterface $request)

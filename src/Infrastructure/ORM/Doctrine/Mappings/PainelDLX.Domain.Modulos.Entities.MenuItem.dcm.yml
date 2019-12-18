@@ -19,6 +19,11 @@ PainelDLX\Domain\Modulos\Entities\MenuItem:
             type: string
             nullable: false
             length: 50
+        deletado:
+            type: boolean
+            nullable: false
+            options:
+                default: false
     manyToOne:
         menu:
             targetEntity: Menu
@@ -26,9 +31,14 @@ PainelDLX\Domain\Modulos\Entities\MenuItem:
             joinColumns:
                 menu_id:
                     referencedColumnName: menu_id
-    oneToMany:
+    manyToMany:
         permissoes:
-            targetEntity: MenuItemPermissao
-            joinColumns:
-                menu_item_id:
-                    referencedColumnName: menu_item_id
+            targetEntity: PainelDLX\Domain\PermissoesUsuario\Entities\PermissaoUsuario
+            joinTable:
+                name: dlx.MenuItem_x_PermissaoUsuario
+                joinColumns:
+                    menu_item_id:
+                        referencedColumnName: menu_item_id
+                inverseJoinColumns:
+                    permissao_usuario_id:
+                        referencedColumnName: permissao_usuario_id

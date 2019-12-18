@@ -39,6 +39,8 @@ class Menu extends Entity
     private $nome;
     /** @var Collection */
     private $itens;
+    /** @var bool */
+    private $deletado = false;
 
     /**
      * @return int|null
@@ -93,6 +95,23 @@ class Menu extends Entity
         $menu_item->setMenu($this);
         $this->itens->add($menu_item);
         return $this;
+    }
+
+    /**
+     * Verifica se o menu possui itens
+     * @return bool
+     */
+    public function hasItens(): bool
+    {
+        return !$this->getItens()->isEmpty();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDeletado(): bool
+    {
+        return $this->deletado;
     }
 
     /**

@@ -84,11 +84,11 @@ class EditarUsuarioCommandHandler
             ->setNome($command->getNome())
             ->setEmail($command->getEmail());
 
+        $usuario->getGrupos()->clear();
+
         /** @var GrupoUsuario $grupo_usuario */
         foreach ($lista_grupos as $grupo_usuario) {
-            if (!$usuario->hasGrupoUsuario($grupo_usuario)) {
-                $usuario->addGrupo($grupo_usuario);
-            }
+            $usuario->addGrupo($grupo_usuario);
         }
 
         // Verifica se o email desse usuário não está sendo usado por outro usuário

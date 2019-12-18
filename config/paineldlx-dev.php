@@ -23,8 +23,6 @@
  * SOFTWARE.
  */
 
-ini_set('session.save_handler', 'files');
-
 use DLX\Core\Configure;
 use Doctrine\DBAL\Logging\EchoSQLLogger;
 
@@ -40,13 +38,14 @@ return [
         'mapping' => include 'painel-dlx/mapping.php',
         'diretorios' => include 'painel-dlx/diretorios.php',
         'favicon' => '/public/imgs/favicon.png',
-        'versao' => '3.1.4'
+        'versao' => '3.1.6'
     ],
 
     'bd' => [
         'orm' => 'doctrine',
         'mapping' => 'yaml',
         'dev-mode' => true,
+        'db-prefix' => 'tmp_',
         //'debug' => EchoSQLLogger::class,
         'dir' => [
             'src/Infrastructure/ORM/Doctrine/Mappings/',

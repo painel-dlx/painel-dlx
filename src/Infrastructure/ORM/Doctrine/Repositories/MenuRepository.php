@@ -26,57 +26,37 @@
 namespace PainelDLX\Infrastructure\ORM\Doctrine\Repositories;
 
 use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\ParameterType;
 use PainelDLX\Domain\Modulos\Repositories\MenuRepositoryInterface;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
 
+/**
+ * Class MenuRepository
+ * @package PainelDLX\Infrastructure\ORM\Doctrine\Repositories
+ * @covers MenuRepositoryTest
+ */
 class MenuRepository extends AbstractPainelDLXRepository implements MenuRepositoryInterface
 {
-
     /**
      * Lista de itens para gerar o menu
      * @param Usuario $usuario
      * @return array
-     * @throws DBALException
      */
-    public function getListaMenu(Usuario $usuario)
+    public function getListaMenu(Usuario $usuario): array
     {
-        $query = '
-            SELECT DISTINCT 
-                m.nome AS menu,
-                i.nome AS item,
-                i.link AS link
-            FROM
-                dlx.Menu m
-            INNER JOIN
-                dlx.MenuItem i ON i.menu_id = m.menu_id
-            INNER JOIN
-                dlx.MenuItem_x_PermissaoUsuario p ON i.menu_item_id = p.menu_item_id
-            INNER JOIN
-                dlx.PermissaoUsuario_x_GrupoUsuario pxg ON pxg.permissao_usuario_id = p.permissao_usuario_id
-            INNER JOIN
-                dlx.GrupoUsuario_x_Usuario gxu ON gxu.grupo_usuario_id = pxg.grupo_usuario_id
-            WHERE
-                m.deletado = 0
-                AND i.deletado = 0
-                AND gxu.usuario_id = :usuario_id
-        ';
+        $qb = $this->createQueryBuilder('m');
+        $qb->select(['partial m.{id, nome}, partial i.{id, nome, link}'])
+            ->innerJoin('m.itens', 'i')
+            ->innerJoin('i.permissoes', 'p')
+            ->innerJoin('p.grupos', 'g')
+            ->innerJoin('g.usuarios', 'u')
+            ->where('m.deletado = 0')
+            ->andWhere('i.deletado = 0')
+            ->andWhere('u.id = :usuario_id')
+            ->setParameter(':usuario_id', $usuario->getId(), ParameterType::INTEGER);
 
+        $query = $qb->getQuery();
 
-        $conn = $this->_em->getConnection();
-
-        $sql = $conn->prepare($query);
-        $sql->bindValue(':usuario_id', $usuario->getId());
-        $sql->execute();
-
-        $lista_menu = $sql->fetchAll();
-        $lista_menu_alterada = [];
-
-        array_map(function ($menu_item) use (&$lista_menu_alterada) {
-            $menu = $menu_item['menu'];
-            unset($menu_item['menu']);
-            $lista_menu_alterada[$menu][] = $menu_item;
-        }, $lista_menu);
-
-        return $lista_menu_alterada;
+        return $query->getResult();
     }
 }

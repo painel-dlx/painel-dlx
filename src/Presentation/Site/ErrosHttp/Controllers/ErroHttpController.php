@@ -20,7 +20,7 @@ use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
 use Vilex\Exceptions\ViewNaoEncontradaException;
 use Vilex\VileX;
 
-class ErroHttp extends PainelDLXController
+class ErroHttpController extends PainelDLXController
 {
     /**
      * @param ServerRequestInterface $request
@@ -36,6 +36,9 @@ class ErroHttp extends PainelDLXController
         ]);
 
         try {
+            // Atributos
+            $this->view->setAtributo('titulo-pagina', "Ops! Deu erro {$get['erro']}");
+
             // Visão
             $this->view->addTemplate("erros-http/{$get['erro']}");
         } catch (UserException $e) {

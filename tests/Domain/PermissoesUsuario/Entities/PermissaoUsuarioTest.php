@@ -26,6 +26,7 @@
 namespace PainelDLX\Testes\Domain\PermissoesUsuarios\Entities;
 
 
+use Doctrine\Common\Collections\Collection;
 use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
 use PainelDLX\Domain\PermissoesUsuario\Entities\PermissaoUsuario;
 use PainelDLX\Domain\PermissoesUsuario\Exceptions\PermissaoUsuarioJaPossuiGrupoException;
@@ -42,6 +43,25 @@ class PermissaoUsuarioTest extends TestCase
     const ALIAS = 'CADASTRAR_NOVO_USUARIO';
     /** @var string */
     const DESCRICAO = 'Cadastrar um novo usuário';
+
+    /**
+     * @return PermissaoUsuario
+     * @covers ::__construct
+     */
+    public function test__construct(): PermissaoUsuario
+    {
+        $alias = 'PERMISSAO_TESTE';
+        $descricao = 'PERMISSAO_TESTE';
+
+        $permissao_usuario = new PermissaoUsuario($alias, $descricao);
+
+        $this->assertEquals($alias, $permissao_usuario->getAlias());
+        $this->assertEquals($descricao, $permissao_usuario->getDescricao());
+        $this->assertInstanceOf(Collection::class, $permissao_usuario->getGrupos());
+        $this->assertInstanceOf(Collection::class, $permissao_usuario->getItensMenu());
+
+        return $permissao_usuario;
+    }
 
     public function test_create_PermissaoUsuario(): void
     {

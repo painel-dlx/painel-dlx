@@ -24,6 +24,8 @@
  */
 
 use DLX\Core\Configure;
+use PainelDLX\Domain\Modulos\Entities\Menu;
+use PainelDLX\Domain\Modulos\Entities\MenuItem;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
 use SechianeX\Factories\SessionFactory;
 use Vilex\PaginaMestra;
@@ -77,16 +79,20 @@ $tab_index = 0;
 
         <a href="javascript:" class="link-fechar-menu" onclick="ocultarMenu()" title="Fechar menu">X</a>
 
-        <?php foreach ($session->get('html:lista-menu') as $menu => $itens) :
-            if (count($itens)) : ?>
+        <?php
+        /** @var Menu $menu */
+        foreach ($session->get('html:lista-menu') as $menu) :
+            if ($menu->hasItens()) : ?>
             <div class="menu-item">
-                <span class="menu-link"><?php echo $menu ?></span>
+                <span class="menu-link"><?php echo $menu->getNome() ?></span>
 
                 <ul class="sub-menu">
-                    <?php foreach ($itens as $item) : ?>
+                    <?php
+                    /** @var MenuItem $item */
+                    foreach ($menu->getItens() as $item) : ?>
                         <li class="sub-menu-item">
-                            <a href="<?php echo $item['link'] ?>" class="sub-menu-link" tabindex="<?php echo ++$tab_index ?>">
-                                <?php echo $item['item'] ?>
+                            <a href="<?php echo $item->getLink() ?>" class="sub-menu-link" tabindex="<?php echo ++$tab_index ?>">
+                                <?php echo $item->getNome() ?>
                             </a>
                         </li>
                     <?php endforeach; ?>
