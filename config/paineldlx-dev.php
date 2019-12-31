@@ -45,7 +45,6 @@ return [
         'orm' => 'doctrine',
         'mapping' => 'yaml',
         'dev-mode' => true,
-        'db-prefix' => 'tmp_',
         //'debug' => EchoSQLLogger::class,
         'dir' => [
             'src/Infrastructure/ORM/Doctrine/Mappings/',

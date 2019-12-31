@@ -10,7 +10,7 @@ namespace PainelDLX\Application\Middlewares;
 
 use PainelDLX\Application\Services\PainelDLX;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
-use PainelDLX\Presentation\Site\ErrosHttp\Controllers\ErroHttpController;
+use PainelDLX\Presentation\Web\ErrosHttp\Controllers\ErroHttpController;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;

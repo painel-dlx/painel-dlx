@@ -23,10 +23,9 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Presentation\Site\Emails\Controllers;
+namespace PainelDLX\Presentation\Web\Emails\Controllers;
 
 
-use DLX\Core\Configure;
 use DLX\Core\Exceptions\UserException;
 use PainelDLX\Domain\Emails\Exceptions\ConfigSmtpInvalidoException;
 use PainelDLX\Domain\Emails\Exceptions\ConfigSmtpNaoEncontradaException;
@@ -34,18 +33,17 @@ use PainelDLX\UseCases\Emails\EditarConfigSmtp\EditarConfigSmtpCommand;
 use PainelDLX\UseCases\Emails\GetConfigSmtpPorId\GetConfigSmtpPorIdCommand;
 use PainelDLX\UseCases\Emails\GetConfigSmtpPorId\GetConfigSmtpPorIdCommandHandler;
 use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
-use PainelDLX\Presentation\Site\Common\Controllers\PainelDLXController;
+use PainelDLX\Presentation\Web\Common\Controllers\PainelDLXController;
 use PainelDLX\UseCases\Emails\EditarConfigSmtp\EditarConfigSmtpCommandHandler;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Vilex\Exceptions\ContextoInvalidoException;
-use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
-use Vilex\Exceptions\ViewNaoEncontradaException;
+use Vilex\Exceptions\PaginaMestraInvalidaException;
+use Vilex\Exceptions\TemplateInvalidoException;
 use Zend\Diactoros\Response\JsonResponse;
 
 /**
  * Class EditarConfigSmtpController
- * @package PainelDLX\Presentation\Site\Emails\Controllers
+ * @package PainelDLX\Presentation\Web\Emails\Controllers
  * @covers EditarConfigSmtpControllerTest
  */
 class EditarConfigSmtpController extends PainelDLXController
@@ -53,9 +51,8 @@ class EditarConfigSmtpController extends PainelDLXController
     /**
      * @param ServerRequestInterface $request
      * @return ResponseInterface
-     * @throws ContextoInvalidoException
-     * @throws PaginaMestraNaoEncontradaException
-     * @throws ViewNaoEncontradaException
+     * @throws PaginaMestraInvalidaException
+     * @throws TemplateInvalidoException
      */
     public function formEditarConfigSmtp(ServerRequestInterface $request): ResponseInterface
     {
@@ -68,24 +65,22 @@ class EditarConfigSmtpController extends PainelDLXController
             /* @see GetConfigSmtpPorIdCommandHandler */
             $config_smtp = $this->command_bus->handle(new GetConfigSmtpPorIdCommand($get['config_smtp_id']));
 
-            if (is_null($config_smtp)) {
-                throw new UserException('Configuração SMTP não encontrada!');
-            }
-
             // View
-            $this->view->addTemplate('emails/form_config_smtp');
+            $this->view->addTemplate('emails/form_config_smtp', [
+                'config-smtp' => $config_smtp
+            ]);
 
             // Parâmetros
             $this->view->setAtributo('titulo-pagina', "Editar configuração SMTP: {$config_smtp->getNome()}");
-            $this->view->setAtributo('config-smtp', $config_smtp);
 
             // JS
             $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js', false, VERSAO_PAINEL_DLX);
-        } catch (UserException $e) {
-            $this->view->addTemplate('common/mensagem_usuario');
-            $this->view->setAtributo('mensagem', [
-                'tipo' => 'erro',
-                'texto' => $e->getMessage()
+        } catch (ConfigSmtpNaoEncontradaException | UserException $e) {
+            $this->view->addTemplate('common/mensagem_usuario', [
+                'mensagem' => [
+                    'tipo' => 'erro',
+                    'texto' => $e->getMessage()
+                ]
             ]);
         }
 

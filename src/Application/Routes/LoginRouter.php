@@ -30,8 +30,8 @@ use PainelDLX\Application\Middlewares\CriptografarSenhas;
 use PainelDLX\Application\Middlewares\DefinePaginaMestra;
 use PainelDLX\Application\Middlewares\VerificarLogon;
 use PainelDLX\Application\Services\PainelDLX;
-use PainelDLX\Presentation\Site\Usuarios\Controllers\LoginController;
-use PainelDLX\Presentation\Site\Usuarios\Controllers\ResetSenhaController;
+use PainelDLX\Presentation\Web\Usuarios\Controllers\LoginController;
+use PainelDLX\Presentation\Web\Usuarios\Controllers\ResetSenhaController;
 
 class LoginRouter extends PainelDLXRouter
 {

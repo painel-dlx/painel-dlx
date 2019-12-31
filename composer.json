@@ -1,10 +1,11 @@
 {
     "name": "painel-dlx/painel-dlx",
-    "version": "3.1.6",
+    "version": "3.1.7",
     "license": "MIT",
+    "minimum-stability": "dev",
     "require": {
         "dlepera88-php/dlx": "^1.1",
-        "dlepera88-php/vilex": "^1.2",
+        "dlepera88-php/vilex": "2.0.x-dev",
         "dlepera88-php/rauterex": "^1.1",
         "components/jquery": "^3.3",
         "dlepera88-php/sechianex": "^1.0",

@@ -6,28 +6,23 @@
  * Time: 17:31
  */
 
-namespace PainelDLX\Presentation\Site\ErrosHttp\Controllers;
+namespace PainelDLX\Presentation\Web\ErrosHttp\Controllers;
 
 
 use DLX\Core\Exceptions\UserException;
-use League\Tactician\CommandBus;
-use PainelDLX\Presentation\Site\Common\Controllers\PainelDLXController;
+use PainelDLX\Presentation\Web\Common\Controllers\PainelDLXController;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use SechianeX\Contracts\SessionInterface;
-use Vilex\Exceptions\ContextoInvalidoException;
-use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
-use Vilex\Exceptions\ViewNaoEncontradaException;
-use Vilex\VileX;
+use Vilex\Exceptions\PaginaMestraInvalidaException;
+use Vilex\Exceptions\TemplateInvalidoException;
 
 class ErroHttpController extends PainelDLXController
 {
     /**
      * @param ServerRequestInterface $request
      * @return ResponseInterface
-     * @throws ViewNaoEncontradaException
-     * @throws ContextoInvalidoException
-     * @throws PaginaMestraNaoEncontradaException
+     * @throws PaginaMestraInvalidaException
+     * @throws TemplateInvalidoException
      */
     public function exibirPaginaErro(ServerRequestInterface $request): ResponseInterface
     {
@@ -42,10 +37,11 @@ class ErroHttpController extends PainelDLXController
             // Visão
             $this->view->addTemplate("erros-http/{$get['erro']}");
         } catch (UserException $e) {
-            $this->view->addTemplate('common/mensagem_usuario');
-            $this->view->setAtributo('mensagem', [
-                'tipo' => 'erro',
-                'texto' => $e->getMessage()
+            $this->view->addTemplate('common/mensagem_usuario', [
+                'mensagem' => [
+                    'tipo' => 'erro',
+                    'texto' => $e->getMessage()
+                ]
             ]);
         }
 

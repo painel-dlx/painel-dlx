@@ -11,7 +11,7 @@ namespace PainelDLX\Testes\Presentation\Site\Usuarios\Controllers;
 use DLX\Infrastructure\EntityManagerX;
 use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\ORMException;
-use PainelDLX\Presentation\Site\Usuarios\Controllers\ResetSenhaController;
+use PainelDLX\Presentation\Web\Usuarios\Controllers\ResetSenhaController;
 use PainelDLX\Tests\TestCase\PainelDLXTestCase;
 use PainelDLX\Tests\TestCase\TesteComTransaction;
 use Psr\Http\Message\ServerRequestInterface;
@@ -29,8 +29,8 @@ $_SESSION = [];
 
 /**
  * Class ResetSenhaControllerTest
- * @package PainelDLX\Testes\Presentation\Site\Usuarios\Controllers
- * @coversDefaultClass \PainelDLX\Presentation\Site\Usuarios\Controllers\ResetSenhaController
+ * @package PainelDLX\Testes\Presentation\Web\Usuarios\Controllers
+ * @coversDefaultClass \PainelDLX\Presentation\Web\Usuarios\Controllers\ResetSenhaController
  */
 class ResetSenhaControllerTest extends PainelDLXTestCase
 {

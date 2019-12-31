@@ -23,14 +23,11 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Presentation\Site\Usuarios\Controllers;
+namespace PainelDLX\Presentation\Web\Usuarios\Controllers;
 
 
 use DLX\Contracts\TransactionInterface;
-use DLX\Core\Configure;
 use DLX\Core\Exceptions\UserException;
-use DLX\Infrastructure\EntityManagerX;
-use Doctrine\ORM\ORMException;
 use League\Tactician\CommandBus;
 use PainelDLX\Application\Services\Exceptions\ErroAoEnviarEmailException;
 use PainelDLX\Domain\Usuarios\Exceptions\ResetSenhaNaoEncontradoException;
@@ -46,15 +43,13 @@ use PainelDLX\UseCases\Usuarios\SolicitarResetSenha\SolicitarResetSenhaCommandHa
 use PainelDLX\UseCases\Usuarios\UtilizarResetSenha\UtilizarResetSenhaCommand;
 use PainelDLX\UseCases\Usuarios\UtilizarResetSenha\UtilizarResetSenhaCommandHandler;
 use PainelDLX\Domain\Usuarios\Entities\ResetSenha;
-use PainelDLX\Domain\Usuarios\Entities\Usuario;
 use PainelDLX\Domain\Usuarios\ValueObjects\SenhaUsuario;
-use PainelDLX\Presentation\Site\Common\Controllers\PainelDLXController;
+use PainelDLX\Presentation\Web\Common\Controllers\PainelDLXController;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use SechianeX\Contracts\SessionInterface;
-use Vilex\Exceptions\ContextoInvalidoException;
-use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
-use Vilex\Exceptions\ViewNaoEncontradaException;
+use Vilex\Exceptions\PaginaMestraInvalidaException;
+use Vilex\Exceptions\TemplateInvalidoException;
 use Vilex\VileX;
 use Zend\Diactoros\Response\JsonResponse;
 
@@ -71,7 +66,7 @@ class ResetSenhaController extends PainelDLXController
      * @param CommandBus $commandBus
      * @param SessionInterface $session
      * @param TransactionInterface $transacao
-     * @throws ViewNaoEncontradaException
+     * @throws TemplateInvalidoException
      */
     public function __construct(
         VileX $view,
@@ -86,9 +81,8 @@ class ResetSenhaController extends PainelDLXController
     /**
      * @param ServerRequestInterface $request
      * @return ResponseInterface
-     * @throws ContextoInvalidoException
-     * @throws PaginaMestraNaoEncontradaException
-     * @throws ViewNaoEncontradaException
+     * @throws TemplateInvalidoException
+     * @throws PaginaMestraInvalidaException
      */
     public function formSolicitarResetSenha(ServerRequestInterface $request): ResponseInterface
     {
@@ -148,9 +142,8 @@ class ResetSenhaController extends PainelDLXController
     /**
      * @param ServerRequestInterface $request
      * @return ResponseInterface
-     * @throws ContextoInvalidoException
-     * @throws PaginaMestraNaoEncontradaException
-     * @throws ViewNaoEncontradaException
+     * @throws PaginaMestraInvalidaException
+     * @throws TemplateInvalidoException
      */
     public function formResetSenha(ServerRequestInterface $request): ResponseInterface
     {
@@ -172,10 +165,11 @@ class ResetSenhaController extends PainelDLXController
             // JS
             $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js', false, VERSAO_PAINEL_DLX);
         } catch (ResetSenhaNaoEncontradoException | UserException $e) {
-            $this->view->addTemplate('common/mensagem_usuario');
-            $this->view->setAtributo('mensagem', [
-                'tipo' => 'erro',
-                'texto' => $e->getMessage()
+            $this->view->addTemplate('common/mensagem_usuario', [
+                'mensagem' => [
+                    'tipo' => 'erro',
+                    'texto' => $e->getMessage()
+                ]
             ]);
         }
 

@@ -32,7 +32,7 @@ use PainelDLX\Application\Middlewares\ConfigurarPaginacao;
 use PainelDLX\Application\Middlewares\DefinePaginaMestra;
 use PainelDLX\Application\Middlewares\VerificarLogon;
 use PainelDLX\Application\Services\PainelDLX;
-use PainelDLX\Presentation\Site\PermissoesUsuario\Controllers\CadastroPermissaoController;
+use PainelDLX\Presentation\Web\PermissoesUsuario\Controllers\CadastroPermissaoController;
 
 class PermissoesRouter extends PainelDLXRouter
 {

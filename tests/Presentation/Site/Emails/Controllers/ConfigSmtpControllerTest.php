@@ -32,7 +32,7 @@ use Doctrine\ORM\ORMException;
 use PainelDLX\Application\Factories\CommandBusFactory;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
 use PainelDLX\Domain\Usuarios\Exceptions\UsuarioJaPossuiGrupoException;
-use PainelDLX\Presentation\Site\Emails\Controllers\ConfigSmtpController;
+use PainelDLX\Presentation\Web\Emails\Controllers\ConfigSmtpController;
 use PainelDLX\Tests\TestCase\PainelDLXTestCase;
 use PainelDLX\Tests\TestCase\TesteComTransaction;
 use Psr\Http\Message\ServerRequestInterface;
@@ -46,8 +46,8 @@ use Zend\Diactoros\Response\JsonResponse;
 
 /**
  * Class ConfigSmtpControllerTestCase
- * @package PainelDLX\Testes\Presentation\Site\Emails\Controllers
- * @coversDefaultClass \PainelDLX\Presentation\Site\Emails\Controllers\ConfigSmtpController
+ * @package PainelDLX\Testes\Presentation\Web\Emails\Controllers
+ * @coversDefaultClass \PainelDLX\Presentation\Web\Emails\Controllers\ConfigSmtpController
  */
 class ConfigSmtpControllerTest extends PainelDLXTestCase
 {

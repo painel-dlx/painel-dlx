@@ -23,10 +23,9 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Presentation\Site\Emails\Controllers;
+namespace PainelDLX\Presentation\Web\Emails\Controllers;
 
 
-use DLX\Core\Configure;
 use DLX\Core\Exceptions\UserException;
 use PainelDLX\Application\Services\Exceptions\ErroAoEnviarEmailException;
 use PainelDLX\Domain\Emails\Exceptions\ConfigSmtpNaoEncontradaException;
@@ -41,18 +40,17 @@ use PainelDLX\UseCases\Emails\TestarConfigSmtp\TestarConfigSmtpCommandHandler;
 use PainelDLX\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommand;
 use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
-use PainelDLX\Presentation\Site\Common\Controllers\PainelDLXController;
+use PainelDLX\Presentation\Web\Common\Controllers\PainelDLXController;
 use PainelDLX\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommandHandler;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Vilex\Exceptions\ContextoInvalidoException;
-use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
-use Vilex\Exceptions\ViewNaoEncontradaException;
+use Vilex\Exceptions\PaginaMestraInvalidaException;
+use Vilex\Exceptions\TemplateInvalidoException;
 use Zend\Diactoros\Response\JsonResponse;
 
 /**
  * Class ConfigSmtpController
- * @package PainelDLX\Presentation\Site\Emails\Controllers
+ * @package PainelDLX\Presentation\Web\Emails\Controllers
  * @covers ConfigSmtpControllerTest
  */
 class ConfigSmtpController extends PainelDLXController
@@ -60,9 +58,8 @@ class ConfigSmtpController extends PainelDLXController
     /**
      * @param ServerRequestInterface $request
      * @return ResponseInterface
-     * @throws ContextoInvalidoException
-     * @throws PaginaMestraNaoEncontradaException
-     * @throws ViewNaoEncontradaException
+     * @throws PaginaMestraInvalidaException
+     * @throws TemplateInvalidoException
      */
     public function detalheConfigSmtp(ServerRequestInterface $request): ResponseInterface
     {
@@ -74,16 +71,18 @@ class ConfigSmtpController extends PainelDLXController
             $config_smtp = $this->command_bus->handle(new GetConfigSmtpPorIdCommand($config_smtp_id));
 
             // View
-            $this->view->addTemplate('emails/det_config_smtp');
+            $this->view->addTemplate('emails/det_config_smtp', [
+                'config-smtp' => $config_smtp
+            ]);
 
             // Parâmetros
             $this->view->setAtributo('titulo-pagina', "Configuração SMTP: {$config_smtp->getNome()}");
-            $this->view->setAtributo('config-smtp', $config_smtp);
         } catch (UserException $e) {
-            $this->view->addTemplate('common/mensagem_usuario');
-            $this->view->setAtributo('mensagem', [
-                'tipo' => 'erro',
-                'texto' => $e->getMessage()
+            $this->view->addTemplate('common/mensagem_usuario', [
+                'mensagem' => [
+                    'tipo' => 'erro',
+                    'texto' => $e->getMessage()
+                ]
             ]);
         }
 
@@ -93,9 +92,8 @@ class ConfigSmtpController extends PainelDLXController
     /**
      * @param ServerRequestInterface $request
      * @return ResponseInterface
-     * @throws ContextoInvalidoException
-     * @throws PaginaMestraNaoEncontradaException
-     * @throws ViewNaoEncontradaException
+     * @throws PaginaMestraInvalidaException
+     * @throws TemplateInvalidoException
      */
     public function listaConfigSmtp(ServerRequestInterface $request): ResponseInterface
     {
@@ -121,27 +119,30 @@ class ConfigSmtpController extends PainelDLXController
                 $get['offset']
             ));
 
-            // View
-            $this->view->addTemplate('emails/lista_config_smtp');
-            $this->view->addTemplate('common/paginacao');
+            // Lista
+            $this->view->addTemplate('emails/lista_config_smtp', [
+                'lista-config-smtp' => $lista_config_smtp,
+                'filtro' => $get
+            ]);
+
+            // Paginação
+            $this->view->addTemplate('common/paginacao', [
+                'pagina-atual' => $get['pg'],
+                'qtde-registros-pagina' => $get['qtde'],
+                'qtde-registros-lista' => count($lista_config_smtp)
+            ]);
 
             // Parâmetros
             $this->view->setAtributo('titulo-pagina', 'Configurações SMTP');
-            $this->view->setAtributo('lista-config-smtp', $lista_config_smtp);
-            $this->view->setAtributo('filtro', $get);
-
-            // Paginação
-            $this->view->setAtributo('pagina-atual', $get['pg']);
-            $this->view->setAtributo('qtde-registros-pagina', $get['qtde']);
-            $this->view->setAtributo('qtde-registros-lista', count($lista_config_smtp));
 
             // JS
             $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js', false, VERSAO_PAINEL_DLX);
         } catch (UserException $e) {
-            $this->view->addTemplate('common/mensagem_usuario');
-            $this->view->setAtributo('mensagem', [
-                'tipo' => 'erro',
-                'texto' => $e->getMessage()
+            $this->view->addTemplate('common/mensagem_usuario', [
+                'mensagem' => [
+                    'tipo' => 'erro',
+                    'texto' => $e->getMessage()
+                ]
             ]);
         }
 

@@ -23,26 +23,24 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Presentation\Site\Emails\Controllers;
+namespace PainelDLX\Presentation\Web\Emails\Controllers;
 
 
-use DLX\Core\Configure;
 use DLX\Core\Exceptions\UserException;
 use PainelDLX\Domain\Emails\Exceptions\ConfigSmtpInvalidoException;
 use PainelDLX\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpCommand;
 use PainelDLX\UseCases\Emails\NovaConfigSmtp\NovaConfigSmtpCommandHandler;
 use PainelDLX\Domain\Emails\Entities\ConfigSmtp;
-use PainelDLX\Presentation\Site\Common\Controllers\PainelDLXController;
+use PainelDLX\Presentation\Web\Common\Controllers\PainelDLXController;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Vilex\Exceptions\ContextoInvalidoException;
-use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
-use Vilex\Exceptions\ViewNaoEncontradaException;
+use Vilex\Exceptions\PaginaMestraInvalidaException;
+use Vilex\Exceptions\TemplateInvalidoException;
 use Zend\Diactoros\Response\JsonResponse;
 
 /**
  * Class NovaConfigSmtpController
- * @package PainelDLX\Presentation\Site\Emails\Controllers
+ * @package PainelDLX\Presentation\Web\Emails\Controllers
  * @covers NovaConfigSmtpControllerTest
  */
 class NovaConfigSmtpController extends PainelDLXController
@@ -50,9 +48,8 @@ class NovaConfigSmtpController extends PainelDLXController
     /**
      * @param ServerRequestInterface $request
      * @return ResponseInterface
-     * @throws PaginaMestraNaoEncontradaException
-     * @throws ViewNaoEncontradaException
-     * @throws ContextoInvalidoException
+     * @throws PaginaMestraInvalidaException
+     * @throws TemplateInvalidoException
      */
     public function formNovaConfigSmtp(ServerRequestInterface $request): ResponseInterface
     {
@@ -66,10 +63,11 @@ class NovaConfigSmtpController extends PainelDLXController
             // JS
             $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js', false, VERSAO_PAINEL_DLX);
         } catch (UserException $e) {
-            $this->view->addTemplate('common/mensagem_usuario');
-            $this->view->setAtributo('mensagem', [
-                'tipo' => 'erro',
-                'mensagem' => $e->getMessage()
+            $this->view->addTemplate('common/mensagem_usuario', [
+                'mensagem' => [
+                    'tipo' => 'erro',
+                    'texto' => $e->getMessage()
+                ]
             ]);
         }
 

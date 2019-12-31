@@ -32,8 +32,8 @@ use PainelDLX\Application\Middlewares\ConfigurarPaginacao;
 use PainelDLX\Application\Middlewares\DefinePaginaMestra;
 use PainelDLX\Application\Middlewares\VerificarLogon;
 use PainelDLX\Application\Services\PainelDLX;
-use PainelDLX\Presentation\Site\GruposUsuarios\Controllers\ConfigurarPermissoesController;
-use PainelDLX\Presentation\Site\GruposUsuarios\Controllers\GrupoUsuarioController;
+use PainelDLX\Presentation\Web\GruposUsuarios\Controllers\ConfigurarPermissoesController;
+use PainelDLX\Presentation\Web\GruposUsuarios\Controllers\GrupoUsuarioController;
 
 class GruposUsuariosRouter extends PainelDLXRouter
 {

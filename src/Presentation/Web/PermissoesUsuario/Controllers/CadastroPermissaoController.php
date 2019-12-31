@@ -23,10 +23,9 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Presentation\Site\PermissoesUsuario\Controllers;
+namespace PainelDLX\Presentation\Web\PermissoesUsuario\Controllers;
 
 
-use DLX\Core\Configure;
 use DLX\Core\Exceptions\UserException;
 use PainelDLX\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommand;
 use PainelDLX\UseCases\ListaRegistros\ConverterFiltro2Criteria\ConverterFiltro2CriteriaCommandHandler;
@@ -39,14 +38,13 @@ use PainelDLX\UseCases\PermissoesUsuario\ExcluirPermissaoUsuario\ExcluirPermissa
 use PainelDLX\UseCases\PermissoesUsuario\GetListaPermissaoUsuario\GetListaPermissaoUsuarioCommand;
 use PainelDLX\UseCases\PermissoesUsuario\GetListaPermissaoUsuario\GetListaPermissaoUsuarioCommandHandler;
 use PainelDLX\Domain\PermissoesUsuario\Entities\PermissaoUsuario;
-use PainelDLX\Presentation\Site\Common\Controllers\PainelDLXController;
+use PainelDLX\Presentation\Web\Common\Controllers\PainelDLXController;
 use PainelDLX\UseCases\PermissoesUsuario\GetPermissaoUsuarioPorId\GetPermissaoUsuarioPorIdCommand;
 use PainelDLX\UseCases\PermissoesUsuario\GetPermissaoUsuarioPorId\GetPermissaoUsuarioPorIdCommandHandler;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Vilex\Exceptions\ContextoInvalidoException;
-use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
-use Vilex\Exceptions\ViewNaoEncontradaException;
+use Vilex\Exceptions\PaginaMestraInvalidaException;
+use Vilex\Exceptions\TemplateInvalidoException;
 use Zend\Diactoros\Response\JsonResponse;
 
 class CadastroPermissaoController extends PainelDLXController
@@ -54,9 +52,8 @@ class CadastroPermissaoController extends PainelDLXController
     /**
      * @param ServerRequestInterface $request
      * @return ResponseInterface
-     * @throws ContextoInvalidoException
-     * @throws PaginaMestraNaoEncontradaException
-     * @throws ViewNaoEncontradaException
+     * @throws PaginaMestraInvalidaException
+     * @throws TemplateInvalidoException
      */
     public function listaPermissoesUsuarios(ServerRequestInterface $request): ResponseInterface
     {
@@ -96,10 +93,11 @@ class CadastroPermissaoController extends PainelDLXController
             $this->view->addTemplate('permissoes/lista_permissoes');
             $this->view->addTemplate('common/paginacao');
         } catch (UserException $e) {
-            $this->view->addTemplate('common/mensagem_usuario');
-            $this->view->setAtributo('mensagem', [
-                'tipo' => 'erro',
-                'mensagem' => $e->getMessage()
+            $this->view->addTemplate('common/mensagem_usuario', [
+                'mensagem' => [
+                    'tipo' => 'erro',
+                    'texto' => $e->getMessage()
+                ]
             ]);
         }
 
@@ -109,9 +107,8 @@ class CadastroPermissaoController extends PainelDLXController
     /**
      * @param ServerRequestInterface $request
      * @return ResponseInterface
-     * @throws PaginaMestraNaoEncontradaException
-     * @throws ViewNaoEncontradaException
-     * @throws ContextoInvalidoException
+     * @throws PaginaMestraInvalidaException
+     * @throws TemplateInvalidoException
      */
     public function formNovaPermissaoUsuario(ServerRequestInterface $request): ResponseInterface
     {
@@ -171,9 +168,8 @@ class CadastroPermissaoController extends PainelDLXController
     /**
      * @param ServerRequestInterface $request
      * @return ResponseInterface
-     * @throws ContextoInvalidoException
-     * @throws PaginaMestraNaoEncontradaException
-     * @throws ViewNaoEncontradaException
+     * @throws PaginaMestraInvalidaException
+     * @throws TemplateInvalidoException
      */
     public function formEditarPermissaoUsuario(ServerRequestInterface $request): ResponseInterface
     {
@@ -201,10 +197,11 @@ class CadastroPermissaoController extends PainelDLXController
             // JS
             $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js', false, VERSAO_PAINEL_DLX);
         } catch (UserException $e) {
-            $this->view->addTemplate('mensagem_usuario');
-            $this->view->setAtributo('mensagem', [
-                'tipo' => 'erro',
-                'mensagem' => $e->getMessage()
+            $this->view->addTemplate('common/mensagem_usuario', [
+                'mensagem' => [
+                    'tipo' => 'erro',
+                    'texto' => $e->getMessage()
+                ]
             ]);
         }
 
@@ -247,9 +244,8 @@ class CadastroPermissaoController extends PainelDLXController
     /**
      * @param ServerRequestInterface $request
      * @return ResponseInterface
-     * @throws ContextoInvalidoException
-     * @throws PaginaMestraNaoEncontradaException
-     * @throws ViewNaoEncontradaException
+     * @throws PaginaMestraInvalidaException
+     * @throws TemplateInvalidoException
      */
     public function detalhePermissaoUsuario(ServerRequestInterface $request): ResponseInterface
     {
@@ -267,24 +263,23 @@ class CadastroPermissaoController extends PainelDLXController
             /* @see GetPermissaoUsuarioPorIdCommandHandler */
             $permissao_usuario = $this->command_bus->handle(new GetPermissaoUsuarioPorIdCommand($permissao_usuario_id));
 
-            if (!$permissao_usuario instanceof PermissaoUsuario) {
-                throw new UserException('Permissão de usuário não encontrada.');
-            }
-
             // Atributos
             $this->view->setAtributo('titulo-pagina', "Permissão: {$permissao_usuario->getDescricao()}");
             $this->view->setAtributo('permissao-usuario', $permissao_usuario);
 
             // Views
-            $this->view->addTemplate('permissoes/det_permissao');
+            $this->view->addTemplate('permissoes/det_permissao', [
+                'permissao-usuario' => $permissao_usuario
+            ]);
 
             // JS
             $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js', false, VERSAO_PAINEL_DLX);
         } catch (UserException $e) {
-            $this->view->addTemplate('commmon/mensagem_usuario');
-            $this->view->setAtributo('mensagem', [
-                'tipo' => 'erro',
-                'mensagem' => $e->getMessage()
+            $this->view->addTemplate('common/mensagem_usuario', [
+                'mensagem' => [
+                    'tipo' => 'erro',
+                    'texto' => $e->getMessage()
+                ]
             ]);
         }
 

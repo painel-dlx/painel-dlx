@@ -34,7 +34,7 @@ use PainelDLX\Application\Contracts\Router\ContainerInterface;
 use PainelDLX\Application\Contracts\Router\RouterInterface;
 use PainelDLX\Application\Routes\PainelDLXRouter;
 use PainelDLX\Application\Services\Exceptions\AmbienteNaoInformadoException;
-use PainelDLX\Presentation\Site\ErrosHttp\Controllers\ErroHttpController;
+use PainelDLX\Presentation\Web\ErrosHttp\Controllers\ErroHttpController;
 use Psr\Http\Message\ServerRequestInterface;
 use Vilex\Exceptions\ContextoInvalidoException;
 use Vilex\Exceptions\PaginaMestraNaoEncontradaException;

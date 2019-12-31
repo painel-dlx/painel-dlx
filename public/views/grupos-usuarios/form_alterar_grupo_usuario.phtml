@@ -25,14 +25,14 @@
 
 use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
 use PainelDLX\Domain\PermissoesUsuario\Entities\PermissaoUsuario;
-use Vilex\VileX;
+use Vilex\Templates\AbstractTemplate;
 
 /**
- * @var VileX $this
+ * @var AbstractTemplate $this
  */
 
 /** @var GrupoUsuario $grupo_usuario */
-$grupo_usuario = $this->getAtributo('grupo_usuario');
+$grupo_usuario = $this->getAtributo('grupo-usuario');
 ?>
 
 [CORPO]

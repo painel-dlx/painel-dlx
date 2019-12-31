@@ -27,7 +27,7 @@ namespace PainelDLX\Testes\Presentation\Site\Usuarios\Controllers;
 
 use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\ORMException;
-use PainelDLX\Presentation\Site\Usuarios\Controllers\LoginController;
+use PainelDLX\Presentation\Web\Usuarios\Controllers\LoginController;
 use PainelDLX\Tests\Helpers\UsuarioTesteHelper;
 use PainelDLX\Tests\TestCase\PainelDLXTestCase;
 use PainelDLX\Tests\TestCase\TesteComTransaction;
@@ -36,8 +36,8 @@ use SechianeX\Contracts\SessionInterface;
 use SechianeX\Exceptions\SessionAdapterInterfaceInvalidaException;
 use SechianeX\Exceptions\SessionAdapterNaoEncontradoException;
 use SechianeX\Factories\SessionFactory;
-use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
-use Vilex\Exceptions\ViewNaoEncontradaException;
+use Vilex\Exceptions\PaginaMestraInvalidaException;
+use Vilex\Exceptions\TemplateInvalidoException;
 use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Diactoros\Response\JsonResponse;
 
@@ -45,8 +45,8 @@ $_SESSION = [];
 
 /**
  * Class LoginControllerTest
- * @package PainelDLX\Testes\Presentation\Site\Usuarios\Controllers
- * @coversDefaultClass \PainelDLX\Presentation\Site\Usuarios\Controllers\LoginController
+ * @package PainelDLX\Testes\Presentation\Web\Usuarios\Controllers
+ * @coversDefaultClass \PainelDLX\Presentation\Web\Usuarios\Controllers\LoginController
  */
 class LoginControllerTest extends PainelDLXTestCase
 {
@@ -84,19 +84,15 @@ class LoginControllerTest extends PainelDLXTestCase
 
     /**
      * @param LoginController $controller
-     * @throws PaginaMestraNaoEncontradaException
-     * @throws ViewNaoEncontradaException
+     * @throws PaginaMestraInvalidaException
+     * @throws TemplateInvalidoException
      * @covers ::formLogin
      * @depends test__construct
      */
     public function test_FormLogin_deve_retornar_uma_instancia_HtmlResponse(LoginController $controller)
     {
-        $request = $this->createMock(ServerRequestInterface::class);
-        $request->method('getQueryParams')->willReturn([
-            'redirect-url' => null
-        ]);
-
         /** @var ServerRequestInterface $request */
+        $request = $this->createMock(ServerRequestInterface::class);
 
         $response = $controller->formLogin($request);
 

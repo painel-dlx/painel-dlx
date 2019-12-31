@@ -23,17 +23,16 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Presentation\Site\GruposUsuarios\Controllers;
+namespace PainelDLX\Presentation\Web\GruposUsuarios\Controllers;
 
 
 use DLX\Contracts\TransactionInterface;
-use DLX\Core\Configure;
 use DLX\Core\Exceptions\UserException;
 use Doctrine\Common\Collections\ArrayCollection;
 use League\Tactician\CommandBus;
 use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
 use PainelDLX\Domain\GruposUsuarios\Exceptions\GrupoUsuarioNaoEncontradoException;
-use PainelDLX\Presentation\Site\Common\Controllers\PainelDLXController;
+use PainelDLX\Presentation\Web\Common\Controllers\PainelDLXController;
 use PainelDLX\UseCases\GruposUsuarios\ConfigurarPermissoes\ConfigurarPermissoesCommand;
 use PainelDLX\UseCases\GruposUsuarios\ConfigurarPermissoes\ConfigurarPermissoesCommandHandler;
 use PainelDLX\UseCases\GruposUsuarios\GetGrupoUsuarioPorId\GetGrupoUsuarioPorIdCommand;
@@ -43,15 +42,14 @@ use PainelDLX\UseCases\PermissoesUsuario\GetListaPermissaoUsuario\GetListaPermis
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use SechianeX\Contracts\SessionInterface;
-use Vilex\Exceptions\ContextoInvalidoException;
-use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
-use Vilex\Exceptions\ViewNaoEncontradaException;
+use Vilex\Exceptions\PaginaMestraInvalidaException;
+use Vilex\Exceptions\TemplateInvalidoException;
 use Vilex\VileX;
 use Zend\Diactoros\Response\JsonResponse;
 
 /**
  * Class ConfigurarPermissoesController
- * @package PainelDLX\Presentation\Site\GruposUsuarios\Controllers
+ * @package PainelDLX\Presentation\Web\GruposUsuarios\Controllers
  * @covers ConfigurarPermissoesControllerTest
  */
 class ConfigurarPermissoesController extends PainelDLXController
@@ -65,9 +63,9 @@ class ConfigurarPermissoesController extends PainelDLXController
      * ConfigurarPermissoesController constructor.
      * @param VileX $view
      * @param CommandBus $commandBus
-     * @param TransactionInterface $transacao
      * @param SessionInterface $session
-     * @throws ViewNaoEncontradaException
+     * @param TransactionInterface $transacao
+     * @throws TemplateInvalidoException
      */
     public function __construct(
         VileX $view,
@@ -82,9 +80,8 @@ class ConfigurarPermissoesController extends PainelDLXController
     /**
      * @param ServerRequestInterface $request
      * @return ResponseInterface
-     * @throws ContextoInvalidoException
-     * @throws PaginaMestraNaoEncontradaException
-     * @throws ViewNaoEncontradaException
+     * @throws TemplateInvalidoException
+     * @throws PaginaMestraInvalidaException
      */
     public function formConfigurarPermissao(ServerRequestInterface $request): ResponseInterface
     {
@@ -101,20 +98,23 @@ class ConfigurarPermissoesController extends PainelDLXController
             $lista_permissoes = $this->command_bus->handle(new GetListaPermissaoUsuarioCommand());
 
             // Views
-            $this->view->addTemplate('grupos-usuarios/form_configurar_permissoes');
+            $this->view->addTemplate('grupos-usuarios/form_configurar_permissoes', [
+                'grupo-usuario' => $grupo_usuario,
+                'lista-permissoes' => $lista_permissoes
+            ]);
 
             // Parâmetros
             $this->view->setAtributo('titulo-pagina', "Gerenciar permissões: {$grupo_usuario->getNome()}");
-            $this->view->setAtributo('grupo-usuario', $grupo_usuario);
             $this->view->setAtributo('lista-permissoes', $lista_permissoes);
 
             // JS
             $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js', false, VERSAO_PAINEL_DLX);
         } catch (GrupoUsuarioNaoEncontradoException | UserException $e) {
-            $this->view->addTemplate('common/mensagem_usuario');
-            $this->view->setAtributo('mensagem', [
-                'tipo' => 'erro',
-                'texto' => $e->getMessage()
+            $this->view->addTemplate('common/mensagem_usuario', [
+                'mensagem' => [
+                    'tipo' => 'erro',
+                    'texto' => $e->getMessage()
+                ]
             ]);
         }
 

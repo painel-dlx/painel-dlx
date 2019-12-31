@@ -28,7 +28,7 @@ namespace PainelDLX\Application\Routes;
 
 use PainelDLX\Application\Middlewares\DefinePaginaMestra;
 use PainelDLX\Application\Services\PainelDLX;
-use PainelDLX\Presentation\Site\ErrosHttp\Controllers\ErroHttpController;
+use PainelDLX\Presentation\Web\ErrosHttp\Controllers\ErroHttpController;
 
 class ErrosRouter extends PainelDLXRouter
 {

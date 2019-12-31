@@ -23,12 +23,10 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Presentation\Site\Usuarios\Controllers;
+namespace PainelDLX\Presentation\Web\Usuarios\Controllers;
 
 
-use DLX\Core\Configure;
 use DLX\Core\Exceptions\UserException;
-use League\Tactician\CommandBus;
 use PainelDLX\UseCases\Usuarios\AlterarSenhaUsuario\AlterarSenhaUsuarioCommand;
 use PainelDLX\UseCases\Usuarios\GetUsuarioPeloId\GetUsuarioPeloIdCommand;
 use PainelDLX\UseCases\Usuarios\GetUsuarioPeloId\GetUsuarioPeloIdCommandHandler;
@@ -36,19 +34,16 @@ use PainelDLX\Domain\Usuarios\Entities\Usuario;
 use PainelDLX\Domain\Usuarios\Exceptions\UsuarioNaoEncontradoException;
 use PainelDLX\Domain\Usuarios\Repositories\UsuarioRepositoryInterface;
 use PainelDLX\Domain\Usuarios\ValueObjects\SenhaUsuario;
-use PainelDLX\Presentation\Site\Common\Controllers\PainelDLXController;
+use PainelDLX\Presentation\Web\Common\Controllers\PainelDLXController;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use SechianeX\Contracts\SessionInterface;
-use Vilex\Exceptions\ContextoInvalidoException;
-use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
-use Vilex\Exceptions\ViewNaoEncontradaException;
-use Vilex\VileX;
+use Vilex\Exceptions\PaginaMestraInvalidaException;
+use Vilex\Exceptions\TemplateInvalidoException;
 use Zend\Diactoros\Response\JsonResponse;
 
 /**
  * Class AlterarSenhaUsuarioController
- * @package PainelDLX\Presentation\Site\Controllers
+ * @package PainelDLX\Presentation\Web\Controllers
  * @property UsuarioRepositoryInterface repository
  */
 class AlterarSenhaUsuarioController extends PainelDLXController
@@ -56,9 +51,8 @@ class AlterarSenhaUsuarioController extends PainelDLXController
     /**
      * @param ServerRequestInterface $request
      * @return ResponseInterface
-     * @throws ContextoInvalidoException
-     * @throws PaginaMestraNaoEncontradaException
-     * @throws ViewNaoEncontradaException
+     * @throws PaginaMestraInvalidaException
+     * @throws TemplateInvalidoException
      */
     public function formAlterarSenha(ServerRequestInterface $request): ResponseInterface
     {
@@ -73,18 +67,20 @@ class AlterarSenhaUsuarioController extends PainelDLXController
 
             // Atributos
             $this->view->setAtributo('titulo-pagina', 'Alterar senha');
-            $this->view->setAtributo('usuario', $usuario);
 
             // Views
-            $this->view->addTemplate('usuarios/form_alterar_senha');
+            $this->view->addTemplate('usuarios/form_alterar_senha', [
+                'usuario' => $usuario
+            ]);
 
             // JS
             $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js', false, VERSAO_PAINEL_DLX);
         } catch (UserException $e) {
-            $this->view->addTemplate('common/mensagem_usuario');
-            $this->view->setAtributo('mensagem', [
-                'tipo' => 'erro',
-                'texto' => $e->getMessage()
+            $this->view->addTemplate('common/mensagem_usuario', [
+                'mensagem' => [
+                    'tipo' => 'erro',
+                    'texto' => $e->getMessage()
+                ]
             ]);
         }
 
@@ -94,7 +90,6 @@ class AlterarSenhaUsuarioController extends PainelDLXController
     /**
      * @param ServerRequestInterface $request
      * @return ResponseInterface
-     * @throws UsuarioNaoEncontradoException
      */
     public function alterarSenhaUsuario(ServerRequestInterface $request): ResponseInterface
     {
@@ -118,16 +113,12 @@ class AlterarSenhaUsuarioController extends PainelDLXController
             /* @see GetUsuarioPeloIdCommandHandler */
             $usuario = $this->command_bus->handle(new GetUsuarioPeloIdCommand($usuario_id));
 
-            if (!$usuario instanceof Usuario) {
-                throw new UsuarioNaoEncontradoException();
-            }
-
             $senha_usuario = new SenhaUsuario($senha_nova, $senha_confirm, $senha_atual);
             $this->command_bus->handle(new AlterarSenhaUsuarioCommand($usuario, $senha_usuario));
 
             $json['retorno'] = 'sucesso';
             $json['mensagem'] = 'Senha alterada com sucesso!';
-        } catch (UserException $e) {
+        } catch (UsuarioNaoEncontradoException | UserException $e) {
             $json['retorno'] = 'erro';
             $json['mensagem'] = $e->getMessage();
         }

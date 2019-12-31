@@ -23,10 +23,9 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Presentation\Site\Usuarios\Controllers;
+namespace PainelDLX\Presentation\Web\Usuarios\Controllers;
 
 
-use DLX\Core\Configure;
 use DLX\Core\Exceptions\UserException;
 use PainelDLX\UseCases\Login\Exceptions\UsuarioOuSenhaInvalidosException;
 use PainelDLX\UseCases\Login\FazerLogin\FazerLoginCommand;
@@ -36,17 +35,16 @@ use PainelDLX\UseCases\Login\FazerLogout\FazerLogoutCommandHandler;
 use PainelDLX\UseCases\Modulos\GetListaMenu\GetListaMenuCommand;
 use PainelDLX\UseCases\Modulos\GetListaMenu\GetListaMenuCommandHandler;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
-use PainelDLX\Presentation\Site\Common\Controllers\PainelDLXController;
+use PainelDLX\Presentation\Web\Common\Controllers\PainelDLXController;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Vilex\Exceptions\ContextoInvalidoException;
-use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
-use Vilex\Exceptions\ViewNaoEncontradaException;
+use Vilex\Exceptions\PaginaMestraInvalidaException;
+use Vilex\Exceptions\TemplateInvalidoException;
 use Zend\Diactoros\Response\JsonResponse;
 
 /**
  * Class LoginController
- * @package PainelDLX\Presentation\Site\Usuarios\Controllers
+ * @package PainelDLX\Presentation\Web\Usuarios\Controllers
  * @covers LoginControllerTest
  */
 class LoginController extends PainelDLXController
@@ -54,21 +52,16 @@ class LoginController extends PainelDLXController
     /**
      * @param ServerRequestInterface $request
      * @return ResponseInterface
-     * @throws PaginaMestraNaoEncontradaException
-     * @throws ViewNaoEncontradaException
-     * @throws ContextoInvalidoException
+     * @throws PaginaMestraInvalidaException
+     * @throws TemplateInvalidoException
      */
     public function formLogin(ServerRequestInterface $request): ResponseInterface
     {
-        $get = filter_var_array($request->getQueryParams(), [
-            'redirect-url' => FILTER_DEFAULT
-        ]);
-
         // JS
         $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js', false, VERSAO_PAINEL_DLX);
 
         // View
-        $this->view->addTemplate('login/form_login', $get);
+        $this->view->addTemplate('login/form_login');
 
         // Atributos
         $this->view->setAtributo('titulo-pagina', 'Login');
@@ -84,8 +77,7 @@ class LoginController extends PainelDLXController
     {
         $post = filter_var_array($request->getParsedBody(), [
             'email' => FILTER_VALIDATE_EMAIL,
-            'senha' => FILTER_DEFAULT,
-            'redirect-url' => FILTER_DEFAULT
+            'senha' => FILTER_DEFAULT
         ]);
 
         try {

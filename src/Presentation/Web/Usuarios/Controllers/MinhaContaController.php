@@ -23,10 +23,9 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Presentation\Site\Usuarios\Controllers;
+namespace PainelDLX\Presentation\Web\Usuarios\Controllers;
 
 
-use DLX\Core\Configure;
 use DLX\Core\Exceptions\UserException;
 use League\Tactician\CommandBus;
 use PainelDLX\Domain\Usuarios\Exceptions\UsuarioInvalidoException;
@@ -34,14 +33,13 @@ use PainelDLX\UseCases\Usuarios\AlterarSenhaUsuario\AlterarSenhaUsuarioCommand;
 use PainelDLX\UseCases\Usuarios\GetUsuarioPeloId\GetUsuarioPeloIdCommandHandler;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
 use PainelDLX\Domain\Usuarios\ValueObjects\SenhaUsuario;
-use PainelDLX\Presentation\Site\Common\Controllers\PainelDLXController;
+use PainelDLX\Presentation\Web\Common\Controllers\PainelDLXController;
 use PainelDLX\UseCases\Usuarios\AlterarSenhaUsuario\AlterarSenhaUsuarioCommandHandler;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use SechianeX\Contracts\SessionInterface;
-use Vilex\Exceptions\ContextoInvalidoException;
-use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
-use Vilex\Exceptions\ViewNaoEncontradaException;
+use Vilex\Exceptions\PaginaMestraInvalidaException;
+use Vilex\Exceptions\TemplateInvalidoException;
 use Vilex\VileX;
 use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Diactoros\Response\JsonResponse;
@@ -58,7 +56,7 @@ class MinhaContaController extends PainelDLXController
      * @param VileX $view
      * @param CommandBus $commandBus
      * @param SessionInterface $session
-     * @throws ViewNaoEncontradaException
+     * @throws TemplateInvalidoException
      */
     public function __construct(
         VileX $view,
@@ -72,9 +70,8 @@ class MinhaContaController extends PainelDLXController
     /**
      * @param ServerRequestInterface $request
      * @return ResponseInterface
-     * @throws PaginaMestraNaoEncontradaException
-     * @throws ViewNaoEncontradaException
-     * @throws ContextoInvalidoException
+     * @throws PaginaMestraInvalidaException
+     * @throws TemplateInvalidoException
      */
     public function meusDados(ServerRequestInterface $request): ResponseInterface
     {
@@ -82,15 +79,18 @@ class MinhaContaController extends PainelDLXController
             // Atributos
             $this->view->setAtributo('titulo-pagina', $this->usuario_logado->getNome());
             $this->view->setAtributo('usuario', $this->usuario_logado);
-            $this->view->setAtributo('is-usuario-logado', true);
 
             // Visão
-            $this->view->addTemplate('usuarios/det_usuario');
+            $this->view->addTemplate('usuarios/det_usuario', [
+                'usuario' => $this->usuario_logado,
+                'is-usuario-logado' => true
+            ]);
         } catch (UserException $e) {
-            $this->view->addTemplate('common/mensagem_usuario');
-            $this->view->setAtributo('mensagem', [
-                'tipo' => 'erro',
-                'texto' => $e->getMessage()
+            $this->view->addTemplate('common/mensagem_usuario', [
+                'mensagem' => [
+                    'tipo' => 'erro',
+                    'texto' => $e->getMessage()
+                ]
             ]);
         }
 
@@ -100,27 +100,28 @@ class MinhaContaController extends PainelDLXController
     /**
      * @param ServerRequestInterface $request
      * @return ResponseInterface
-     * @throws ContextoInvalidoException
-     * @throws PaginaMestraNaoEncontradaException
-     * @throws ViewNaoEncontradaException
+     * @throws PaginaMestraInvalidaException
+     * @throws TemplateInvalidoException
      */
     public function formAlterarMinhaSenha(ServerRequestInterface $request): ResponseInterface
     {
         try {
             // Atributos
             $this->view->setAtributo('titulo-pagina', 'Alterar minha senha');
-            $this->view->setAtributo('usuario', $this->usuario_logado);
 
             // Views
-            $this->view->addTemplate('usuarios/form_alterar_senha');
+            $this->view->addTemplate('usuarios/form_alterar_senha', [
+                'usuario' => $this->usuario_logado
+            ]);
 
             // JS
             $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js', false, VERSAO_PAINEL_DLX);
         } catch (UserException $e) {
-            $this->view->addTemplate('common/mensagem_usuario');
-            $this->view->setAtributo('mensagem', [
-                'tipo' => 'erro',
-                'texto' => $e->getMessage()
+            $this->view->addTemplate('common/mensagem_usuario', [
+                'mensagem' => [
+                    'tipo' => 'erro',
+                    'texto' => $e->getMessage()
+                ]
             ]);
         }
 
@@ -169,23 +170,25 @@ class MinhaContaController extends PainelDLXController
     /**
      * @param ServerRequestInterface $request
      * @return HtmlResponse
-     * @throws ContextoInvalidoException
-     * @throws PaginaMestraNaoEncontradaException
-     * @throws ViewNaoEncontradaException
+     * @throws PaginaMestraInvalidaException
+     * @throws TemplateInvalidoException
      */
     public function resumoInformacoes(ServerRequestInterface $request): ResponseInterface
     {
         try {
             // Visão
-            $this->view->addTemplate('usuarios/resumo_infos');
+            $this->view->addTemplate('usuarios/resumo_infos', [
+                'usuario' => $this->usuario_logado
+            ]);
 
             // Parâmetros
             $this->view->setAtributo('usuario', $this->usuario_logado);
         } catch (UserException $e) {
-            $this->view->addTemplate('common/mensagem_usuario');
-            $this->view->setAtributo('mensagem', [
-                'tipo' => 'erro',
-                'texto' => $e->getMessage()
+            $this->view->addTemplate('common/mensagem_usuario', [
+                'mensagem' => [
+                    'tipo' => 'erro',
+                    'texto' => $e->getMessage()
+                ]
             ]);
         }
 

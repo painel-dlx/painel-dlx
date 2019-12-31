@@ -23,13 +23,12 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Presentation\Site\Common\Controllers;
+namespace PainelDLX\Presentation\Web\Common\Controllers;
 
-use DLX\Core\Configure;
 use League\Tactician\CommandBus;
 use PainelDLX\Application\Services\PainelDLX;
 use SechianeX\Contracts\SessionInterface;
-use Vilex\Exceptions\ViewNaoEncontradaException;
+use Vilex\Exceptions\TemplateInvalidoException;
 use Vilex\VileX;
 
 abstract class PainelDLXController
@@ -52,7 +51,7 @@ abstract class PainelDLXController
      * @param VileX $view
      * @param CommandBus $commandBus
      * @param SessionInterface $session
-     * @throws ViewNaoEncontradaException
+     * @throws TemplateInvalidoException
      */
     public function __construct(
         VileX $view,
@@ -70,8 +69,8 @@ abstract class PainelDLXController
 
         $pagina_mestra = $session->get('vilex:pagina-mestra') ?: 'painel-dlx-master';
 
-        $this->view->setPaginaMestra("public/views/paginas-mestras/{$pagina_mestra}.phtml");
         $this->view->setViewRoot('public/views/');
+        $this->view->setPaginaMestra("paginas-mestras/{$pagina_mestra}");
         $this->view->addTemplate('common/titulo_pagina');
         $this->view->addTemplate('common/rodape');
     }

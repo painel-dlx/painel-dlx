@@ -6,25 +6,21 @@
  * Time: 09:13
  */
 
-namespace PainelDLX\Presentation\Site\Home\Controllers;
+namespace PainelDLX\Presentation\Web\Home\Controllers;
 
 
 use DLX\Core\Exceptions\UserException;
-use League\Tactician\CommandBus;
 use PainelDLX\UseCases\Home\GetListaWigets\GetListaWidgetsCommand;
 use PainelDLX\UseCases\Home\GetListaWigets\GetListaWidgetsCommandHandler;
-use PainelDLX\Presentation\Site\Common\Controllers\PainelDLXController;
+use PainelDLX\Presentation\Web\Common\Controllers\PainelDLXController;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use SechianeX\Contracts\SessionInterface;
-use Vilex\Exceptions\ContextoInvalidoException;
-use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
-use Vilex\Exceptions\ViewNaoEncontradaException;
-use Vilex\VileX;
+use Vilex\Exceptions\PaginaMestraInvalidaException;
+use Vilex\Exceptions\TemplateInvalidoException;
 
 /**
  * Class PaginaInicialController
- * @package PainelDLX\Presentation\Site\Home\Controllers
+ * @package PainelDLX\Presentation\Web\Home\Controllers
  * @covers PaginaInicialControllerTest
  */
 class PaginaInicialController extends PainelDLXController
@@ -32,9 +28,8 @@ class PaginaInicialController extends PainelDLXController
     /**
      * @param ServerRequestInterface $request
      * @return ResponseInterface
-     * @throws PaginaMestraNaoEncontradaException
-     * @throws ViewNaoEncontradaException
-     * @throws ContextoInvalidoException
+     * @throws PaginaMestraInvalidaException
+     * @throws TemplateInvalidoException
      */
     public function home(ServerRequestInterface $request): ResponseInterface
     {
@@ -43,16 +38,18 @@ class PaginaInicialController extends PainelDLXController
             $lista_widgets = $this->command_bus->handle(new GetListaWidgetsCommand());
 
             // Visões
-            $this->view->addTemplate('home/index');
+            $this->view->addTemplate('home/index', [
+                'lista-widgets' => $lista_widgets
+            ]);
 
             // Parâmetros
             $this->view->setAtributo('titulo-pagina', 'Home');
-            $this->view->setAtributo('lista-widgets', $lista_widgets);
         } catch (UserException $e) {
-            $this->view->addTemplate('common/mensagem_usuario');
-            $this->view->setAtributo('mensagem', [
-                'tipo' => 'erro',
-                'texto' => $e->getMessage()
+            $this->view->addTemplate('common/mensagem_usuario', [
+                'mensagem' => [
+                    'tipo' => 'erro',
+                    'texto' => $e->getMessage()
+                ]
             ]);
         }
 

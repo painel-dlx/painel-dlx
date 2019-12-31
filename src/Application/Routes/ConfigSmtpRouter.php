@@ -32,9 +32,9 @@ use PainelDLX\Application\Middlewares\ConfigurarPaginacao;
 use PainelDLX\Application\Middlewares\DefinePaginaMestra;
 use PainelDLX\Application\Middlewares\VerificarLogon;
 use PainelDLX\Application\Services\PainelDLX;
-use PainelDLX\Presentation\Site\Emails\Controllers\ConfigSmtpController;
-use PainelDLX\Presentation\Site\Emails\Controllers\EditarConfigSmtpController;
-use PainelDLX\Presentation\Site\Emails\Controllers\NovaConfigSmtpController;
+use PainelDLX\Presentation\Web\Emails\Controllers\ConfigSmtpController;
+use PainelDLX\Presentation\Web\Emails\Controllers\EditarConfigSmtpController;
+use PainelDLX\Presentation\Web\Emails\Controllers\NovaConfigSmtpController;
 
 class ConfigSmtpRouter extends PainelDLXRouter
 {

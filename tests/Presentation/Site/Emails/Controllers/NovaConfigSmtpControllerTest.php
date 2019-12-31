@@ -26,7 +26,7 @@
 namespace PainelDLX\Testes\Presentation\Site\Emails\Controllers;
 
 use Doctrine\ORM\ORMException;
-use PainelDLX\Presentation\Site\Emails\Controllers\NovaConfigSmtpController;
+use PainelDLX\Presentation\Web\Emails\Controllers\NovaConfigSmtpController;
 use PainelDLX\Tests\TestCase\PainelDLXTestCase;
 use PainelDLX\Tests\TestCase\TesteComTransaction;
 use Psr\Http\Message\ServerRequestInterface;
@@ -38,8 +38,8 @@ use Zend\Diactoros\Response\JsonResponse;
 
 /**
  * Class NovaConfigSmtpControllerTest
- * @package PainelDLX\Testes\Presentation\Site\Emails\Controllers
- * @coversDefaultClass \PainelDLX\Presentation\Site\Emails\Controllers\NovaConfigSmtpController
+ * @package PainelDLX\Testes\Presentation\Web\Emails\Controllers
+ * @coversDefaultClass \PainelDLX\Presentation\Web\Emails\Controllers\NovaConfigSmtpController
  */
 class NovaConfigSmtpControllerTest extends PainelDLXTestCase
 {

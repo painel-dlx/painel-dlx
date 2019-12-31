@@ -23,9 +23,8 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Presentation\Site\Usuarios\Controllers;
+namespace PainelDLX\Presentation\Web\Usuarios\Controllers;
 
-use DLX\Core\Configure;
 use DLX\Core\Exceptions\UserException;
 use Exception;
 use League\Tactician\CommandBus;
@@ -49,19 +48,18 @@ use PainelDLX\UseCases\Usuarios\NovoUsuario\NovoUsuarioCommandHandler;
 use PainelDLX\Domain\GruposUsuarios\Repositories\GrupoUsuarioRepositoryInterface;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
 use PainelDLX\Infrastructure\ORM\Doctrine\Repositories\UsuarioRepository;
-use PainelDLX\Presentation\Site\Common\Controllers\PainelDLXController;
+use PainelDLX\Presentation\Web\Common\Controllers\PainelDLXController;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use SechianeX\Contracts\SessionInterface;
-use Vilex\Exceptions\ContextoInvalidoException;
-use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
-use Vilex\Exceptions\ViewNaoEncontradaException;
+use Vilex\Exceptions\PaginaMestraInvalidaException;
+use Vilex\Exceptions\TemplateInvalidoException;
 use Vilex\VileX;
 use Zend\Diactoros\Response\JsonResponse;
 
 /**
  * Class CadastroUsuarioController
- * @package PainelDLX\Presentation\Site\Controllers
+ * @package PainelDLX\Presentation\Web\Controllers
  * @property UsuarioRepository $repository
  */
 class CadastroUsuarioController extends PainelDLXController
@@ -75,9 +73,9 @@ class CadastroUsuarioController extends PainelDLXController
      * CadastroUsuarioController constructor.
      * @param VileX $view
      * @param CommandBus $commandBus
-     * @param GrupoUsuarioRepositoryInterface $grupo_usuario_repository
      * @param SessionInterface $session
-     * @throws ViewNaoEncontradaException
+     * @param GrupoUsuarioRepositoryInterface $grupo_usuario_repository
+     * @throws TemplateInvalidoException
      */
     public function __construct(
         VileX $view,
@@ -93,7 +91,6 @@ class CadastroUsuarioController extends PainelDLXController
      * Listar os usuários existentes no banco de dados
      * @param ServerRequestInterface $request
      * @return ResponseInterface
-     * @throws PaginaMestraNaoEncontradaException
      * @throws Exception
      */
     public function listaUsuarios(ServerRequestInterface $request): ResponseInterface
@@ -128,10 +125,11 @@ class CadastroUsuarioController extends PainelDLXController
             $this->view->addTemplate('usuarios/lista_usuarios');
             $this->view->addTemplate('common/paginacao');
         } catch (UserException $e) {
-            $this->view->addTemplate('common/mensagem_usuario');
-            $this->view->setAtributo('mensagem', [
-                'tipo' => 'erro',
-                'mensagem' => $e->getMessage()
+            $this->view->addTemplate('common/mensagem_usuario', [
+                'mensagem' => [
+                    'tipo' => 'erro',
+                    'texto' => $e->getMessage()
+                ]
             ]);
         }
 
@@ -151,18 +149,20 @@ class CadastroUsuarioController extends PainelDLXController
 
             // Atributos
             $this->view->setAtributo('titulo-pagina', 'Adicionar novo usuário');
-            $this->view->setAtributo('lista_grupos', $lista_grupos);
 
             // Views
-            $this->view->addTemplate('usuarios/form_novo_usuario');
+            $this->view->addTemplate('usuarios/form_novo_usuario', [
+                'lista-grupos' => $lista_grupos
+            ]);
 
             // JS
             $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js', false, VERSAO_PAINEL_DLX);
         } catch (UserException $e) {
-            $this->view->addTemplate('common/mensagem_usuario');
-            $this->view->setAtributo('mensagem', [
-                'tipo' => 'erro',
-                'mensagem' => $e->getMessage()
+            $this->view->addTemplate('common/mensagem_usuario', [
+                'mensagem' => [
+                    'tipo' => 'erro',
+                    'texto' => $e->getMessage()
+                ]
             ]);
         }
 
@@ -213,7 +213,6 @@ class CadastroUsuarioController extends PainelDLXController
      * Mostrar formulário para alterar informações do usuário.
      * @param ServerRequestInterface $request
      * @return ResponseInterface
-     * @throws PaginaMestraNaoEncontradaException
      * @throws Exception
      */
     public function formAlterarUsuario(ServerRequestInterface $request): ResponseInterface
@@ -231,19 +230,21 @@ class CadastroUsuarioController extends PainelDLXController
 
             // Atributos
             $this->view->setAtributo('titulo-pagina', 'Atualizar informações do usuário');
-            $this->view->setAtributo('usuario', $usuario);
-            $this->view->setAtributo('lista_grupos', $lista_grupos);
 
             // views
-            $this->view->addTemplate('usuarios/form_alterar_usuario');
+            $this->view->addTemplate('usuarios/form_alterar_usuario', [
+                'usuario' => $usuario,
+                'lista-grupos' => $lista_grupos
+            ]);
 
             // JS
             $this->view->addArquivoJS('/vendor/dlepera88-jquery/jquery-form-ajax/jquery.formajax.plugin-min.js', false, VERSAO_PAINEL_DLX);
-        } catch (UserException $e) {
-            $this->view->addTemplate('common/mensagem_usuario');
-            $this->view->setAtributo('mensagem', [
-                'tipo' => 'erro',
-                'mensagem' => $e->getMessage()
+        } catch (UsuarioNaoEncontradoException | UserException $e) {
+            $this->view->addTemplate('common/mensagem_usuario', [
+                'mensagem' => [
+                    'tipo' => 'erro',
+                    'texto' => $e->getMessage()
+                ]
             ]);
         }
 
@@ -314,7 +315,7 @@ class CadastroUsuarioController extends PainelDLXController
 
             $msg['retorno'] = 'sucesso';
             $msg['mensagem'] = 'Usuário excluído com sucesso!';
-        } catch (Exception $e) {
+        } catch (UsuarioNaoEncontradoException $e) {
             $msg['retorno'] = 'erro';
             $msg['mensagem'] = $e->getMessage();
         }
@@ -325,9 +326,8 @@ class CadastroUsuarioController extends PainelDLXController
     /**
      * @param ServerRequestInterface $request
      * @return ResponseInterface
-     * @throws ContextoInvalidoException
-     * @throws ViewNaoEncontradaException
-     * @throws PaginaMestraNaoEncontradaException
+     * @throws TemplateInvalidoException
+     * @throws PaginaMestraInvalidaException
      */
     public function detalheUsuario(ServerRequestInterface $request): ResponseInterface
     {
@@ -340,16 +340,18 @@ class CadastroUsuarioController extends PainelDLXController
 
             // Atributos
             $this->view->setAtributo('titulo-pagina', $usuario->getNome());
-            $this->view->setAtributo('usuario', $usuario);
-            $this->view->setAtributo('is-usuario-logado', false);
 
             // views
-            $this->view->addTemplate('usuarios/det_usuario');
-        } catch (UserException $e) {
-            $this->view->addTemplate('common/mensagem_usuario');
-            $this->view->setAtributo('mensagem', [
-                'tipo' => 'erro',
-                'mensagem' => $e->getMessage()
+            $this->view->addTemplate('usuarios/det_usuario', [
+                'usuario' => $usuario,
+                'is-usuario-logado' => false
+            ]);
+        } catch (UsuarioNaoEncontradoException | UserException $e) {
+            $this->view->addTemplate('common/mensagem_usuario', [
+                'mensagem' => [
+                    'tipo' => 'erro',
+                    'texto' => $e->getMessage()
+                ]
             ]);
         }
 
