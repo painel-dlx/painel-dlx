@@ -20,7 +20,9 @@ use SechianeX\Exceptions\SessionAdapterInterfaceInvalidaException;
 use SechianeX\Exceptions\SessionAdapterNaoEncontradoException;
 use SechianeX\Factories\SessionFactory;
 use Vilex\Exceptions\ContextoInvalidoException;
+use Vilex\Exceptions\PaginaMestraInvalidaException;
 use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
+use Vilex\Exceptions\TemplateInvalidoException;
 use Vilex\Exceptions\ViewNaoEncontradaException;
 use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Diactoros\Response\JsonResponse;
@@ -105,11 +107,10 @@ class ResetSenhaControllerTest extends PainelDLXTestCase
 
     /**
      * @param ResetSenhaController $controller
-     * @throws ContextoInvalidoException
-     * @throws ORMException
-     * @throws PaginaMestraNaoEncontradaException
-     * @throws ViewNaoEncontradaException
      * @throws DBALException
+     * @throws ORMException
+     * @throws PaginaMestraInvalidaException
+     * @throws TemplateInvalidoException
      * @covers ::formResetSenha
      * @depends test__construct
      */

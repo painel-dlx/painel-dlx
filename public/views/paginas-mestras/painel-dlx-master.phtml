@@ -24,18 +24,18 @@
  */
 
 use DLX\Core\Configure;
+use PainelDLX\Application\Contracts\Session\SessionInterface;
 use PainelDLX\Domain\Modulos\Entities\Menu;
 use PainelDLX\Domain\Modulos\Entities\MenuItem;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
-use SechianeX\Factories\SessionFactory;
 use Vilex\Templates\AbstractTemplate;
 
 /**
  * @var AbstractTemplate $this
  */
 
-// TODO: pegar a sessão por atributo
-$session = SessionFactory::createPHPSession();
+/** @var SessionInterface $session */
+$session = $this->getAtributo('session');
 
 /** @var Usuario|null $usuario */
 $usuario = $session->get('usuario-logado');

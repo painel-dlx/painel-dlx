@@ -97,13 +97,7 @@ class ConfigSmtpController extends PainelDLXController
      */
     public function listaConfigSmtp(ServerRequestInterface $request): ResponseInterface
     {
-        $get = filter_var_array($request->getQueryParams(), [
-            'campos' => ['filter' => FILTER_SANITIZE_STRING, 'flags' => FILTER_REQUIRE_ARRAY],
-            'busca' => FILTER_DEFAULT,
-            'pg' => FILTER_VALIDATE_INT,
-            'qtde' => FILTER_VALIDATE_INT,
-            'offset' => FILTER_VALIDATE_INT
-        ]);
+        $get = $request->getQueryParams();
 
         try {
             /** @var array $criteria */

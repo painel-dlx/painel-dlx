@@ -37,7 +37,7 @@ $reset_senha = $this->getAtributo('reset-senha');
 
 [CORPO]
 <form id="form-reset-senha" method="post" action="/painel-dlx/recuperar-minha-senha" class="form-reset-senha">
-    <h1 class="titulo-pagina"><?php echo $this->getAtributo('titulo-pagina') ?></h1>
+    <h1 class="titulo-pagina">{{ titulo-pagina }}</h1>
 
     <p class="mensagem-usuario -atencao">
         Recuperando a senha de <?php echo $reset_senha->getUsuario() ?>...

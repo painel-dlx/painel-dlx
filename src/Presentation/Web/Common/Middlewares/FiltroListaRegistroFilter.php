@@ -23,36 +23,29 @@
  * SOFTWARE.
  */
 
+namespace PainelDLX\Presentation\Web\Common\Middlewares;
 
-use Vilex\Templates\AbstractTemplate;
 
-/** @var AbstractTemplate $this */
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-$pagina_atual = $this->getAtributo('pagina-atual');
-$qtde_registros_pagina = $this->getAtributo('qtde-registros-pagina');
-$qtde_registros_atual = $this->getAtributo('qtde-registros-lista');
-?>
+class FiltroListaRegistroFilter implements MiddlewareInterface
+{
+    /**
+     * @inheritDoc
+     */
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    {
+        $get = filter_var_array($request->getQueryParams(), [
+            'campos' => ['filter' => FILTER_SANITIZE_STRING, 'flags' => FILTER_REQUIRE_ARRAY],
+            'busca' => FILTER_DEFAULT,
+            'pg' => FILTER_VALIDATE_INT,
+            'qtde' => FILTER_VALIDATE_INT,
+            'offset' => FILTER_VALIDATE_INT
+        ]);
 
-[CORPO]
-<div class="box-paginacao">
-    <?php if ($pagina_atual === 1) : ?>
-        <a href="javascript:" class="botao-pagina -anterior --desativado">
-            Anterior
-        </a>
-    <?php else : ?>
-        <a href="javascript:" onclick="irParaPagina(<?php echo $pagina_atual  - 1 ?>)" class="botao-pagina -anterior">
-            Anterior
-        </a>
-    <?php endif; ?>
-
-    <?php if ($qtde_registros_atual < $qtde_registros_pagina) : ?>
-        <a href="javascript:" class="botao-pagina -proxima --desativado">
-            Próxima
-        </a>
-    <?php else : ?>
-        <a href="javascript:" onclick="irParaPagina(<?php echo $pagina_atual + 1 ?>)" class="botao-pagina -proxima">
-            Próxima
-        </a>
-    <?php endif; ?>
-</div>
-[/CORPO]
+        return $handler->handle($request->withQueryParams($get));
+    }
+}

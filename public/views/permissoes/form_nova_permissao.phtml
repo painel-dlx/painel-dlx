@@ -31,7 +31,7 @@ use Vilex\Templates\AbstractTemplate;
 ?>
 
 [CORPO]
-<h1 class="titulo-pagina"><?php echo $this->getAtributo('titulo-pagina') ?></h1>
+<h1 class="titulo-pagina">{{ titulo-pagina }}</h1>
 
 <form id="form-permissao" method="post" action="/painel-dlx/permissoes/criar-nova-permissao">
     <fieldset class="form-grupo">

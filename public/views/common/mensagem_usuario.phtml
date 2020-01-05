@@ -22,17 +22,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-use Vilex\VileX;
-
-/**
- * @var Vilex $this
- */
-$mensagem = $this->getAtributo('mensagem');
 ?>
 
 [MENSAGEM-USUARIO]
-<p class="mensagem-usuario -<?php echo $mensagem['tipo'] ?>">
-    <?php echo $mensagem['texto'] ?>
-</p>
+<p class="mensagem-usuario -{{ tipo }}">{{ mensagem }}</p>
 [/MENSAGEM-USUARIO]

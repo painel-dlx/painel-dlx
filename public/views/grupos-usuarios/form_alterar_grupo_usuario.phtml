@@ -36,7 +36,7 @@ $grupo_usuario = $this->getAtributo('grupo-usuario');
 ?>
 
 [CORPO]
-<h1 class="titulo-pagina"><?php echo $this->getAtributo('titulo-pagina') ?></h1>
+<h1 class="titulo-pagina">{{ titulo-pagina }}</h1>
 
 <form id="form-grupo-usuario" method="post" action="/painel-dlx/grupos-de-usuarios/salvar">
     <input type="hidden" name="grupo_usuario_id" value="<?php echo $grupo_usuario->getId() ?>">

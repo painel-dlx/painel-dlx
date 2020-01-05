@@ -160,7 +160,6 @@ class PermissaoUsuario extends Entity
         $this->setAlias($alias);
         $this->setDescricao($descricao);
         $this->grupos = new ArrayCollection();
-        $this->itens_menu = new ArrayCollection();
     }
 
     /**

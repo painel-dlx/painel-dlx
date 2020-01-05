@@ -33,6 +33,7 @@ use PainelDLX\Application\Middlewares\CriptografarSenhas;
 use PainelDLX\Application\Middlewares\DefinePaginaMestra;
 use PainelDLX\Application\Middlewares\VerificarLogon;
 use PainelDLX\Application\Services\PainelDLX;
+use PainelDLX\Presentation\Web\Common\Middlewares\FiltroListaRegistroFilter;
 use PainelDLX\Presentation\Web\Usuarios\Controllers\AlterarSenhaUsuarioController;
 use PainelDLX\Presentation\Web\Usuarios\Controllers\CadastroUsuarioController;
 use PainelDLX\Presentation\Web\Usuarios\Controllers\MinhaContaController;
@@ -56,6 +57,8 @@ class UsuariosRouter extends PainelDLXRouter
         $configurar_paginacao = $container->get(ConfigurarPaginacao::class);
         /** @var Autorizacao $autorizacao */
         $autorizacao = $container->get(Autorizacao::class);
+        /** @var FiltroListaRegistroFilter $filtro_lista_registros_filter */
+        $filtro_lista_registros_filter = $container->get(FiltroListaRegistroFilter::class);
         
         $router->get(
             '/painel-dlx/usuarios',
@@ -64,7 +67,8 @@ class UsuariosRouter extends PainelDLXRouter
             $define_pagina_mestra,
             $verificar_logon,
             $autorizacao->necessitaPermissoes('ACESSAR_CADASTRO_USUARIOS'),
-            $configurar_paginacao
+            $configurar_paginacao,
+            $filtro_lista_registros_filter
         );
 
         $router->get(

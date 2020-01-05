@@ -32,6 +32,7 @@ use PainelDLX\Application\Middlewares\ConfigurarPaginacao;
 use PainelDLX\Application\Middlewares\DefinePaginaMestra;
 use PainelDLX\Application\Middlewares\VerificarLogon;
 use PainelDLX\Application\Services\PainelDLX;
+use PainelDLX\Presentation\Web\Common\Middlewares\FiltroListaRegistroFilter;
 use PainelDLX\Presentation\Web\PermissoesUsuario\Controllers\CadastroPermissaoController;
 
 class PermissoesRouter extends PainelDLXRouter
@@ -54,6 +55,8 @@ class PermissoesRouter extends PainelDLXRouter
         $configurar_paginacao = $container->get(ConfigurarPaginacao::class);
         /** @var Autorizacao $autorizacao */
         $autorizacao = $container->get(Autorizacao::class);
+        /** @var FiltroListaRegistroFilter $filtro_lista_registros_filter */
+        $filtro_lista_registros_filter = $container->get(FiltroListaRegistroFilter::class);
         
         $router->get(
             '/painel-dlx/permissoes',
@@ -62,7 +65,8 @@ class PermissoesRouter extends PainelDLXRouter
             $verificar_logon,
             $autorizacao->necessitaPermissoes('CRIAR_PERMISSOES_USUARIO'),
             $define_pagina_mestra,
-            $configurar_paginacao
+            $configurar_paginacao,
+            $filtro_lista_registros_filter
         );
 
         $router->get(

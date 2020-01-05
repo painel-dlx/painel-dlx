@@ -30,11 +30,11 @@ use Vilex\Templates\AbstractTemplate;
  * @var AbstractTemplate $this
  */
 
-$lista_usuarios = $this->getAtributo('lista_usuarios');
+$lista_usuarios = $this->getAtributo('lista-usuarios');
 $filtro = $this->getAtributo('filtro');
 ?>
 [CORPO]
-<h1 class="titulo-pagina"><?php echo $this->getAtributo('titulo-pagina') ?></h1>
+<h1 class="titulo-pagina">{{ titulo-pagina }}</h1>
 
 <nav class="menu-opcoes">
     <form id="filtro-registros" class="filtro-registros">

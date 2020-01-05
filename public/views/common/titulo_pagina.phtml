@@ -22,17 +22,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-use DLX\Core\Configure;
-use Vilex\VileX;
-
-/** @var Vilex $this */
-
-$nome_app = Configure::get('app', 'nome-amigavel');
 ?>
 
 [HTML-HEAD]
-<title>
-    <?php echo "{$this->getAtributo('titulo-pagina')} | {$nome_app}" ?>
-</title>
+<title>{{ titulo-pagina }} | {{ nome-app }}</title>
 [/HTML-HEAD]

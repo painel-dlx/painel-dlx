@@ -23,21 +23,15 @@
  * SOFTWARE.
  */
 
-use DLX\Core\Configure;
-use Vilex\VileX;
+use Vilex\Templates\AbstractTemplate;
 
-/** @var Vilex $this */
-
-define('TEXTO_COPYRIGHT', '%s @ %d - v%s');
-$ano_atual = date('Y');
+/** @var AbstractTemplate $this */
 ?>
 
 [RODAPE]
-<?php printf(TEXTO_COPYRIGHT, Configure::get('app', 'nome-amigavel'), $ano_atual, Configure::get('app', 'versao'));
+{{ nome-app }} @ {{ ano-copyright }} - v{{ versao-app }}
 
-if (Configure::get('app', 'nome') !== 'painel-dlx') {
-    echo ' // ';
-    printf(TEXTO_COPYRIGHT, 'Painel DLX', $ano_atual, VERSAO_PAINEL_DLX);
-}
-?>
+<?php if ($this->getAtributo('nome-app') !== 'Painel DLX') : ?>
+    | Painel DLX @ {{ ano-copyright }} - v{{ versao-painel-dlx }}
+<?php endif; ?>
 [/RODAPE]

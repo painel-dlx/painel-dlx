@@ -58,7 +58,6 @@ class PermissaoUsuarioTest extends TestCase
         $this->assertEquals($alias, $permissao_usuario->getAlias());
         $this->assertEquals($descricao, $permissao_usuario->getDescricao());
         $this->assertInstanceOf(Collection::class, $permissao_usuario->getGrupos());
-        $this->assertInstanceOf(Collection::class, $permissao_usuario->getItensMenu());
 
         return $permissao_usuario;
     }

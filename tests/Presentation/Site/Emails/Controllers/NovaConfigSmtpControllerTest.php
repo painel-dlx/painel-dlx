@@ -31,7 +31,9 @@ use PainelDLX\Tests\TestCase\PainelDLXTestCase;
 use PainelDLX\Tests\TestCase\TesteComTransaction;
 use Psr\Http\Message\ServerRequestInterface;
 use Vilex\Exceptions\ContextoInvalidoException;
+use Vilex\Exceptions\PaginaMestraInvalidaException;
 use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
+use Vilex\Exceptions\TemplateInvalidoException;
 use Vilex\Exceptions\ViewNaoEncontradaException;
 use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Diactoros\Response\JsonResponse;
@@ -60,9 +62,8 @@ class NovaConfigSmtpControllerTest extends PainelDLXTestCase
     }
 
     /**
-     * @throws ContextoInvalidoException
-     * @throws PaginaMestraNaoEncontradaException
-     * @throws ViewNaoEncontradaException
+     * @throws PaginaMestraInvalidaException
+     * @throws TemplateInvalidoException
      */
     public function test_FormNovaConfigSmtp_deve_retornar_instancia_HtmlResponse()
     {
@@ -74,7 +75,7 @@ class NovaConfigSmtpControllerTest extends PainelDLXTestCase
     }
 
     /**
-     *
+     * @covers ::salvarNovaConfigSmtp
      */
     public function test_SalvarNovaConfigSmtp_retornar_instancia_JsonResponse()
     {

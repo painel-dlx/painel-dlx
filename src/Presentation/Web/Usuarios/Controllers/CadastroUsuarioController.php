@@ -95,13 +95,7 @@ class CadastroUsuarioController extends PainelDLXController
      */
     public function listaUsuarios(ServerRequestInterface $request): ResponseInterface
     {
-        $get = filter_var_array($request->getQueryParams(), [
-            'campos' => ['filter' => FILTER_SANITIZE_STRING, 'flags' => FILTER_REQUIRE_ARRAY],
-            'busca' => FILTER_DEFAULT,
-            'pg' => FILTER_VALIDATE_INT,
-            'qtde' => FILTER_VALIDATE_INT,
-            'offset' => FILTER_VALIDATE_INT
-        ]);
+        $get = $request->getQueryParams();
 
         try {
             /** @var array $criteria */
@@ -111,19 +105,20 @@ class CadastroUsuarioController extends PainelDLXController
             /* @see GetListaUsuariosCommandHandler */
             $lista_usuarios = $this->command_bus->handle(new GetListaUsuariosCommand($criteria, [], $get['qtde'], $get['offset']));
 
-            // Atributos
             $this->view->setAtributo('titulo-pagina', 'Usuários');
-            $this->view->setAtributo('lista_usuarios', $lista_usuarios);
-            $this->view->setAtributo('filtro', $get);
+
+            // Lista
+            $this->view->addTemplate('usuarios/lista_usuarios', [
+                'lista-usuarios' => $lista_usuarios,
+                'filtro' => $get
+            ]);
 
             // Paginação
-            $this->view->setAtributo('pagina-atual', $get['pg']);
-            $this->view->setAtributo('qtde-registros-pagina', $get['qtde']);
-            $this->view->setAtributo('qtde-registros-lista', count($lista_usuarios));
-
-            // Views
-            $this->view->addTemplate('usuarios/lista_usuarios');
-            $this->view->addTemplate('common/paginacao');
+            $this->view->addTemplate('common/paginacao', [
+                'pagina-atual' => $get['pg'],
+                'qtde-registros-pagina' => $get['qtde'],
+                'qtde-registros-lista' => count($lista_usuarios)
+            ]);
         } catch (UserException $e) {
             $this->view->addTemplate('common/mensagem_usuario', [
                 'mensagem' => [

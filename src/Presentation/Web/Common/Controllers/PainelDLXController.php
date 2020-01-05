@@ -25,6 +25,7 @@
 
 namespace PainelDLX\Presentation\Web\Common\Controllers;
 
+use DLX\Core\Configure;
 use League\Tactician\CommandBus;
 use PainelDLX\Application\Services\PainelDLX;
 use SechianeX\Contracts\SessionInterface;
@@ -69,9 +70,22 @@ abstract class PainelDLXController
 
         $pagina_mestra = $session->get('vilex:pagina-mestra') ?: 'painel-dlx-master';
 
+        $nome_app = Configure::get('app', 'nome-amigavel');
+        $versao_app = Configure::get('app', 'versao');
+        $versao_painel_dlx = VERSAO_PAINEL_DLX;
+
+        $this->view->setAtributo('session', $this->session);
+
         $this->view->setViewRoot('public/views/');
         $this->view->setPaginaMestra("paginas-mestras/{$pagina_mestra}");
-        $this->view->addTemplate('common/titulo_pagina');
-        $this->view->addTemplate('common/rodape');
+        $this->view->addTemplate('common/titulo_pagina', [
+            'nome-app' => $nome_app
+        ]);
+        $this->view->addTemplate('common/rodape', [
+            'nome-app' => $nome_app,
+            'versao-app' => $versao_app,
+            'ano-copyright' => date('Y'),
+            'versao-painel-dlx' => $versao_painel_dlx
+        ]);
     }
 }

@@ -57,13 +57,7 @@ class CadastroPermissaoController extends PainelDLXController
      */
     public function listaPermissoesUsuarios(ServerRequestInterface $request): ResponseInterface
     {
-        $get = filter_var_array($request->getQueryParams(), [
-            'campos' => ['filter' => FILTER_SANITIZE_STRING, 'flags' => FILTER_REQUIRE_ARRAY],
-            'busca' => FILTER_DEFAULT,
-            'pg' => FILTER_VALIDATE_INT,
-            'qtde' => FILTER_VALIDATE_INT,
-            'offset' => FILTER_VALIDATE_INT
-        ]);
+        $get = $request->getQueryParams();
 
         try {
             /** @var array $criteria */
@@ -79,19 +73,21 @@ class CadastroPermissaoController extends PainelDLXController
                 $get['offset']
             ));
 
-            // Atributos
-            $this->view->setAtributo('titulo-pagina', 'Permissões');
-            $this->view->setAtributo('lista-permissoes', $lista_permissoes);
-            $this->view->setAtributo('filtro', $get);
+            // Lista
+            $this->view->addTemplate('permissoes/lista_permissoes', [
+                'lista-permissoes' => $lista_permissoes,
+                'filtro' => $get
+            ]);
 
             // Paginação
-            $this->view->setAtributo('pagina-atual', $get['pg']);
-            $this->view->setAtributo('qtde-registros-pagina', $get['qtde']);
-            $this->view->setAtributo('qtde-registros-lista', count($lista_permissoes));
+            $this->view->addTemplate('common/paginacao', [
+                'pagina-atual' => $get['pg'],
+                'qtde-registros-pagina' => $get['qtde'],
+                'qtde-registros-lista' => count($lista_permissoes)
+            ]);
 
-            // Views
-            $this->view->addTemplate('permissoes/lista_permissoes');
-            $this->view->addTemplate('common/paginacao');
+            // Atributos
+            $this->view->setAtributo('titulo-pagina', 'Permissões');
         } catch (UserException $e) {
             $this->view->addTemplate('common/mensagem_usuario', [
                 'mensagem' => [
