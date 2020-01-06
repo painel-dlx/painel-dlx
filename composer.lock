@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fb727d207fa802f207debc538f9539b7",
+    "content-hash": "35a22585da634c3f9f29b96736ebd293",
     "packages": [
         {
             "name": "components/jquery",
@@ -242,16 +242,16 @@
         },
         {
             "name": "dlepera88-php/vilex",
-            "version": "2.0.0",
+            "version": "2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dlepera88-php/vilex.git",
-                "reference": "cee587837f872a61b69a7deeffee55b4a7a3eb14"
+                "reference": "de38fc5a4acc92c064798d00074163c5c8632a65"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dlepera88-php/vilex/zipball/cee587837f872a61b69a7deeffee55b4a7a3eb14",
-                "reference": "cee587837f872a61b69a7deeffee55b4a7a3eb14",
+                "url": "https://api.github.com/repos/dlepera88-php/vilex/zipball/de38fc5a4acc92c064798d00074163c5c8632a65",
+                "reference": "de38fc5a4acc92c064798d00074163c5c8632a65",
                 "shasum": ""
             },
             "require": {
@@ -281,7 +281,7 @@
                     "email": "dlepera88@gmail.com"
                 }
             ],
-            "time": "2020-01-04T17:25:10+00:00"
+            "time": "2020-01-06T16:36:40+00:00"
         },
         {
             "name": "doctrine/annotations",

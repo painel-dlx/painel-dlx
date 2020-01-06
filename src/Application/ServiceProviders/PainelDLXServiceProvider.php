@@ -63,7 +63,6 @@ class PainelDLXServiceProvider extends AbstractServiceProvider
         CommandBus::class,
         UsuarioRepositoryInterface::class,
         PermissaoUsuarioRepositoryInterface::class,
-        SessionInterface::class,
         ConfigSmtpRepositoryInterface::class,
         ResetSenhaRepositoryInterface::class,
         TransactionInterface::class,
@@ -77,8 +76,6 @@ class PainelDLXServiceProvider extends AbstractServiceProvider
      * from the ContainerAwareTrait.
      *
      * @return void
-     * @throws SessionAdapterInterfaceInvalidaException
-     * @throws SessionAdapterNaoEncontradoException
      * @throws ORMException
      */
     public function register()
@@ -135,11 +132,6 @@ class PainelDLXServiceProvider extends AbstractServiceProvider
         $container->add(
             ConfigSmtpRepositoryInterface::class,
             RepositoryFactory::create(ConfigSmtp::class)
-        );
-
-        $container->add(
-            SessionInterface::class,
-            SessionFactory::createPHPSession()
         );
     }
 }
