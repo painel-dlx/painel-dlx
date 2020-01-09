@@ -27,7 +27,6 @@ namespace PainelDLX\Presentation\Web\Common\Controllers;
 
 use DLX\Core\Configure;
 use League\Tactician\CommandBus;
-use PainelDLX\Application\Services\PainelDLX;
 use SechianeX\Contracts\SessionInterface;
 use Vilex\Exceptions\TemplateInvalidoException;
 use Vilex\VileX;
@@ -64,9 +63,9 @@ abstract class PainelDLXController
         $this->session = $session;
 
         // TODO: retirar a inclusão do tema do controller. Está aqui apenas para agilizar o dev
-        $this->view->addArquivoCss('/vendor/painel-dlx/ui-painel-dlx/css/painel-dlx.tema.css', false, VERSAO_UI_PAINEL_DLX);
-        $this->view->addArquivoJs('/vendor/painel-dlx/ui-painel-dlx/js/paineldlx.tema-min.js', false, VERSAO_UI_PAINEL_DLX);
-        $this->view->addArquivoJs('/public/js/painel-dlx-min.js',false, VERSAO_PAINEL_DLX);
+        $this->view->addArquivoCss('vendor/painel-dlx/ui-painel-dlx/css/painel-dlx.tema.css', false, VERSAO_UI_PAINEL_DLX);
+        $this->view->addArquivoJs('vendor/painel-dlx/ui-painel-dlx/js/paineldlx.tema-min.js', false, VERSAO_UI_PAINEL_DLX);
+        $this->view->addArquivoJs('public/js/painel-dlx-min.js',false, VERSAO_PAINEL_DLX);
 
         $pagina_mestra = $session->get('vilex:pagina-mestra') ?: 'painel-dlx-master';
 

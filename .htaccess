@@ -1,7 +1,7 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
-    RewriteRule index.php index.php?ambiente=paineldlx-dev [QSA]
+    RewriteRule ^index.php$ index.php?ambiente=paineldlx-dev [QSA]
 
     # Direcionar o usuário para o Painel DLX
     RewriteCond %{SCRIPT_FILENAME} !-d
