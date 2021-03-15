@@ -23,7 +23,7 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Testes\Presentation\Site\Emails\Controllers;
+namespace PainelDLX\Tests\Presentation\Web\Emails\Controllers;
 
 use DLX\Core\Configure;
 use DLX\Infrastructure\EntityManagerX;
