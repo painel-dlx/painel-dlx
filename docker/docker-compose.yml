@@ -1,0 +1,22 @@
+version: '3.7'
+services:
+    painel.dlx.com.br:
+        container_name: br.com.dlx.painel
+        build:
+            context: .
+        volumes:
+            - "/Volumes/Arquivos/Pessoal/dlepera/ProjetosWeb/painel-dlx/painel-dlx/:/var/www/html/painel.dlx.com.br"
+        ports:
+            - "8085:80"
+        networks:
+            - dlx
+            - bd
+        restart: always
+        environment:
+            - PHP_IDE_CONFIG=serverName=painel.dlx.com.br
+            - XDEBUG_CONFIG=remote_host=${DOCKER_IP} remote_port=9000
+networks:
+    bd:
+        external: true
+    dlx:
+        external: true
