@@ -28,7 +28,7 @@ namespace PainelDLX\Testes\Presentation\Site\GruposUsuarios\Controllers;
 use DLX\Infrastructure\EntityManagerX;
 use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\ORMException;
-use PainelDLX\Presentation\Site\GruposUsuarios\Controllers\ConfigurarPermissoesController;
+use PainelDLX\Presentation\Web\GruposUsuarios\Controllers\ConfigurarPermissoesController;
 use PainelDLX\Tests\TestCase\PainelDLXTestCase;
 use PainelDLX\Tests\TestCase\TesteComTransaction;
 use Psr\Http\Message\ServerRequestInterface;
@@ -43,8 +43,8 @@ use Zend\Diactoros\Response\JsonResponse;
 
 /**
  * Class ConfigurarPermissoesControllerTest
- * @package PainelDLX\Testes\Presentation\Site\GruposUsuarios\Controllers
- * @coversDefaultClass \PainelDLX\Presentation\Site\GruposUsuarios\Controllers\ConfigurarPermissoesController
+ * @package PainelDLX\Testes\Presentation\Web\GruposUsuarios\Controllers
+ * @coversDefaultClass \PainelDLX\Presentation\Web\GruposUsuarios\Controllers\ConfigurarPermissoesController
  */
 class ConfigurarPermissoesControllerTest extends PainelDLXTestCase
 {
@@ -78,7 +78,7 @@ class ConfigurarPermissoesControllerTest extends PainelDLXTestCase
             select
                 *
             from
-                dlx_grupos_usuarios
+                GrupoUsuario
             order by 
                 rand()
             limit 1

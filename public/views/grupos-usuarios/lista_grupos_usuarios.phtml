@@ -24,18 +24,18 @@
  */
 
 use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
-use Vilex\VileX;
+use Vilex\Templates\AbstractTemplate;
 
 /**
- * @var VileX $this
+ * @var AbstractTemplate $this
  */
 
-$lista_grupos_usuarios = $this->getAtributo('lista_grupos_usuarios');
+$lista_grupos_usuarios = $this->getAtributo('lista-grupos-usuarios');
 $filtro = $this->getAtributo('filtro');
 ?>
 
 [CORPO]
-<h1 class="titulo-pagina"><?php echo $this->getAtributo('titulo-pagina') ?></h1>
+<h1 class="titulo-pagina">{{ titulo-pagina }}</h1>
 
 <nav class="menu-opcoes">
     <form id="filtro-registros" class="filtro-registros">

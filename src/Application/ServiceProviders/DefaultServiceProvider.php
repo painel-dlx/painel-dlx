@@ -32,12 +32,15 @@ use PainelDLX\Application\Services\PainelDLX;
 use Psr\Http\Message\ServerRequestInterface;
 use SechianeX\Contracts\SessionInterface;
 use SechianeX\Factories\SessionFactory;
+use Vilex\VileX;
+use Vilex\VileXConfiguracao;
 
 class DefaultServiceProvider extends AbstractServiceProvider
 {
     public $provides = [
         ServerRequestInterface::class,
         SessionInterface::class,
+        VileXConfiguracao::class
     ];
 
     /**
@@ -73,5 +76,10 @@ class DefaultServiceProvider extends AbstractServiceProvider
                 return SessionFactory::createPHPSession();
             }
         );
+
+        $container->add(
+            VileXConfiguracao::class,
+            VileXConfiguracao::class
+        )->addArguments(['./', filter_var($_SERVER['DOCUMENT_ROOT'])]);
     }
 }

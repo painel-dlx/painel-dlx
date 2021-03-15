@@ -1,6 +1,6 @@
 PainelDLX\Domain\Emails\Entities\ConfigSmtp:
     type: entity
-    table: dlx_config_smtp
+    table: dlx.ConfiguracaoSmtp
     repositoryClass: PainelDLX\Infrastructure\ORM\Doctrine\Repositories\ConfigSmtpRepository
     id:
         id:

@@ -23,15 +23,14 @@
  * SOFTWARE.
  */
 
-use PainelDLX\Domain\Usuarios\Entities\Usuario;
-use Vilex\VileX;
+use Vilex\Templates\AbstractTemplate;
 
-/** @var VileX $this */
+/** @var AbstractTemplate $this */
 ?>
 
 [CORPO]
 <form id="form-reset-senha" method="post" action="/painel-dlx/reset-senha/solicitar" class="form-reset-senha">
-    <h1 class="titulo-pagina"><?php echo $this->getAtributo('titulo-pagina') ?></h1>
+    <h1 class="titulo-pagina">{{ titulo-pagina }}</h1>
 
     <p class="mensagem-usuario -info">
         Para recuperar sua senha, informe o seu email cadastrado no sistema, que será onde receberá as informções para

@@ -24,17 +24,17 @@
  */
 
 use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
-use Vilex\VileX;
+use Vilex\Templates\AbstractTemplate;
 
 /**
- * @var VileX $this
+ * @var AbstractTemplate $this
  */
 
-$lista_grupos = $this->getAtributo('lista_grupos')
+$lista_grupos = $this->getAtributo('lista-grupos')
 ?>
 
 [CORPO]
-<h1 class="titulo-pagina"><?php echo $this->getAtributo('titulo-pagina') ?></h1>
+<h1 class="titulo-pagina">{{ titulo-pagina }}</h1>
 
 <div class="layout-barra-lateral">
     <?php include 'menu_lateral_usuarios.phtml' ?>

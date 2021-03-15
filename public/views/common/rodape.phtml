@@ -23,12 +23,15 @@
  * SOFTWARE.
  */
 
-use DLX\Core\Configure;
-use Vilex\VileX;
+use Vilex\Templates\AbstractTemplate;
 
-/** @var Vilex $this */
+/** @var AbstractTemplate $this */
 ?>
 
 [RODAPE]
-<?php echo Configure::get('app', 'nome-amigavel'), ' @ ', date('Y'), ' - v', Configure::get('app', 'versao') ?>
+{{ nome-app }} @ {{ ano-copyright }} - v{{ versao-app }}
+
+<?php if ($this->getAtributo('nome-app') !== 'Painel DLX') : ?>
+    | Painel DLX @ {{ ano-copyright }} - v{{ versao-painel-dlx }}
+<?php endif; ?>
 [/RODAPE]

@@ -11,7 +11,7 @@ namespace PainelDLX\Testes\Presentation\Site\Usuarios\Controllers;
 use DLX\Infrastructure\EntityManagerX;
 use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\ORMException;
-use PainelDLX\Presentation\Site\Usuarios\Controllers\ResetSenhaController;
+use PainelDLX\Presentation\Web\Usuarios\Controllers\ResetSenhaController;
 use PainelDLX\Tests\TestCase\PainelDLXTestCase;
 use PainelDLX\Tests\TestCase\TesteComTransaction;
 use Psr\Http\Message\ServerRequestInterface;
@@ -20,7 +20,9 @@ use SechianeX\Exceptions\SessionAdapterInterfaceInvalidaException;
 use SechianeX\Exceptions\SessionAdapterNaoEncontradoException;
 use SechianeX\Factories\SessionFactory;
 use Vilex\Exceptions\ContextoInvalidoException;
+use Vilex\Exceptions\PaginaMestraInvalidaException;
 use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
+use Vilex\Exceptions\TemplateInvalidoException;
 use Vilex\Exceptions\ViewNaoEncontradaException;
 use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Diactoros\Response\JsonResponse;
@@ -29,8 +31,8 @@ $_SESSION = [];
 
 /**
  * Class ResetSenhaControllerTest
- * @package PainelDLX\Testes\Presentation\Site\Usuarios\Controllers
- * @coversDefaultClass \PainelDLX\Presentation\Site\Usuarios\Controllers\ResetSenhaController
+ * @package PainelDLX\Testes\Presentation\Web\Usuarios\Controllers
+ * @coversDefaultClass \PainelDLX\Presentation\Web\Usuarios\Controllers\ResetSenhaController
  */
 class ResetSenhaControllerTest extends PainelDLXTestCase
 {
@@ -105,11 +107,10 @@ class ResetSenhaControllerTest extends PainelDLXTestCase
 
     /**
      * @param ResetSenhaController $controller
-     * @throws ContextoInvalidoException
-     * @throws ORMException
-     * @throws PaginaMestraNaoEncontradaException
-     * @throws ViewNaoEncontradaException
      * @throws DBALException
+     * @throws ORMException
+     * @throws PaginaMestraInvalidaException
+     * @throws TemplateInvalidoException
      * @covers ::formResetSenha
      * @depends test__construct
      */
@@ -119,7 +120,7 @@ class ResetSenhaControllerTest extends PainelDLXTestCase
             select
                 hash
             from
-                dlx_reset_senha
+                ResetSenha
             where
                 utilizado = 0
             order by 

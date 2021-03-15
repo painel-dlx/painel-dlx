@@ -29,7 +29,7 @@ namespace PainelDLX\Application\Routes;
 use PainelDLX\Application\Middlewares\DefinePaginaMestra;
 use PainelDLX\Application\Middlewares\VerificarLogon;
 use PainelDLX\Application\Services\PainelDLX;
-use PainelDLX\Presentation\Site\Home\Controllers\PaginaInicialController;
+use PainelDLX\Presentation\Web\Home\Controllers\PaginaInicialController;
 
 class HomeRouter extends PainelDLXRouter
 {
@@ -48,6 +48,14 @@ class HomeRouter extends PainelDLXRouter
 
         $router->get(
             '/',
+            [PaginaInicialController::class, 'home']
+        )->middlewares(
+            $define_pagina_mestra,
+            $verificar_logon
+        );
+
+        $router->get(
+            '/painel-dlx/',
             [PaginaInicialController::class, 'home']
         )->middlewares(
             $define_pagina_mestra,

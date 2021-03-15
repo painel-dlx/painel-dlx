@@ -24,17 +24,18 @@
  */
 
 use DLX\Core\Configure;
+use PainelDLX\Application\Contracts\Session\SessionInterface;
+use PainelDLX\Domain\Modulos\Entities\Menu;
+use PainelDLX\Domain\Modulos\Entities\MenuItem;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
-use SechianeX\Factories\SessionFactory;
-use Vilex\PaginaMestra;
-use Vilex\VileX;
+use Vilex\Templates\AbstractTemplate;
 
 /**
- * @var PaginaMestra $this
+ * @var AbstractTemplate $this
  */
 
-// TODO: pegar a sessão por atributo
-$session = SessionFactory::createPHPSession();
+/** @var SessionInterface $session */
+$session = $this->getAtributo('session');
 
 /** @var Usuario|null $usuario */
 $usuario = $session->get('usuario-logado');
@@ -52,8 +53,6 @@ $tab_index = 0;
     <!-- Tamanho do dispositivo -->
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
 
-    <title><?php echo Configure::get('app', 'nome-amigavel') ?></title>
-
     [ARQUIVOS-CSS/]
     [HTML-HEAD/]
 </head>
@@ -67,7 +66,7 @@ $tab_index = 0;
     </a>
     <?php endif; ?>
 
-    <a href="/" class="logo-site">Painel-DLX</a>
+    <a href="/painel-dlx/" class="logo-site">Painel-DLX</a>
 
     <?php if ($session->get('logado')) : ?>
     <div class="menu-principal">
@@ -79,16 +78,20 @@ $tab_index = 0;
 
         <a href="javascript:" class="link-fechar-menu" onclick="ocultarMenu()" title="Fechar menu">X</a>
 
-        <?php foreach ($session->get('html:lista-menu') as $menu => $itens) :
-            if (count($itens)) : ?>
+        <?php
+        /** @var Menu $menu */
+        foreach ($session->get('html:lista-menu') as $menu) :
+            if ($menu->hasItens()) : ?>
             <div class="menu-item">
-                <span class="menu-link"><?php echo $menu ?></span>
+                <span class="menu-link"><?php echo $menu->getNome() ?></span>
 
                 <ul class="sub-menu">
-                    <?php foreach ($itens as $item) : ?>
+                    <?php
+                    /** @var MenuItem $item */
+                    foreach ($menu->getItens() as $item) : ?>
                         <li class="sub-menu-item">
-                            <a href="<?php echo $item['link'] ?>" class="sub-menu-link" tabindex="<?php echo ++$tab_index ?>">
-                                <?php echo $item['item'] ?>
+                            <a href="<?php echo $item->getLink() ?>" class="sub-menu-link" tabindex="<?php echo ++$tab_index ?>">
+                                <?php echo $item->getNome() ?>
                             </a>
                         </li>
                     <?php endforeach; ?>

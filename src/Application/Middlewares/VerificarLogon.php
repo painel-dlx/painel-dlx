@@ -28,7 +28,7 @@ namespace PainelDLX\Application\Middlewares;
 
 use Exception;
 use PainelDLX\Application\Services\PainelDLX;
-use PainelDLX\Presentation\Site\Usuarios\Controllers\LoginController;
+use PainelDLX\Presentation\Web\Usuarios\Controllers\LoginController;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;

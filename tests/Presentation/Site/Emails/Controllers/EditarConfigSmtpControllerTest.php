@@ -28,7 +28,7 @@ namespace PainelDLX\Testes\Presentation\Site\Emails\Controllers;
 use DLX\Infrastructure\EntityManagerX;
 use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\ORMException;
-use PainelDLX\Presentation\Site\Emails\Controllers\EditarConfigSmtpController;
+use PainelDLX\Presentation\Web\Emails\Controllers\EditarConfigSmtpController;
 use PainelDLX\Tests\TestCase\PainelDLXTestCase;
 use PainelDLX\Tests\TestCase\TesteComTransaction;
 use Psr\Http\Message\ServerRequestInterface;
@@ -40,8 +40,8 @@ use Zend\Diactoros\Response\JsonResponse;
 
 /**
  * Class EditarConfigSmtpControllerTest
- * @package PainelDLX\Testes\Presentation\Site\Emails\Controllers
- * @coversDefaultClass \PainelDLX\Presentation\Site\Emails\Controllers\EditarConfigSmtpController
+ * @package PainelDLX\Testes\Presentation\Web\Emails\Controllers
+ * @coversDefaultClass \PainelDLX\Presentation\Web\Emails\Controllers\EditarConfigSmtpController
  */
 class EditarConfigSmtpControllerTest extends PainelDLXTestCase
 {
@@ -72,7 +72,7 @@ class EditarConfigSmtpControllerTest extends PainelDLXTestCase
             select
                 config_smtp_id
             from
-                dlx_config_smtp
+                ConfiguracaoSmtp
             order by
                 rand()
             limit 1

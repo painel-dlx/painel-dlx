@@ -23,15 +23,15 @@
  * SOFTWARE.
  */
 
-use Vilex\VileX;
+use Vilex\Templates\AbstractTemplate;
 
 /**
- * @var VileX $this
+ * @var AbstractTemplate $this
  */
 ?>
 
 [CORPO]
-<h1 class="titulo-pagina"><?php echo $this->getAtributo('titulo-pagina') ?></h1>
+<h1 class="titulo-pagina">{{ titulo-pagina }}</h1>
 
 <form id="form-grupo-usuario" method="post" action="/painel-dlx/grupos-de-usuarios/cadastrar">
     <fieldset class="form-grupo">

@@ -1,0 +1,12 @@
+alter table dlx_config_smtp rename to ConfiguracaoSmtp;
+alter table dlx_grupos_usuarios rename to GrupoUsuario;
+alter table dlx_grupos_x_usuarios rename to GrupoUsuario_x_Usuario;
+alter table dlx_log_registros rename to LogRegistro;
+alter table dlx_menu rename to Menu;
+alter table dlx_menu_item rename to MenuItem;
+alter table dlx_menu_item_x_permissao rename to MenuItem_x_PermissaoUsuario;
+alter table dlx_permissoes_usuario rename to PermissaoUsuario;
+alter table dlx_permissoes_x_grupos rename to PermissaoUsuario_x_GrupoUsuario;
+alter table dlx_reset_senha rename to ResetSenha;
+alter table dlx_usuarios rename to Usuario;
+alter table dlx_widgets rename to Widget;

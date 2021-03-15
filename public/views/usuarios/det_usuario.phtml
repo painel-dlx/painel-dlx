@@ -25,10 +25,10 @@
 
 use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
-use Vilex\VileX;
+use Vilex\Templates\AbstractTemplate;
 
 /**
- * @var VileX $this
+ * @var AbstractTemplate $this
  */
 
 /** @var Usuario $usuario */
@@ -36,7 +36,7 @@ $usuario = $this->getAtributo('usuario');
 ?>
 
 [CORPO]
-<h1 class="titulo-pagina"><?php echo $this->getAtributo('titulo-pagina') ?></h1>
+<h1 class="titulo-pagina">{{ titulo-pagina }}</h1>
 
 <div class="layout-barra-lateral">
     <?php include 'menu_lateral_usuarios.phtml' ?>

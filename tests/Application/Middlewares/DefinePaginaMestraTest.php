@@ -30,7 +30,7 @@ class DefinePaginaMestraTest extends TestCase
      */
     public function test_Process()
     {
-        $pagina_mestra = 'teste.mestra.php';
+        $pagina_mestra = 'painel-dlx-master';
 
         $request = $this->createMock(ServerRequestInterface::class);
         $request->method('getQueryParams')->willReturn(['pg-mestra' => $pagina_mestra]);

@@ -32,9 +32,11 @@ use PainelDLX\Application\Middlewares\ConfigurarPaginacao;
 use PainelDLX\Application\Middlewares\DefinePaginaMestra;
 use PainelDLX\Application\Middlewares\VerificarLogon;
 use PainelDLX\Application\Services\PainelDLX;
-use PainelDLX\Presentation\Site\Emails\Controllers\ConfigSmtpController;
-use PainelDLX\Presentation\Site\Emails\Controllers\EditarConfigSmtpController;
-use PainelDLX\Presentation\Site\Emails\Controllers\NovaConfigSmtpController;
+use PainelDLX\Presentation\Web\Common\Middlewares\FiltroListaRegistroFilter;
+use PainelDLX\Presentation\Web\Emails\Controllers\ConfigSmtpController;
+use PainelDLX\Presentation\Web\Emails\Controllers\EditarConfigSmtpController;
+use PainelDLX\Presentation\Web\Emails\Controllers\NovaConfigSmtpController;
+use PainelDLX\Presentation\Web\Emails\Middlewares\SalvarConfiguracaoSmtpFilter;
 
 class ConfigSmtpRouter extends PainelDLXRouter
 {
@@ -56,6 +58,10 @@ class ConfigSmtpRouter extends PainelDLXRouter
         $configurar_paginacao = $container->get(ConfigurarPaginacao::class);
         /** @var Autorizacao $autorizacao */
         $autorizacao = $container->get(Autorizacao::class);
+        /** @var SalvarConfiguracaoSmtpFilter $salvar_configuracao_smtp_filter */
+        $salvar_configuracao_smtp_filter = $container->get(SalvarConfiguracaoSmtpFilter::class);
+        /** @var FiltroListaRegistroFilter $filtro_lista_registros_filter */
+        $filtro_lista_registros_filter = $container->get(FiltroListaRegistroFilter::class);
 
         $router->get(
             '/painel-dlx/config-smtp',
@@ -64,7 +70,8 @@ class ConfigSmtpRouter extends PainelDLXRouter
             $define_pagina_mestra,
             $verificar_logon,
             $autorizacao->necessitaPermissoes('VER_CONFIGURACOES_SMTP'),
-            $configurar_paginacao
+            $configurar_paginacao,
+            $filtro_lista_registros_filter
         );
 
         $router->get(
@@ -81,7 +88,8 @@ class ConfigSmtpRouter extends PainelDLXRouter
             [NovaConfigSmtpController::class, 'salvarNovaConfigSmtp']
         )->middlewares(
             $verificar_logon,
-            $autorizacao->necessitaPermissoes('CRIAR_CONFIGURACAO_SMTP')
+            $autorizacao->necessitaPermissoes('CRIAR_CONFIGURACAO_SMTP'),
+            $salvar_configuracao_smtp_filter
         );
 
         $router->get(
@@ -98,7 +106,8 @@ class ConfigSmtpRouter extends PainelDLXRouter
             [EditarConfigSmtpController::class, 'editarConfigSmtp']
         )->middlewares(
             $verificar_logon,
-            $autorizacao->necessitaPermissoes('EDITAR_CONFIGURACAO_SMTP')
+            $autorizacao->necessitaPermissoes('EDITAR_CONFIGURACAO_SMTP'),
+            $salvar_configuracao_smtp_filter
         );
 
         $router->post(

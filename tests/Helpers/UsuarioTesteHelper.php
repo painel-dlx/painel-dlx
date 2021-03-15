@@ -45,7 +45,7 @@ class UsuarioTesteHelper
      */
     public static function criarDB(string $nome, string $email, string $senha): Usuario
     {
-        $query = 'insert into dlx_usuarios (nome, email, senha) values (:nome, :email, :senha)';
+        $query = 'insert into Usuario (nome, email, senha) values (:nome, :email, :senha)';
 
         $con = EntityManagerX::getInstance()->getConnection();
         $sql = $con->prepare($query);

@@ -29,13 +29,16 @@ namespace PainelDLX\Application\Services;
 use DLX\Core\Configure;
 use DLX\Core\Exceptions\ArquivoConfiguracaoNaoEncontradoException;
 use DLX\Core\Exceptions\ArquivoConfiguracaoNaoInformadoException;
+use League\Route\Http\Exception\NotFoundException;
 use PainelDLX\Application\Contracts\Router\ContainerInterface;
 use PainelDLX\Application\Contracts\Router\RouterInterface;
 use PainelDLX\Application\Routes\PainelDLXRouter;
 use PainelDLX\Application\Services\Exceptions\AmbienteNaoInformadoException;
+use PainelDLX\Presentation\Web\ErrosHttp\Controllers\ErroHttpController;
 use Psr\Http\Message\ServerRequestInterface;
-use RautereX\Exceptions\RotaNaoEncontradaException;
-use ReflectionException;
+use Vilex\Exceptions\ContextoInvalidoException;
+use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
+use Vilex\Exceptions\ViewNaoEncontradaException;
 
 /**
  * Class PainelDLX
@@ -124,6 +127,7 @@ class PainelDLX
         $this->router = $router;
         $this->container = $container;
         $this->defineDirPainelDLX();
+        $this->defineVersoes();
 
         self::$instance = $this;
     }
@@ -155,18 +159,29 @@ class PainelDLX
 
     /**
      * Executar a task desejada
+     * @throws ContextoInvalidoException
+     * @throws PaginaMestraNaoEncontradaException
+     * @throws ViewNaoEncontradaException
      */
     public function executar(): void
     {
-        $response = $this->router->dispatch($this->request);
+        try {
+            $response = $this->router->dispatch($this->request);
+        } catch (NotFoundException $e) {
+            /** @var ErroHttpController $controller */
+            $controller = $this->getContainer()->get(ErroHttpController::class);
+            $response = $controller->exibirPaginaErro($this->request->withQueryParams(['erro' => 404]));
+        }
+
         echo $response->getBody();
     }
 
     /**
      * Redirecionar para outra ação.
      * @param ServerRequestInterface $request
-     * @throws RotaNaoEncontradaException
-     * @throws ReflectionException
+     * @throws ContextoInvalidoException
+     * @throws PaginaMestraNaoEncontradaException
+     * @throws ViewNaoEncontradaException
      * @deprecated é necessário? está sendo utilizado?
      */
     public function redirect(ServerRequestInterface $request)
@@ -236,11 +251,14 @@ class PainelDLX
     {
         // Previnir que o diretório seja alterado caso alguém tenha setado ele manualmente
         if (empty(self::$dir)) {
-            $base_dir = dirname(dirname(dirname(__DIR__)));
+            $base_dir = dirname(dirname(dirname(__DIR__))) . DIRECTORY_SEPARATOR;
             $document_root = $this->request->getServerParams()['DOCUMENT_ROOT'];
 
             // Setar o path do PainelDLX
-            self::$dir = trim(str_replace($document_root, '', $base_dir), '/');
+            self::$dir = trim(str_replace($document_root, '', $base_dir), DIRECTORY_SEPARATOR);
+
+            // Garantir que os separadores de diretório estejam padronizados
+            self::$dir = str_replace(DIRECTORY_SEPARATOR, '/', self::$dir);
 
             // Adicionar o path do PainelDLX no include_path
             $this->adicionarDiretorioInclusao($base_dir);
@@ -255,6 +273,33 @@ class PainelDLX
     {
         foreach ($diretorios as $diretorio) {
             $this->adicionarDiretorioInclusao($diretorio);
+        }
+    }
+
+    /**
+     * Define as versões dos pacotes 'Painel DLX' instalados
+     */
+    private function defineVersoes(): void
+    {
+        // Todos os pacotes Painel-DLX, inclusive o atual
+        $pacotes_painel_dlx = array_merge(
+            glob('composer.json'),
+            glob('vendor/painel-dlx/*/composer.json')
+        );
+
+        foreach ($pacotes_painel_dlx as $pacote) {
+            $composer_json = json_decode(file_get_contents($pacote));
+
+            if (!property_exists($composer_json, 'name')) {
+                continue;
+            }
+
+            $nome_pacote = str_replace('painel-dlx/', '', $composer_json->name);
+            $nome_constante = 'VERSAO_' . strtoupper(str_replace('-', '_', $nome_pacote));
+
+            if (!defined($nome_constante)) {
+                define($nome_constante, $composer_json->version);
+            }
         }
     }
 }

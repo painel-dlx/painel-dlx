@@ -8,7 +8,7 @@
 
 namespace PainelDLX\Testes\Presentation\Site\Home\Controllers;
 
-use PainelDLX\Presentation\Site\Home\Controllers\PaginaInicialController;
+use PainelDLX\Presentation\Web\Home\Controllers\PaginaInicialController;
 use PainelDLX\Tests\TestCase\PainelDLXTestCase;
 use Psr\Http\Message\ServerRequestInterface;
 use SechianeX\Exceptions\SessionAdapterInterfaceInvalidaException;
@@ -21,8 +21,8 @@ use Zend\Diactoros\Response\HtmlResponse;
 
 /**
  * Class PaginaInicialControllerTest
- * @package PainelDLX\Testes\Presentation\Site\Home\Controllers
- * @coversDefaultClass \PainelDLX\Presentation\Site\Home\Controllers\PaginaInicialController
+ * @package PainelDLX\Testes\Presentation\Web\Home\Controllers
+ * @coversDefaultClass \PainelDLX\Presentation\Web\Home\Controllers\PaginaInicialController
  */
 class PaginaInicialControllerTest extends PainelDLXTestCase
 {

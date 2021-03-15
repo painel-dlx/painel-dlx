@@ -32,8 +32,9 @@ use PainelDLX\Application\Middlewares\ConfigurarPaginacao;
 use PainelDLX\Application\Middlewares\DefinePaginaMestra;
 use PainelDLX\Application\Middlewares\VerificarLogon;
 use PainelDLX\Application\Services\PainelDLX;
-use PainelDLX\Presentation\Site\GruposUsuarios\Controllers\ConfigurarPermissoesController;
-use PainelDLX\Presentation\Site\GruposUsuarios\Controllers\GrupoUsuarioController;
+use PainelDLX\Presentation\Web\Common\Middlewares\FiltroListaRegistroFilter;
+use PainelDLX\Presentation\Web\GruposUsuarios\Controllers\ConfigurarPermissoesController;
+use PainelDLX\Presentation\Web\GruposUsuarios\Controllers\GrupoUsuarioController;
 
 class GruposUsuariosRouter extends PainelDLXRouter
 {
@@ -54,6 +55,8 @@ class GruposUsuariosRouter extends PainelDLXRouter
         $configurar_paginacao = $container->get(ConfigurarPaginacao::class);
         /** @var Autorizacao $autorizacao */
         $autorizacao = $container->get(Autorizacao::class);
+        /** @var FiltroListaRegistroFilter $filtro_lista_registros_filter */
+        $filtro_lista_registros_filter = $container->get(FiltroListaRegistroFilter::class);
         
         $router->get(
             '/painel-dlx/grupos-de-usuarios',
@@ -62,7 +65,8 @@ class GruposUsuariosRouter extends PainelDLXRouter
             $define_pagina_mestra,
             $verificar_logon,
             $autorizacao->necessitaPermissoes('VISUALIZAR_GRUPOS_USUARIOS'),
-            $configurar_paginacao
+            $configurar_paginacao,
+            $filtro_lista_registros_filter
         );
 
         $router->get(

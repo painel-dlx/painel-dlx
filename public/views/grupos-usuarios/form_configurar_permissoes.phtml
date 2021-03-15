@@ -25,10 +25,10 @@
 
 use PainelDLX\Domain\GruposUsuarios\Entities\GrupoUsuario;
 use PainelDLX\Domain\PermissoesUsuario\Entities\PermissaoUsuario;
-use Vilex\VileX;
+use Vilex\Templates\AbstractTemplate;
 
 /**
- * @var VileX $this
+ * @var AbstractTemplate $this
  */
 
 /** @var GrupoUsuario $grupo_usuario */
@@ -39,7 +39,7 @@ $lista_permissoes = $this->getAtributo('lista-permissoes');
 ?>
 
 [CORPO]
-<h1 class="titulo-pagina"><?php echo $this->getAtributo('titulo-pagina') ?></h1>
+<h1 class="titulo-pagina">{{ titulo-pagina }}</h1>
 
 <form id="form-config-permissoes" method="post" action="/painel-dlx/grupos-de-usuarios/configurar-permissoes" class="form-config-permissoes">
     <input type="hidden" name="grupo_usuario_id" value="<?php echo $grupo_usuario->getId() ?>">

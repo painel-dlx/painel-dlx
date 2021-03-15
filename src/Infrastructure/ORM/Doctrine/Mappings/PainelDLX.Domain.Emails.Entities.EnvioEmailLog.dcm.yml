@@ -1,6 +1,6 @@
 PainelDLX\Domain\Emails\Entities\EnvioEmailLog:
     type: entity
-    table: dlx_envio_email_log
+    table: dlx.EnvioEmailLog
     repositoryClass: PainelDLX\Infrastructure\ORM\Doctrine\Repositories\EnvioEmailLogRepository
     id:
         id:

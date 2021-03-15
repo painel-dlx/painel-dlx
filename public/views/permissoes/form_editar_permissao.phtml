@@ -24,10 +24,10 @@
  */
 
 use PainelDLX\Domain\PermissoesUsuario\Entities\PermissaoUsuario;
-use Vilex\VileX;
+use Vilex\Templates\AbstractTemplate;
 
 /**
- * @var VileX $this
+ * @var AbstractTemplate $this
  */
 
 /** @var PermissaoUsuario $permissao_usuario */
@@ -35,7 +35,7 @@ $permissao_usuario = $this->getAtributo('permissao-usuario');
 ?>
 
 [CORPO]
-<h1 class="titulo-pagina"><?php echo $this->getAtributo('titulo-pagina') ?></h1>
+<h1 class="titulo-pagina">{{ titulo-pagina }}</h1>
 
 <form id="form-permissao" method="post" action="/painel-dlx/permissoes/editar-permissao">
     <input type="hidden" name="permissao_usuario_id" value="<?php echo $permissao_usuario->getId() ?> ">

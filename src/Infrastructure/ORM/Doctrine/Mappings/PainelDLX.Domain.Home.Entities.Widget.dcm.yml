@@ -1,6 +1,6 @@
 PainelDLX\Domain\Home\Entities\Widget:
     type: entity
-    table: dlx_widgets
+    table: dlx.Widget
     repositoryClass: PainelDLX\Infrastructure\ORM\Doctrine\Repositories\WidgetRepository
     id:
         id:

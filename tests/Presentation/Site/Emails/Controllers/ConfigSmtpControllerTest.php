@@ -32,22 +32,21 @@ use Doctrine\ORM\ORMException;
 use PainelDLX\Application\Factories\CommandBusFactory;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
 use PainelDLX\Domain\Usuarios\Exceptions\UsuarioJaPossuiGrupoException;
-use PainelDLX\Presentation\Site\Emails\Controllers\ConfigSmtpController;
+use PainelDLX\Presentation\Web\Emails\Controllers\ConfigSmtpController;
 use PainelDLX\Tests\TestCase\PainelDLXTestCase;
 use PainelDLX\Tests\TestCase\TesteComTransaction;
 use Psr\Http\Message\ServerRequestInterface;
 use SechianeX\Contracts\SessionInterface;
-use Vilex\Exceptions\ContextoInvalidoException;
-use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
-use Vilex\Exceptions\ViewNaoEncontradaException;
+use Vilex\Exceptions\PaginaMestraInvalidaException;
+use Vilex\Exceptions\TemplateInvalidoException;
 use Vilex\VileX;
 use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Diactoros\Response\JsonResponse;
 
 /**
  * Class ConfigSmtpControllerTestCase
- * @package PainelDLX\Testes\Presentation\Site\Emails\Controllers
- * @coversDefaultClass \PainelDLX\Presentation\Site\Emails\Controllers\ConfigSmtpController
+ * @package PainelDLX\Testes\Presentation\Web\Emails\Controllers
+ * @coversDefaultClass \PainelDLX\Presentation\Web\Emails\Controllers\ConfigSmtpController
  */
 class ConfigSmtpControllerTest extends PainelDLXTestCase
 {
@@ -78,7 +77,7 @@ class ConfigSmtpControllerTest extends PainelDLXTestCase
     {
         $conn = EntityManagerX::getInstance()->getConnection();
 
-        $query = 'insert into dlx_config_smtp (servidor, porta, nome) values (:servidor, :porta, :nome)';
+        $query = 'insert into ConfiguracaoSmtp (servidor, porta, nome) values (:servidor, :porta, :nome)';
         $conn->executeQuery($query, [
             ':servidor' => 'localhost',
             ':porta' => 587,
@@ -89,15 +88,20 @@ class ConfigSmtpControllerTest extends PainelDLXTestCase
     }
 
     /**
-     * @throws ContextoInvalidoException
-     * @throws PaginaMestraNaoEncontradaException
-     * @throws ViewNaoEncontradaException
+     * @throws PaginaMestraInvalidaException
+     * @throws TemplateInvalidoException
      * @covers ::listaConfigSmtp
      */
     public function test_ListaConfigSmtp_deve_retornar_um_HtmlResponse()
     {
         $request = $this->createMock(ServerRequestInterface::class);
-        $request->method('getQueryParams')->willReturn([]);
+        $request->method('getQueryParams')->willReturn([
+            'campos' => null,
+            'busca' => null,
+            'qtde' => null,
+            'offset' => null,
+            'pg' => null
+        ]);
 
         /** @var ServerRequestInterface $request */
         $response = $this->controller->listaConfigSmtp($request);
@@ -131,11 +135,10 @@ class ConfigSmtpControllerTest extends PainelDLXTestCase
     }
 
     /**
-     * @throws ContextoInvalidoException
      * @throws DBALException
      * @throws ORMException
-     * @throws PaginaMestraNaoEncontradaException
-     * @throws ViewNaoEncontradaException
+     * @throws PaginaMestraInvalidaException
+     * @throws TemplateInvalidoException
      * @covers ::detalheConfigSmtp
      */
     public function test_DetalheConfigSmtp_deve_retornar_um_HtmlResponse()
@@ -155,7 +158,7 @@ class ConfigSmtpControllerTest extends PainelDLXTestCase
 
     /**
      * @covers ::testarConfigSmtp
-     * @throws ViewNaoEncontradaException
+     * @throws TemplateInvalidoException
      * @throws UsuarioJaPossuiGrupoException
      */
     public function test_testarConfigSmtp_deve_retornar_um_JsonResponse_sucesso()
