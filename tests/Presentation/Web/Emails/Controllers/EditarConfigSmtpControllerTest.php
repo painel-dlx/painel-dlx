@@ -23,7 +23,7 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Testes\Presentation\Site\Emails\Controllers;
+namespace PainelDLX\Tests\Presentation\Web\Emails\Controllers;
 
 use DLX\Infrastructure\EntityManagerX;
 use Doctrine\DBAL\DBALException;
@@ -32,9 +32,8 @@ use PainelDLX\Presentation\Web\Emails\Controllers\EditarConfigSmtpController;
 use PainelDLX\Tests\TestCase\PainelDLXTestCase;
 use PainelDLX\Tests\TestCase\TesteComTransaction;
 use Psr\Http\Message\ServerRequestInterface;
-use Vilex\Exceptions\ContextoInvalidoException;
-use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
-use Vilex\Exceptions\ViewNaoEncontradaException;
+use Vilex\Exceptions\PaginaMestraInvalidaException;
+use Vilex\Exceptions\TemplateInvalidoException;
 use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Diactoros\Response\JsonResponse;
 
@@ -89,11 +88,11 @@ class EditarConfigSmtpControllerTest extends PainelDLXTestCase
     }
 
     /**
-     * @throws ContextoInvalidoException
-     * @throws PaginaMestraNaoEncontradaException
-     * @throws ViewNaoEncontradaException
-     * @throws ORMException
      * @throws DBALException
+     * @throws ORMException
+     * @throws PaginaMestraInvalidaException
+     * @throws TemplateInvalidoException
+     * @covers ::formEditarConfigSmtp
      */
     public function test_FormEditarConfigSmtp_deve_retornar_HtmlResponse()
     {
@@ -113,6 +112,7 @@ class EditarConfigSmtpControllerTest extends PainelDLXTestCase
     /**
      * @throws DBALException
      * @throws ORMException
+     * @covers ::editarConfigSmtp
      */
     public function test_EditarConfigSmtp_deve_retornar_JsonResponse()
     {

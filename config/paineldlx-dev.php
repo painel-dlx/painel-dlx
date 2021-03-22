@@ -53,8 +53,8 @@ return [
         'conexao' => [
             'dbname' => 'dlx',
             'user' => 'root',
-            'password' => '$d5Ro0t',
-            'host' => 'localhost',
+            'password' => 'root',
+            'host' => 'mysql56',
             'driver' => 'pdo_mysql',
             'charset' => 'utf8',
         ]

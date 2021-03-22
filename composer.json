@@ -1,6 +1,7 @@
 {
     "name": "painel-dlx/painel-dlx",
-    "version": "3.1.9",
+    "description": "Painel de administração simples e intuitivo para sites e sistemas web.",
+    "version": "3.1.10",
     "license": "MIT",
     "require": {
         "dlepera88-php/dlx": "^1.1",
