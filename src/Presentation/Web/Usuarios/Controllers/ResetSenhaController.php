@@ -51,7 +51,7 @@ use SechianeX\Contracts\SessionInterface;
 use Vilex\Exceptions\PaginaMestraInvalidaException;
 use Vilex\Exceptions\TemplateInvalidoException;
 use Vilex\VileX;
-use Zend\Diactoros\Response\JsonResponse;
+use Laminas\Diactoros\Response\JsonResponse;
 
 class ResetSenhaController extends PainelDLXController
 {

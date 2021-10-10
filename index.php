@@ -30,7 +30,7 @@ use League\Route\Strategy\ApplicationStrategy;
 use PainelDLX\Application\Adapters\Router\League\LeagueContainerAdapter;
 use PainelDLX\Application\Adapters\Router\League\LeagueRouterAdapter;
 use PainelDLX\Application\Services\PainelDLX;
-use Zend\Diactoros\ServerRequestFactory;
+use Laminas\Diactoros\ServerRequestFactory;
 use League\Container\Container;
 use League\Container\ReflectionContainer;
 

@@ -50,7 +50,6 @@ class AlterarSenhaUsuarioCommandHandlerTest extends TestCase
     public function test_Handle_deve_alterar_senha_do_usuario_e_salvar_no_bd()
     {
         $usuario_repository = $this->createMock(UsuarioRepositoryInterface::class);
-        $usuario_repository->method('update')->willReturn(null);
 
         $validar_senhas = $this->createMock(ValidarSenhas::class);
         $validar_senhas->method('validar')->willReturn(true);

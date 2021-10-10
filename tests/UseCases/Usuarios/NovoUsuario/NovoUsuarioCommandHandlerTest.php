@@ -50,7 +50,6 @@ class NovoUsuarioCommandHandlerTest extends TestCase
     public function test_Handle_deve_salvar_novo_Usuario()
     {
         $usuario_repository = $this->createMock(UsuarioRepositoryInterface::class);
-        $usuario_repository->method('create')->willReturn(null);
 
         $validator = $this->createMock(SalvarUsuarioValidator::class);
         $validator->method('validar')->willReturn(true);

@@ -46,7 +46,6 @@ class ExcluirConfigSmtpCommandHandlerTest extends TestCase
         $config_smtp = $this->createMock(ConfigSmtp::class);
 
         $config_smtp_repository = $this->createMock(ConfigSmtpRepositoryInterface::class);
-        $config_smtp_repository->method('delete')->willReturn(null);
 
         /** @var ConfigSmtp $config_smtp */
         /** @var ConfigSmtpRepositoryInterface $config_smtp_repository */

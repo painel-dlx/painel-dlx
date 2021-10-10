@@ -6,10 +6,10 @@
  * Time: 13:45
  */
 
-namespace PainelDLX\Testes\Presentation\Site\Usuarios\Controllers;
+namespace PainelDLX\Tests\Presentation\Site\Usuarios\Controllers;
 
 use DLX\Infrastructure\EntityManagerX;
-use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\ORMException;
 use PainelDLX\Presentation\Web\Usuarios\Controllers\ResetSenhaController;
 use PainelDLX\Tests\TestCase\PainelDLXTestCase;
@@ -19,13 +19,10 @@ use SechianeX\Contracts\SessionInterface;
 use SechianeX\Exceptions\SessionAdapterInterfaceInvalidaException;
 use SechianeX\Exceptions\SessionAdapterNaoEncontradoException;
 use SechianeX\Factories\SessionFactory;
-use Vilex\Exceptions\ContextoInvalidoException;
 use Vilex\Exceptions\PaginaMestraInvalidaException;
-use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
 use Vilex\Exceptions\TemplateInvalidoException;
-use Vilex\Exceptions\ViewNaoEncontradaException;
-use Zend\Diactoros\Response\HtmlResponse;
-use Zend\Diactoros\Response\JsonResponse;
+use Laminas\Diactoros\Response\HtmlResponse;
+use Laminas\Diactoros\Response\JsonResponse;
 
 $_SESSION = [];
 
@@ -48,7 +45,7 @@ class ResetSenhaControllerTest extends PainelDLXTestCase
      * @throws SessionAdapterInterfaceInvalidaException
      * @throws SessionAdapterNaoEncontradoException
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->session = SessionFactory::createPHPSession();
@@ -69,9 +66,8 @@ class ResetSenhaControllerTest extends PainelDLXTestCase
 
     /**
      * @param ResetSenhaController $controller
-     * @throws ContextoInvalidoException
-     * @throws PaginaMestraNaoEncontradaException
-     * @throws ViewNaoEncontradaException
+     * @throws PaginaMestraInvalidaException
+     * @throws TemplateInvalidoException
      * @covers ::formSolicitarResetSenha
      * @depends test__construct
      */
@@ -107,10 +103,10 @@ class ResetSenhaControllerTest extends PainelDLXTestCase
 
     /**
      * @param ResetSenhaController $controller
-     * @throws DBALException
      * @throws ORMException
      * @throws PaginaMestraInvalidaException
      * @throws TemplateInvalidoException
+     * @throws Exception
      * @covers ::formResetSenha
      * @depends test__construct
      */
@@ -129,7 +125,7 @@ class ResetSenhaControllerTest extends PainelDLXTestCase
         ';
 
         $sql = EntityManagerX::getInstance()->getConnection()->executeQuery($query);
-        $reset_senha_hash = $sql->fetchColumn();
+        $reset_senha_hash = $sql->fetchOne();
 
         if (empty($reset_senha_hash)) {
             $this->markTestIncomplete('Nenhuma recuperação de senha encontrada para executar o teste.');
@@ -146,7 +142,6 @@ class ResetSenhaControllerTest extends PainelDLXTestCase
 
     /**
      * @param ResetSenhaController $controller
-     * @throws ORMException
      * @covers ::resetarSenha
      * @depends test__construct
      */

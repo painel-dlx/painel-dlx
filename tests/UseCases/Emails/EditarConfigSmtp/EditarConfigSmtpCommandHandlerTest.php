@@ -47,7 +47,6 @@ class EditarConfigSmtpCommandHandlerTest extends TestCase
     public function test_Handle_deve_alterar_informacoes_ConfigSmtp_e_salvar()
     {
         $config_smtp_repository = $this->createMock(ConfigSmtpRepositoryInterface::class);
-        $config_smtp_repository->method('update')->willReturn(null);
 
         $validator = $this->createMock(SalvarConfigSmtpValidator::class);
         $validator->method('validar')->willReturn(true);

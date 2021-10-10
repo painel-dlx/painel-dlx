@@ -55,7 +55,6 @@ class EditarUsuarioCommandHandlerTest extends TestCase
         $grupo_usuario->method('getAlias')->willReturn('TESTE');
 
         $usuario_repository = $this->createMock(UsuarioRepositoryInterface::class);
-        $usuario_repository->method('update')->willReturn(null);
 
         $grupo_usuario_repository = $this->createMock(GrupoUsuarioRepositoryInterface::class);
         $grupo_usuario_repository->method('getListaGruposByIds')->willReturn([$grupo_usuario]);

@@ -30,13 +30,10 @@ use PainelDLX\Presentation\Web\Emails\Controllers\NovaConfigSmtpController;
 use PainelDLX\Tests\TestCase\PainelDLXTestCase;
 use PainelDLX\Tests\TestCase\TesteComTransaction;
 use Psr\Http\Message\ServerRequestInterface;
-use Vilex\Exceptions\ContextoInvalidoException;
 use Vilex\Exceptions\PaginaMestraInvalidaException;
-use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
 use Vilex\Exceptions\TemplateInvalidoException;
-use Vilex\Exceptions\ViewNaoEncontradaException;
-use Zend\Diactoros\Response\HtmlResponse;
-use Zend\Diactoros\Response\JsonResponse;
+use Laminas\Diactoros\Response\HtmlResponse;
+use Laminas\Diactoros\Response\JsonResponse;
 
 /**
  * Class NovaConfigSmtpControllerTest
@@ -55,7 +52,7 @@ class NovaConfigSmtpControllerTest extends PainelDLXTestCase
     /**
      * @throws ORMException
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->controller = self::$painel_dlx->getContainer()->get(NovaConfigSmtpController::class);

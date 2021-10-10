@@ -23,10 +23,10 @@
  * SOFTWARE.
  */
 
-namespace PainelDLX\Testes\Presentation\Site\GruposUsuarios\Controllers;
+namespace PainelDLX\Tests\Presentation\Site\GruposUsuarios\Controllers;
 
 use DLX\Infrastructure\EntityManagerX;
-use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\ORMException;
 use PainelDLX\Presentation\Web\GruposUsuarios\Controllers\ConfigurarPermissoesController;
 use PainelDLX\Tests\TestCase\PainelDLXTestCase;
@@ -35,11 +35,10 @@ use Psr\Http\Message\ServerRequestInterface;
 use SechianeX\Exceptions\SessionAdapterInterfaceInvalidaException;
 use SechianeX\Exceptions\SessionAdapterNaoEncontradoException;
 use SechianeX\Factories\SessionFactory;
-use Vilex\Exceptions\ContextoInvalidoException;
-use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
-use Vilex\Exceptions\ViewNaoEncontradaException;
-use Zend\Diactoros\Response\HtmlResponse;
-use Zend\Diactoros\Response\JsonResponse;
+use Laminas\Diactoros\Response\HtmlResponse;
+use Laminas\Diactoros\Response\JsonResponse;
+use Vilex\Exceptions\PaginaMestraInvalidaException;
+use Vilex\Exceptions\TemplateInvalidoException;
 
 /**
  * Class ConfigurarPermissoesControllerTest
@@ -70,7 +69,7 @@ class ConfigurarPermissoesControllerTest extends PainelDLXTestCase
     /**
      * @return int
      * @throws ORMException
-     * @throws DBALException
+     * @throws Exception
      */
     private function getIdGrupoUsuario(): int
     {
@@ -85,7 +84,7 @@ class ConfigurarPermissoesControllerTest extends PainelDLXTestCase
         ';
 
         $sql = EntityManagerX::getInstance()->getConnection()->executeQuery($query);
-        $grupo_usuario_id = $sql->fetchColumn();
+        $grupo_usuario_id = (int)$sql->fetchOne();
 
         if (empty($grupo_usuario_id)) {
             $this->markTestIncomplete('Nenhum grupo de usuário encontrado para executar o teste.');
@@ -96,11 +95,10 @@ class ConfigurarPermissoesControllerTest extends PainelDLXTestCase
 
     /**
      * @param ConfigurarPermissoesController $controller
-     * @throws ContextoInvalidoException
-     * @throws DBALException
+     * @throws Exception
      * @throws ORMException
-     * @throws PaginaMestraNaoEncontradaException
-     * @throws ViewNaoEncontradaException
+     * @throws PaginaMestraInvalidaException
+     * @throws TemplateInvalidoException
      * @covers ::formConfigurarPermissao
      * @depends test__construct
      */
@@ -119,7 +117,7 @@ class ConfigurarPermissoesControllerTest extends PainelDLXTestCase
 
     /**
      * @param ConfigurarPermissoesController $controller
-     * @throws DBALException
+     * @throws Exception
      * @throws ORMException
      * @covers ::salvarConfiguracaoPermissao
      * @depends test__construct

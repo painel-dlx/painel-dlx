@@ -48,7 +48,6 @@ class ConfigurarPermissoesCommandHandlerTest extends TestCase
     public function test_Handle_deve_adicionar_permissoes_em_GrupoUsuario()
     {
         $grupo_usuario_repository = $this->createMock(GrupoUsuarioRepositoryInterface::class);
-        $grupo_usuario_repository->method('update')->willReturn(null);
 
         /** @var GrupoUsuarioRepositoryInterface $grupo_usuario_repository */
 

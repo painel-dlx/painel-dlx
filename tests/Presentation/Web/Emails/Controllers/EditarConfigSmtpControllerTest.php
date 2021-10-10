@@ -26,7 +26,7 @@
 namespace PainelDLX\Tests\Presentation\Web\Emails\Controllers;
 
 use DLX\Infrastructure\EntityManagerX;
-use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\ORMException;
 use PainelDLX\Presentation\Web\Emails\Controllers\EditarConfigSmtpController;
 use PainelDLX\Tests\TestCase\PainelDLXTestCase;
@@ -34,8 +34,8 @@ use PainelDLX\Tests\TestCase\TesteComTransaction;
 use Psr\Http\Message\ServerRequestInterface;
 use Vilex\Exceptions\PaginaMestraInvalidaException;
 use Vilex\Exceptions\TemplateInvalidoException;
-use Zend\Diactoros\Response\HtmlResponse;
-use Zend\Diactoros\Response\JsonResponse;
+use Laminas\Diactoros\Response\HtmlResponse;
+use Laminas\Diactoros\Response\JsonResponse;
 
 /**
  * Class EditarConfigSmtpControllerTest
@@ -54,7 +54,7 @@ class EditarConfigSmtpControllerTest extends PainelDLXTestCase
     /**
      * @throws ORMException
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->controller = self::$painel_dlx->getContainer()->get(EditarConfigSmtpController::class);
@@ -62,8 +62,8 @@ class EditarConfigSmtpControllerTest extends PainelDLXTestCase
 
     /**
      * @return int
-     * @throws DBALException
      * @throws ORMException
+     * @throws Exception
      */
     private function getIdConfigSmtp(): int
     {
@@ -78,7 +78,7 @@ class EditarConfigSmtpControllerTest extends PainelDLXTestCase
         ';
 
         $sql = EntityManagerX::getInstance()->getConnection()->executeQuery($query);
-        $id = $sql->fetchColumn();
+        $id = (int)$sql->fetchOne();
 
         if (empty($id)) {
             $this->markTestIncomplete('Nenhuma configuração SMTP encontrada para fazer o teste.');
@@ -88,7 +88,7 @@ class EditarConfigSmtpControllerTest extends PainelDLXTestCase
     }
 
     /**
-     * @throws DBALException
+     * @throws Exception
      * @throws ORMException
      * @throws PaginaMestraInvalidaException
      * @throws TemplateInvalidoException
@@ -110,8 +110,6 @@ class EditarConfigSmtpControllerTest extends PainelDLXTestCase
     }
 
     /**
-     * @throws DBALException
-     * @throws ORMException
      * @covers ::editarConfigSmtp
      */
     public function test_EditarConfigSmtp_deve_retornar_JsonResponse()
