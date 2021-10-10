@@ -11,7 +11,7 @@ namespace PainelDLX\Testes\Application\Middlewares;
 use PainelDLX\Application\Middlewares\CriptografarSenhas;
 use PainelDLX\Application\Services\PainelDLX;
 use PainelDLX\Tests\TestCase\PainelDLXTestCase;
-use Zend\Diactoros\ServerRequestFactory;
+use Laminas\Diactoros\ServerRequestFactory;
 
 /**
  * Class CriptografarSenhasTest

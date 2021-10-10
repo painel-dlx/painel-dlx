@@ -47,7 +47,6 @@ class NovaConfigSmtpCommandHandlerTest extends TestCase
     public function test_Handle_deve_salvar_uma_nova_configuracao_smtp(): ConfigSmtp
     {
         $config_smtp_repository = $this->createMock(ConfigSmtpRepositoryInterface::class);
-        $config_smtp_repository->method('create')->willReturn(null);
 
         $validator = $this->createMock(SalvarConfigSmtpValidator::class);
         $validator->method('validar')->willReturn(true);

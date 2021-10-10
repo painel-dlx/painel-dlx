@@ -42,7 +42,7 @@ class PainelDLXTestCase extends TestCase
      * @throws ArquivoConfiguracaoNaoEncontradoException
      * @throws ArquivoConfiguracaoNaoInformadoException
      */
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
         self::start();
@@ -51,7 +51,7 @@ class PainelDLXTestCase extends TestCase
     /**
      * @throws ORMException
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -63,7 +63,7 @@ class PainelDLXTestCase extends TestCase
     /**
      * @throws ORMException
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
 

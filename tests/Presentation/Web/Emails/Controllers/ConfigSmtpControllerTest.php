@@ -27,11 +27,10 @@ namespace PainelDLX\Tests\Presentation\Web\Emails\Controllers;
 
 use DLX\Core\Configure;
 use DLX\Infrastructure\EntityManagerX;
-use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\ORMException;
 use PainelDLX\Application\Factories\CommandBusFactory;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
-use PainelDLX\Domain\Usuarios\Exceptions\UsuarioJaPossuiGrupoException;
 use PainelDLX\Presentation\Web\Emails\Controllers\ConfigSmtpController;
 use PainelDLX\Tests\TestCase\PainelDLXTestCase;
 use PainelDLX\Tests\TestCase\TesteComTransaction;
@@ -40,8 +39,8 @@ use SechianeX\Contracts\SessionInterface;
 use Vilex\Exceptions\PaginaMestraInvalidaException;
 use Vilex\Exceptions\TemplateInvalidoException;
 use Vilex\VileX;
-use Zend\Diactoros\Response\HtmlResponse;
-use Zend\Diactoros\Response\JsonResponse;
+use Laminas\Diactoros\Response\HtmlResponse;
+use Laminas\Diactoros\Response\JsonResponse;
 
 /**
  * Class ConfigSmtpControllerTestCase
@@ -60,7 +59,7 @@ class ConfigSmtpControllerTest extends PainelDLXTestCase
     /**
      * @throws ORMException
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -70,8 +69,8 @@ class ConfigSmtpControllerTest extends PainelDLXTestCase
 
     /**
      * @return int
-     * @throws DBALException
      * @throws ORMException
+     * @throws Exception
      */
     public function inserirNovaConfiguracao(): int
     {
@@ -79,9 +78,9 @@ class ConfigSmtpControllerTest extends PainelDLXTestCase
 
         $query = 'insert into ConfiguracaoSmtp (servidor, porta, nome) values (:servidor, :porta, :nome)';
         $conn->executeQuery($query, [
-            ':servidor' => 'localhost',
-            ':porta' => 587,
-            ':nome' => 'Teste'
+            'servidor' => 'localhost',
+            'porta' => 587,
+            'nome' => 'Teste'
         ]);
 
         return $conn->lastInsertId();
@@ -111,8 +110,8 @@ class ConfigSmtpControllerTest extends PainelDLXTestCase
 
     /**
      * @covers ::excluirConfigSmtp
+     * @throws Exception
      * @throws ORMException
-     * @throws DBALException
      * @covers ::excluirConfigSmtp
      */
     public function test_ExcluirConfigSmtp_deve_retornar_JsonResponse()
@@ -135,7 +134,7 @@ class ConfigSmtpControllerTest extends PainelDLXTestCase
     }
 
     /**
-     * @throws DBALException
+     * @throws Exception
      * @throws ORMException
      * @throws PaginaMestraInvalidaException
      * @throws TemplateInvalidoException
@@ -159,7 +158,6 @@ class ConfigSmtpControllerTest extends PainelDLXTestCase
     /**
      * @covers ::testarConfigSmtp
      * @throws TemplateInvalidoException
-     * @throws UsuarioJaPossuiGrupoException
      */
     public function test_testarConfigSmtp_deve_retornar_um_JsonResponse_sucesso()
     {

@@ -41,8 +41,8 @@ use SechianeX\Contracts\SessionInterface;
 use Vilex\Exceptions\PaginaMestraInvalidaException;
 use Vilex\Exceptions\TemplateInvalidoException;
 use Vilex\VileX;
-use Zend\Diactoros\Response\HtmlResponse;
-use Zend\Diactoros\Response\JsonResponse;
+use Laminas\Diactoros\Response\HtmlResponse;
+use Laminas\Diactoros\Response\JsonResponse;
 
 class MinhaContaController extends PainelDLXController
 {

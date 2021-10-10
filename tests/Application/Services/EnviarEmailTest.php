@@ -42,7 +42,7 @@ class EnviarEmailTest extends PainelDLXTestCase
     /** @var EnviarEmail */
     private $enviar_email;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

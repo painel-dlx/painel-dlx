@@ -27,6 +27,7 @@ namespace PainelDLX\Tests\Infrastructure\ORM\Doctrine\Repositories;
 
 use DLX\Infrastructure\EntityManagerX;
 use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\ORMException;
 use PainelDLX\Domain\Modulos\Entities\Menu;
 use PainelDLX\Domain\Usuarios\Entities\Usuario;
@@ -41,8 +42,8 @@ use PainelDLX\Tests\TestCase\PainelDLXTestCase;
 class MenuRepositoryTest extends PainelDLXTestCase
 {
     /**
-     * @throws DBALException
      * @throws ORMException
+     * @throws Exception
      * @covers ::getListaMenu
      */
     public function test_GetListaMenu_deve_retornar_array_com_informacoes_do_menu()
@@ -57,7 +58,7 @@ class MenuRepositoryTest extends PainelDLXTestCase
                      rand() 
                 limit 1';
         $sql = EntityManagerX::getInstance()->getConnection()->executeQuery($query);
-        $usuario_id = $sql->fetchColumn();
+        $usuario_id = (int)$sql->fetchOne();
 
         $usuario = $this->createMock(Usuario::class);
         $usuario->method('getId')->willReturn($usuario_id);

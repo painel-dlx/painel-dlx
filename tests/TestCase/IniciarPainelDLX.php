@@ -37,7 +37,7 @@ use PainelDLX\Application\Adapters\Router\League\LeagueRouterAdapter;
 use PainelDLX\Application\Services\Exceptions\AmbienteNaoInformadoException;
 use PainelDLX\Application\Services\PainelDLX;
 use Psr\Http\Message\ServerRequestInterface;
-use Zend\Diactoros\ServerRequestFactory;
+use Laminas\Diactoros\ServerRequestFactory;
 
 trait IniciarPainelDLX
 {

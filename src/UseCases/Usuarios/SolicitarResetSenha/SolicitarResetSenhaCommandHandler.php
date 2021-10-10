@@ -59,7 +59,7 @@ class SolicitarResetSenhaCommandHandler
 
         $lista_usuarios = $this->usuario_repository->findBy(['email' => $email]);
 
-        if (count($lista_usuarios) < 1) {
+        if (is_null($lista_usuarios) || count($lista_usuarios) < 1) {
             throw UsuarioNaoEncontradoException::porEmail($email);
         }
 

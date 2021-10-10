@@ -38,8 +38,8 @@ use SechianeX\Exceptions\SessionAdapterNaoEncontradoException;
 use SechianeX\Factories\SessionFactory;
 use Vilex\Exceptions\PaginaMestraInvalidaException;
 use Vilex\Exceptions\TemplateInvalidoException;
-use Zend\Diactoros\Response\HtmlResponse;
-use Zend\Diactoros\Response\JsonResponse;
+use Laminas\Diactoros\Response\HtmlResponse;
+use Laminas\Diactoros\Response\JsonResponse;
 
 $_SESSION = [];
 
@@ -62,7 +62,7 @@ class LoginControllerTest extends PainelDLXTestCase
      * @throws SessionAdapterInterfaceInvalidaException
      * @throws SessionAdapterNaoEncontradoException
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->session = SessionFactory::createPHPSession();
