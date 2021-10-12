@@ -14,7 +14,7 @@ services:
         restart: always
         environment:
             - PHP_IDE_CONFIG=serverName=painel.dlx.com.br
-            - XDEBUG_CONFIG=remote_host=${DOCKER_IP} remote_port=9000
+#            - XDEBUG_CONFIG=client_host=10.0.0.200 client_port=9003 start_with_request=yes mode=debug
 networks:
     bd:
         external: true

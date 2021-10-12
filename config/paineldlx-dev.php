@@ -38,7 +38,7 @@ return [
         'mapping' => include 'painel-dlx/mapping.php',
         'diretorios' => include 'painel-dlx/diretorios.php',
         'favicon' => '/public/imgs/favicon.png',
-        'versao' => '4.0.0'
+        'versao' => '4.0.1'
     ],
 
     'bd' => [

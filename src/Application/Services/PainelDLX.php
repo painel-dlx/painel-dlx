@@ -35,9 +35,12 @@ use PainelDLX\Application\Contracts\Router\RouterInterface;
 use PainelDLX\Application\Routes\PainelDLXRouter;
 use PainelDLX\Application\Services\Exceptions\AmbienteNaoInformadoException;
 use PainelDLX\Presentation\Web\ErrosHttp\Controllers\ErroHttpController;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Vilex\Exceptions\ContextoInvalidoException;
+use Vilex\Exceptions\PaginaMestraInvalidaException;
 use Vilex\Exceptions\PaginaMestraNaoEncontradaException;
+use Vilex\Exceptions\TemplateInvalidoException;
 use Vilex\Exceptions\ViewNaoEncontradaException;
 
 /**
@@ -159,9 +162,8 @@ class PainelDLX
 
     /**
      * Executar a task desejada
-     * @throws ContextoInvalidoException
-     * @throws PaginaMestraNaoEncontradaException
-     * @throws ViewNaoEncontradaException
+     * @throws PaginaMestraInvalidaException
+     * @throws TemplateInvalidoException
      */
     public function executar(): void
     {
@@ -173,15 +175,16 @@ class PainelDLX
             $response = $controller->exibirPaginaErro($this->request->withQueryParams(['erro' => 404]));
         }
 
+        $this->sendHeaders($response);
+
         echo $response->getBody();
     }
 
     /**
      * Redirecionar para outra ação.
      * @param ServerRequestInterface $request
-     * @throws ContextoInvalidoException
-     * @throws PaginaMestraNaoEncontradaException
-     * @throws ViewNaoEncontradaException
+     * @throws PaginaMestraInvalidaException
+     * @throws TemplateInvalidoException
      * @deprecated é necessário? está sendo utilizado?
      */
     public function redirect(ServerRequestInterface $request)
@@ -300,6 +303,18 @@ class PainelDLX
             if (!defined($nome_constante)) {
                 define($nome_constante, $composer_json->version);
             }
+        }
+    }
+
+    /**
+     * Enviar os cabeçalhos da Response
+     * @param ResponseInterface $response
+     */
+    private function sendHeaders(ResponseInterface $response): void
+    {
+        foreach (array_keys($response->getHeaders()) as $header) {
+            $header = sprintf('%s: %s', ucfirst($header), $response->getHeaderLine($header));
+            header($header, true);
         }
     }
 }
