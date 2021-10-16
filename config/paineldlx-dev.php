@@ -24,7 +24,7 @@
  */
 
 use DLX\Core\Configure;
-use Doctrine\DBAL\Logging\EchoSQLLogger;
+//use Doctrine\DBAL\Logging\EchoSQLLogger;
 
 return [
     'tipo-ambiente' => Configure::DEV,
@@ -37,8 +37,7 @@ return [
         'service-providers' => include 'painel-dlx/service_providers.php',
         'mapping' => include 'painel-dlx/mapping.php',
         'diretorios' => include 'painel-dlx/diretorios.php',
-        'favicon' => '/public/imgs/favicon.png',
-        'versao' => '4.0.1'
+        'favicon' => '/public/imgs/favicon.png'
     ],
 
     'bd' => [

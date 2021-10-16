@@ -316,5 +316,7 @@ class PainelDLX
             $header = sprintf('%s: %s', ucfirst($header), $response->getHeaderLine($header));
             header($header, true);
         }
+
+        http_response_code($response->getStatusCode());
     }
 }
